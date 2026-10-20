@@ -1,0 +1,408 @@
+<!doctype html>
+<!-- Rendu statique de design/maquettes/source/Taux.dc.html : état par défaut, données fictives, sans interactions.
+     Largeur de référence 1440 px. Les interactions sont décrites dans docs/ecrans.md. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probabilités de taux — TERMINAL</title>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.co{color:#D95B55;border-color:#6B3532}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.tab{height:36px;padding:0 16px;border:1px solid #3A3835;border-radius:2px;background:transparent;color:#ABA7A2;font:600 12px 'JetBrains Mono',monospace;letter-spacing:.14em;cursor:pointer}
+.tab:hover{color:#EDEAE6;border-color:#8A7533}
+.tab[aria-pressed="true"]{background:#2B2511;border-color:#E4C24A;color:#F6D44E}
+.vt{display:grid;grid-template-columns:44px 32px minmax(0,1fr) 120px 78px 100px;gap:10px;align-items:center;padding:0 14px}
+</style>
+</head>
+<body>
+
+
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#3A3835"></span>TOK <span style="color:#ABA7A2">22:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>LON <span style="color:#ABA7A2">14:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>PAR <span style="color:#ABA7A2">15:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>NY <span style="color:#E4C24A">09:36</span></span>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Global</div>
+
+<a href="Main.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></svg>Vue d’ensemble</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M5 15l4-4 3 3 6-7"></path></svg>Graphiques</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"></path></svg>Récap de session</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2"></path></svg>Horaires des marchés</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Assistant</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">News</div>
+
+<a href="Calendrier.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>Calendrier</a>
+
+
+<a href="Actus.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3"></path></svg>Fil d’actus</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16"></path></svg>Recherche bancaire</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2"></path></svg>Squawk</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Macro</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>Macro</span>
+
+<a href="Taux.html" class="on" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z"></path></svg>Taux</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Positionnement &amp; sentiment</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5"></path></svg>Sentiment retail</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M10 20V4M15 20v-8M20 20v-5"></path></svg>COT</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V5h6v3M4 13h16"></path></svg>Positions des banques</span>
+
+<a href="Risque.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17a7 7 0 1 1 14 0M12 17l3-5"></path></svg>Sentiment de risque</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Analyse</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Markets Watch</span>
+
+<a href="Microstructure.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 10h14M4 14h8M4 18h12"></path></svg>Microstructure BTC</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0"></path></svg>Saisonnalité</span>
+
+<a href="Heatmap.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Heatmap fondamentale</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 12h16M12 4v16"></path></svg>Heatmap technique</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Indicateurs</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"></path></svg>Liquidité</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Compte</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z"></path></svg>Track record</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6"></path></svg>Calculateur de risque</span>
+
+</div>
+
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Probabilités de taux · FED</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">Futures · Polymarket · Kalshi</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:16px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px">
+<div role="group" aria-label="Banque centrale" style="display:flex;flex-wrap:wrap;gap:6px">
+<button class="tab" aria-pressed="true">FED</button><button class="tab" aria-pressed="false">BCE</button><button class="tab" aria-pressed="false">BOE</button><button class="tab" aria-pressed="false">BOJ</button><button class="tab" aria-pressed="false">BNS</button><button class="tab" aria-pressed="false">BOC</button><button class="tab" aria-pressed="false">RBA</button><button class="tab" aria-pressed="false">RBNZ</button>
+</div>
+<span style="flex:1"></span>
+<div style="display:flex;align-items:flex-end;gap:12px 28px;flex-wrap:wrap">
+<div><div class="lbl" style="font-size:10px">Réserve fédérale · taux actuel</div><div style="display:flex;align-items:baseline;gap:12px;margin-top:4px"><span style="font:600 44px/1 'Rajdhani',sans-serif;color:#F6D44E">4,00 %</span><span class="num" style="font-size:12px;color:#ABA7A2">Fourchette 3,75 – 4,00 %</span></div></div>
+<span class="chip hot">Prochaine réunion · 28/10/2026 · J-9</span>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px">
+<section class="pn" aria-label="Trajectoire implicite" style="flex:2 1 600px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Trajectoire implicite · 10 réunions</h2>
+<span class="chip">Fin de période 4,42 %</span>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="padding:16px 18px 12px">
+<div style="display:flex;gap:8px">
+<div style="position:relative;flex:1;min-width:0;height:200px;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 200" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 165.1H1000M0 92.5H1000M0 19.9H1000" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="M0 165.1H1000" style="fill:none;stroke:#85817A;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="M0 165.1H50.0V155.7H150.0V129.3H250.0V106.0H350.0V81.0H450.0V60.1H550.0V45.9H650.0V39.2H750.0V34.9H850.0V37.2H950.0V43.9H1000" style="fill:none;stroke:#E4C24A;stroke-width:2;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span style="position:absolute;left:5.00%;top:77.85%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:5.00%;top:77.85%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,03</span><span style="position:absolute;left:15.00%;top:64.63%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:15.00%;top:64.63%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,12</span><span style="position:absolute;left:25.00%;top:53.01%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:25.00%;top:53.01%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,20</span><span style="position:absolute;left:35.00%;top:40.52%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:35.00%;top:40.52%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,29</span><span style="position:absolute;left:45.00%;top:30.07%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:45.00%;top:30.07%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,36</span><span style="position:absolute;left:55.00%;top:22.95%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:55.00%;top:22.95%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,41</span><span style="position:absolute;left:65.00%;top:19.61%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:65.00%;top:19.61%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,43</span><span style="position:absolute;left:75.00%;top:17.43%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:75.00%;top:17.43%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,45</span><span style="position:absolute;left:85.00%;top:18.59%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:85.00%;top:18.59%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,44</span><span style="position:absolute;left:95.00%;top:21.93%;width:8px;height:8px;margin:-4px 0 0 -4px;border-radius:50%;background:#000;border:2px solid #F6D44E"></span><span class="num" style="position:absolute;left:95.00%;top:21.93%;transform:translate(-50%,-22px);font-size:10px;color:#EDEAE6">4,42</span>
+</div>
+<div class="num" style="position:relative;width:46px;flex:none;font-size:10px;color:#85817A"><span style="position:absolute;left:0;top:82.57%;transform:translateY(-50%)">4,00 %</span><span style="position:absolute;left:0;top:46.26%;transform:translateY(-50%)">4,25 %</span><span style="position:absolute;left:0;top:9.95%;transform:translateY(-50%)">4,50 %</span></div>
+</div>
+<div class="lbl" style="margin:16px 0 6px;font-size:10px">Variation attendue par réunion · pb</div>
+<div style="position:relative;height:120px;margin-right:54px">
+<div style="position:absolute;left:0;right:0;top:60px;border-top:1px solid #3A3835"></div>
+<span style="position:absolute;left:5.00%;top:42.9px;width:22px;height:17.1px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:5.00%;top:26.9px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+3,3</span><span style="position:absolute;left:15.00%;top:12.0px;width:22px;height:48.0px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:15.00%;top:-4.0px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+9,1</span><span style="position:absolute;left:25.00%;top:17.8px;width:22px;height:42.2px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:25.00%;top:1.8px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+8,0</span><span style="position:absolute;left:35.00%;top:14.6px;width:22px;height:45.4px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:35.00%;top:-1.4px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+8,6</span><span style="position:absolute;left:45.00%;top:22.0px;width:22px;height:38.0px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:45.00%;top:6.0px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+7,2</span><span style="position:absolute;left:55.00%;top:34.2px;width:22px;height:25.8px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:55.00%;top:18.2px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+4,9</span><span style="position:absolute;left:65.00%;top:47.9px;width:22px;height:12.1px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:65.00%;top:31.9px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+2,3</span><span style="position:absolute;left:75.00%;top:52.1px;width:22px;height:7.9px;margin-left:-11px;background:#5CCBE3"></span><span class="num up" style="position:absolute;left:75.00%;top:36.1px;transform:translateX(-50%);font-size:10.5px;font-weight:700">+1,5</span><span style="position:absolute;left:85.00%;top:60px;width:22px;height:4.2px;margin-left:-11px;background:#D95B55"></span><span class="num dn" style="position:absolute;left:85.00%;top:67.2px;transform:translateX(-50%);font-size:10.5px;font-weight:700">−0,8</span><span style="position:absolute;left:95.00%;top:60px;width:22px;height:12.1px;margin-left:-11px;background:#D95B55"></span><span class="num dn" style="position:absolute;left:95.00%;top:75.1px;transform:translateX(-50%);font-size:10.5px;font-weight:700">−2,3</span>
+</div>
+<div class="num" style="position:relative;height:16px;margin:6px 54px 0 0;font-size:10px;color:#85817A"><span style="position:absolute;left:5.00%;transform:translateX(-50%)">OCT. 26</span><span style="position:absolute;left:15.00%;transform:translateX(-50%)">DÉC. 26</span><span style="position:absolute;left:25.00%;transform:translateX(-50%)">JANV. 27</span><span style="position:absolute;left:35.00%;transform:translateX(-50%)">MARS 27</span><span style="position:absolute;left:45.00%;transform:translateX(-50%)">AVR. 27</span><span style="position:absolute;left:55.00%;transform:translateX(-50%)">JUIN 27</span><span style="position:absolute;left:65.00%;transform:translateX(-50%)">JUIL. 27</span><span style="position:absolute;left:75.00%;transform:translateX(-50%)">SEPT. 27</span><span style="position:absolute;left:85.00%;transform:translateX(-50%)">OCT. 27</span><span style="position:absolute;left:95.00%;transform:translateX(-50%)">DÉC. 27</span></div>
+</div>
+</section>
+<section class="pn" aria-label="Prochaine réunion" style="flex:1 1 340px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>FOMC · 28/10/2026</h2>
+</div>
+<div style="padding:16px 16px 10px">
+<div style="margin-bottom:12px"><span class="chip cy">Écart max 2,4 pts · seuil 5</span></div>
+<div style="display:flex;flex-wrap:wrap;gap:6px 16px">
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:10px;height:10px;background:#E4C24A"></span>Futures</span><span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:10px;height:10px;background:#EDEAE6"></span>Polymarket</span><span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:10px;height:10px;background:#B8862B"></span>Kalshi</span>
+</div>
+<div style="display:flex;gap:10px;margin-top:14px">
+
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:flex-end;justify-content:center;gap:5px;height:190px;border-bottom:1px solid #3A3835">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">0,9</span><span style="width:100%;height:1.4px;background:#E4C24A"></span></div><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">0,4</span><span style="width:100%;height:0.6px;background:#EDEAE6"></span></div><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">0,7</span><span style="width:100%;height:1.1px;background:#B8862B"></span></div>
+</div>
+<div style="margin-top:8px;text-align:center;font:600 13px 'JetBrains Mono',monospace;color:#D95B55">−25 pb</div>
+</div>
+
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:flex-end;justify-content:center;gap:5px;height:190px;border-bottom:1px solid #3A3835">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">85,2</span><span style="width:100%;height:136.3px;background:#E4C24A"></span></div><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">86,5</span><span style="width:100%;height:138.4px;background:#EDEAE6"></span></div><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">84,1</span><span style="width:100%;height:134.6px;background:#B8862B"></span></div>
+</div>
+<div style="margin-top:8px;text-align:center;font:600 13px 'JetBrains Mono',monospace;color:#EDEAE6">Statu quo</div>
+</div>
+
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:flex-end;justify-content:center;gap:5px;height:190px;border-bottom:1px solid #3A3835">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">13,9</span><span style="width:100%;height:22.2px;background:#E4C24A"></span></div><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">13,1</span><span style="width:100%;height:21.0px;background:#EDEAE6"></span></div><div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;width:28%;max-width:30px;height:100%"><span class="num" style="font-size:9.5px;color:#ABA7A2">15,2</span><span style="width:100%;height:24.3px;background:#B8862B"></span></div>
+</div>
+<div style="margin-top:8px;text-align:center;font:600 13px 'JetBrains Mono',monospace;color:#5CCBE3">+25 pb</div>
+</div>
+
+</div>
+<p style="margin:14px 0 0;font-size:12px;line-height:1.5;color:#85817A">Futures : probabilité implicite = (taux implicite − taux actuel) / 25 pb. Polymarket et Kalshi : prix du contrat « oui », en %. « — » : marché non coté.</p>
+</div>
+</section>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px">
+<section class="pn" aria-label="Évolution des probabilités" style="flex:2 1 600px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Évolution des probabilités · FOMC · 60 jours</h2>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="padding:14px 18px 14px">
+<div style="display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:10px">
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:2px solid #E4C24A"></span>Statu quo · 85,2 %</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:2px solid #5CCBE3"></span>+25 pb · 13,9 %</span>
+<span style="flex:1"></span>
+<span class="lbl" style="font-size:10px;color:#E4C24A">Données clés</span>
+</div>
+<div style="display:flex;gap:8px">
+<div style="position:relative;flex:1;min-width:0;height:220px;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 220" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 0H1000M0 55H1000M0 110H1000M0 165H1000" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="M711.9 0V220M932.2 0V220" style="fill:none;stroke:#8A7533;stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 6.6L16.9 5.1L33.9 5.6L50.8 6.4L67.8 8.0L84.7 7.5L101.7 6.9L118.6 6.8L135.6 8.4L152.5 7.4L169.5 6.2L186.4 7.5L203.4 8.7L220.3 8.2L237.3 7.6L254.2 8.2L271.2 7.4L288.1 5.9L305.1 8.5L322.0 8.6L339.0 6.9L355.9 6.5L372.9 7.4L389.8 6.9L406.8 7.0L423.7 8.2L440.7 9.0L457.6 6.8L474.6 7.2L491.5 7.2L508.5 7.7L525.4 7.2L542.4 6.8L559.3 9.9L576.3 7.7L593.2 8.9L610.2 9.8L627.1 9.6L644.1 9.4L661.0 9.4L678.0 10.3L694.9 9.3L711.9 20.1L728.8 20.4L745.8 20.9L762.7 19.1L779.7 19.5L796.6 19.7L813.6 21.8L830.5 18.9L847.5 20.0L864.4 20.8L881.4 19.5L898.3 21.3L915.3 20.4L932.2 33.6L949.2 33.4L966.1 30.9L983.1 33.0L1000.0 32.6" style="fill:none;stroke:#E4C24A;stroke-width:1.8;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 216.7L16.9 215.7L33.9 217.7L50.8 216.8L67.8 218.1L84.7 217.2L101.7 218.1L118.6 215.0L135.6 215.1L152.5 215.4L169.5 216.5L186.4 215.1L203.4 217.4L220.3 214.8L237.3 215.4L254.2 216.0L271.2 215.0L288.1 217.5L305.1 215.7L322.0 215.1L339.0 214.5L355.9 217.1L372.9 216.1L389.8 216.7L406.8 215.7L423.7 215.1L440.7 214.0L457.6 213.9L474.6 214.3L491.5 216.8L508.5 214.4L525.4 215.4L542.4 213.4L559.3 216.0L576.3 216.4L593.2 215.1L610.2 215.5L627.1 214.9L644.1 213.3L661.0 213.3L678.0 213.5L694.9 213.7L711.9 201.9L728.8 202.3L745.8 204.7L762.7 202.9L779.7 203.6L796.6 202.6L813.6 201.5L830.5 201.1L847.5 203.9L864.4 202.7L881.4 202.2L898.3 201.1L915.3 202.2L932.2 188.6L949.2 188.8L966.1 189.5L983.1 189.7L1000.0 189.4" style="fill:none;stroke:#5CCBE3;stroke-width:1.8;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="chip hot" style="position:absolute;left:71.19%;top:42%;transform:translateX(-100%);margin-left:-6px;background:#0A0A09">NFP 02/10</span>
+<span class="chip hot" style="position:absolute;left:93.22%;top:42%;transform:translateX(-100%);margin-left:-6px;background:#0A0A09">IPC 15/10</span>
+</div>
+<div class="num" style="position:relative;width:40px;flex:none;font-size:10px;color:#85817A"><span style="position:absolute;top:0;transform:translateY(-50%)">100 %</span><span style="position:absolute;top:50%;transform:translateY(-50%)">50 %</span><span style="position:absolute;top:100%;transform:translateY(-50%)">0 %</span></div>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin:6px 48px 0 0;font-size:10px;color:#85817A"><span>21/08</span><span>04/09</span><span>18/09</span><span>02/10</span><span>19/10</span></div>
+</div>
+</section>
+<section class="pn" aria-label="Comités et votes" style="flex:1 1 380px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Comités et votes</h2>
+</div>
+<div style="margin-top:-1px">
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:#16130A">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">FED</span>
+<img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip co" style="text-transform:none">−25 pb</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">28/10/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>9–3 · 3 pour le statu quo</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 17/09/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">BCE</span>
+<img src="../../assets/flags/eu.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip" style="text-transform:none">Statu quo</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">29/10/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>Non publié</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 10/09/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">BOE</span>
+<img src="../../assets/flags/gb.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip co" style="text-transform:none">−25 pb</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">05/11/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>7–2 · 2 pour le statu quo</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 06/08/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">BOJ</span>
+<img src="../../assets/flags/jp.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip cy" style="text-transform:none">+25 pb</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">30/10/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>7–2 · 2 pour le statu quo</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 18/09/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">BNS</span>
+<img src="../../assets/flags/ch.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip" style="text-transform:none">Statu quo</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">10/12/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>Non publié</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 25/09/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">BOC</span>
+<img src="../../assets/flags/ca.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip co" style="text-transform:none">−25 pb</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">28/10/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>Consensus · non publié</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 17/09/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">RBA</span>
+<img src="../../assets/flags/au.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip co" style="text-transform:none">−25 pb</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">03/11/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>Vote non nominatif</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 12/08/2026</span></div>
+</div>
+
+<div style="padding:10px 14px;border-top:1px solid #22201E;background:transparent">
+<div style="display:flex;align-items:center;gap:10px">
+<span class="num" style="width:40px;font-size:12px;font-weight:700;color:#EDEAE6">RBNZ</span>
+<img src="../../assets/flags/nz.svg" alt="" style="width:21px;height:14px;display:block">
+<span class="chip co" style="text-transform:none">−25 pb</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11.5px;color:#85817A">Prochaine <span style="color:#EDEAE6">25/11/2026</span></span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin:6px 0 0 50px;font-size:12.5px;color:#ABA7A2"><span>Consensus</span><span class="num" style="margin-left:auto;font-size:11px;color:#85817A">Décision du 08/10/2026</span></div>
+</div>
+
+</div>
+</section>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Futures taux</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>OIS</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Polymarket</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Kalshi</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Banques centrales</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+
+</body>
+</html>

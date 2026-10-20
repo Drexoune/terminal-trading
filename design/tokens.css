@@ -1,0 +1,91 @@
+/* TERMINAL — design tokens (DA noir et or, HUD).
+   Source : maquettes du 19/10/2026 (design/maquettes). À importer une fois à la racine de l'app.
+   Les contrastes texte indiqués sont mesurés sur --bg-panel (#0A0A09). */
+:root {
+  /* Fonds et filets */
+  --bg-app: #000000;          /* arrière-plan de l'application */
+  --bg-chrome: #050504;       /* barre du haut, menu latéral, sous-en-têtes, barre de flux */
+  --bg-panel: #0A0A09;        /* surface des modules */
+  --bg-panel-2: #121110;      /* survol, champs, infobulles, en-têtes de groupe */
+  --bg-selected: #16130A;     /* ligne ou élément sélectionné */
+  --line: #22201E;            /* bordures et séparateurs */
+  --line-strong: #3A3835;     /* contours de boutons, puces, champs */
+
+  /* Or */
+  --gold: #E4C24A;            /* accent, élément actif, prix, liens */
+  --gold-hi: #F6D44E;         /* chiffres clés, survol */
+  --gold-mid: #8A7533;        /* coins HUD, contours actifs */
+  --gold-deep: #2B2511;       /* fonds teintés, sélection (jamais sous du texte --text-3) */
+  --logo-gradient: linear-gradient(90deg, #0F0D07, #050504);
+
+  /* Signal : cyan = au-dessus de l'attendu / haussier ; corail = en dessous / baissier */
+  --up: #5CCBE3;
+  --up-border: #2E5F69;
+  --down: #D95B55;
+  --down-border: #6B3532;
+
+  /* Cellules de heatmap (fond / texte), du plus favorable au plus défavorable */
+  --cell-up-2-bg: #387380;    --cell-up-2-fg: #EAFBFE;
+  --cell-up-1-bg: #2A5058;    --cell-up-1-fg: #DDF3F7;
+  --cell-neutral-bg: #22201E; --cell-neutral-fg: #D9D5D0;
+  --cell-down-1-bg: #5C302D;  --cell-down-1-fg: #FFE3E0;
+  --cell-down-2-bg: #84413C;  --cell-down-2-fg: #FFE3E0;
+  --cell-z-up-bg: #35717D;    --cell-z-up-fg: #E3F8FB;   /* surprise z positive */
+
+  /* Pastilles de biais */
+  --pill-bullish-bg: #387380; --pill-bullish-fg: #EAFBFE;
+  --pill-neutral-bg: #22201E; --pill-neutral-fg: #D9D5D0;
+  --pill-bearish-bg: #84413C; --pill-bearish-fg: #FFE3E0;
+
+  /* Texte */
+  --text-1: #EDEAE6;          /* titres et valeurs */
+  --text-body: #D9D5D0;       /* paragraphes longs */
+  --text-2: #ABA7A2;          /* secondaire */
+  --text-3: #85817A;          /* micro-labels ; 5,1:1 sur --bg-panel, minimum autorisé */
+  --text-decor: #5A5651;      /* décor uniquement (poignées), jamais du texte */
+
+  /* Séries de graphiques */
+  --series-price: #E4C24A;
+  --series-vwap: #ABA7A2;
+  --series-source-futures: #E4C24A;
+  --series-source-polymarket: #EDEAE6;
+  --series-source-kalshi: #B8862B;
+  --depth-1: #2B2511;         /* liquidité au repos 25–75 BTC */
+  --depth-2: #5C4D1E;         /* 75–150 */
+  --depth-3: #A08532;         /* 150–250 */
+  --depth-4: #F6D44E;         /* > 250 */
+  --gauge-1: #D95B55;         /* risk-off fort 0–25 */
+  --gauge-2: #84413C;         /* risk-off 25–45 */
+  --gauge-3: #3A3835;         /* neutre 45–55 */
+  --gauge-4: #35717D;         /* risk-on 55–75 */
+  --gauge-5: #5CCBE3;         /* risk-on fort 75–100 */
+
+  /* Typographie */
+  --font-display: 'Rajdhani', sans-serif;      /* 500/600/700 : chiffres clés, titres d'écran, logo */
+  --font-body: 'Barlow', sans-serif;           /* 400/500/600/700 : texte, boutons, titres d'article */
+  --font-mono: 'JetBrains Mono', monospace;    /* 400/500/700 : données, micro-labels, puces */
+  --tracking-label: .16em;                     /* micro-labels en capitales */
+  --tracking-chip: .12em;
+  --tracking-logo: .16em;
+  --fs-label: 11px;  --fs-chip: 10px;  --fs-data: 13px;  --fs-body: 14px;  --fs-reading: 15.5px;
+  --fs-article-title: 27px;  --fs-screen-title: 28px;  --fs-kpi: 48px;  --fs-kpi-xl: 64px;
+
+  /* Dimensions */
+  --topbar-h: 56px;
+  --subheader-h: 36px;
+  --sidebar-w: 248px;
+  --panel-header-h: 40px;
+  --control-h: 34px;          /* boutons, champs */
+  --icon-button: 28px;        /* contrôles de panneau (desktop) */
+  --row-h: 42px;              /* lignes de tableau */
+  --radius-panel: 3px;
+  --radius-control: 3px;
+  --radius-chip: 2px;
+  --radius-pill: 12px;
+  --gap: 12px;                /* entre panneaux */
+  --pad: 16px;                /* marge de page et intérieur de panneau */
+  --hud-corner: 10px;         /* coins or en haut à gauche et en bas à droite des panneaux */
+
+  /* Mouvement */
+  --flash-ms: 300ms;          /* flash sur changement de prix */
+}

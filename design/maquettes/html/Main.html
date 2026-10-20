@@ -1,0 +1,497 @@
+<!doctype html>
+<!-- Rendu statique de design/maquettes/source/Main.dc.html : état par défaut, données fictives, sans interactions.
+     Largeur de référence 1440 px. Les interactions sont décrites dans docs/ecrans.md. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vue d’ensemble — TERMINAL</title>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}.nt{color:#ABA7A2}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:12px;font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;white-space:nowrap}
+.p-up{background:#387380;color:#EAFBFE}.p-dn{background:#84413C;color:#FFE3E0}.p-nt{background:#22201E;color:#D9D5D0}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.seg{height:28px;padding:0 10px;border:1px solid #3A3835;background:transparent;color:#ABA7A2;font:500 11px 'JetBrains Mono',monospace;letter-spacing:.1em;cursor:pointer}
+.seg[aria-pressed="true"]{border-color:#8A7533;background:#2B2511;color:#F6D44E}
+</style>
+</head>
+<body>
+
+
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#3A3835"></span>TOK <span style="color:#ABA7A2">22:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>LON <span style="color:#ABA7A2">14:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>PAR <span style="color:#ABA7A2">15:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>NY <span style="color:#E4C24A">09:36</span></span>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Global</div>
+
+<a href="Main.html" class="on" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></svg>Vue d’ensemble</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M5 15l4-4 3 3 6-7"></path></svg>Graphiques</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"></path></svg>Récap de session</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2"></path></svg>Horaires des marchés</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Assistant</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">News</div>
+
+<a href="Calendrier.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>Calendrier</a>
+
+
+<a href="Actus.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3"></path></svg>Fil d’actus</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16"></path></svg>Recherche bancaire</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2"></path></svg>Squawk</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Macro</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>Macro</span>
+
+<a href="Taux.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z"></path></svg>Taux</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Positionnement &amp; sentiment</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5"></path></svg>Sentiment retail</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M10 20V4M15 20v-8M20 20v-5"></path></svg>COT</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V5h6v3M4 13h16"></path></svg>Positions des banques</span>
+
+<a href="Risque.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17a7 7 0 1 1 14 0M12 17l3-5"></path></svg>Sentiment de risque</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Analyse</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Markets Watch</span>
+
+<a href="Microstructure.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 10h14M4 14h8M4 18h12"></path></svg>Microstructure BTC</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0"></path></svg>Saisonnalité</span>
+
+<a href="Heatmap.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Heatmap fondamentale</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 12h16M12 4v16"></path></svg>Heatmap technique</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Indicateurs</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"></path></svg>Liquidité</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Compte</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z"></path></svg>Track record</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6"></path></svg>Calculateur de risque</span>
+
+</div>
+
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Vue d’ensemble · Session New York ouverte</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">BTC-USDT · Perp · OKX</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:16px">
+<div style="flex:2 1 560px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<section class="pn" aria-label="BTC-USDT perpétuel">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>BTC-USDT · Perpétuel · OKX</h2>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>Temps réel</span>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px 36px;padding:16px 16px 6px">
+<div>
+<div class="lbl">Dernier prix · USDT</div>
+<div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-top:8px">
+<span style="font:600 48px/1 'Rajdhani',sans-serif;color:#F6D44E;font-variant-numeric:tabular-nums;white-space:nowrap">108 420,5</span>
+<span class="num up" style="font-size:15px">▲ +1,84 % · 24 h</span>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:12px 28px">
+<div><div class="lbl" style="font-size:10px">Haut 24 h</div><div class="num" style="margin-top:6px;font-size:14px;color:#EDEAE6">109 180,0</div></div><div><div class="lbl" style="font-size:10px">Bas 24 h</div><div class="num" style="margin-top:6px;font-size:14px;color:#EDEAE6">106 050,0</div></div><div><div class="lbl" style="font-size:10px">Funding 8 h</div><div class="num" style="margin-top:6px;font-size:14px;color:#EDEAE6">+0,0081 %</div></div><div><div class="lbl" style="font-size:10px">Open interest</div><div class="num" style="margin-top:6px;font-size:14px;color:#EDEAE6">31,2 Md$</div></div><div><div class="lbl" style="font-size:10px">Volume 24 h</div><div class="num" style="margin-top:6px;font-size:14px;color:#EDEAE6">18,4 Md$</div></div>
+</div>
+</div>
+<div style="padding:10px 16px 14px">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:10px">
+<div role="group" aria-label="Période" style="display:flex">
+<button class="seg" aria-pressed="true">1 J</button><button class="seg" aria-pressed="false" style="border-left:0">5 J</button><button class="seg" aria-pressed="false" style="border-left:0">1 M</button>
+</div>
+<span style="flex:1"></span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:10px;height:10px;background:rgba(92,203,227,.22)"></span>Asie</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:10px;height:10px;background:rgba(237,234,230,.16)"></span>Londres</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:10px;height:10px;background:rgba(228,194,74,.3)"></span>New York</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:1px dashed #E4C24A"></span>PDH / PDL</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:2px dotted #ABA7A2"></span>VWAP</span>
+</div>
+<div style="display:flex;gap:8px">
+<div style="position:relative;flex:1;min-width:0;height:300px;border:1px solid #22201E;overflow:hidden">
+<div style="position:absolute;top:0;bottom:0;left:0;width:25%;background:rgba(92,203,227,.05)"><span class="lbl" style="position:absolute;top:8px;left:8px;font-size:10px">Asie</span></div>
+<div style="position:absolute;top:0;bottom:0;left:29.17%;width:35.41%;background:rgba(237,234,230,.035);border-left:1px solid #22201E"><span class="lbl" style="position:absolute;top:8px;left:8px;font-size:10px">Londres</span></div>
+<div style="position:absolute;top:0;bottom:0;left:56.25%;width:27.08%;background:rgba(228,194,74,.06);border-left:1px solid #3A3835"><span class="lbl" style="position:absolute;top:28px;left:8px;font-size:10px;color:#E4C24A">New York</span></div>
+<svg viewBox="0 0 1000 300" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 47.4H1000M0 126.3H1000M0 205.3H1000M0 284.2H1000" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="M0 43.4H1000M0 254.2H1000" style="fill:none;stroke:#8A7533;stroke-width:1;stroke-dasharray:6 5;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 225.3L7.0 227.4L14.0 225.6L21.0 224.5L28.0 224.3L35.0 224.7L42.0 225.3L49.0 226.2L56.0 226.9L63.0 227.3L70.0 228.1L77.0 229.1L84.0 229.7L91.0 230.3L97.9 231.2L104.9 232.1L111.9 233.0L118.9 233.7L125.9 234.6L132.9 235.0L139.9 235.7L146.9 236.2L153.9 236.9L160.9 237.8L167.9 238.7L174.9 239.6L181.9 240.3L188.9 240.8L195.9 241.5L202.9 241.9L209.9 242.3L216.9 242.7L223.9 243.1L230.9 243.3L237.9 243.3L244.9 243.2L251.9 242.9L258.9 242.7L265.9 242.6L272.9 242.3L279.9 241.8L286.8 241.4L293.8 241.0L300.8 240.3L307.8 239.6L314.8 238.9L321.8 238.1L328.8 237.2L335.8 236.2L342.8 235.2L349.8 234.3L356.8 233.3L363.8 232.5L370.8 231.6L377.8 230.6L384.8 229.7L391.8 228.8L398.8 227.8L405.8 226.9L412.8 226.0L419.8 225.0L426.8 224.0L433.8 223.0L440.8 221.9L447.8 220.9L454.8 219.8L461.8 218.8L468.8 217.8L475.7 216.8L482.7 215.7L489.7 214.6L496.7 213.4L503.7 212.3L510.7 211.1L517.7 209.9L524.7 208.7L531.7 207.5L538.7 206.3L545.7 205.1L552.7 203.8L559.7 202.5L566.7 201.2" style="fill:none;stroke:#ABA7A2;stroke-width:1.4;stroke-dasharray:2 3;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 225.3L7.0 229.6L14.0 221.9L21.0 221.2L28.0 223.5L35.0 226.8L42.0 228.6L49.0 233.0L56.0 232.5L63.0 230.7L70.0 235.8L77.0 240.6L84.0 236.9L91.0 238.2L97.9 243.3L104.9 245.0L111.9 247.4L118.9 246.6L125.9 249.5L132.9 243.8L139.9 249.6L146.9 246.2L153.9 252.9L160.9 258.0L167.9 261.4L174.9 261.5L181.9 258.6L188.9 254.6L195.9 260.5L202.9 254.3L209.9 255.0L216.9 254.8L223.9 254.1L230.9 249.2L237.9 245.8L244.9 238.2L251.9 232.7L258.9 236.8L265.9 235.6L272.9 230.7L279.9 225.0L286.8 224.3L293.8 221.7L300.8 211.8L307.8 209.3L314.8 206.0L321.8 202.3L328.8 193.2L335.8 189.5L342.8 186.2L349.8 187.3L356.8 186.4L363.8 187.3L370.8 186.7L377.8 176.4L384.8 176.9L391.8 178.1L398.8 172.8L405.8 172.5L412.8 175.0L419.8 168.2L426.8 160.6L433.8 159.8L440.8 155.3L447.8 153.8L454.8 149.2L461.8 154.6L468.8 151.4L475.7 147.0L482.7 140.3L489.7 134.3L496.7 130.9L503.7 130.7L510.7 124.9L517.7 120.3L524.7 119.8L531.7 113.3L538.7 116.7L545.7 110.5L552.7 106.7L559.7 97.5L566.7 93.1L566.7 300L0 300Z" style="fill:rgba(228,194,74,.08);stroke:none"></path>
+<path d="M0.0 225.3L7.0 229.6L14.0 221.9L21.0 221.2L28.0 223.5L35.0 226.8L42.0 228.6L49.0 233.0L56.0 232.5L63.0 230.7L70.0 235.8L77.0 240.6L84.0 236.9L91.0 238.2L97.9 243.3L104.9 245.0L111.9 247.4L118.9 246.6L125.9 249.5L132.9 243.8L139.9 249.6L146.9 246.2L153.9 252.9L160.9 258.0L167.9 261.4L174.9 261.5L181.9 258.6L188.9 254.6L195.9 260.5L202.9 254.3L209.9 255.0L216.9 254.8L223.9 254.1L230.9 249.2L237.9 245.8L244.9 238.2L251.9 232.7L258.9 236.8L265.9 235.6L272.9 230.7L279.9 225.0L286.8 224.3L293.8 221.7L300.8 211.8L307.8 209.3L314.8 206.0L321.8 202.3L328.8 193.2L335.8 189.5L342.8 186.2L349.8 187.3L356.8 186.4L363.8 187.3L370.8 186.7L377.8 176.4L384.8 176.9L391.8 178.1L398.8 172.8L405.8 172.5L412.8 175.0L419.8 168.2L426.8 160.6L433.8 159.8L440.8 155.3L447.8 153.8L454.8 149.2L461.8 154.6L468.8 151.4L475.7 147.0L482.7 140.3L489.7 134.3L496.7 130.9L503.7 130.7L510.7 124.9L517.7 120.3L524.7 119.8L531.7 113.3L538.7 116.7L545.7 110.5L552.7 106.7L559.7 97.5L566.7 93.1" style="fill:none;stroke:#E4C24A;stroke-width:1.8;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+<path d="M566.7 0V300" style="fill:none;stroke:#85817A;stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="num" style="position:absolute;right:8px;top:calc(14.47% - 17px);font-size:10px;color:#E4C24A">PDH 109 050</span>
+<span class="num" style="position:absolute;right:8px;top:calc(84.74% + 4px);font-size:10px;color:#E4C24A">PDL 106 380</span>
+<span class="num" style="position:absolute;left:calc(56.67% + 6px);top:calc(31.04% - 10px);padding:3px 6px;background:#E4C24A;color:#000;font-size:11px;font-weight:700">108 420,5</span>
+</div>
+<div style="position:relative;width:64px;flex:none">
+<span class="num" style="position:absolute;left:0;top:15.79%;transform:translateY(-50%);font-size:11px;color:#85817A">109 000</span><span class="num" style="position:absolute;left:0;top:42.11%;transform:translateY(-50%);font-size:11px;color:#85817A">108 000</span><span class="num" style="position:absolute;left:0;top:68.42%;transform:translateY(-50%);font-size:11px;color:#85817A">107 000</span><span class="num" style="position:absolute;left:0;top:94.74%;transform:translateY(-50%);font-size:11px;color:#85817A">106 000</span>
+</div>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin:8px 72px 0 0;font-size:11px;color:#85817A"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>24:00 UTC</span></div>
+</div>
+</section>
+<section class="pn" aria-label="Watchlist">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Watchlist</h2>
+<span class="chip">11 actifs</span>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="overflow-x:auto">
+<div style="min-width:600px">
+<div class="lbl" style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:34px;padding:0 14px;font-size:10px"><span>Actif</span><span style="text-align:right">Dernier</span><span style="text-align:right">Var. jour</span><span>Séance</span><span style="text-align:right">Marché</span></div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">BTC</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">USDT · perp OKX</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">108 420,5</span>
+<span class="num up" style="text-align:right">+1,84 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 26.0L3.2 25.2L6.5 24.3L9.7 23.2L12.9 22.0L16.1 19.8L19.4 18.9L22.6 20.0L25.8 19.1L29.0 17.9L32.3 17.4L35.5 16.7L38.7 14.5L41.9 14.1L45.2 12.7L48.4 11.2L51.6 11.9L54.8 12.5L58.1 12.7L61.3 12.4L64.5 12.1L67.7 11.1L71.0 11.9L74.2 10.7L77.4 9.7L80.6 9.3L83.9 7.1L87.1 5.1L90.3 3.2L93.5 3.3L96.8 2.0L100.0 2.3" style="fill:none;stroke:#5CCBE3;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">24/7</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">ETH</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">USDT · perp OKX</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">3 912,4</span>
+<span class="num up" style="text-align:right">+2,31 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 26.0L3.2 25.5L6.5 24.2L9.7 23.3L12.9 23.5L16.1 21.5L19.4 20.5L22.6 18.8L25.8 19.0L29.0 19.4L32.3 18.3L35.5 17.9L38.7 16.9L41.9 17.1L45.2 16.4L48.4 15.0L51.6 15.6L54.8 13.2L58.1 11.6L61.3 9.3L64.5 8.5L67.7 9.0L71.0 7.2L74.2 7.2L77.4 4.9L80.6 5.1L83.9 3.9L87.1 4.1L90.3 4.3L93.5 2.3L96.8 2.2L100.0 2.0" style="fill:none;stroke:#5CCBE3;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">24/7</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">NASDAQ 100</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Future déc.</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">27 612</span>
+<span class="num dn" style="text-align:right">−0,42 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 5.8L3.2 5.4L6.5 3.5L9.7 3.3L12.9 2.0L16.1 3.9L19.4 6.9L22.6 7.8L25.8 8.4L29.0 9.9L32.3 12.0L35.5 14.0L38.7 17.5L41.9 17.6L45.2 20.2L48.4 18.9L51.6 20.7L54.8 22.8L58.1 23.9L61.3 24.5L64.5 22.0L67.7 19.7L71.0 17.1L74.2 15.3L77.4 12.8L80.6 16.2L83.9 18.9L87.1 20.7L90.3 20.6L93.5 23.6L96.8 26.0L100.0 25.2" style="fill:none;stroke:#D95B55;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">S&amp;P 500</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Future déc.</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">7 659,4</span>
+<span class="num dn" style="text-align:right">−0,21 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 2.0L3.2 3.5L6.5 2.0L9.7 4.5L12.9 2.4L16.1 2.7L19.4 3.6L22.6 7.9L25.8 8.1L29.0 6.7L32.3 4.7L35.5 6.9L38.7 10.5L41.9 13.3L45.2 12.5L48.4 12.9L51.6 15.1L54.8 17.5L58.1 19.9L61.3 19.4L64.5 19.4L67.7 21.0L71.0 21.5L74.2 24.5L77.4 22.2L80.6 20.1L83.9 22.7L87.1 25.1L90.3 26.0L93.5 23.1L96.8 21.7L100.0 20.0" style="fill:none;stroke:#D95B55;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">DXY</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Indice dollar</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">99,84</span>
+<span class="num up" style="text-align:right">+0,18 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 21.9L3.2 24.7L6.5 22.7L9.7 22.1L12.9 25.1L16.1 22.4L19.4 21.5L22.6 24.7L25.8 26.0L29.0 22.6L32.3 20.4L35.5 17.3L38.7 15.1L41.9 12.5L45.2 12.0L48.4 13.3L51.6 14.0L54.8 13.8L58.1 12.8L61.3 15.4L64.5 17.8L67.7 15.0L71.0 12.0L74.2 8.9L77.4 8.8L80.6 6.6L83.9 3.1L87.1 2.0L90.3 4.2L93.5 2.6L96.8 2.6L100.0 5.4" style="fill:none;stroke:#5CCBE3;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">US 10 ans</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Rendement</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">4,31 %</span>
+<span class="num up" style="text-align:right">+3,2 pb</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 23.4L3.2 26.0L6.5 22.0L9.7 21.6L12.9 18.6L16.1 19.9L19.4 20.8L22.6 19.1L25.8 22.1L29.0 19.2L32.3 16.5L35.5 15.8L38.7 17.3L41.9 15.2L45.2 10.9L48.4 12.3L51.6 10.0L54.8 6.2L58.1 7.1L61.3 9.8L64.5 10.7L67.7 11.2L71.0 6.7L74.2 5.0L77.4 5.5L80.6 5.8L83.9 3.7L87.1 3.7L90.3 5.7L93.5 5.3L96.8 4.5L100.0 2.0" style="fill:none;stroke:#5CCBE3;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">Or</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">XAU/USD</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">3 980 $</span>
+<span class="num up" style="text-align:right">+0,64 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 23.8L3.2 25.8L6.5 23.7L9.7 25.7L12.9 22.7L16.1 24.6L19.4 24.1L22.6 26.0L25.8 24.1L29.0 23.5L32.3 20.6L35.5 19.4L38.7 16.6L41.9 14.9L45.2 12.7L48.4 9.7L51.6 8.9L54.8 10.4L58.1 8.2L61.3 10.0L64.5 9.5L67.7 9.1L71.0 6.3L74.2 4.3L77.4 2.3L80.6 3.4L83.9 2.0L87.1 2.0L90.3 3.6L93.5 5.6L96.8 4.4L100.0 5.8" style="fill:none;stroke:#5CCBE3;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">EUR/USD</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Spot</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">1,1642</span>
+<span class="num dn" style="text-align:right">−0,12 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 2.0L3.2 4.8L6.5 8.6L9.7 11.9L12.9 12.1L16.1 12.3L19.4 11.3L22.6 9.5L25.8 7.2L29.0 5.6L32.3 4.4L35.5 9.2L38.7 9.4L41.9 13.3L45.2 15.5L48.4 13.9L51.6 12.8L54.8 15.1L58.1 15.0L61.3 16.8L64.5 17.2L67.7 16.0L71.0 14.9L74.2 13.7L77.4 14.4L80.6 17.2L83.9 16.8L87.1 20.6L90.3 22.3L93.5 26.0L96.8 23.7L100.0 21.0" style="fill:none;stroke:#D95B55;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">USD/JPY</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Spot</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">151,28</span>
+<span class="num up" style="text-align:right">+0,35 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 26.0L3.2 21.4L6.5 21.0L9.7 19.6L12.9 19.0L16.1 19.4L19.4 16.5L22.6 15.4L25.8 15.3L29.0 12.9L32.3 14.7L35.5 13.0L38.7 13.2L41.9 9.8L45.2 10.4L48.4 11.6L51.6 11.7L54.8 9.3L58.1 11.7L61.3 12.2L64.5 11.1L67.7 9.4L71.0 9.3L74.2 11.5L77.4 10.3L80.6 10.4L83.9 12.6L87.1 9.0L90.3 5.2L93.5 2.0L96.8 4.8L100.0 5.6" style="fill:none;stroke:#5CCBE3;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">ETF Nasdaq 100</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">PEA · XTB</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">51,62 €</span>
+<span class="num dn" style="text-align:right">−0,30 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 5.4L3.2 8.4L6.5 7.5L9.7 4.6L12.9 5.1L16.1 4.9L19.4 6.6L22.6 4.6L25.8 8.1L29.0 6.5L32.3 4.6L35.5 4.0L38.7 2.0L41.9 3.1L45.2 5.4L48.4 6.4L51.6 10.0L54.8 12.2L58.1 9.9L61.3 9.5L64.5 11.1L67.7 10.5L71.0 13.5L74.2 15.4L77.4 18.8L80.6 20.4L83.9 22.2L87.1 22.0L90.3 22.8L93.5 23.8L96.8 26.0L100.0 23.5" style="fill:none;stroke:#D95B55;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,2.2fr) minmax(0,1.2fr) minmax(0,1fr) 140px 64px;gap:12px;align-items:center;height:42px;padding:0 14px;border-top:1px solid #22201E">
+<div style="display:flex;align-items:baseline;gap:10px;min-width:0"><span style="font-weight:600;color:#EDEAE6;white-space:nowrap">ETF S&amp;P 500</span><span class="lbl" style="font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">PEA · XTB</span></div>
+<span class="num" style="text-align:right;color:#EDEAE6">38,27 €</span>
+<span class="num dn" style="text-align:right">−0,09 %</span>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:140px;height:28px;display:block;overflow:visible" aria-hidden="true"><path d="M0.0 5.0L3.2 2.0L6.5 3.5L9.7 4.5L12.9 4.0L16.1 8.1L19.4 10.6L22.6 6.6L25.8 3.4L29.0 5.5L32.3 7.6L35.5 11.4L38.7 14.0L41.9 13.3L45.2 9.5L48.4 8.0L51.6 7.0L54.8 9.9L58.1 11.6L61.3 15.3L64.5 16.8L67.7 20.4L71.0 23.1L74.2 26.0L77.4 22.8L80.6 20.0L83.9 18.5L87.1 18.7L90.3 21.9L93.5 23.6L96.8 20.0L100.0 23.5" style="fill:none;stroke:#D95B55;stroke-width:1.4;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path></svg>
+<span class="lbl" style="text-align:right;font-size:10px">Ouvert</span>
+</div>
+
+</div>
+</div>
+</section>
+</div>
+<div style="flex:1 1 320px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<section class="pn" aria-label="Prochains événements">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Prochains événements</h2>
+<a class="chip hot" href="Calendrier.html">Calendrier</a>
+</div>
+<div style="margin-top:-1px">
+
+<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid #22201E">
+<img src="../../assets/flags/ca.svg" alt="CAD" style="width:24px;height:16px;flex:none;border-radius:2px;display:block">
+<div style="flex:1;min-width:0"><div style="font-weight:600;color:#EDEAE6">IPC sur un an</div><div class="lbl" style="margin-top:4px;font-size:10px">CAD · mar. 20 oct. · 14:30</div></div>
+<div aria-hidden="true" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></div>
+<span class="chip hot">J-1</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid #22201E">
+<img src="../../assets/flags/us.svg" alt="USD" style="width:24px;height:16px;flex:none;border-radius:2px;display:block">
+<div style="flex:1;min-width:0"><div style="font-weight:600;color:#EDEAE6">Inscriptions hebdomadaires au chômage</div><div class="lbl" style="margin-top:4px;font-size:10px">USD · jeu. 22 oct. · 14:30</div></div>
+<div aria-hidden="true" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></div>
+<span class="chip">J-3</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid #22201E">
+<img src="../../assets/flags/eu.svg" alt="EUR" style="width:24px;height:16px;flex:none;border-radius:2px;display:block">
+<div style="flex:1;min-width:0"><div style="font-weight:600;color:#EDEAE6">PMI composite flash</div><div class="lbl" style="margin-top:4px;font-size:10px">EUR · ven. 23 oct. · 10:00</div></div>
+<div aria-hidden="true" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></div>
+<span class="chip">J-4</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid #22201E">
+<img src="../../assets/flags/us.svg" alt="USD" style="width:24px;height:16px;flex:none;border-radius:2px;display:block">
+<div style="flex:1;min-width:0"><div style="font-weight:600;color:#EDEAE6">Décision de taux du FOMC</div><div class="lbl" style="margin-top:4px;font-size:10px">USD · mer. 28 oct. · 19:00</div></div>
+<div aria-hidden="true" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></div>
+<span class="chip hot">J-9</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-top:1px solid #22201E">
+<img src="../../assets/flags/jp.svg" alt="JPY" style="width:24px;height:16px;flex:none;border-radius:2px;display:block">
+<div style="flex:1;min-width:0"><div style="font-weight:600;color:#EDEAE6">Décision de taux de la BoJ</div><div class="lbl" style="margin-top:4px;font-size:10px">JPY · ven. 30 oct. · heure non fixée</div></div>
+<div aria-hidden="true" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></div>
+<span class="chip hot">J-11</span>
+</div>
+
+</div>
+</section>
+<section class="pn" aria-label="Sentiment de risque">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Sentiment de risque</h2>
+<a class="chip hot" href="Risque.html">Détail</a>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;padding:16px">
+<svg viewBox="0 0 200 110" style="width:170px;height:94px;display:block;flex:none;overflow:visible" aria-hidden="true">
+<path d="M20.00 100.00A80 80 0 0 1 42.03 44.87" style="fill:none;stroke:#D95B55;stroke-width:14"></path>
+<path d="M44.87 42.03A80 80 0 0 1 85.50 21.32" style="fill:none;stroke:#84413C;stroke-width:14"></path>
+<path d="M89.47 20.70A80 80 0 0 1 110.53 20.70" style="fill:none;stroke:#3A3835;stroke-width:14"></path>
+<path d="M114.50 21.32A80 80 0 0 1 155.13 42.03" style="fill:none;stroke:#35717D;stroke-width:14"></path>
+<path d="M157.97 44.87A80 80 0 0 1 180.00 100.00" style="fill:none;stroke:#5CCBE3;stroke-width:14"></path>
+<path d="M100 100L63.56 49.84" style="fill:none;stroke:#EDEAE6;stroke-width:3;stroke-linecap:round"></path>
+<path d="M95 100a5 5 0 1 0 10 0a5 5 0 1 0-10 0z" style="fill:#EDEAE6;stroke:none"></path>
+</svg>
+<div>
+<div style="display:flex;align-items:center;gap:10px"><span style="font:700 40px/1 'Rajdhani',sans-serif;color:#EDEAE6">30</span><span class="pill p-dn">RISK-OFF</span></div>
+<div class="num" style="margin-top:10px;font-size:11px;color:#ABA7A2">1 S <span class="dn">▼ 31</span> · était 61</div>
+<div class="num" style="margin-top:4px;font-size:11px;color:#ABA7A2">1 M <span class="dn">▼ 17</span> · était 47</div>
+</div>
+</div>
+</section>
+<section class="pn" aria-label="Alertes actives">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Alertes actives</h2>
+<span class="chip">4</span>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="margin-top:-1px">
+
+<div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-top:1px solid #22201E">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#85817A"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-weight:500;color:#EDEAE6">BTC franchit 110 000</div><div class="lbl" style="margin-top:4px;font-size:10px">Prix · OKX</div></div>
+<span class="chip">Armée</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-top:1px solid #22201E">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#85817A"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-weight:500;color:#EDEAE6">Funding OKX au-dessus de 0,02 %</div><div class="lbl" style="margin-top:4px;font-size:10px">Dérivés · 8 h</div></div>
+<span class="chip">Armée</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-top:1px solid #22201E">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#85817A"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-weight:500;color:#EDEAE6">Écart futures Fed / Polymarket &gt; 5 pts</div><div class="lbl" style="margin-top:4px;font-size:10px">Probabilités de taux</div></div>
+<span class="chip">Armée</span>
+</div>
+
+<div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-top:1px solid #22201E">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-weight:500;color:#EDEAE6">Liquidations &gt; 50 M$ en 5 min</div><div class="lbl" style="margin-top:4px;font-size:10px">Microstructure</div></div>
+<span class="chip hot">Déclenchée 14:52</span>
+</div>
+
+</div>
+</section>
+<section class="pn" aria-label="Titres urgents">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Titres urgents</h2>
+<a class="chip hot" href="Actus.html">Fil d’actus</a>
+</div>
+<div style="margin-top:-1px">
+
+<div style="display:flex;gap:12px;padding:12px;border-top:1px solid #22201E">
+<span class="num" style="font-size:11px;color:#E4C24A;padding-top:3px">15:31</span>
+<div style="flex:1;min-width:0"><span class="chip" style="height:18px">Crypto</span><div style="margin-top:6px;font-size:14px;line-height:1.4;color:#EDEAE6">ETF bitcoin spot : quatrième séance consécutive de flux nets entrants</div></div>
+</div>
+
+<div style="display:flex;gap:12px;padding:12px;border-top:1px solid #22201E">
+<span class="num" style="font-size:11px;color:#E4C24A;padding-top:3px">15:12</span>
+<div style="flex:1;min-width:0"><span class="chip" style="height:18px">Banque centrale</span><div style="margin-top:6px;font-size:14px;line-height:1.4;color:#EDEAE6">BoJ : le compte rendu de septembre évoque une nouvelle hausse si l’inflation sous-jacente approche 2 %</div></div>
+</div>
+
+<div style="display:flex;gap:12px;padding:12px;border-top:1px solid #22201E">
+<span class="num" style="font-size:11px;color:#E4C24A;padding-top:3px">14:30</span>
+<div style="flex:1;min-width:0"><span class="chip" style="height:18px">Macro</span><div style="margin-top:6px;font-size:14px;line-height:1.4;color:#EDEAE6">États-Unis : l’indice d’activité de la Fed de Chicago ressort à 0,18 contre −0,05 attendu</div></div>
+</div>
+
+<div style="display:flex;gap:12px;padding:12px;border-top:1px solid #22201E">
+<span class="num" style="font-size:11px;color:#E4C24A;padding-top:3px">04:00</span>
+<div style="flex:1;min-width:0"><span class="chip" style="height:18px">Macro</span><div style="margin-top:6px;font-size:14px;line-height:1.4;color:#EDEAE6">Chine : PIB du T3 à 4,7 % sur un an, sous le consensus de 4,8 %</div></div>
+</div>
+
+</div>
+</section>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>OKX WS</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Binance WS</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Polymarket</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Kalshi</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>FRED</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Calendrier</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+
+</body>
+</html>

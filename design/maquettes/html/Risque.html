@@ -1,0 +1,367 @@
+<!doctype html>
+<!-- Rendu statique de design/maquettes/source/Risque.dc.html : état par défaut, données fictives, sans interactions.
+     Largeur de référence 1440 px. Les interactions sont décrites dans docs/ecrans.md. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sentiment de risque — TERMINAL</title>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.pill{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:14px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;white-space:nowrap}
+.p-dn{background:#84413C;color:#FFE3E0}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.seg{height:28px;padding:0 10px;border:1px solid #3A3835;background:transparent;color:#ABA7A2;font:500 11px 'JetBrains Mono',monospace;letter-spacing:.1em;cursor:pointer}
+.seg[aria-pressed="true"]{border-color:#8A7533;background:#2B2511;color:#F6D44E}
+.cp{display:grid;grid-template-columns:minmax(0,1.6fr) 92px minmax(120px,1.4fr) 44px;gap:14px;align-items:center;padding:0 16px}
+</style>
+</head>
+<body>
+
+
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#3A3835"></span>TOK <span style="color:#ABA7A2">22:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>LON <span style="color:#ABA7A2">14:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>PAR <span style="color:#ABA7A2">15:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>NY <span style="color:#E4C24A">09:36</span></span>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Global</div>
+
+<a href="Main.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></svg>Vue d’ensemble</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M5 15l4-4 3 3 6-7"></path></svg>Graphiques</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"></path></svg>Récap de session</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2"></path></svg>Horaires des marchés</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Assistant</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">News</div>
+
+<a href="Calendrier.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>Calendrier</a>
+
+
+<a href="Actus.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3"></path></svg>Fil d’actus</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16"></path></svg>Recherche bancaire</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2"></path></svg>Squawk</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Macro</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>Macro</span>
+
+<a href="Taux.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z"></path></svg>Taux</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Positionnement &amp; sentiment</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5"></path></svg>Sentiment retail</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M10 20V4M15 20v-8M20 20v-5"></path></svg>COT</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V5h6v3M4 13h16"></path></svg>Positions des banques</span>
+
+<a href="Risque.html" class="on" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17a7 7 0 1 1 14 0M12 17l3-5"></path></svg>Sentiment de risque</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Analyse</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Markets Watch</span>
+
+<a href="Microstructure.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 10h14M4 14h8M4 18h12"></path></svg>Microstructure BTC</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0"></path></svg>Saisonnalité</span>
+
+<a href="Heatmap.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Heatmap fondamentale</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 12h16M12 4v16"></path></svg>Heatmap technique</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Indicateurs</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"></path></svg>Liquidité</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Compte</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z"></path></svg>Track record</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6"></path></svg>Calculateur de risque</span>
+
+</div>
+
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="M5 17a7 7 0 1 1 14 0M12 17l3-5"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Sentiment de risque · indice composite 0–100</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">Clôture 19/10 · 15:30 Paris</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:16px">
+<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:12px">
+<section class="pn" aria-label="Indice de sentiment" style="flex:1 1 360px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Indice composite</h2>
+<span class="chip">7 composantes</span>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:22px 18px 18px">
+<svg viewBox="0 0 200 110" style="width:100%;max-width:300px;height:auto;display:block;overflow:visible" aria-hidden="true">
+<path d="M20.00 100.00A80 80 0 0 1 42.03 44.87" style="fill:none;stroke:#D95B55;stroke-width:16"></path>
+<path d="M44.87 42.03A80 80 0 0 1 85.50 21.32" style="fill:none;stroke:#84413C;stroke-width:16"></path>
+<path d="M89.47 20.70A80 80 0 0 1 110.53 20.70" style="fill:none;stroke:#3A3835;stroke-width:16"></path>
+<path d="M114.50 21.32A80 80 0 0 1 155.13 42.03" style="fill:none;stroke:#35717D;stroke-width:16"></path>
+<path d="M157.97 44.87A80 80 0 0 1 180.00 100.00" style="fill:none;stroke:#5CCBE3;stroke-width:16"></path>
+<path d="M121.68 39.78L131.16 13.44" style="fill:none;stroke:#85817A;stroke-width:2;stroke-dasharray:3 3"></path>
+<path d="M100 100L63.56 49.84" style="fill:none;stroke:#EDEAE6;stroke-width:3;stroke-linecap:round"></path>
+<path d="M94 100a6 6 0 1 0 12 0a6 6 0 1 0-12 0z" style="fill:#EDEAE6;stroke:none"></path>
+</svg>
+<div style="display:flex;align-items:center;gap:14px"><span style="font:700 64px/1 'Rajdhani',sans-serif;color:#EDEAE6">30</span><span class="pill p-dn">RISK-OFF</span></div>
+<div class="num" style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;color:#ABA7A2"><span>1 S <span class="dn">▼ 31</span> · était 61</span><span>1 M <span class="dn">▼ 17</span> · était 47</span></div>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:100%;margin-top:4px">
+<div><div style="height:6px;background:#D95B55"></div><div class="lbl" style="margin-top:6px;font-size:9.5px;letter-spacing:.08em;text-align:center">Risk-off fort</div><div class="num" style="margin-top:2px;font-size:10px;color:#85817A;text-align:center">0–25</div></div><div><div style="height:6px;background:#84413C"></div><div class="lbl" style="margin-top:6px;font-size:9.5px;letter-spacing:.08em;text-align:center">Risk-off</div><div class="num" style="margin-top:2px;font-size:10px;color:#85817A;text-align:center">25–45</div></div><div><div style="height:6px;background:#5A5651"></div><div class="lbl" style="margin-top:6px;font-size:9.5px;letter-spacing:.08em;text-align:center">Neutre</div><div class="num" style="margin-top:2px;font-size:10px;color:#85817A;text-align:center">45–55</div></div><div><div style="height:6px;background:#35717D"></div><div class="lbl" style="margin-top:6px;font-size:9.5px;letter-spacing:.08em;text-align:center">Risk-on</div><div class="num" style="margin-top:2px;font-size:10px;color:#85817A;text-align:center">55–75</div></div><div><div style="height:6px;background:#5CCBE3"></div><div class="lbl" style="margin-top:6px;font-size:9.5px;letter-spacing:.08em;text-align:center">Risk-on fort</div><div class="num" style="margin-top:2px;font-size:10px;color:#85817A;text-align:center">75–100</div></div>
+</div>
+</div>
+</section>
+<section class="pn" aria-label="Composantes" style="flex:2 1 560px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Composantes · percentile sur 1 an</h2>
+<span class="chip">Poids égaux · 1/7</span>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="overflow-x:auto">
+<div style="min-width:560px">
+<div class="cp lbl" style="height:34px;font-size:10px"><span>Composante</span><span style="text-align:right">Valeur</span><span>Percentile</span><span style="text-align:right">P</span></div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">VIX</div><div style="margin-top:3px;font-size:12px;color:#85817A">Volatilité implicite du S&amp;P 500</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">20,0</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:18%;background:#D95B55"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#D95B55">18</span>
+</div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">Tendance actions</div><div style="margin-top:3px;font-size:12px;color:#85817A">S&amp;P 500 vs moyenne mobile 125 j</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">+1,58 %</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:15%;background:#D95B55"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#D95B55">15</span>
+</div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">Crédit</div><div style="margin-top:3px;font-size:12px;color:#85817A">Haut rendement vs Treasuries · 20 j</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">−0,90 %</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:10%;background:#D95B55"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#D95B55">10</span>
+</div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">AUD/JPY</div><div style="margin-top:3px;font-size:12px;color:#85817A">Variation sur 20 j</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">−1,86 %</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:9%;background:#D95B55"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#D95B55">9</span>
+</div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">Cuivre / or</div><div style="margin-top:3px;font-size:12px;color:#85817A">Ratio · variation sur 20 j</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">+4,49 %</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:59%;background:#35717D"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#5CCBE3">59</span>
+</div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">Actions vs refuge</div><div style="margin-top:3px;font-size:12px;color:#85817A">S&amp;P 500 vs obligations longues · 20 j</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">+5,63 pts</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:67%;background:#35717D"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#5CCBE3">67</span>
+</div>
+
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">Momentum crypto</div><div style="margin-top:3px;font-size:12px;color:#85817A">BTC et ETH · 20 j</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">−3,61 %</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:32%;background:#84413C"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#D95B55">32</span>
+</div>
+
+<div class="cp" style="min-height:48px;border-top:1px solid #3A3835;background:#16130A">
+<span style="font:600 13px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#F6D44E">MOYENNE</span>
+<span></span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #8A7533"><div style="position:absolute;top:0;bottom:0;left:0;width:30%;background:#D95B55"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#F6D44E">30</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<section class="pn" aria-label="Historique de l’indice">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Historique de l’indice</h2>
+<div role="group" aria-label="Période" style="display:flex;margin-right:6px">
+<button class="seg" aria-pressed="false" style="margin-left:-1px">1 M</button><button class="seg" aria-pressed="false" style="margin-left:-1px">3 M</button><button class="seg" aria-pressed="true" style="margin-left:-1px">1 A</button>
+</div>
+</div>
+<div style="padding:14px 18px">
+<div style="display:flex;gap:8px">
+<div style="position:relative;flex:1;min-width:0;height:230px;overflow:hidden">
+<div style="position:absolute;left:0;right:0;top:0;height:25%;background:rgba(92,203,227,.07)"></div>
+<div style="position:absolute;left:0;right:0;top:25%;height:20%;background:rgba(92,203,227,.035)"></div>
+<div style="position:absolute;left:0;right:0;top:45%;height:10%;background:rgba(237,234,230,.03)"></div>
+<div style="position:absolute;left:0;right:0;top:55%;height:20%;background:rgba(217,91,85,.04)"></div>
+<div style="position:absolute;left:0;right:0;top:75%;height:25%;background:rgba(217,91,85,.08)"></div>
+<svg viewBox="0 0 1000 230" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 57.5H1000M0 103.5H1000M0 126.5H1000M0 172.5H1000" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 111.5L4.0 111.2L8.0 113.3L12.0 113.0L15.9 111.0L19.9 102.6L23.9 96.9L27.9 101.1L31.9 102.2L35.9 97.3L39.8 103.1L43.8 104.5L47.8 100.8L51.8 102.4L55.8 107.2L59.8 97.0L63.7 101.1L67.7 98.2L71.7 91.5L75.7 99.0L79.7 96.9L83.7 99.4L87.6 95.7L91.6 94.3L95.6 98.9L99.6 92.7L103.6 86.0L107.6 79.5L111.6 78.7L115.5 78.8L119.5 85.2L123.5 87.3L127.5 87.7L131.5 89.0L135.5 84.5L139.4 84.5L143.4 85.0L147.4 76.4L151.4 75.8L155.4 72.4L159.4 76.9L163.3 71.1L167.3 65.9L171.3 64.1L175.3 65.1L179.3 73.9L183.3 74.4L187.3 81.1L191.2 85.0L195.2 77.5L199.2 77.4L203.2 70.8L207.2 74.2L211.2 77.4L215.1 72.3L219.1 65.6L223.1 73.7L227.1 79.4L231.1 81.6L235.1 81.6L239.0 75.0L243.0 72.8L247.0 80.2L251.0 75.5L255.0 85.7L259.0 83.0L262.9 81.4L266.9 93.0L270.9 102.6L274.9 114.4L278.9 122.8L282.9 119.1L286.9 116.8L290.8 118.1L294.8 125.3L298.8 133.2L302.8 141.4L306.8 144.6L310.8 143.0L314.7 151.8L318.7 157.2L322.7 165.8L326.7 166.7L330.7 171.2L334.7 181.2L338.6 181.4L342.6 171.3L346.6 172.6L350.6 172.1L354.6 166.2L358.6 168.0L362.5 171.0L366.5 164.6L370.5 157.4L374.5 156.1L378.5 148.9L382.5 151.0L386.5 158.7L390.4 153.4L394.4 160.1L398.4 153.5L402.4 158.9L406.4 151.3L410.4 146.4L414.3 148.7L418.3 145.9L422.3 138.0L426.3 142.1L430.3 138.5L434.3 137.9L438.2 136.7L442.2 132.9L446.2 125.3L450.2 133.9L454.2 127.9L458.2 128.5L462.2 123.2L466.1 121.2L470.1 116.2L474.1 115.8L478.1 114.0L482.1 109.4L486.1 111.6L490.0 106.5L494.0 109.7L498.0 117.1L502.0 119.7L506.0 120.3L510.0 113.7L513.9 118.0L517.9 109.9L521.9 109.1L525.9 99.1L529.9 102.5L533.9 99.3L537.8 99.6L541.8 104.5L545.8 103.9L549.8 99.3L553.8 101.2L557.8 98.8L561.8 102.4L565.7 102.7L569.7 91.4L573.7 81.3L577.7 79.6L581.7 73.5L585.7 76.0L589.6 76.1L593.6 79.3L597.6 79.6L601.6 85.3L605.6 87.1L609.6 82.5L613.5 82.4L617.5 80.4L621.5 88.3L625.5 81.4L629.5 78.6L633.5 81.2L637.5 76.7L641.4 77.3L645.4 75.2L649.4 73.3L653.4 80.8L657.4 84.8L661.4 84.8L665.3 81.1L669.3 76.9L673.3 84.8L677.3 84.6L681.3 82.2L685.3 81.8L689.2 81.0L693.2 87.1L697.2 84.6L701.2 82.2L705.2 90.0L709.2 88.7L713.1 83.6L717.1 83.2L721.1 82.1L725.1 85.7L729.1 81.0L733.1 84.1L737.1 93.7L741.0 90.2L745.0 86.2L749.0 94.6L753.0 88.3L757.0 96.8L761.0 95.3L764.9 95.4L768.9 91.1L772.9 92.7L776.9 93.9L780.9 102.1L784.9 96.6L788.8 100.9L792.8 101.2L796.8 95.3L800.8 93.0L804.8 95.3L808.8 99.2L812.7 100.4L816.7 99.8L820.7 107.7L824.7 106.8L828.7 102.7L832.7 99.5L836.7 99.7L840.6 98.1L844.6 99.9L848.6 108.5L852.6 109.9L856.6 115.7L860.6 115.9L864.5 116.7L868.5 120.3L872.5 113.7L876.5 112.3L880.5 112.4L884.5 118.0L888.4 124.2L892.4 116.0L896.4 115.0L900.4 115.2L904.4 110.8L908.4 114.4L912.4 118.4L916.3 122.8L920.3 129.7L924.3 119.3L928.3 115.2L932.3 114.5L936.3 118.8L940.2 122.9L944.2 120.6L948.2 123.1L952.2 123.2L956.2 117.2L960.2 116.0L964.1 109.5L968.1 106.8L972.1 104.1L976.1 106.4L980.1 106.8L984.1 104.6L988.0 125.0L992.0 129.7L996.0 145.3L1000.0 161.0" style="fill:none;stroke:#E4C24A;stroke-width:1.8;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="num" style="position:absolute;right:6px;top:calc(70% - 10px);padding:3px 6px;background:#E4C24A;color:#000;font-size:11px;font-weight:700">30</span>
+</div>
+<div class="num" style="position:relative;width:96px;flex:none;font-size:10px;color:#85817A">
+<span style="position:absolute;top:12.5%;transform:translateY(-50%);color:#5CCBE3">Risk-on fort</span>
+<span style="position:absolute;top:50%;transform:translateY(-50%)">Neutre</span>
+<span style="position:absolute;top:87.5%;transform:translateY(-50%);color:#D95B55">Risk-off fort</span>
+</div>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin:6px 104px 0 0;font-size:10px;color:#85817A"><span>oct. 25</span><span>janv. 26</span><span>avr. 26</span><span>juil. 26</span><span>oct. 26</span></div>
+</div>
+</section>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:12px">
+<section class="pn" aria-label="S&amp;P 500" style="flex:1 1 420px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>S&amp;P 500 · 1 an</h2>
+<span class="num" style="font-size:13px;color:#EDEAE6">7 659,44</span><span class="num up" style="font-size:12px;padding-right:8px">+13,6 %</span>
+</div>
+<div style="padding:14px 18px">
+<div style="position:relative;height:150px;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 150" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0.0 99.6L4.0 101.1L8.0 102.7L12.0 104.7L15.9 105.0L19.9 103.4L23.9 104.9L27.9 100.3L31.9 99.2L35.9 97.8L39.8 96.4L43.8 97.7L47.8 96.3L51.8 94.3L55.8 95.0L59.8 94.1L63.7 95.3L67.7 95.6L71.7 94.3L75.7 92.0L79.7 90.1L83.7 91.7L87.6 93.6L91.6 92.0L95.6 94.1L99.6 92.5L103.6 92.6L107.6 93.8L111.6 93.8L115.5 96.4L119.5 95.3L123.5 94.0L127.5 91.7L131.5 94.1L135.5 91.3L139.4 91.7L143.4 92.4L147.4 91.4L151.4 93.7L155.4 91.7L159.4 92.3L163.3 90.9L167.3 92.4L171.3 88.4L175.3 86.1L179.3 84.0L183.3 85.9L187.3 88.2L191.2 86.8L195.2 86.7L199.2 89.2L203.2 86.6L207.2 83.4L211.2 87.0L215.1 86.5L219.1 83.5L223.1 82.6L227.1 82.7L231.1 80.0L235.1 82.3L239.0 80.9L243.0 84.5L247.0 87.0L251.0 87.8L255.0 93.2L259.0 96.1L262.9 97.1L266.9 96.6L270.9 96.3L274.9 101.6L278.9 103.4L282.9 104.2L286.9 103.2L290.8 105.3L294.8 109.3L298.8 110.1L302.8 110.9L306.8 114.8L310.8 114.1L314.7 115.3L318.7 120.4L322.7 119.5L326.7 123.2L330.7 122.6L334.7 123.1L338.6 126.9L342.6 129.3L346.6 130.9L350.6 132.2L354.6 132.2L358.6 128.4L362.5 128.8L366.5 124.0L370.5 120.1L374.5 118.6L378.5 119.3L382.5 119.3L386.5 117.2L390.4 113.9L394.4 115.4L398.4 113.8L402.4 111.7L406.4 110.8L410.4 108.2L414.3 105.6L418.3 104.9L422.3 107.8L426.3 106.1L430.3 103.5L434.3 105.6L438.2 106.0L442.2 103.1L446.2 103.1L450.2 98.8L454.2 96.1L458.2 99.3L462.2 96.8L466.1 96.9L470.1 93.6L474.1 93.4L478.1 95.8L482.1 93.2L486.1 95.0L490.0 90.7L494.0 89.2L498.0 88.1L502.0 87.8L506.0 85.2L510.0 85.5L513.9 86.0L517.9 82.0L521.9 78.5L525.9 79.9L529.9 82.1L533.9 79.2L537.8 81.0L541.8 77.4L545.8 77.7L549.8 76.7L553.8 74.7L557.8 75.9L561.8 72.0L565.7 71.7L569.7 68.3L573.7 66.3L577.7 64.4L581.7 62.2L585.7 63.8L589.6 63.8L593.6 63.0L597.6 61.9L601.6 62.3L605.6 63.0L609.6 62.5L613.5 61.4L617.5 60.3L621.5 58.5L625.5 60.9L629.5 58.7L633.5 55.8L637.5 55.8L641.4 58.1L645.4 58.5L649.4 56.7L653.4 57.1L657.4 57.5L661.4 56.4L665.3 53.4L669.3 53.7L673.3 52.7L677.3 53.3L681.3 51.0L685.3 53.2L689.2 53.5L693.2 50.4L697.2 53.1L701.2 54.7L705.2 55.4L709.2 55.6L713.1 53.3L717.1 50.8L721.1 50.5L725.1 48.1L729.1 49.8L733.1 47.1L737.1 45.9L741.0 48.6L745.0 49.8L749.0 47.6L753.0 43.7L757.0 43.0L761.0 45.8L764.9 46.9L768.9 42.7L772.9 41.2L776.9 38.7L780.9 36.9L784.9 35.4L788.8 35.8L792.8 33.7L796.8 33.7L800.8 33.2L804.8 31.6L808.8 36.0L812.7 33.7L816.7 31.4L820.7 32.6L824.7 31.7L828.7 31.8L832.7 30.2L836.7 33.3L840.6 31.9L844.6 30.4L848.6 29.9L852.6 28.5L856.6 31.3L860.6 33.1L864.5 31.8L868.5 32.9L872.5 32.8L876.5 29.5L880.5 27.0L884.5 24.4L888.4 25.7L892.4 26.5L896.4 28.5L900.4 24.9L904.4 23.9L908.4 23.9L912.4 21.5L916.3 20.1L920.3 19.6L924.3 20.0L928.3 18.5L932.3 17.7L936.3 21.4L940.2 18.9L944.2 17.7L948.2 19.1L952.2 19.0L956.2 19.6L960.2 20.0L964.1 20.3L968.1 18.9L972.1 18.4L976.1 15.5L980.1 13.8L984.1 17.2L988.0 16.8L992.0 18.4L996.0 16.6L1000.0 21.2L1000 150L0 150Z" style="fill:rgba(92,203,227,.07);stroke:none"></path>
+<path d="M0.0 99.6L4.0 101.1L8.0 102.7L12.0 104.7L15.9 105.0L19.9 103.4L23.9 104.9L27.9 100.3L31.9 99.2L35.9 97.8L39.8 96.4L43.8 97.7L47.8 96.3L51.8 94.3L55.8 95.0L59.8 94.1L63.7 95.3L67.7 95.6L71.7 94.3L75.7 92.0L79.7 90.1L83.7 91.7L87.6 93.6L91.6 92.0L95.6 94.1L99.6 92.5L103.6 92.6L107.6 93.8L111.6 93.8L115.5 96.4L119.5 95.3L123.5 94.0L127.5 91.7L131.5 94.1L135.5 91.3L139.4 91.7L143.4 92.4L147.4 91.4L151.4 93.7L155.4 91.7L159.4 92.3L163.3 90.9L167.3 92.4L171.3 88.4L175.3 86.1L179.3 84.0L183.3 85.9L187.3 88.2L191.2 86.8L195.2 86.7L199.2 89.2L203.2 86.6L207.2 83.4L211.2 87.0L215.1 86.5L219.1 83.5L223.1 82.6L227.1 82.7L231.1 80.0L235.1 82.3L239.0 80.9L243.0 84.5L247.0 87.0L251.0 87.8L255.0 93.2L259.0 96.1L262.9 97.1L266.9 96.6L270.9 96.3L274.9 101.6L278.9 103.4L282.9 104.2L286.9 103.2L290.8 105.3L294.8 109.3L298.8 110.1L302.8 110.9L306.8 114.8L310.8 114.1L314.7 115.3L318.7 120.4L322.7 119.5L326.7 123.2L330.7 122.6L334.7 123.1L338.6 126.9L342.6 129.3L346.6 130.9L350.6 132.2L354.6 132.2L358.6 128.4L362.5 128.8L366.5 124.0L370.5 120.1L374.5 118.6L378.5 119.3L382.5 119.3L386.5 117.2L390.4 113.9L394.4 115.4L398.4 113.8L402.4 111.7L406.4 110.8L410.4 108.2L414.3 105.6L418.3 104.9L422.3 107.8L426.3 106.1L430.3 103.5L434.3 105.6L438.2 106.0L442.2 103.1L446.2 103.1L450.2 98.8L454.2 96.1L458.2 99.3L462.2 96.8L466.1 96.9L470.1 93.6L474.1 93.4L478.1 95.8L482.1 93.2L486.1 95.0L490.0 90.7L494.0 89.2L498.0 88.1L502.0 87.8L506.0 85.2L510.0 85.5L513.9 86.0L517.9 82.0L521.9 78.5L525.9 79.9L529.9 82.1L533.9 79.2L537.8 81.0L541.8 77.4L545.8 77.7L549.8 76.7L553.8 74.7L557.8 75.9L561.8 72.0L565.7 71.7L569.7 68.3L573.7 66.3L577.7 64.4L581.7 62.2L585.7 63.8L589.6 63.8L593.6 63.0L597.6 61.9L601.6 62.3L605.6 63.0L609.6 62.5L613.5 61.4L617.5 60.3L621.5 58.5L625.5 60.9L629.5 58.7L633.5 55.8L637.5 55.8L641.4 58.1L645.4 58.5L649.4 56.7L653.4 57.1L657.4 57.5L661.4 56.4L665.3 53.4L669.3 53.7L673.3 52.7L677.3 53.3L681.3 51.0L685.3 53.2L689.2 53.5L693.2 50.4L697.2 53.1L701.2 54.7L705.2 55.4L709.2 55.6L713.1 53.3L717.1 50.8L721.1 50.5L725.1 48.1L729.1 49.8L733.1 47.1L737.1 45.9L741.0 48.6L745.0 49.8L749.0 47.6L753.0 43.7L757.0 43.0L761.0 45.8L764.9 46.9L768.9 42.7L772.9 41.2L776.9 38.7L780.9 36.9L784.9 35.4L788.8 35.8L792.8 33.7L796.8 33.7L800.8 33.2L804.8 31.6L808.8 36.0L812.7 33.7L816.7 31.4L820.7 32.6L824.7 31.7L828.7 31.8L832.7 30.2L836.7 33.3L840.6 31.9L844.6 30.4L848.6 29.9L852.6 28.5L856.6 31.3L860.6 33.1L864.5 31.8L868.5 32.9L872.5 32.8L876.5 29.5L880.5 27.0L884.5 24.4L888.4 25.7L892.4 26.5L896.4 28.5L900.4 24.9L904.4 23.9L908.4 23.9L912.4 21.5L916.3 20.1L920.3 19.6L924.3 20.0L928.3 18.5L932.3 17.7L936.3 21.4L940.2 18.9L944.2 17.7L948.2 19.1L952.2 19.0L956.2 19.6L960.2 20.0L964.1 20.3L968.1 18.9L972.1 18.4L976.1 15.5L980.1 13.8L984.1 17.2L988.0 16.8L992.0 18.4L996.0 16.6L1000.0 21.2" style="fill:none;stroke:#5CCBE3;stroke-width:1.6;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#85817A"><span>oct. 25</span><span>janv. 26</span><span>avr. 26</span><span>juil. 26</span><span>oct. 26</span></div>
+</div>
+</section>
+<section class="pn" aria-label="VIX" style="flex:1 1 420px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>VIX · 1 an</h2>
+<span class="num" style="font-size:13px;color:#EDEAE6">19,99</span><span class="chip hot" style="margin-right:8px">Seuils 20 · 30</span>
+</div>
+<div style="padding:14px 18px">
+<div style="position:relative;height:150px;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 150" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 80H1000" style="fill:none;stroke:#8A7533;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="M0 30H1000" style="fill:none;stroke:#D95B55;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 114.3L4.0 112.3L8.0 114.0L12.0 111.5L15.9 110.9L19.9 111.8L23.9 108.9L27.9 112.5L31.9 112.5L35.9 116.9L39.8 115.6L43.8 119.0L47.8 116.7L51.8 118.4L55.8 120.3L59.8 114.0L63.7 112.2L67.7 116.7L71.7 119.6L75.7 122.6L79.7 119.7L83.7 118.8L87.6 115.3L91.6 112.7L95.6 117.9L99.6 117.7L103.6 118.5L107.6 117.7L111.6 119.0L115.5 118.0L119.5 121.2L123.5 116.3L127.5 118.2L131.5 115.6L135.5 112.2L139.4 113.7L143.4 113.0L147.4 112.0L151.4 112.3L155.4 115.9L159.4 118.7L163.3 122.4L167.3 123.1L171.3 117.0L175.3 116.9L179.3 118.5L183.3 123.0L187.3 122.5L191.2 118.8L195.2 114.3L199.2 118.4L203.2 115.4L207.2 121.0L211.2 120.4L215.1 120.1L219.1 123.4L223.1 123.5L227.1 126.5L231.1 128.7L235.1 121.8L239.0 118.5L243.0 118.7L247.0 119.5L251.0 109.9L255.0 105.6L259.0 99.7L262.9 98.3L266.9 95.8L270.9 97.0L274.9 93.1L278.9 90.4L282.9 83.6L286.9 84.5L290.8 76.8L294.8 74.1L298.8 72.2L302.8 62.9L306.8 56.2L310.8 50.9L314.7 48.6L318.7 45.1L322.7 38.9L326.7 39.6L330.7 41.2L334.7 36.5L338.6 34.0L342.6 38.2L346.6 36.8L350.6 42.2L354.6 44.6L358.6 49.8L362.5 50.1L366.5 53.1L370.5 57.3L374.5 57.9L378.5 61.3L382.5 62.8L386.5 63.6L390.4 69.5L394.4 75.5L398.4 73.8L402.4 80.1L406.4 84.4L410.4 82.1L414.3 84.1L418.3 79.9L422.3 85.9L426.3 85.0L430.3 86.8L434.3 85.2L438.2 89.7L442.2 92.4L446.2 93.9L450.2 90.5L454.2 88.3L458.2 93.2L462.2 92.8L466.1 93.7L470.1 92.8L474.1 95.9L478.1 98.2L482.1 97.5L486.1 99.9L490.0 103.4L494.0 102.5L498.0 104.6L502.0 103.4L506.0 106.8L510.0 110.1L513.9 105.9L517.9 109.5L521.9 108.3L525.9 104.1L529.9 103.8L533.9 105.7L537.8 105.3L541.8 108.8L545.8 112.8L549.8 110.4L553.8 110.4L557.8 107.1L561.8 112.1L565.7 114.6L569.7 111.4L573.7 109.0L577.7 110.7L581.7 111.2L585.7 116.1L589.6 119.8L593.6 118.6L597.6 119.1L601.6 116.4L605.6 119.9L609.6 121.5L613.5 116.5L617.5 119.7L621.5 115.8L625.5 120.3L629.5 122.9L633.5 126.2L637.5 124.7L641.4 125.8L645.4 126.2L649.4 121.0L653.4 125.6L657.4 128.7L661.4 125.4L665.3 123.6L669.3 120.7L673.3 117.0L677.3 122.8L681.3 124.8L685.3 125.7L689.2 126.4L693.2 123.4L697.2 119.0L701.2 122.2L705.2 123.5L709.2 119.1L713.1 117.2L717.1 123.2L721.1 123.9L725.1 124.8L729.1 123.3L733.1 121.5L737.1 120.4L741.0 117.1L745.0 117.9L749.0 123.0L753.0 126.0L757.0 120.7L761.0 117.0L764.9 122.3L768.9 124.6L772.9 123.2L776.9 119.6L780.9 120.0L784.9 117.6L788.8 117.7L792.8 121.1L796.8 123.1L800.8 122.0L804.8 125.6L808.8 122.3L812.7 120.2L816.7 119.4L820.7 116.5L824.7 121.5L828.7 118.3L832.7 123.4L836.7 125.1L840.6 121.5L844.6 120.6L848.6 119.0L852.6 118.5L856.6 118.8L860.6 125.1L864.5 124.8L868.5 124.4L872.5 125.7L876.5 122.6L880.5 121.0L884.5 122.8L888.4 122.3L892.4 118.7L896.4 124.2L900.4 126.7L904.4 129.3L908.4 129.1L912.4 129.5L916.3 130.1L920.3 129.6L924.3 127.5L928.3 123.5L932.3 119.5L936.3 120.1L940.2 118.0L944.2 113.5L948.2 116.9L952.2 121.9L956.2 117.8L960.2 116.8L964.1 119.2L968.1 121.9L972.1 124.4L976.1 120.4L980.1 119.4L984.1 111.6L988.0 103.0L992.0 101.8L996.0 94.8L1000.0 90.1" style="fill:none;stroke:#EDEAE6;stroke-width:1.6;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="num" style="position:absolute;left:4px;top:62px;font-size:10px;color:#E4C24A">20</span>
+<span class="num" style="position:absolute;left:4px;top:12px;font-size:10px;color:#D95B55">30</span>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#85817A"><span>oct. 25</span><span>janv. 26</span><span>avr. 26</span><span>juil. 26</span><span>oct. 26</span></div>
+</div>
+</section>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Indices actions</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Volatilité</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Crédit</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Changes</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Matières premières</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>OKX WS</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+
+</body>
+</html>

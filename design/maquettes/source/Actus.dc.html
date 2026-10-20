@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Fil d’actus et assistant — TERMINAL</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input,textarea{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;background:transparent;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.tg{height:28px;cursor:pointer}
+.tg[aria-pressed="true"]{background:#2B2511;border-color:#8A7533;color:#F6D44E}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.it{display:flex;gap:12px;width:100%;padding:12px 14px;border:0;border-top:1px solid #22201E;background:transparent;color:#EDEAE6;text-align:left;cursor:pointer}
+.it:hover{background:#121110}
+.it[aria-pressed="true"]{background:#16130A;box-shadow:inset 2px 0 0 #E4C24A}
+.sug{height:30px;padding:0 10px;border:1px solid #3A3835;border-radius:15px;background:transparent;color:#ABA7A2;font:500 12.5px 'Barlow',sans-serif;cursor:pointer}
+.sug:hover{border-color:#8A7533;color:#F6D44E}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.dc.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn" style="border-color:#8A7533;color:#F6D44E;background:#16130A"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.micoff}}"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.sli}}"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<sc-for list="{{clocks}}" as="c" hint-placeholder-count="4"><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:{{c.dc}}"></span>{{c.c}} <span style="color:{{c.tc}}">{{c.t}}</span></span></sc-for>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.bell}}"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+<sc-for list="{{nav}}" as="sec" hint-placeholder-count="6">
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">{{sec.t}}</div>
+<sc-for list="{{sec.items}}" as="it" hint-placeholder-count="4">
+<sc-if value="{{it.isLink}}" hint-placeholder-val="{{ true }}"><a href="{{it.href}}" class="{{it.cls}}" aria-current="{{it.cur}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.d}}"></path></svg>{{it.t}}</a></sc-if>
+<sc-if value="{{it.isStatic}}" hint-placeholder-val="{{ false }}"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.d}}"></path></svg>{{it.t}}</span></sc-if>
+</sc-for>
+</div>
+</sc-for>
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="{{ic.news}}"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Fil d’actus · lecture assistée</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">{{count}} titres aujourd’hui</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:16px">
+<section class="pn" aria-label="Fil d’actus" style="flex:1 1 290px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Fil d’actus</h2>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>Direct</span>
+</div>
+<div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+<div role="group" aria-label="Catégories" style="display:flex;flex-wrap:wrap;gap:6px">
+<sc-for list="{{cats}}" as="k" hint-placeholder-count="5"><button class="chip tg" aria-pressed="{{k.pressed}}" onClick="{{k.pick}}">{{k.t}}</button></sc-for>
+</div>
+<label style="display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid #3A3835;border-radius:3px;background:#050504;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Filtrer les titres</span>
+<input type="text" placeholder="Filtrer les titres…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+</label>
+</div>
+<sc-for list="{{items}}" as="n" hint-placeholder-count="8">
+<button class="it" aria-pressed="{{n.pressed}}" onClick="{{n.pick}}">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">{{n.h}}</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">{{n.c}}</span><sc-if value="{{n.hi}}" hint-placeholder-val="{{ false }}"><span class="chip hot" style="height:18px">Fort impact</span></sc-if></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">{{n.t}}</span>
+<span class="lbl" style="font-size:10px">{{n.s}}</span>
+</span>
+</button>
+</sc-for>
+</section>
+<article class="pn" aria-label="Article" style="flex:2 1 440px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Lecture · {{a.c}}</h2>
+<sc-for list="{{chrome}}" as="c" hint-placeholder-count="5"><button class="ib" aria-label="{{c.l}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.d}}"></path></svg></button></sc-for>
+</div>
+<div style="padding:22px 26px 26px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span class="chip hot">{{a.c}}</span><span class="num" style="font-size:12px;color:#ABA7A2">{{a.meta}}</span></div>
+<h3 style="margin:0;font:600 27px/1.25 'Barlow',sans-serif;color:#EDEAE6;max-width:760px">{{a.t}}</h3>
+<div style="position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/7;min-height:180px;background:#121110;border:1px dashed #3A3835">
+<span class="lbl" style="color:#ABA7A2">[Image d’illustration · source à brancher]</span>
+<span style="position:absolute;top:8px;left:8px;width:14px;height:14px;border-top:1px solid #8A7533;border-left:1px solid #8A7533"></span>
+<span style="position:absolute;right:8px;bottom:8px;width:14px;height:14px;border-right:1px solid #8A7533;border-bottom:1px solid #8A7533"></span>
+</div>
+<sc-for list="{{a.body}}" as="p" hint-placeholder-count="3"><p style="margin:0;font-size:15.5px;line-height:1.65;color:#D9D5D0;max-width:760px">{{p.t}}</p></sc-for>
+<sc-if value="{{a.full}}" hint-placeholder-val="{{ true }}">
+<div style="border:1px solid #22201E;background:#050504;padding:16px 18px">
+<div class="lbl" style="color:#E4C24A">Points clés</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+<sc-for list="{{a.keys}}" as="k" hint-placeholder-count="3"><div style="display:flex;gap:10px;align-items:flex-start"><span class="dia" style="margin-top:7px"></span><span style="font-size:14px;line-height:1.5;color:#EDEAE6">{{k.t}}</span></div></sc-for>
+</div>
+</div>
+</sc-if>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<span class="lbl" style="font-size:10px">Actifs liés</span>
+<sc-for list="{{a.assets}}" as="s" hint-placeholder-count="3"><span class="chip" style="height:26px;color:#EDEAE6">{{s.n}} <span class="{{s.cls}}">{{s.v}}</span></span></sc-for>
+</div>
+</div>
+</article>
+<aside class="pn" aria-label="Assistant" style="flex:1 1 310px;display:flex;flex-direction:column">
+<div class="ph">
+<span style="width:14px;height:14px;margin-left:4px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 10px rgba(246,212,78,.45)"></span>
+<h2>Assistant</h2>
+<span class="chip cy">Article chargé</span>
+<span class="chip">Muet</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;padding:16px">
+<sc-for list="{{chat}}" as="m" hint-placeholder-count="4">
+<div style="display:flex;justify-content:{{m.just}}">
+<div style="max-width:92%;padding:12px 14px;border:1px solid {{m.bd}};border-radius:3px;background:{{m.bg}}">
+<div class="lbl" style="font-size:9.5px;color:{{m.lc}}">{{m.who}}</div>
+<div style="margin-top:6px;font-size:14px;line-height:1.55;color:#EDEAE6">{{m.t}}</div>
+<sc-if value="{{m.hasSrc}}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><sc-for list="{{m.src}}" as="s" hint-placeholder-count="2"><a class="chip hot" href="{{s.href}}">{{s.t}}</a></sc-for></div></sc-if>
+</div>
+</div>
+</sc-for>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:auto">
+<button class="sug">Résumer en 3 points</button><button class="sug">Impact sur USD/JPY</button><button class="sug">Comparer à juillet</button>
+</div>
+<label style="display:flex;align-items:flex-end;gap:8px;padding:8px 8px 8px 12px;border:1px solid #8A7533;border-radius:3px;background:#050504">
+<span class="sr">Question à l’assistant</span>
+<textarea rows="2" placeholder="Pose une question sur cet article…" style="flex:1;min-width:0;resize:none;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 14px/1.45 'Barlow',sans-serif"></textarea>
+<button aria-label="Envoyer la question" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;flex:none;border:0;border-radius:3px;background:#E4C24A;color:#000;cursor:pointer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</label>
+<div class="lbl" style="font-size:9.5px;text-align:center">Réponses fondées sur l’article et les modules du terminal · à vérifier</div>
+</div>
+</aside>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<sc-for list="{{feeds}}" as="f" hint-placeholder-count="5"><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>{{f.n}}</span></sc-for>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self=this,st=this.state||{},cat=st.cat||'Tout',sel=st.sel===undefined?1:st.sel;
+    var IC={
+      ov:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',ch:'M4 19h16M5 15l4-4 3 3 6-7',doc:'M6 4h12v16H6zM9 8h6M9 12h6M9 16h4',
+      clk:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2',orb:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z',
+      cal:'M5 6h14v14H5zM5 10h14M9 4v4M15 4v4',news:'M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3',
+      bank:'M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16',wave:'M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2',
+      globe:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18',pct:'M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z',
+      users:'M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5',bars:'M5 20V10M10 20V4M15 20v-8M20 20v-5',
+      brief:'M4 8h16v11H4zM9 8V5h6v3M4 13h16',gauge:'M5 17a7 7 0 1 1 14 0M12 17l3-5',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z',
+      book:'M4 6h10M4 10h14M4 14h8M4 18h12',sine:'M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0',heat:'M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16',
+      grid4:'M4 4h16v16H4zM4 12h16M12 4v16',pulse:'M3 12h4l3-7 4 14 3-7h4',drop:'M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z',
+      target:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z',calc:'M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6',
+      x:'M6 6l12 12M18 6L6 18',lock:'M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3',exp:'M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7',pin:'M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7',
+      bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0',sli:'M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4',
+      micoff:'M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16',
+      grip:'M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01'
+    };
+    var HERE='Actus.dc.html';
+    var NAV=[['Global',[['Vue d’ensemble','ov','Main.dc.html'],['Graphiques','ch'],['Récap de session','doc'],['Horaires des marchés','clk'],['Assistant','orb']]],
+      ['News',[['Calendrier','cal','Calendrier.dc.html'],['Fil d’actus','news','Actus.dc.html'],['Recherche bancaire','bank'],['Squawk','wave']]],
+      ['Macro',[['Macro','globe'],['Taux','pct','Taux.dc.html']]],
+      ['Positionnement & sentiment',[['Sentiment retail','users'],['COT','bars'],['Positions des banques','brief'],['Sentiment de risque','gauge','Risque.dc.html']]],
+      ['Analyse',[['Markets Watch','eye'],['Microstructure BTC','book','Microstructure.dc.html'],['Saisonnalité','sine'],['Heatmap fondamentale','heat','Heatmap.dc.html'],['Heatmap technique','grid4'],['Indicateurs','pulse'],['Liquidité','drop']]],
+      ['Compte',[['Track record','target'],['Calculateur de risque','calc']]]];
+    var nav=NAV.map(function(s){return {t:s[0],items:s[1].map(function(it){var on=it[2]===HERE;return {t:it[0],d:IC[it[1]],href:it[2]||'',isLink:!!it[2],isStatic:!it[2],cls:on?'on':'',cur:on?'page':undefined};})};});
+    var chrome=[['Réglages du panneau','sli'],['Épingler le panneau','pin'],['Verrouiller la disposition','lock'],['Agrandir le panneau','exp'],['Fermer le panneau','x']].map(function(c){return {l:c[0],d:IC[c[1]]};});
+    var clocks=[['TOK','22:36',0],['LON','14:36',1],['PAR','15:36',1],['NY','09:36',2]].map(function(c){return {c:c[0],t:c[1],dc:c[2]?'#E4C24A':'#3A3835',tc:c[2]===2?'#E4C24A':'#ABA7A2'};});
+    var feeds=['Fils d’agence','Banques centrales','Calendrier','Données de flux','OKX WS'].map(function(n){return {n:n};});
+    var N=[
+      ['15:31','Crypto','ETF bitcoin spot : quatrième séance consécutive de flux nets entrants','Données de flux',0,'Les ETF bitcoin spot cotés aux États-Unis enregistrent une quatrième séance de souscriptions nettes, selon les données de flux publiées chaque soir par les émetteurs.'],
+      ['15:12','Banque centrale','BoJ : le compte rendu de septembre évoque une nouvelle hausse si l’inflation sous-jacente approche 2 %','Publication officielle',1,''],
+      ['14:52','Crypto','Liquidations : 62 M$ de positions longues BTC effacées en cinq minutes','Microstructure',1,'Le flux agrégé des plateformes suivies montre une vague de liquidations de positions longues entre 14:47 et 14:52, au moment où le BTC repassait sous 107 900.'],
+      ['14:30','Macro','États-Unis : l’indice d’activité de la Fed de Chicago ressort à 0,18 contre −0,05 attendu','Calendrier',0,'L’indice national d’activité de la Fed de Chicago surprend à la hausse, avec une surprise standardisée de +1,4 écart-type.'],
+      ['13:05','Matières premières','L’or se rapproche de 4 000 $ l’once, plus haut depuis trois semaines','Fil d’agence',0,'L’or progresse de 0,64 % sur la séance, porté par la baisse de l’appétit pour le risque.'],
+      ['11:40','Banque centrale','BCE : les comptes rendus de septembre décrivent des risques d’inflation équilibrés','Publication officielle',0,'Les comptes rendus de la réunion de septembre décrivent des risques d’inflation équilibrés et ne donnent pas d’orientation pour octobre.'],
+      ['09:20','Macro','Royaume-Uni : les prix de l’immobilier reculent pour le deuxième mois consécutif','Fil d’agence',0,'Les prix demandés reculent pour le deuxième mois consécutif, un signal de plus d’un marché immobilier qui ralentit.'],
+      ['04:00','Macro','Chine : PIB du T3 à 4,7 % sur un an, sous le consensus de 4,8 %','Publication officielle',1,'La croissance chinoise ralentit à 4,7 % sur un an au troisième trimestre, contre 4,8 % attendu et 5,2 % au trimestre précédent.']];
+    var CATS=['Tout','Banque centrale','Macro','Crypto','Matières premières'];
+    var cats=CATS.map(function(c){return {t:c,pressed:c===cat?'true':'false',pick:function(){self.setState({cat:c});}};});
+    var items=[];N.forEach(function(n,i){if(cat==='Tout'||n[1]===cat)items.push({h:n[0],c:n[1],t:n[2],s:n[3],hi:!!n[4],pressed:i===sel?'true':'false',pick:function(){self.setState({sel:i});}});});
+    var A=N[sel]||N[1],full=sel===1;
+    var a={c:A[1],t:A[2],meta:A[3]+' · 19/10/2026 · '+A[0]+(full?' · lecture 3 min':''),full:full,
+      body:full?[{t:'Le résumé des opinions de la réunion des 17 et 18 septembre, au cours de laquelle la Banque du Japon a relevé son taux directeur de 1,00 % à 1,25 %, montre un conseil partagé sur le rythme des prochaines hausses.'},{t:'Plusieurs membres jugent qu’un nouveau relèvement serait approprié si l’inflation sous-jacente se rapproche durablement de la cible de 2 %. D’autres soulignent la faiblesse de la croissance, à 0,3 % sur un an, et préfèrent attendre les négociations salariales du printemps.'},{t:'Le document ne donne pas de calendrier. La prochaine réunion se tient les 29 et 30 octobre ; les futures de taux y attribuent une probabilité de hausse d’environ 18 %.'}]:[{t:A[5]},{t:'[Article complet : à brancher sur la source]'}],
+      keys:[{t:'Hausse conditionnée à une inflation sous-jacente proche de 2 % (1,7 % actuellement).'},{t:'Croissance jugée fragile : PIB à 0,3 % sur un an.'},{t:'Probabilité de hausse le 30/10 : 18,4 % selon les futures.'}],
+      assets:full?[{n:'USD/JPY',v:'+0,35 %',cls:'up'},{n:'EUR/JPY',v:'+0,22 %',cls:'up'},{n:'AUD/JPY',v:'−1,86 % 20 j',cls:'dn'}]:[{n:'BTC',v:'+1,84 %',cls:'up'},{n:'DXY',v:'+0,18 %',cls:'up'}]};
+    var chat=[
+      ['Toi','Qu’est-ce que ça change pour USD/JPY à court terme ?',0,[]],
+      ['Assistant','Le compte rendu conditionne la prochaine hausse à une inflation sous-jacente proche de 2 %, alors qu’elle est à 1,7 %. Une hausse dès le 30 octobre reste minoritaire (18,4 % selon les futures). À court terme, c’est un soutien modéré pour le yen, mais l’écart de taux avec les États-Unis, 2,75 points, reste le facteur dominant. À surveiller : l’IPC national de vendredi 23 octobre.',1,[['Article · §2','#'],['Heatmap · JPY','Heatmap.dc.html'],['Taux · BOJ','Taux.dc.html']]],
+      ['Toi','Et pour le BTC ?',0,[]],
+      ['Assistant','Le lien est indirect. L’indice de sentiment est à 30, en zone risk-off, et 62 M$ de positions longues ont été liquidées à 14:52. Cet article seul ne permet pas d’établir un effet sur le BTC.',1,[['Risque · indice','Risque.dc.html'],['Microstructure','Microstructure.dc.html']]]
+    ].map(function(m){var me=!m[2];return {who:m[0],t:m[1],just:me?'flex-end':'flex-start',bd:me?'#3A3835':'#8A7533',bg:me?'#121110':'#0F0D07',lc:me?'#85817A':'#E4C24A',hasSrc:m[3].length>0,src:m[3].map(function(s){return {t:s[0],href:s[1]};})};});
+    return {ic:IC,nav:nav,chrome:chrome,clocks:clocks,feeds:feeds,cats:cats,items:items,count:N.length,a:a,chat:chat};
+  }
+}
+</script>
+</body>
+</html>

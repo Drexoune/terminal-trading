@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Design system — TERMINAL</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h3{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:12px;font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;white-space:nowrap}
+.p-up{background:#387380;color:#EAFBFE}.p-dn{background:#84413C;color:#FFE3E0}.p-nt{background:#22201E;color:#D9D5D0}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.sec{display:flex;align-items:center;gap:10px;margin:0 0 16px;font:600 22px/1.1 'Rajdhani',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#EDEAE6}
+.card{padding:16px;display:flex;flex-direction:column;gap:14px}
+.cell{display:inline-flex;align-items:center;justify-content:center;min-width:84px;height:40px;padding:0 10px;border-radius:2px;font:600 13px 'JetBrains Mono',monospace}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px;padding:28px 40px;border-bottom:1px solid #22201E;background:linear-gradient(90deg,#0F0D07,#000 60%)">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:36px;height:36px;color:#E4C24A"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<div style="flex:1;min-width:240px">
+<h1 style="margin:0;font:700 34px/1 'Rajdhani',sans-serif;letter-spacing:.16em;color:#E4C24A">TERMINAL</h1>
+<div class="lbl" style="margin-top:8px">Design system · DA noir et or · HUD · v1</div>
+</div>
+<span class="chip hot">Nom provisoire</span>
+<span class="chip">Interface FR · jargon marché EN</span>
+</header>
+<div style="max-width:1440px;padding:32px 40px 48px;display:flex;flex-direction:column;gap:40px">
+<section aria-labelledby="ds-col">
+<h2 id="ds-col" class="sec"><span class="dia"></span>Couleurs</h2>
+<div style="display:flex;flex-direction:column;gap:20px">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="4">
+<div>
+<div class="lbl" style="margin-bottom:10px">{{g.t}}</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:10px">
+<sc-for list="{{g.items}}" as="s" hint-placeholder-count="5">
+<div class="pn" style="overflow:hidden">
+<div style="height:64px;background:{{s.hex}};border-bottom:1px solid #22201E"></div>
+<div style="padding:10px 12px">
+<div style="font-weight:600;color:#EDEAE6">{{s.n}}</div>
+<div class="num" style="margin-top:4px;font-size:12px;color:#E4C24A">{{s.hex}}</div>
+<div style="margin-top:6px;font-size:12.5px;line-height:1.35;color:#ABA7A2">{{s.u}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+</div>
+</section>
+<section aria-labelledby="ds-typo">
+<h2 id="ds-typo" class="sec"><span class="dia"></span>Typographie</h2>
+<div class="pn">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:18px 20px;border-bottom:1px solid #22201E">
+<div style="width:220px"><div class="lbl">Chiffre clé</div><div style="margin-top:6px;font-size:12.5px;color:#ABA7A2">Rajdhani 600 · 64 px</div></div>
+<div style="font:600 64px/1 'Rajdhani',sans-serif;color:#F6D44E;font-variant-numeric:tabular-nums">1,25 %</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:18px 20px;border-bottom:1px solid #22201E">
+<div style="width:220px"><div class="lbl">Titre d’écran</div><div style="margin-top:6px;font-size:12.5px;color:#ABA7A2">Rajdhani 700 · 28 px · +0,12 em</div></div>
+<div style="font:700 28px/1.1 'Rajdhani',sans-serif;letter-spacing:.12em;text-transform:uppercase">Heatmap fondamentale</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:18px 20px;border-bottom:1px solid #22201E">
+<div style="width:220px"><div class="lbl">Titre d’article</div><div style="margin-top:6px;font-size:12.5px;color:#ABA7A2">Barlow 600 · 22 px</div></div>
+<div style="flex:1;min-width:260px;font:600 22px/1.3 'Barlow',sans-serif">Les fondamentaux favorisent l’USD face au JPY</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:18px 20px;border-bottom:1px solid #22201E">
+<div style="width:220px"><div class="lbl">Texte courant</div><div style="margin-top:6px;font-size:12.5px;color:#ABA7A2">Barlow 400 · 15 px · 1,55</div></div>
+<p style="flex:1;min-width:260px;margin:0;font:400 15px/1.55 'Barlow',sans-serif;color:#D9D5D0;max-width:720px">L’écart de taux reste le moteur principal de la paire. Une surprise à la hausse sur l’inflation sous-jacente japonaise rapprocherait la prochaine hausse de la BoJ.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:18px 20px;border-bottom:1px solid #22201E">
+<div style="width:220px"><div class="lbl">Micro-label</div><div style="margin-top:6px;font-size:12.5px;color:#ABA7A2">JetBrains Mono 500 · 11 px · +0,16 em</div></div>
+<div class="lbl" style="color:#EDEAE6">Prochaine réunion · 30/10/2026 · J-11</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;padding:18px 20px">
+<div style="width:220px"><div class="lbl">Données</div><div style="margin-top:6px;font-size:12.5px;color:#ABA7A2">JetBrains Mono 500 · 13 px · chiffres tabulaires</div></div>
+<div class="num" style="font-size:13px;display:flex;gap:18px"><span>108 420,5</span><span class="up">▲ +1,84 %</span><span class="dn">▼ −0,42 %</span><span style="color:#ABA7A2">4,31 %</span></div>
+</div>
+</div>
+</section>
+<section aria-labelledby="ds-comp">
+<h2 id="ds-comp" class="sec"><span class="dia"></span>Composants</h2>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));gap:12px">
+<div class="pn card">
+<div class="lbl">Boutons</div>
+<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+<button class="btn" style="background:#E4C24A;border-color:#E4C24A;color:#000;font-weight:600">Créer une alerte</button>
+<button class="btn">Personnaliser</button>
+<button class="btn" style="background:transparent;border-color:transparent;color:#E4C24A">Voir tout</button>
+<button class="ib" aria-label="Agrandir le panneau" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button>
+<button class="btn" disabled style="opacity:.45;cursor:not-allowed">Indisponible</button>
+</div>
+<div style="font-size:12.5px;color:#ABA7A2">Or plein : une seule action principale par écran. Contour : actions courantes. Hauteur 34 px, rayon 3 px.</div>
+</div>
+<div class="pn card">
+<div class="lbl">Puces et biais</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<span class="chip">Neutre</span><span class="chip hot">Actif</span><span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>Temps réel</span>
+<span class="chip" style="background:#E4C24A;border-color:#E4C24A;color:#000">Nouveau</span>
+<span class="chip" style="border-style:dashed;color:#EDEAE6">En attente · 00:23:56</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span class="pill p-up">BULLISH</span><span class="pill p-nt">NEUTRAL</span><span class="pill p-dn">BEARISH</span><span class="pill p-dn">RISK-OFF</span></div>
+</div>
+<div class="pn card">
+<div class="lbl">Cellules d’état · heatmap</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px">
+<span class="cell" style="background:#35717D;color:#E3F8FB">+0,8</span>
+<span class="cell" style="background:#22201E;color:#D9D5D0">0,0</span>
+<span class="cell" style="background:#84413C;color:#FFE3E0">−1,9</span>
+<span class="cell" style="background:#35717D;color:#E3F8FB;outline:1px solid #E4C24A;outline-offset:2px">+1,4</span>
+</div>
+<div style="font-size:12.5px;color:#ABA7A2">Cyan = au-dessus de l’attendu ou haussier, corail = en dessous ou baissier. Le contour or marque la sélection.</div>
+</div>
+<div class="pn card">
+<div class="lbl">Sous-en-tête de module</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 12px;border:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<span class="lbl" style="color:#EDEAE6">Calendrier · semaine 43</span>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">USD · EUR · JPY</span>
+</div>
+</div>
+<div class="pn" style="grid-column:span 1">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h3>Panneau type</h3>
+<sc-for list="{{chrome}}" as="c" hint-placeholder-count="5"><button class="ib" aria-label="{{c.l}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.d}}"></path></svg></button></sc-for>
+</div>
+<div style="padding:16px;font-size:13px;line-height:1.5;color:#ABA7A2">Fond #0A0A09, filet 1 px #22201E, coins HUD or en haut à gauche et en bas à droite. En-tête 40 px : poignée, losange or, titre en micro-label, contrôles réglages, épingler, verrouiller, agrandir, fermer.</div>
+</div>
+<div class="pn card">
+<div class="lbl">Jauge</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px">
+<svg viewBox="0 0 200 110" style="width:170px;height:94px;display:block;flex:none;overflow:visible" aria-hidden="true">
+<path d="{{g1}}" style="fill:none;stroke:#D95B55;stroke-width:14"></path>
+<path d="{{g2}}" style="fill:none;stroke:#84413C;stroke-width:14"></path>
+<path d="{{g3}}" style="fill:none;stroke:#3A3835;stroke-width:14"></path>
+<path d="{{g4}}" style="fill:none;stroke:#35717D;stroke-width:14"></path>
+<path d="{{g5}}" style="fill:none;stroke:#5CCBE3;stroke-width:14"></path>
+<path d="{{needle}}" style="fill:none;stroke:#EDEAE6;stroke-width:3;stroke-linecap:round"></path>
+<path d="M95 100a5 5 0 1 0 10 0a5 5 0 1 0-10 0z" style="fill:#EDEAE6;stroke:none"></path>
+</svg>
+<div><div style="display:flex;align-items:center;gap:10px"><span style="font:700 40px/1 'Rajdhani',sans-serif">30</span><span class="pill p-dn">RISK-OFF</span></div><div class="num" style="margin-top:10px;font-size:11px;color:#ABA7A2">5 zones · 0 à 100</div></div>
+</div>
+</div>
+<div class="pn card">
+<div class="lbl">Barre de composante · percentile</div>
+<sc-for list="{{comps}}" as="k" hint-placeholder-count="2">
+<div>
+<div style="display:flex;justify-content:space-between;gap:12px;font-size:13px"><span style="color:#EDEAE6;font-weight:500">{{k.n}}</span><span class="num" style="color:#ABA7A2">{{k.v}} · P{{k.p}}</span></div>
+<div style="position:relative;height:8px;margin-top:8px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:{{k.p}}%;background:{{k.c}}"></div><div style="position:absolute;top:-3px;bottom:-3px;left:50%;width:1px;background:#3A3835"></div></div>
+</div>
+</sc-for>
+</div>
+<div class="pn card">
+<div class="lbl">Infobulle de graphique</div>
+<div style="position:relative;align-self:flex-start;padding:10px 12px;background:#121110;border:1px solid #8A7533;border-radius:3px;box-shadow:0 8px 24px rgba(0,0,0,.6)">
+<div class="lbl" style="color:#E4C24A">IPC 1 an · 15/10/2026</div>
+<div class="num" style="display:grid;grid-template-columns:auto auto;gap:4px 16px;margin-top:8px;font-size:12px"><span style="color:#ABA7A2">Réel</span><span>3,7 %</span><span style="color:#ABA7A2">Consensus</span><span>3,6 %</span><span style="color:#ABA7A2">Surprise z</span><span class="up">+0,8</span></div>
+</div>
+</div>
+<div class="pn card">
+<div class="lbl">Sparkline et statuts de flux</div>
+<svg viewBox="0 0 100 28" preserveAspectRatio="none" style="width:100%;height:40px;display:block" aria-hidden="true"><path d="{{spark}}" style="fill:none;stroke:#5CCBE3;stroke-width:1.6;vector-effect:non-scaling-stroke"></path></svg>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:8px 18px;font-size:11.5px;color:#ABA7A2">
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#5CCBE3"></span>Connecté</span>
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>Retard &gt; 2 s</span>
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#D95B55"></span>Déconnecté</span>
+</div>
+</div>
+<div class="pn" style="grid-column:1 / -1;padding:24px;background:#050504">
+<div class="lbl" style="margin-bottom:14px">Palette de commandes · Ctrl K</div>
+<div style="max-width:640px;margin:0 auto;background:#0A0A09;border:1px solid #8A7533;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.8)">
+<label style="display:flex;align-items:center;gap:10px;height:52px;padding:0 16px;border-bottom:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:18px;height:18px"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Commande</span>
+<input type="text" value="BTC GP" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 16px 'JetBrains Mono',monospace;letter-spacing:.06em">
+<kbd class="chip">Échap</kbd>
+</label>
+<div role="listbox" aria-label="Suggestions" style="padding:6px 0">
+<sc-for list="{{cmds}}" as="m" hint-placeholder-count="5">
+<div role="option" aria-selected="{{m.sel}}" style="display:flex;align-items:center;gap:14px;padding:10px 16px;background:{{m.bg}};border-left:2px solid {{m.bd}}">
+<span class="num" style="width:96px;font-size:12.5px;color:#E4C24A">{{m.k}}</span>
+<span style="flex:1;min-width:0;color:#EDEAE6">{{m.t}}</span>
+<span class="lbl" style="font-size:10px">{{m.s}}</span>
+</div>
+</sc-for>
+</div>
+<div class="lbl" style="display:flex;flex-wrap:wrap;gap:8px 18px;padding:10px 16px;border-top:1px solid #22201E;font-size:10px"><span>↑ ↓ naviguer</span><span>Entrée ouvrir</span><span>Maj + Entrée nouveau panneau</span></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2560}}'>
+class Component extends DCLogic {
+  renderVals() {
+    function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+    function gp(v,R){var t=Math.PI*(1-v/100);return (100+R*Math.cos(t)).toFixed(2)+' '+(100-R*Math.sin(t)).toFixed(2);}
+    function arc(a,b){return 'M'+gp(a,80)+'A80 80 0 0 1 '+gp(b,80);}
+    var r=rng(5),v=[0],i,s='',lo,hi;for(i=1;i<40;i++)v.push(v[i-1]+(r()-0.42));lo=Math.min.apply(null,v);hi=Math.max.apply(null,v);
+    for(i=0;i<40;i++)s+=(i?'L':'M')+(i*100/39).toFixed(1)+' '+(26-(v[i]-lo)/(hi-lo)*24).toFixed(1);
+    var G=[['Fonds et filets',[['Fond','#000000','Arrière-plan de l’application'],['Panneau','#0A0A09','Surface des modules'],['Panneau 2','#121110','Survol, champs, infobulles'],['Filet','#22201E','Bordures et séparateurs'],['Filet fort','#3A3835','Contours de boutons et puces']]],
+      ['Or',[['Or','#E4C24A','Accent, éléments actifs, prix'],['Or vif','#F6D44E','Chiffres clés, survol'],['Or moyen','#8A7533','Coins HUD, contours actifs'],['Or profond','#2B2511','Fonds teintés, sélection']]],
+      ['Signal',[['Cyan','#5CCBE3','Hausse, au-dessus de l’attendu'],['Cellule cyan','#35717D','Heatmap positive, texte #E3F8FB'],['Corail','#D95B55','Baisse, en dessous de l’attendu'],['Cellule corail','#84413C','Heatmap négative, texte #FFE3E0'],['Cellule neutre','#22201E','Heatmap neutre, texte #D9D5D0']]],
+      ['Texte',[['Texte 1','#EDEAE6','Titres et valeurs'],['Texte 2','#ABA7A2','Texte secondaire'],['Texte 3','#85817A','Micro-labels, minimum 4,5:1 sur fond']]]];
+    var groups=G.map(function(g){return {t:g[0],items:g[1].map(function(c){return {n:c[0],hex:c[1],u:c[2]};})};});
+    var chrome=[['Réglages du panneau','M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4'],['Épingler le panneau','M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7'],['Verrouiller la disposition','M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3'],['Agrandir le panneau','M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7'],['Fermer le panneau','M6 6l12 12M18 6L6 18']].map(function(c){return {l:c[0],d:c[1]};});
+    var comps=[{n:'VIX',v:'20,0',p:18,c:'#D95B55'},{n:'Cuivre / or',v:'+4,49 %',p:59,c:'#35717D'}];
+    var cmds=[['BTC GP','Graphique BTC-USDT perpétuel','Graphiques',1],['BTC FUND','Funding multi-plateformes','Dérivés',0],['BTC LIQ','Flux de liquidations','Microstructure',0],['BTC OI','Open interest agrégé','Dérivés',0],['BTC CVD','Delta cumulé spot / perp','Microstructure',0]].map(function(m){return {k:m[0],t:m[1],s:m[2],sel:m[3]?'true':'false',bg:m[3]?'#2B2511':'transparent',bd:m[3]?'#E4C24A':'transparent'};});
+    return {groups:groups,chrome:chrome,comps:comps,cmds:cmds,spark:s,g1:arc(0,24.2),g2:arc(25.8,44.2),g3:arc(45.8,54.2),g4:arc(55.8,74.2),g5:arc(75.8,100),needle:'M100 100L'+gp(30,62)};
+  }
+}
+</script>
+</body>
+</html>

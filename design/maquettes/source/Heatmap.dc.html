@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Heatmap fondamentale — TERMINAL</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.pill{display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 10px;border-radius:12px;font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.14em;white-space:nowrap}
+.p-up{background:#387380;color:#EAFBFE}.p-dn{background:#84413C;color:#FFE3E0}.p-nt{background:#22201E;color:#D9D5D0}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.rk{display:grid;grid-template-columns:22px 26px 44px minmax(0,1fr) 48px 92px;gap:10px;align-items:center;width:100%;min-height:44px;padding:0 12px;border:0;border-top:1px solid #22201E;background:transparent;color:#EDEAE6;text-align:left;cursor:pointer}
+.rk:hover{background:#121110}
+.rk[aria-pressed="true"]{background:#16130A;box-shadow:inset 2px 0 0 #E4C24A}
+.mx{display:grid;grid-template-columns:104px repeat(7,minmax(58px,1fr)) 96px;gap:4px;align-items:center;padding:0 12px}
+.cell{display:flex;align-items:center;justify-content:center;height:40px;border-radius:2px;font:600 12.5px 'JetBrains Mono',monospace}
+.cb{display:flex;align-items:center;gap:8px;height:40px;padding:0 8px;border:1px solid transparent;border-radius:2px;background:transparent;color:#EDEAE6;cursor:pointer;font:600 13px 'JetBrains Mono',monospace}
+.cb[aria-pressed="true"]{border-color:#E4C24A;color:#F6D44E;background:#16130A}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.dc.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.micoff}}"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.sli}}"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<sc-for list="{{clocks}}" as="c" hint-placeholder-count="4"><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:{{c.dc}}"></span>{{c.c}} <span style="color:{{c.tc}}">{{c.t}}</span></span></sc-for>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.bell}}"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+<sc-for list="{{nav}}" as="sec" hint-placeholder-count="6">
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">{{sec.t}}</div>
+<sc-for list="{{sec.items}}" as="it" hint-placeholder-count="4">
+<sc-if value="{{it.isLink}}" hint-placeholder-val="{{ true }}"><a href="{{it.href}}" class="{{it.cls}}" aria-current="{{it.cur}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.d}}"></path></svg>{{it.t}}</a></sc-if>
+<sc-if value="{{it.isStatic}}" hint-placeholder-val="{{ false }}"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.d}}"></path></svg>{{it.t}}</span></sc-if>
+</sc-for>
+</div>
+</sc-for>
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="{{ic.heat}}"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Heatmap fondamentale · 8 devises majeures</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">Scores relatifs · somme nulle</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:16px">
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px">
+<section class="pn" aria-label="Classement relatif" style="flex:1 1 340px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Classement relatif</h2>
+<span class="chip">−100 · +100</span>
+</div>
+<div style="margin-top:-1px">
+<sc-for list="{{rank}}" as="c" hint-placeholder-count="8">
+<button class="rk" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}">
+<span class="num" style="font-size:11px;color:#85817A">{{c.i}}</span>
+<img src="{{c.flag}}" alt="" style="width:24px;height:16px;display:block;border-radius:1px">
+<span class="num" style="font-size:13px;font-weight:700">{{c.code}}</span>
+<span style="position:relative;height:10px;background:#121110"><span style="position:absolute;top:-3px;bottom:-3px;left:50%;width:1px;background:#3A3835"></span><span style="position:absolute;top:0;bottom:0;left:{{c.bl}}%;width:{{c.bw}}%;background:{{c.bc}}"></span></span>
+<span class="num {{c.sc}}" style="text-align:right;font-size:13px;font-weight:700">{{c.s}}</span>
+<span class="pill {{c.pc}}" style="justify-self:end">{{c.bias}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+<section class="pn" aria-label="Fiche devise" style="flex:2 1 600px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>{{d.code}} · {{d.bank}}</h2>
+<span class="pill {{d.pc}}">{{d.bias}}</span>
+<sc-for list="{{chrome}}" as="c" hint-placeholder-count="5"><button class="ib" aria-label="{{c.l}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.d}}"></path></svg></button></sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 36px;padding:18px 18px 8px">
+<div style="display:flex;align-items:center;gap:16px">
+<img src="{{d.flag}}" alt="{{d.code}}" style="width:48px;height:32px;display:block;border-radius:2px;border:1px solid #22201E">
+<div><div class="lbl" style="font-size:10px">Taux directeur</div><div style="margin-top:4px;font:600 64px/1 'Rajdhani',sans-serif;color:#F6D44E;font-variant-numeric:tabular-nums">{{d.rate}}</div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<span class="num" style="font-size:12px;color:#ABA7A2">Précédent {{d.prev}} · {{d.prevDate}}</span>
+<span class="{{d.mvc}}">Dernier mouvement · {{d.move}}</span>
+<span class="chip hot">Prochaine réunion · {{d.next}} · {{d.j}}</span>
+</div>
+</div>
+<div style="padding:10px 18px 4px">
+<div style="display:flex;justify-content:space-between;align-items:baseline"><span class="lbl" style="font-size:10px">Inflation vs cible</span><span class="num" style="font-size:11px;color:#ABA7A2">IPC <span style="color:#E4C24A">{{d.cpi}}</span> · sous-jacente <span style="color:#EDEAE6">{{d.core}}</span></span></div>
+<div style="position:relative;height:30px;margin-top:10px">
+<div style="position:absolute;left:0;right:0;top:13px;height:4px;background:#22201E"></div>
+<div style="position:absolute;top:4px;bottom:4px;left:{{d.tgt}}%;width:0;border-left:1px dashed #5CCBE3"></div>
+<div style="position:absolute;top:8px;left:{{d.cpiX}}%;width:12px;height:12px;margin-left:-6px;background:#E4C24A;transform:rotate(45deg)"></div>
+<div style="position:absolute;top:10px;left:{{d.coreX}}%;width:10px;height:10px;margin-left:-5px;border:2px solid #EDEAE6;border-radius:50%;background:#0A0A09"></div>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;font-size:10px;color:#85817A"><span>0 %</span><span style="color:#5CCBE3">cible 2 %</span><span>{{d.rmax}} %</span></div>
+</div>
+<div style="padding:12px 18px 16px">
+<div style="display:flex;flex-wrap:wrap;gap:6px 16px;margin-bottom:8px">
+<span class="lbl" style="font-size:10px">10 ans</span><span style="flex:1"></span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:2px solid #5CCBE3"></span>Taux directeur</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:2px solid #E4C24A"></span>Inflation</span>
+<span class="lbl" style="display:inline-flex;align-items:center;gap:6px;font-size:10px"><span style="width:14px;border-top:1px dashed #ABA7A2"></span>Cible 2 %</span>
+</div>
+<div style="display:flex;gap:6px">
+<div style="position:relative;flex:1;min-width:0;height:220px;border-left:1px solid #22201E;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 220" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="{{d.grid}}" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="{{d.target}}" style="fill:none;stroke:#ABA7A2;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="{{d.cpiP}}" style="fill:none;stroke:#E4C24A;stroke-width:1.6;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+<path d="{{d.rateP}}" style="fill:none;stroke:#5CCBE3;stroke-width:2;vector-effect:non-scaling-stroke"></path>
+</svg>
+</div>
+<div class="num" style="position:relative;width:40px;flex:none;font-size:10px;color:#85817A"><sc-for list="{{d.yl}}" as="y" hint-placeholder-count="4"><span style="position:absolute;left:0;top:{{y.top}}%;transform:translateY(-50%)">{{y.v}}</span></sc-for></div>
+</div>
+<div class="num" style="position:relative;height:16px;margin:6px 46px 0 0;font-size:10px;color:#85817A"><sc-for list="{{years}}" as="y" hint-placeholder-count="5"><span style="position:absolute;left:{{y.x}}%;transform:translateX(-50%)">{{y.t}}</span></sc-for></div>
+</div>
+</section>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px">
+<section class="pn" aria-label="Matrice fondamentale" style="flex:2 1 640px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Matrice fondamentale</h2>
+<span class="chip">Mise à jour 19/10 · 14:30</span>
+<sc-for list="{{chrome}}" as="c" hint-placeholder-count="5"><button class="ib" aria-label="{{c.l}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.d}}"></path></svg></button></sc-for>
+</div>
+<div style="overflow-x:auto;padding-bottom:10px">
+<div style="min-width:700px">
+<div class="mx lbl" style="height:38px;font-size:10px"><span>Devise</span><sc-for list="{{cols}}" as="h" hint-placeholder-count="7"><span style="text-align:center">{{h}}</span></sc-for><span style="text-align:center">Biais</span></div>
+<sc-for list="{{matrix}}" as="m" hint-placeholder-count="8">
+<div class="mx" style="margin-top:4px">
+<button class="cb" aria-pressed="{{m.pressed}}" onClick="{{m.pick}}"><img src="{{m.flag}}" alt="" style="width:21px;height:14px;display:block">{{m.code}}<span class="{{m.sc}}" style="margin-left:auto;font-size:11px">{{m.s}}</span></button>
+<sc-for list="{{m.cells}}" as="x" hint-placeholder-count="7"><span class="cell" style="background:{{x.bg}};color:{{x.fg}}">{{x.v}}</span></sc-for>
+<span style="display:flex;justify-content:center"><span class="pill {{m.pc}}">{{m.bias}}</span></span>
+</div>
+</sc-for>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 14px;border-top:1px solid #22201E">
+<span class="lbl" style="font-size:10px">Lecture</span>
+<span style="display:inline-flex;gap:3px"><span style="width:22px;height:12px;background:#84413C"></span><span style="width:22px;height:12px;background:#5C302D"></span><span style="width:22px;height:12px;background:#22201E"></span><span style="width:22px;height:12px;background:#2A5058"></span><span style="width:22px;height:12px;background:#387380"></span></span>
+<span style="font-size:12.5px;color:#ABA7A2">du plus défavorable au plus favorable pour la devise, relativement aux 7 autres</span>
+</div>
+</section>
+<div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<section class="pn" aria-label="Lecture fondamentale">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Lecture fondamentale · assistant</h2>
+<span style="width:12px;height:12px;margin-right:8px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%)"></span>
+</div>
+<div style="padding:16px">
+<p style="margin:0;font-size:14.5px;line-height:1.6;color:#D9D5D0">{{d.read}}</p>
+<div class="lbl" style="margin-top:12px;font-size:10px">Générée à partir des données affichées · à vérifier</div>
+</div>
+</section>
+<section class="pn" aria-label="Comparateur de paire">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Paire {{pair.a}} / {{pair.b}}</h2>
+</div>
+<div class="lbl" style="display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 14px;font-size:10px"><span>Indicateur</span><span style="text-align:right">{{pair.a}}</span><span style="text-align:right">{{pair.b}}</span><span style="text-align:right">Écart</span></div>
+<sc-for list="{{pair.rows}}" as="p" hint-placeholder-count="7">
+<div style="display:grid;grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:36px;padding:0 14px;border-top:1px solid #22201E;font-size:13px">
+<span style="color:#ABA7A2">{{p.n}}</span><span class="num" style="text-align:right">{{p.a}}</span><span class="num" style="text-align:right">{{p.b}}</span><span class="num {{p.c}}" style="text-align:right;font-weight:700">{{p.g}}</span>
+</div>
+</sc-for>
+<div style="display:flex;align-items:center;gap:10px;padding:14px;border-top:1px solid #22201E;background:#16130A">
+<span class="dia"></span><span style="font:600 15px 'Barlow',sans-serif;color:#F6D44E">{{pair.verdict}}</span>
+</div>
+</section>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Sources</span>
+<sc-for list="{{feeds}}" as="f" hint-placeholder-count="5"><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>{{f.n}}</span></sc-for>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self=this,st=this.state||{},sel=st.sel||'JPY';
+    function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+    var IC={
+      ov:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',ch:'M4 19h16M5 15l4-4 3 3 6-7',doc:'M6 4h12v16H6zM9 8h6M9 12h6M9 16h4',
+      clk:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2',orb:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z',
+      cal:'M5 6h14v14H5zM5 10h14M9 4v4M15 4v4',news:'M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3',
+      bank:'M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16',wave:'M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2',
+      globe:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18',pct:'M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z',
+      users:'M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5',bars:'M5 20V10M10 20V4M15 20v-8M20 20v-5',
+      brief:'M4 8h16v11H4zM9 8V5h6v3M4 13h16',gauge:'M5 17a7 7 0 1 1 14 0M12 17l3-5',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z',
+      book:'M4 6h10M4 10h14M4 14h8M4 18h12',sine:'M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0',heat:'M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16',
+      grid4:'M4 4h16v16H4zM4 12h16M12 4v16',pulse:'M3 12h4l3-7 4 14 3-7h4',drop:'M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z',
+      target:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z',calc:'M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6',
+      x:'M6 6l12 12M18 6L6 18',lock:'M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3',exp:'M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7',pin:'M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7',
+      bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0',sli:'M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4',
+      micoff:'M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16',
+      grip:'M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01'
+    };
+    var HERE='Heatmap.dc.html';
+    var NAV=[['Global',[['Vue d’ensemble','ov','Main.dc.html'],['Graphiques','ch'],['Récap de session','doc'],['Horaires des marchés','clk'],['Assistant','orb']]],
+      ['News',[['Calendrier','cal','Calendrier.dc.html'],['Fil d’actus','news','Actus.dc.html'],['Recherche bancaire','bank'],['Squawk','wave']]],
+      ['Macro',[['Macro','globe'],['Taux','pct','Taux.dc.html']]],
+      ['Positionnement & sentiment',[['Sentiment retail','users'],['COT','bars'],['Positions des banques','brief'],['Sentiment de risque','gauge','Risque.dc.html']]],
+      ['Analyse',[['Markets Watch','eye'],['Microstructure BTC','book','Microstructure.dc.html'],['Saisonnalité','sine'],['Heatmap fondamentale','heat','Heatmap.dc.html'],['Heatmap technique','grid4'],['Indicateurs','pulse'],['Liquidité','drop']]],
+      ['Compte',[['Track record','target'],['Calculateur de risque','calc']]]];
+    var nav=NAV.map(function(s){return {t:s[0],items:s[1].map(function(i){var on=i[2]===HERE;return {t:i[0],d:IC[i[1]],href:i[2]||'',isLink:!!i[2],isStatic:!i[2],cls:on?'on':'',cur:on?'page':undefined};})};});
+    var chrome=[['Réglages du panneau','sli'],['Épingler le panneau','pin'],['Verrouiller la disposition','lock'],['Agrandir le panneau','exp'],['Fermer le panneau','x']].map(function(c){return {l:c[0],d:IC[c[1]]};});
+    var clocks=[['TOK','22:36',0],['LON','14:36',1],['PAR','15:36',1],['NY','09:36',2]].map(function(c){return {c:c[0],t:c[1],dc:c[2]?'#E4C24A':'#3A3835',tc:c[2]===2?'#E4C24A':'#ABA7A2'};});
+    var feeds=['Banques centrales','Instituts statistiques','FRED','Consensus calendrier','PMI'].map(function(n){return {n:n};});
+    var F={USD:'/_blob/7317876f38c797fc4239a5ca31cee74b',EUR:'/_blob/747b41966dd8a650f2f00e095aee5efb',GBP:'/_blob/ea7bc9bc66a68ab0d4586549acda28bb',JPY:'/_blob/6c5db5d7bfb40351a01e79572376151b',AUD:'/_blob/0af13bf6a9cc5138df447d7e9ba22ba0',NZD:'/_blob/8656ed543f45171a0920bcbf0c8d7328',CAD:'/_blob/68f36db7f85b8cd1f0d0d9a463779e1d',CHF:'/_blob/855b7827439e56e44d6f3eba60c01713'};
+    // code, banque, taux, précédent, date, mouvement, réunion, J, IPC, core, PIB, chômage, PMI, ventes, score, valeurs, scores cellules, taux [pré, covid, pic, actuel], IPC [pré, pic, actuel]
+    var C=[
+      ['AUD','Reserve Bank of Australia',3.85,4.10,'12/08/2026','CUT','03/11/2026','J-15',3.2,2.9,1.9,4.1,52.8,3.4,58,['3,85 %','3,2 %','1,9 %','4,1 %','52,8','+1,1','+24'],[1,1,1,1,1,2,2],[1.5,0.1,4.35,3.85],[1.8,7.8,3.2]],
+      ['USD','Réserve fédérale',4.00,4.25,'17/09/2026','CUT','28/10/2026','J-9',3.7,2.6,2.2,4.2,54.5,6.3,41,['4,00 %','3,7 %','2,2 %','4,2 %','54,5','+0,1','+12'],[2,1,2,0,1,0,1],[1.75,0.25,5.5,4.0],[2.0,9.1,3.7]],
+      ['EUR','Banque centrale européenne',2.15,2.15,'10/09/2026','STATU QUO','29/10/2026','J-10',2.3,2.1,1.1,6.2,51.0,1.8,27,['2,15 %','2,3 %','1,1 %','6,2 %','51,0','+0,6','+9'],[0,0,0,1,1,1,1],[0,0,4.0,2.15],[1.2,10.6,2.3]],
+      ['NZD','Reserve Bank of New Zealand',2.75,3.00,'08/10/2026','CUT','25/11/2026','J-37',2.9,2.7,0.8,5.3,49.6,1.2,6,['2,75 %','2,9 %','0,8 %','5,3 %','49,6','+0,4','+2'],[0,1,-1,-1,0,1,0],[1.75,0.25,5.5,2.75],[1.6,7.3,2.9]],
+      ['GBP','Banque d’Angleterre',3.75,4.00,'06/08/2026','CUT','05/11/2026','J-17',3.8,3.4,1.0,4.8,50.4,1.5,-4,['3,75 %','3,8 %','1,0 %','4,8 %','50,4','−0,7','−3'],[1,0,-1,-1,0,-1,0],[0.5,0.1,5.25,3.75],[2.0,11.1,3.8]],
+      ['CHF','Banque nationale suisse',0.00,0.00,'25/09/2026','STATU QUO','10/12/2026','J-52',0.3,0.7,1.2,2.9,48.7,0.9,-22,['0,00 %','0,3 %','1,2 %','2,9 %','48,7','0,0','−8'],[-2,-1,0,1,-1,0,-1],[-0.75,-0.75,1.75,0],[0.3,3.5,0.3]],
+      ['CAD','Banque du Canada',2.25,2.50,'17/09/2026','CUT','28/10/2026','J-9',1.9,2.4,0.9,7.0,48.9,2.2,-41,['2,25 %','1,9 %','0,9 %','7,0 %','48,9','−0,9','−11'],[-1,0,-1,-2,-1,-1,-1],[1.25,0.25,5.0,2.25],[1.9,8.1,1.9]],
+      ['JPY','Banque du Japon',1.25,1.00,'18/09/2026','HIKE','30/10/2026','J-11',1.9,1.7,0.3,2.5,54.1,2.7,-65,['1,25 %','1,9 %','0,3 %','2,5 %','54,1','−0,5','−21'],[-1,-1,-2,1,0,-1,-2],[-0.1,-0.1,-0.1,1.25],[0.5,4.3,1.9]]
+    ];
+    function fr(v,d){return (v<0?'−':'')+Math.abs(v).toFixed(d).replace('.',',');}
+    function sg(v,d){return (v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(d).replace('.',',');}
+    function bias(s){return s>=20?['BULLISH','p-up']:s<=-20?['BEARISH','p-dn']:['NEUTRAL','p-nt'];}
+    var BG={'2':['#387380','#EAFBFE'],'1':['#2A5058','#DDF3F7'],'0':['#22201E','#D9D5D0'],'-1':['#5C302D','#FFE3E0'],'-2':['#84413C','#FFE3E0']};
+    function pick(code){return function(){self.setState({sel:code});};}
+    var rank=C.map(function(c,i){var s=c[14],b=bias(s);return {i:i+1,code:c[0],flag:F[c[0]],s:sg(s,0),sc:s>=0?'num up':'num dn',bl:s>=0?50:50+s/2,bw:Math.abs(s)/2,bc:s>=0?'#5CCBE3':'#D95B55',bias:b[0],pc:b[1],pressed:c[0]===sel?'true':'false',pick:pick(c[0])};});
+    var cols=['Taux','Inflation','Croissance','Emploi','Activité','Sentiment','Surprises'];
+    var matrix=C.map(function(c){var b=bias(c[14]);return {code:c[0],flag:F[c[0]],s:sg(c[14],0),sc:c[14]>=0?'up':'dn',bias:b[0],pc:b[1],pressed:c[0]===sel?'true':'false',pick:pick(c[0]),cells:c[15].map(function(v,k){var q=BG[String(c[16][k])];return {v:v,bg:q[0],fg:q[1]};})};});
+    var R=C.filter(function(c){return c[0]===sel;})[0]||C[7];
+    function q4(v){return Math.round(v*4)/4;}
+    var rp=[],cp=[],t,v,k,r=rng(R[0].charCodeAt(0)*7+R[0].charCodeAt(2));
+    for(t=0;t<=40;t++){var p=R[17];if(t<14)v=p[0];else if(t<22)v=p[1];else if(t<28)v=q4(p[1]+(p[2]-p[1])*(t-21)/6);else if(t<31)v=p[2];else if(t<39)v=q4(p[2]+(p[3]-p[2])*(t-30)/9);else v=p[3];rp.push(v);}
+    var ci=R[18],A=[[0,ci[0]],[17,ci[0]],[23,ci[1]],[30,(ci[0]+ci[2])/2+0.6],[40,ci[2]]];k=0;
+    for(t=0;t<=40;t++){while(k<A.length-2&&t>A[k+1][0])k++;var f=(t-A[k][0])/(A[k+1][0]-A[k][0]);v=A[k][1]+(A[k+1][1]-A[k][1])*f;cp.push(t===40?ci[2]:v+(r()-0.5)*0.35);}
+    var all=rp.concat(cp).concat([2]),lo=Math.floor(Math.min.apply(null,all)-0.5),hi=Math.ceil(Math.max.apply(null,all)+0.5),step=(hi-lo)>8?2:(hi-lo)>4?1:0.5;
+    function Y(x){return ((hi-x)/(hi-lo)*220).toFixed(1);}
+    var rateP='M0 '+Y(rp[0]),cpiP='',grid='',yl=[];for(t=1;t<=40;t++)rateP+='H'+(t*25)+'V'+Y(rp[t]);
+    for(t=0;t<=40;t++)cpiP+=(t?'L':'M')+(t*25)+' '+Y(cp[t]);
+    for(v=Math.ceil(lo/step)*step;v<=hi;v+=step){grid+='M0 '+Y(v)+'H1000';yl.push({v:fr(v,step<1?1:0)+' %',top:((hi-v)/(hi-lo)*100).toFixed(2)});}
+    var rmax=Math.max(5,Math.ceil(Math.max(R[8],R[9])+1)),b=bias(R[14]);
+    var mv=R[5],mvc=mv==='HIKE'?'chip cy':mv==='CUT'?'chip':'chip';
+    var other=R[0]==='USD'?C[2]:C[1];
+    var read=R[0]+' : biais '+b[0].toLowerCase()+', score relatif '+sg(R[14],0)+'. Taux directeur à '+fr(R[2],2)+' % pour une inflation de '+fr(R[8],1)+' % (sous-jacente '+fr(R[9],1)+' %), '+(R[8]>2.2?'au-dessus':R[8]<1.8?'en dessous':'proche')+' de la cible de 2 %. Croissance '+fr(R[10],1)+' %, chômage '+fr(R[11],1)+' %. Prochaine réunion le '+R[6]+' ('+R[7]+').';
+    var PR=[['Taux directeur',2,2,1],['IPC 1 an',8,1,1],['IPC sous-jacent',9,1,1],['PIB 1 an',10,1,1],['Chômage',11,1,-1],['PMI composite',12,1,1],['Ventes au détail',13,1,1]];
+    var favA=0,prow=PR.map(function(x){var a=R[x[1]],o=other[x[1]],g=a-o;favA+=(g*x[3]>0?1:g*x[3]<0?-1:0);return {n:x[0],a:fr(a,x[2]),b:fr(o,x[2]),g:sg(g,x[2]),c:g*x[3]>0?'up':g*x[3]<0?'dn':''};});
+    var pair={a:R[0],b:other[0],rows:prow,verdict:favA>0?'Les fondamentaux favorisent le '+R[0]:favA<0?'Les fondamentaux favorisent l’'+other[0]:'Fondamentaux équilibrés'};
+    if(other[0]!=='USD'&&other[0]!=='EUR'&&favA<0)pair.verdict='Les fondamentaux favorisent le '+other[0];
+    if(R[0]==='USD'&&favA>0)pair.verdict='Les fondamentaux favorisent l’USD';
+    if(R[0]==='EUR'&&favA>0)pair.verdict='Les fondamentaux favorisent l’EUR';
+    var years=[['2017',1],['2019',9],['2021',17],['2023',25],['2025',33]].map(function(y){return {t:y[0],x:(y[1]*2.5).toFixed(1)};});
+    var d={code:R[0],bank:R[1],flag:F[R[0]],rate:fr(R[2],2)+' %',prev:fr(R[3],2)+' %',prevDate:R[4],move:mv,mvc:mvc,next:R[6],j:R[7],cpi:fr(R[8],1)+' %',core:fr(R[9],1)+' %',
+      tgt:(2/rmax*100).toFixed(2),cpiX:Math.max(0,R[8]/rmax*100).toFixed(2),coreX:Math.max(0,R[9]/rmax*100).toFixed(2),rmax:rmax,bias:b[0],pc:b[1],
+      grid:grid,target:'M0 '+Y(2)+'H1000',rateP:rateP,cpiP:cpiP,yl:yl,read:read};
+    return {ic:IC,nav:nav,chrome:chrome,clocks:clocks,feeds:feeds,rank:rank,cols:cols,matrix:matrix,d:d,pair:pair,years:years};
+  }
+}
+</script>
+</body>
+</html>

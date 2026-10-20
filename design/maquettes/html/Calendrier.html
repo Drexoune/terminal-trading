@@ -1,0 +1,571 @@
+<!doctype html>
+<!-- Rendu statique de design/maquettes/source/Calendrier.dc.html : état par défaut, données fictives, sans interactions.
+     Largeur de référence 1440 px. Les interactions sont décrites dans docs/ecrans.md. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calendrier économique — TERMINAL</title>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}.nt{color:#EDEAE6}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;background:transparent;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.tg{height:30px;cursor:pointer}
+.tg[aria-pressed="true"]{background:#2B2511;border-color:#8A7533;color:#F6D44E}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.row{display:grid;grid-template-columns:52px 64px 30px minmax(0,1fr) 72px 80px 76px 64px;gap:8px;align-items:center;padding:0 14px}
+.zc{display:inline-flex;align-items:center;justify-content:center;width:56px;height:24px;border-radius:2px;font:600 12px 'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+
+
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#3A3835"></span>TOK <span style="color:#ABA7A2">22:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>LON <span style="color:#ABA7A2">14:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>PAR <span style="color:#ABA7A2">15:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>NY <span style="color:#E4C24A">09:36</span></span>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Global</div>
+
+<a href="Main.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></svg>Vue d’ensemble</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M5 15l4-4 3 3 6-7"></path></svg>Graphiques</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"></path></svg>Récap de session</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2"></path></svg>Horaires des marchés</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Assistant</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">News</div>
+
+<a href="Calendrier.html" class="on" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>Calendrier</a>
+
+
+<a href="Actus.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3"></path></svg>Fil d’actus</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16"></path></svg>Recherche bancaire</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2"></path></svg>Squawk</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Macro</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>Macro</span>
+
+<a href="Taux.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z"></path></svg>Taux</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Positionnement &amp; sentiment</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5"></path></svg>Sentiment retail</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M10 20V4M15 20v-8M20 20v-5"></path></svg>COT</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V5h6v3M4 13h16"></path></svg>Positions des banques</span>
+
+<a href="Risque.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17a7 7 0 1 1 14 0M12 17l3-5"></path></svg>Sentiment de risque</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Analyse</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Markets Watch</span>
+
+<a href="Microstructure.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 10h14M4 14h8M4 18h12"></path></svg>Microstructure BTC</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0"></path></svg>Saisonnalité</span>
+
+<a href="Heatmap.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Heatmap fondamentale</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 12h16M12 4v16"></path></svg>Heatmap technique</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Indicateurs</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"></path></svg>Liquidité</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Compte</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z"></path></svg>Track record</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6"></path></svg>Calculateur de risque</span>
+
+</div>
+
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Calendrier économique · semaine 43</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">Heure de Paris · UTC+2</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:14px 16px 0">
+<div style="display:flex;align-items:center;gap:6px">
+<button class="ib" aria-label="Semaine précédente" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></button>
+<span class="num" style="padding:0 8px;font-size:13px;color:#EDEAE6">19 – 25 oct. 2026</span>
+<button class="ib" aria-label="Semaine suivante" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></button>
+</div>
+<div role="group" aria-label="Devises affichées" style="display:flex;flex-wrap:wrap;gap:6px">
+<button class="chip tg" aria-pressed="true"><img src="../../assets/flags/us.svg" alt="" style="width:15px;height:10px;display:block">USD</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/eu.svg" alt="" style="width:15px;height:10px;display:block">EUR</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/gb.svg" alt="" style="width:15px;height:10px;display:block">GBP</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/jp.svg" alt="" style="width:15px;height:10px;display:block">JPY</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/ca.svg" alt="" style="width:15px;height:10px;display:block">CAD</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/au.svg" alt="" style="width:15px;height:10px;display:block">AUD</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/nz.svg" alt="" style="width:15px;height:10px;display:block">NZD</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/ch.svg" alt="" style="width:15px;height:10px;display:block">CHF</button><button class="chip tg" aria-pressed="true"><img src="../../assets/flags/cn.svg" alt="" style="width:15px;height:10px;display:block">CNY</button>
+</div>
+<div role="group" aria-label="Impact" style="display:flex;gap:6px">
+<button class="chip tg" aria-pressed="true">Fort</button><button class="chip tg" aria-pressed="true">Moyen</button><button class="chip tg" aria-pressed="false">Faible</button>
+</div>
+<label style="flex:1 1 200px;display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Rechercher un indicateur</span>
+<input type="text" placeholder="Rechercher un indicateur…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+</label>
+</div>
+<div style="flex:1;display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:14px 16px 16px">
+<section class="pn" aria-label="Publications de la semaine" style="flex:2 1 620px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Publications de la semaine</h2>
+<span class="chip">14 événements</span>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="overflow-x:auto">
+<div style="min-width:720px">
+<div class="row lbl" style="height:34px;font-size:10px"><span>Heure</span><span>Devise</span><span>Imp.</span><span>Événement</span><span style="text-align:right">Réel</span><span style="text-align:right">Consensus</span><span style="text-align:right">Précédent</span><span style="text-align:right">Surprise</span></div>
+
+<div>
+<div style="display:flex;align-items:center;gap:10px;height:34px;padding:0 14px;background:#121110;border-top:1px solid #22201E">
+<span style="font:600 14px/1 'Rajdhani',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#EDEAE6">Lundi 19 octobre</span>
+<span class="lbl" style="font-size:10px;color:#E4C24A">Aujourd’hui</span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">04:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/cn.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">CNY</span></span>
+<span aria-label="Impact fort" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">PIB T3 (sur un an)</span>
+
+
+</span>
+<span class="num dn" style="text-align:right;font-size:13px;font-weight:700">4,7 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">4,8 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">5,2 %</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:#84413C;color:#FFE3E0">−0,6</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">04:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/cn.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">CNY</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Production industrielle (sur un an)</span>
+
+
+</span>
+<span class="num up" style="text-align:right;font-size:13px;font-weight:700">5,9 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">5,6 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">5,7 %</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:#35717D;color:#E3F8FB">+0,7</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:#16130A">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">14:30</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Indice d’activité nationale de la Fed de Chicago</span>
+<span class="chip" style="height:18px;background:#E4C24A;border-color:#E4C24A;color:#000">Nouveau</span>
+
+</span>
+<span class="num up" style="text-align:right;font-size:13px;font-weight:700">0,18</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">−0,05</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">−0,12</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:#35717D;color:#E3F8FB">+1,4</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">16:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Indice NAHB du marché immobilier</span>
+
+<span class="chip" style="height:18px;border-style:dashed;color:#EDEAE6">En attente · 00:23:56</span>
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">39</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">38</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+</div>
+
+<div>
+<div style="display:flex;align-items:center;gap:10px;height:34px;padding:0 14px;background:#121110;border-top:1px solid #22201E">
+<span style="font:600 14px/1 'Rajdhani',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#EDEAE6">Mardi 20 octobre</span>
+<span class="lbl" style="font-size:10px;color:#E4C24A"></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">08:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/gb.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">GBP</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Taux de chômage ILO (3 mois)</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">4,8 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">4,8 %</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">14:30</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/ca.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">CAD</span></span>
+<span aria-label="Impact fort" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">IPC (sur un an)</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">2,1 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">1,9 %</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+</div>
+
+<div>
+<div style="display:flex;align-items:center;gap:10px;height:34px;padding:0 14px;background:#121110;border-top:1px solid #22201E">
+<span style="font:600 14px/1 'Rajdhani',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#EDEAE6">Mercredi 21 octobre</span>
+<span class="lbl" style="font-size:10px;color:#E4C24A"></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">08:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/gb.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">GBP</span></span>
+<span aria-label="Impact fort" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">IPC (sur un an)</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">3,6 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">3,8 %</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">16:30</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Stocks de brut EIA</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">−1,2 M</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">+2,1 M</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+</div>
+
+<div>
+<div style="display:flex;align-items:center;gap:10px;height:34px;padding:0 14px;background:#121110;border-top:1px solid #22201E">
+<span style="font:600 14px/1 'Rajdhani',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#EDEAE6">Jeudi 22 octobre</span>
+<span class="lbl" style="font-size:10px;color:#E4C24A"></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">14:30</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Inscriptions hebdomadaires au chômage</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">228 k</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">224 k</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">16:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact faible" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Ventes de logements anciens (annualisées)</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">4,06 M</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">4,00 M</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+</div>
+
+<div>
+<div style="display:flex;align-items:center;gap:10px;height:34px;padding:0 14px;background:#121110;border-top:1px solid #22201E">
+<span style="font:600 14px/1 'Rajdhani',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#EDEAE6">Vendredi 23 octobre</span>
+<span class="lbl" style="font-size:10px;color:#E4C24A"></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">01:30</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/jp.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">JPY</span></span>
+<span aria-label="Impact fort" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">IPC national hors produits frais (sur un an)</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">1,8 %</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">1,7 %</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">10:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/eu.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">EUR</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">PMI composite flash</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">51,2</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">51,0</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">15:45</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">PMI composite flash</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">53,8</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">54,1</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+<div class="row" style="min-height:46px;border-top:1px solid #22201E;background:transparent">
+<span class="num" style="font-size:12.5px;color:#ABA7A2">16:00</span>
+<span style="display:flex;align-items:center;gap:8px"><img src="../../assets/flags/us.svg" alt="" style="width:21px;height:14px;display:block;border-radius:1px"><span class="num" style="font-size:12px;color:#EDEAE6">USD</span></span>
+<span aria-label="Impact moyen" style="display:flex;gap:2px"><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#E4C24A"></span><span style="width:4px;height:12px;background:#3A3835"></span></span>
+<span style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;min-width:0;padding:8px 0">
+<span style="color:#EDEAE6;font-weight:500">Confiance des consommateurs U. Michigan (finale)</span>
+
+
+</span>
+<span class="num " style="text-align:right;font-size:13px;font-weight:700">—</span>
+<span class="num" style="text-align:right;font-size:13px;color:#ABA7A2">55,0</span>
+<span class="num" style="text-align:right;font-size:13px;color:#85817A">54,6</span>
+<span style="display:flex;justify-content:flex-end"><span class="zc" style="background:transparent;color:#85817A">—</span></span>
+</div>
+
+</div>
+
+</div>
+</div>
+</section>
+<div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;gap:12px">
+<section class="pn" aria-label="Fiche indicateur IPC États-Unis">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Fiche · IPC États-Unis 1 an</h2>
+<img src="../../assets/flags/us.svg" alt="USD" style="width:21px;height:14px;display:block;margin-right:6px">
+</div>
+<div style="display:flex;flex-wrap:wrap;gap:14px 24px;padding:16px">
+<div><div class="lbl" style="font-size:10px">Réel</div><div style="margin-top:6px;font:600 40px/1 'Rajdhani',sans-serif;color:#F6D44E">3,7 %</div></div>
+<div><div class="lbl" style="font-size:10px">Consensus</div><div class="num" style="margin-top:12px;font-size:16px">3,6 %</div></div>
+<div><div class="lbl" style="font-size:10px">Précédent</div><div class="num" style="margin-top:12px;font-size:16px;color:#ABA7A2">3,4 %</div></div>
+<div><div class="lbl" style="font-size:10px">Surprise</div><div style="margin-top:8px"><span class="zc" style="background:#35717D;color:#E3F8FB">+0,8</span></div></div>
+<div class="lbl" style="flex-basis:100%;font-size:10px">Publié le 15/10/2026 · 14:30 · source BLS</div>
+</div>
+<div style="padding:0 16px 14px">
+<div class="lbl" style="font-size:10px;margin-bottom:8px">5 ans · par date de publication</div>
+<div style="display:flex;gap:6px">
+<div style="position:relative;flex:1;min-width:0;height:150px">
+<svg viewBox="0 0 600 160" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 85H600M0 10H600" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="M1 160V66.2h8V160ZM11 160V62.2h8V160ZM21 160V54.2h8V160ZM31 160V49.0h8V160ZM41 160V41.8h8V160ZM51 160V38.0h8V160ZM61 160V33.1h8V160ZM71 160V29.5h8V160ZM81 160V24.4h8V160ZM91 160V30.1h8V160ZM101 160V38.1h8V160ZM111 160V45.2h8V160ZM121 160V49.7h8V160ZM131 160V57.3h8V160ZM141 160V62.9h8V160ZM151 160V71.1h8V160ZM161 160V81.6h8V160ZM171 160V88.8h8V160ZM181 160V98.8h8V160ZM191 160V105.9h8V160ZM201 160V114.9h8V160ZM211 160V113.1h8V160ZM221 160V113.4h8V160ZM231 160V114.5h8V160ZM241 160V110.6h8V160ZM251 160V112.4h8V160ZM261 160V109.9h8V160ZM271 160V110.3h8V160ZM281 160V111.3h8V160ZM291 160V110.0h8V160ZM301 160V111.7h8V160ZM311 160V113.7h8V160ZM321 160V115.1h8V160ZM331 160V120.4h8V160ZM341 160V123.1h8V160ZM351 160V124.1h8V160ZM361 160V119.7h8V160ZM371 160V117.6h8V160ZM381 160V114.3h8V160ZM391 160V116.2h8V160ZM401 160V119.2h8V160ZM411 160V121.5h8V160ZM421 160V125.5h8V160ZM431 160V123.0h8V160ZM441 160V120.9h8V160ZM451 160V118.3h8V160ZM461 160V118.3h8V160Z" style="fill:#8A7533;stroke:none"></path>
+<path d="M471 160V116.6h8V160ZM491 160V119.2h8V160ZM501 160V116.5h8V160ZM511 160V114.2h8V160ZM521 160V112.9h8V160ZM531 160V110.5h8V160ZM541 160V103.0h8V160ZM551 160V97.0h8V160ZM561 160V107.5h8V160ZM571 160V109.0h8V160ZM581 160V109.0h8V160Z" style="fill:#E4C24A;stroke:none"></path>
+<path d="M591 160V104.5h8V160Z" style="fill:#F6D44E;stroke:none"></path>
+<path d="M481 160V116.5h8V160" style="fill:none;stroke:#85817A;stroke-width:1;stroke-dasharray:3 2;vector-effect:non-scaling-stroke"></path>
+<path d="M0 130H600" style="fill:none;stroke:#5CCBE3;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="M0 160H600" style="fill:none;stroke:#3A3835;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+</svg>
+</div>
+<div class="num" style="position:relative;width:34px;flex:none;font-size:10px;color:#85817A"><span style="position:absolute;top:6.25%;transform:translateY(-50%)">10 %</span><span style="position:absolute;top:53.1%;transform:translateY(-50%)">5 %</span><span style="position:absolute;top:81.25%;transform:translateY(-50%);color:#5CCBE3">2 %</span></div>
+</div>
+<div class="num" style="position:relative;height:16px;margin:6px 40px 0 0;font-size:10px;color:#85817A"><span style="position:absolute;left:4.17%;transform:translateX(-50%)">2022</span><span style="position:absolute;left:24.17%;transform:translateX(-50%)">2023</span><span style="position:absolute;left:44.17%;transform:translateX(-50%)">2024</span><span style="position:absolute;left:64.17%;transform:translateX(-50%)">2025</span><span style="position:absolute;left:84.17%;transform:translateX(-50%)">2026</span></div>
+<div style="margin-top:8px;font-size:12px;color:#85817A">Trait cyan : cible de 2 %. Pointillé : pas de publication en novembre 2025 (shutdown).</div>
+</div>
+<div style="border-top:1px solid #22201E">
+<div class="lbl" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;font-size:10px"><span>Publication</span><span style="text-align:right">Réel</span><span style="text-align:right">Cons.</span><span style="text-align:right">z</span></div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">15/10/2026</span><span style="text-align:right;color:#EDEAE6">3,7 %</span><span style="text-align:right;color:#85817A">3,6 %</span><span class="num up" style="text-align:right;font-weight:700">+0,8</span>
+</div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">12/09/2026</span><span style="text-align:right;color:#EDEAE6">3,4 %</span><span style="text-align:right;color:#85817A">3,4 %</span><span class="num" style="text-align:right;font-weight:700">0,0</span>
+</div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">13/08/2026</span><span style="text-align:right;color:#EDEAE6">3,4 %</span><span style="text-align:right;color:#85817A">3,4 %</span><span class="num" style="text-align:right;font-weight:700">0,0</span>
+</div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">15/07/2026</span><span style="text-align:right;color:#EDEAE6">3,5 %</span><span style="text-align:right;color:#85817A">3,8 %</span><span class="num dn" style="text-align:right;font-weight:700">−1,9</span>
+</div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">11/06/2026</span><span style="text-align:right;color:#EDEAE6">4,2 %</span><span style="text-align:right;color:#85817A">4,2 %</span><span class="num" style="text-align:right;font-weight:700">0,0</span>
+</div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">13/05/2026</span><span style="text-align:right;color:#EDEAE6">3,8 %</span><span style="text-align:right;color:#85817A">3,7 %</span><span class="num up" style="text-align:right;font-weight:700">+0,6</span>
+</div>
+
+<div class="num" style="display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:8px;align-items:center;height:32px;padding:0 16px;border-top:1px solid #22201E;font-size:12.5px">
+<span style="color:#ABA7A2">11/04/2026</span><span style="text-align:right;color:#EDEAE6">3,3 %</span><span style="text-align:right;color:#85817A">3,4 %</span><span class="num dn" style="text-align:right;font-weight:700">−0,6</span>
+</div>
+
+</div>
+</section>
+<section class="pn" aria-label="Réaction du BTC">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Réaction BTC · 30 min</h2>
+<span class="num dn" style="font-size:13px;font-weight:700;padding-right:8px">−0,92 %</span>
+</div>
+<div style="padding:14px 16px">
+<div style="position:relative;height:110px">
+<svg viewBox="0 0 350 110" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 27.5H350" style="fill:none;stroke:#3A3835;stroke-width:1;stroke-dasharray:4 4;vector-effect:non-scaling-stroke"></path>
+<path d="M50 0V110" style="fill:none;stroke:#8A7533;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="M0.0 26.1L10.0 27.3L20.0 23.2L30.0 26.5L40.0 22.3L50.0 26.3L60.0 50.5L70.0 70.7L80.0 62.7L90.0 62.5L100.0 56.7L110.0 53.2L120.0 50.7L130.0 49.3L140.0 49.5L150.0 56.9L160.0 58.2L170.0 62.5L180.0 67.1L190.0 69.2L200.0 70.3L210.0 73.6L220.0 75.2L230.0 72.2L240.0 75.3L250.0 71.9L260.0 76.3L270.0 80.3L280.0 78.2L290.0 84.4L300.0 85.1L310.0 86.4L320.0 89.8L330.0 86.7L340.0 88.5L350.0 90.8" style="fill:none;stroke:#D95B55;stroke-width:1.8;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="lbl" style="position:absolute;left:calc(14.3% + 6px);top:0;font-size:10px;color:#E4C24A">Publication</span>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#85817A"><span>−5 min</span><span>0</span><span>+10</span><span>+20</span><span>+30 min</span></div>
+<div style="margin-top:10px;font-size:12.5px;line-height:1.45;color:#ABA7A2">BTC-USDT perp OKX, du 15/10/2026 14:25 au 14:55 (heure de Paris).</div>
+</div>
+</section>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>OKX WS</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Binance WS</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Polymarket</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Kalshi</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>FRED</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Calendrier</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+
+</body>
+</html>

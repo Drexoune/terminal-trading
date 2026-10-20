@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Sentiment de risque — TERMINAL</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.pill{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:14px;font:600 12px/1 'JetBrains Mono',monospace;letter-spacing:.14em;white-space:nowrap}
+.p-dn{background:#84413C;color:#FFE3E0}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.seg{height:28px;padding:0 10px;border:1px solid #3A3835;background:transparent;color:#ABA7A2;font:500 11px 'JetBrains Mono',monospace;letter-spacing:.1em;cursor:pointer}
+.seg[aria-pressed="true"]{border-color:#8A7533;background:#2B2511;color:#F6D44E}
+.cp{display:grid;grid-template-columns:minmax(0,1.6fr) 92px minmax(120px,1.4fr) 44px;gap:14px;align-items:center;padding:0 16px}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.dc.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.micoff}}"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.sli}}"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<sc-for list="{{clocks}}" as="c" hint-placeholder-count="4"><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:{{c.dc}}"></span>{{c.c}} <span style="color:{{c.tc}}">{{c.t}}</span></span></sc-for>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.bell}}"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+<sc-for list="{{nav}}" as="sec" hint-placeholder-count="6">
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">{{sec.t}}</div>
+<sc-for list="{{sec.items}}" as="it" hint-placeholder-count="4">
+<sc-if value="{{it.isLink}}" hint-placeholder-val="{{ true }}"><a href="{{it.href}}" class="{{it.cls}}" aria-current="{{it.cur}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.d}}"></path></svg>{{it.t}}</a></sc-if>
+<sc-if value="{{it.isStatic}}" hint-placeholder-val="{{ false }}"><span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{it.d}}"></path></svg>{{it.t}}</span></sc-if>
+</sc-for>
+</div>
+</sc-for>
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="{{ic.gauge}}"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Sentiment de risque · indice composite 0–100</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">Clôture 19/10 · 15:30 Paris</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;padding:16px">
+<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:12px">
+<section class="pn" aria-label="Indice de sentiment" style="flex:1 1 360px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Indice composite</h2>
+<span class="chip">7 composantes</span>
+</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:14px;padding:22px 18px 18px">
+<svg viewBox="0 0 200 110" style="width:100%;max-width:300px;height:auto;display:block;overflow:visible" aria-hidden="true">
+<path d="{{g1}}" style="fill:none;stroke:#D95B55;stroke-width:16"></path>
+<path d="{{g2}}" style="fill:none;stroke:#84413C;stroke-width:16"></path>
+<path d="{{g3}}" style="fill:none;stroke:#3A3835;stroke-width:16"></path>
+<path d="{{g4}}" style="fill:none;stroke:#35717D;stroke-width:16"></path>
+<path d="{{g5}}" style="fill:none;stroke:#5CCBE3;stroke-width:16"></path>
+<path d="{{prev}}" style="fill:none;stroke:#85817A;stroke-width:2;stroke-dasharray:3 3"></path>
+<path d="{{needle}}" style="fill:none;stroke:#EDEAE6;stroke-width:3;stroke-linecap:round"></path>
+<path d="M94 100a6 6 0 1 0 12 0a6 6 0 1 0-12 0z" style="fill:#EDEAE6;stroke:none"></path>
+</svg>
+<div style="display:flex;align-items:center;gap:14px"><span style="font:700 64px/1 'Rajdhani',sans-serif;color:#EDEAE6">30</span><span class="pill p-dn">RISK-OFF</span></div>
+<div class="num" style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;font-size:12px;color:#ABA7A2"><span>1 S <span class="dn">▼ 31</span> · était 61</span><span>1 M <span class="dn">▼ 17</span> · était 47</span></div>
+<div style="display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;width:100%;margin-top:4px">
+<sc-for list="{{zones}}" as="z" hint-placeholder-count="5"><div><div style="height:6px;background:{{z.c}}"></div><div class="lbl" style="margin-top:6px;font-size:9.5px;letter-spacing:.08em;text-align:center">{{z.t}}</div><div class="num" style="margin-top:2px;font-size:10px;color:#85817A;text-align:center">{{z.r}}</div></div></sc-for>
+</div>
+</div>
+</section>
+<section class="pn" aria-label="Composantes" style="flex:2 1 560px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Composantes · percentile sur 1 an</h2>
+<span class="chip">Poids égaux · 1/7</span>
+<sc-for list="{{chrome}}" as="c" hint-placeholder-count="5"><button class="ib" aria-label="{{c.l}}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="{{c.d}}"></path></svg></button></sc-for>
+</div>
+<div style="overflow-x:auto">
+<div style="min-width:560px">
+<div class="cp lbl" style="height:34px;font-size:10px"><span>Composante</span><span style="text-align:right">Valeur</span><span>Percentile</span><span style="text-align:right">P</span></div>
+<sc-for list="{{comps}}" as="k" hint-placeholder-count="7">
+<div class="cp" style="min-height:56px;border-top:1px solid #22201E">
+<div style="min-width:0"><div style="font-weight:600;color:#EDEAE6">{{k.n}}</div><div style="margin-top:3px;font-size:12px;color:#85817A">{{k.d}}</div></div>
+<span class="num" style="text-align:right;font-size:13px;color:#EDEAE6">{{k.v}}</span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #22201E"><div style="position:absolute;top:0;bottom:0;left:0;width:{{k.p}}%;background:{{k.c}}"></div><div style="position:absolute;top:-4px;bottom:-4px;left:50%;width:1px;background:#3A3835"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:{{k.tc}}">{{k.p}}</span>
+</div>
+</sc-for>
+<div class="cp" style="min-height:48px;border-top:1px solid #3A3835;background:#16130A">
+<span style="font:600 13px 'JetBrains Mono',monospace;letter-spacing:.1em;color:#F6D44E">MOYENNE</span>
+<span></span>
+<div style="position:relative;height:10px;background:#121110;border:1px solid #8A7533"><div style="position:absolute;top:0;bottom:0;left:0;width:30%;background:#D95B55"></div></div>
+<span class="num" style="text-align:right;font-size:13px;font-weight:700;color:#F6D44E">30</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<section class="pn" aria-label="Historique de l’indice">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>Historique de l’indice</h2>
+<div role="group" aria-label="Période" style="display:flex;margin-right:6px">
+<sc-for list="{{periods}}" as="p" hint-placeholder-count="3"><button class="seg" aria-pressed="{{p.pressed}}" onClick="{{p.pick}}" style="margin-left:-1px">{{p.t}}</button></sc-for>
+</div>
+</div>
+<div style="padding:14px 18px">
+<div style="display:flex;gap:8px">
+<div style="position:relative;flex:1;min-width:0;height:230px;overflow:hidden">
+<div style="position:absolute;left:0;right:0;top:0;height:25%;background:rgba(92,203,227,.07)"></div>
+<div style="position:absolute;left:0;right:0;top:25%;height:20%;background:rgba(92,203,227,.035)"></div>
+<div style="position:absolute;left:0;right:0;top:45%;height:10%;background:rgba(237,234,230,.03)"></div>
+<div style="position:absolute;left:0;right:0;top:55%;height:20%;background:rgba(217,91,85,.04)"></div>
+<div style="position:absolute;left:0;right:0;top:75%;height:25%;background:rgba(217,91,85,.08)"></div>
+<svg viewBox="0 0 1000 230" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 57.5H1000M0 103.5H1000M0 126.5H1000M0 172.5H1000" style="fill:none;stroke:#22201E;stroke-width:1;vector-effect:non-scaling-stroke"></path>
+<path d="{{hist}}" style="fill:none;stroke:#E4C24A;stroke-width:1.8;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="num" style="position:absolute;right:6px;top:calc(70% - 10px);padding:3px 6px;background:#E4C24A;color:#000;font-size:11px;font-weight:700">30</span>
+</div>
+<div class="num" style="position:relative;width:96px;flex:none;font-size:10px;color:#85817A">
+<span style="position:absolute;top:12.5%;transform:translateY(-50%);color:#5CCBE3">Risk-on fort</span>
+<span style="position:absolute;top:50%;transform:translateY(-50%)">Neutre</span>
+<span style="position:absolute;top:87.5%;transform:translateY(-50%);color:#D95B55">Risk-off fort</span>
+</div>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin:6px 104px 0 0;font-size:10px;color:#85817A"><sc-for list="{{hx}}" as="x" hint-placeholder-count="5"><span>{{x}}</span></sc-for></div>
+</div>
+</section>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:12px">
+<section class="pn" aria-label="S&amp;P 500" style="flex:1 1 420px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>S&amp;P 500 · 1 an</h2>
+<span class="num" style="font-size:13px;color:#EDEAE6">7 659,44</span><span class="num up" style="font-size:12px;padding-right:8px">+13,6 %</span>
+</div>
+<div style="padding:14px 18px">
+<div style="position:relative;height:150px;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 150" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="{{spxA}}" style="fill:rgba(92,203,227,.07);stroke:none"></path>
+<path d="{{spx}}" style="fill:none;stroke:#5CCBE3;stroke-width:1.6;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#85817A"><span>oct. 25</span><span>janv. 26</span><span>avr. 26</span><span>juil. 26</span><span>oct. 26</span></div>
+</div>
+</section>
+<section class="pn" aria-label="VIX" style="flex:1 1 420px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="{{ic.grip}}"></path></svg><span class="dia"></span>
+<h2>VIX · 1 an</h2>
+<span class="num" style="font-size:13px;color:#EDEAE6">19,99</span><span class="chip hot" style="margin-right:8px">Seuils 20 · 30</span>
+</div>
+<div style="padding:14px 18px">
+<div style="position:relative;height:150px;border-bottom:1px solid #22201E">
+<svg viewBox="0 0 1000 150" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible" aria-hidden="true">
+<path d="M0 80H1000" style="fill:none;stroke:#8A7533;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="M0 30H1000" style="fill:none;stroke:#D95B55;stroke-width:1;stroke-dasharray:5 4;vector-effect:non-scaling-stroke"></path>
+<path d="{{vix}}" style="fill:none;stroke:#EDEAE6;stroke-width:1.6;stroke-linejoin:round;vector-effect:non-scaling-stroke"></path>
+</svg>
+<span class="num" style="position:absolute;left:4px;top:62px;font-size:10px;color:#E4C24A">20</span>
+<span class="num" style="position:absolute;left:4px;top:12px;font-size:10px;color:#D95B55">30</span>
+</div>
+<div class="num" style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:#85817A"><span>oct. 25</span><span>janv. 26</span><span>avr. 26</span><span>juil. 26</span><span>oct. 26</span></div>
+</div>
+</section>
+</div>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<sc-for list="{{feeds}}" as="f" hint-placeholder-count="5"><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>{{f.n}}</span></sc-for>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1280}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self=this,st=this.state||{},per=st.per||'1 A';
+    function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+    function anch(seed,n,A,amp){var r=rng(seed),o=[],k=0,i,f,nz=0;for(i=0;i<n;i++){while(k<A.length-2&&i>A[k+1][0])k++;f=(i-A[k][0])/(A[k+1][0]-A[k][0]);nz=nz*0.7+(r()-0.5)*amp;o.push(A[k][1]+(A[k+1][1]-A[k][1])*f+(i===n-1?0:nz));}return o;}
+    function line(v,lo,hi,H){var s='',i,n=v.length;for(i=0;i<n;i++)s+=(i?'L':'M')+(i*1000/(n-1)).toFixed(1)+' '+(H-(v[i]-lo)/(hi-lo)*H).toFixed(1);return s;}
+    function gp(v,R){var t=Math.PI*(1-v/100);return (100+R*Math.cos(t)).toFixed(2)+' '+(100-R*Math.sin(t)).toFixed(2);}
+    function arc(a,b){return 'M'+gp(a,80)+'A80 80 0 0 1 '+gp(b,80);}
+    var IC={
+      ov:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z',ch:'M4 19h16M5 15l4-4 3 3 6-7',doc:'M6 4h12v16H6zM9 8h6M9 12h6M9 16h4',
+      clk:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2',orb:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z',
+      cal:'M5 6h14v14H5zM5 10h14M9 4v4M15 4v4',news:'M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3',
+      bank:'M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16',wave:'M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2',
+      globe:'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18',pct:'M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z',
+      users:'M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5',bars:'M5 20V10M10 20V4M15 20v-8M20 20v-5',
+      brief:'M4 8h16v11H4zM9 8V5h6v3M4 13h16',gauge:'M5 17a7 7 0 1 1 14 0M12 17l3-5',eye:'M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z',
+      book:'M4 6h10M4 10h14M4 14h8M4 18h12',sine:'M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0',heat:'M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16',
+      grid4:'M4 4h16v16H4zM4 12h16M12 4v16',pulse:'M3 12h4l3-7 4 14 3-7h4',drop:'M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z',
+      target:'M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z',calc:'M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6',
+      x:'M6 6l12 12M18 6L6 18',lock:'M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3',exp:'M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7',pin:'M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7',
+      bell:'M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0',sli:'M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4',
+      micoff:'M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16',
+      grip:'M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01'
+    };
+    var HERE='Risque.dc.html';
+    var NAV=[['Global',[['Vue d’ensemble','ov','Main.dc.html'],['Graphiques','ch'],['Récap de session','doc'],['Horaires des marchés','clk'],['Assistant','orb']]],
+      ['News',[['Calendrier','cal','Calendrier.dc.html'],['Fil d’actus','news','Actus.dc.html'],['Recherche bancaire','bank'],['Squawk','wave']]],
+      ['Macro',[['Macro','globe'],['Taux','pct','Taux.dc.html']]],
+      ['Positionnement & sentiment',[['Sentiment retail','users'],['COT','bars'],['Positions des banques','brief'],['Sentiment de risque','gauge','Risque.dc.html']]],
+      ['Analyse',[['Markets Watch','eye'],['Microstructure BTC','book','Microstructure.dc.html'],['Saisonnalité','sine'],['Heatmap fondamentale','heat','Heatmap.dc.html'],['Heatmap technique','grid4'],['Indicateurs','pulse'],['Liquidité','drop']]],
+      ['Compte',[['Track record','target'],['Calculateur de risque','calc']]]];
+    var nav=NAV.map(function(s){return {t:s[0],items:s[1].map(function(it){var on=it[2]===HERE;return {t:it[0],d:IC[it[1]],href:it[2]||'',isLink:!!it[2],isStatic:!it[2],cls:on?'on':'',cur:on?'page':undefined};})};});
+    var chrome=[['Réglages du panneau','sli'],['Épingler le panneau','pin'],['Verrouiller la disposition','lock'],['Agrandir le panneau','exp'],['Fermer le panneau','x']].map(function(c){return {l:c[0],d:IC[c[1]]};});
+    var clocks=[['TOK','22:36',0],['LON','14:36',1],['PAR','15:36',1],['NY','09:36',2]].map(function(c){return {c:c[0],t:c[1],dc:c[2]?'#E4C24A':'#3A3835',tc:c[2]===2?'#E4C24A':'#ABA7A2'};});
+    var feeds=['Indices actions','Volatilité','Crédit','Changes','Matières premières','OKX WS'].map(function(n){return {n:n};});
+    function zc(p){return p<25?'#D95B55':p<45?'#84413C':p<55?'#5A5651':p<75?'#35717D':'#5CCBE3';}
+    function tc(p){return p<45?'#D95B55':p<55?'#ABA7A2':'#5CCBE3';}
+    var comps=[['VIX','Volatilité implicite du S&P 500','20,0',18],['Tendance actions','S&P 500 vs moyenne mobile 125 j','+1,58 %',15],['Crédit','Haut rendement vs Treasuries · 20 j','−0,90 %',10],['AUD/JPY','Variation sur 20 j','−1,86 %',9],['Cuivre / or','Ratio · variation sur 20 j','+4,49 %',59],['Actions vs refuge','S&P 500 vs obligations longues · 20 j','+5,63 pts',67],['Momentum crypto','BTC et ETH · 20 j','−3,61 %',32]].map(function(c){return {n:c[0],d:c[1],v:c[2],p:c[3],c:zc(c[3]),tc:tc(c[3])};});
+    var zones=[['Risk-off fort','0–25','#D95B55'],['Risk-off','25–45','#84413C'],['Neutre','45–55','#5A5651'],['Risk-on','55–75','#35717D'],['Risk-on fort','75–100','#5CCBE3']].map(function(z){return {t:z[0],r:z[1],c:z[2]};});
+    var H=anch(21,252,[[0,52],[30,63],[60,71],[85,24],[110,41],[150,66],[190,58],[215,52],[231,47],[240,55],[247,61],[251,30]],7);
+    var NP={'1 M':21,'3 M':63,'1 A':252},np=NP[per],hv=H.slice(252-np);
+    var HX={'1 M':['21/09','28/09','05/10','12/10','19/10'],'3 M':['21/07','19/08','17/09','19/10'],'1 A':['oct. 25','janv. 26','avr. 26','juil. 26','oct. 26']};
+    var periods=['1 M','3 M','1 A'].map(function(p){return {t:p,pressed:p===per?'true':'false',pick:function(){self.setState({per:p});}};});
+    var S=anch(4,252,[[0,6742],[60,6950],[85,6420],[150,7180],[220,7560],[245,7720],[251,7659.44]],70);
+    var V=anch(8,252,[[0,16.5],[60,14.8],[85,29.5],[100,22],[150,15.2],[220,14.1],[245,15.5],[251,19.99]],1.6);
+    var spx=line(S,6200,7900,150);
+    return {ic:IC,nav:nav,chrome:chrome,clocks:clocks,feeds:feeds,comps:comps,zones:zones,periods:periods,
+      hist:line(hv,0,100,230),hx:HX[per],spx:spx,spxA:spx+'L1000 150L0 150Z',vix:line(V,10,35,150),
+      g1:arc(0,24.2),g2:arc(25.8,44.2),g3:arc(45.8,54.2),g4:arc(55.8,74.2),g5:arc(75.8,100),
+      needle:'M100 100L'+gp(30,62),prev:'M'+gp(61,64)+'L'+gp(61,92)};
+  }
+}
+</script>
+</body>
+</html>

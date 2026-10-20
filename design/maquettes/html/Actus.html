@@ -1,0 +1,377 @@
+<!doctype html>
+<!-- Rendu statique de design/maquettes/source/Actus.dc.html : état par défaut, données fictives, sans interactions.
+     Largeur de référence 1440 px. Les interactions sont décrites dans docs/ecrans.md. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fil d’actus et assistant — TERMINAL</title>
+<link rel="stylesheet" href="../../assets/fonts/fonts.css">
+<style>
+body{margin:0;background:#000}
+*{box-sizing:border-box}
+a{color:#E4C24A;text-decoration:none}a:hover{color:#F6D44E}
+button,input,textarea{font:inherit}
+.ic{width:16px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.lbl{font:500 11px/1.25 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#85817A}
+.num{font-family:'JetBrains Mono',monospace;font-variant-numeric:tabular-nums;white-space:nowrap}
+.up{color:#5CCBE3}.dn{color:#D95B55}
+.pn{position:relative;background:#0A0A09;border:1px solid #22201E;border-radius:3px;min-width:0}
+.pn::before,.pn::after{content:"";position:absolute;width:10px;height:10px;border:0 solid #8A7533;pointer-events:none}
+.pn::before{top:-1px;left:-1px;border-top-width:1px;border-left-width:1px}
+.pn::after{right:-1px;bottom:-1px;border-right-width:1px;border-bottom-width:1px}
+.ph{display:flex;align-items:center;gap:8px;min-height:40px;padding:0 6px 0 8px;border-bottom:1px solid #22201E}
+.ph h2{margin:0;flex:1;min-width:0;font:500 11px/1.2 'JetBrains Mono',monospace;letter-spacing:.16em;text-transform:uppercase;color:#EDEAE6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grip{color:#5A5651;stroke-width:2.8}
+.dia{width:6px;height:6px;flex:none;background:#E4C24A;transform:rotate(45deg)}
+.ib{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;flex:none;padding:0;border:0;border-radius:3px;background:transparent;color:#85817A;cursor:pointer}
+.ib:hover{color:#E4C24A;background:#121110}
+.btn{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 12px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#EDEAE6;font:500 13px 'Barlow',sans-serif;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:#8A7533;color:#F6D44E}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border:1px solid #3A3835;border-radius:2px;background:transparent;font:500 10px/1 'JetBrains Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#ABA7A2;white-space:nowrap}
+.hot{color:#E4C24A;border-color:#8A7533}
+.cy{color:#5CCBE3;border-color:#2E5F69}
+.tg{height:28px;cursor:pointer}
+.tg[aria-pressed="true"]{background:#2B2511;border-color:#8A7533;color:#F6D44E}
+.dot{width:6px;height:6px;flex:none;border-radius:50%}
+.nav a,.nav span{display:flex;align-items:center;gap:10px;min-height:34px;padding:0 14px;border-left:2px solid transparent;font:500 13.5px 'Barlow',sans-serif;color:#ABA7A2}
+.nav a:hover{color:#EDEAE6;background:#121110}
+.nav a.on{color:#E4C24A;border-left-color:#E4C24A;background:linear-gradient(90deg,#2B2511,rgba(43,37,17,0))}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.it{display:flex;gap:12px;width:100%;padding:12px 14px;border:0;border-top:1px solid #22201E;background:transparent;color:#EDEAE6;text-align:left;cursor:pointer}
+.it:hover{background:#121110}
+.it[aria-pressed="true"]{background:#16130A;box-shadow:inset 2px 0 0 #E4C24A}
+.sug{height:30px;padding:0 10px;border:1px solid #3A3835;border-radius:15px;background:transparent;color:#ABA7A2;font:500 12.5px 'Barlow',sans-serif;cursor:pointer}
+.sug:hover{border-color:#8A7533;color:#F6D44E}
+</style>
+</head>
+<body>
+
+
+<div style="min-height:100vh;background:#000;color:#EDEAE6;font-family:'Barlow',sans-serif;font-size:14px">
+<header style="display:flex;flex-wrap:wrap;align-items:stretch;border-bottom:1px solid #22201E;background:#050504">
+<a href="Main.html" aria-label="TERMINAL, vue d’ensemble" style="flex:1 1 248px;display:flex;align-items:center;gap:10px;min-height:56px;padding:0 16px;background:linear-gradient(90deg,#0F0D07,#050504);border-right:1px solid #22201E;color:#E4C24A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="width:24px;height:24px"><path d="M3 3h18v18H3z"></path><path d="M8 17v-3M12 17v-6M16 17V8" style="stroke-width:2.4"></path></svg>
+<span style="font:700 20px/1 'Rajdhani',sans-serif;letter-spacing:.16em">TERMINAL</span>
+</a>
+<div style="flex:999 1 560px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px">
+<button class="btn" style="border-color:#8A7533;color:#F6D44E;background:#16130A"><span style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 8px rgba(246,212,78,.5)"></span>Assistant</button>
+<button class="ib" aria-label="Activer le micro de l’assistant" style="width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a3 3 0 0 1 3 3v4M9 9v2a3 3 0 0 0 5 2.2M6 11a6 6 0 0 0 9.5 4.9M18 11a6 6 0 0 1-.3 1.9M12 17v3M4 4l16 16"></path></svg></button>
+<button class="btn" aria-label="Personnaliser l’espace de travail"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg>Personnaliser</button>
+<label style="flex:1 1 160px;min-width:150px;display:flex;align-items:center;gap:8px;height:34px;padding:0 8px 0 10px;border:1px solid #3A3835;border-radius:3px;background:#0A0A09;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Commande ou ticker</span>
+<input type="text" placeholder="Commande ou ticker…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+<kbd class="chip" style="height:20px">Ctrl K</kbd>
+</label>
+<div class="num" style="display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:#ABA7A2">
+<span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#3A3835"></span>TOK <span style="color:#ABA7A2">22:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>LON <span style="color:#ABA7A2">14:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>PAR <span style="color:#ABA7A2">15:36</span></span><span style="display:inline-flex;align-items:center;gap:6px"><span class="dot" style="background:#E4C24A"></span>NY <span style="color:#E4C24A">09:36</span></span>
+</div>
+<span class="num" style="font-size:11px;color:#EDEAE6">13:36:04 UTC</span>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>OKX 41 ms</span>
+<button class="ib" aria-label="Notifications, 3 non lues" style="position:relative;width:34px;height:34px;border:1px solid #3A3835"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"></path></svg><span style="position:absolute;top:6px;right:7px;width:6px;height:6px;border-radius:50%;background:#E4C24A"></span></button>
+<button aria-label="Compte de Clément" style="width:34px;height:34px;border-radius:50%;border:1px solid #8A7533;background:#2B2511;color:#F6D44E;font:700 15px/1 'Rajdhani',sans-serif;cursor:pointer">C</button>
+</div>
+</header>
+<div style="display:flex;flex-wrap:wrap;align-items:stretch">
+<nav class="nav" aria-label="Navigation principale" style="flex:1 1 248px;border-right:1px solid #22201E;background:#050504;padding-bottom:16px">
+<div style="padding:10px 12px;border-bottom:1px solid #22201E"><button class="btn" style="width:100%;justify-content:flex-start;background:transparent;border-color:#22201E;color:#ABA7A2"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"></path></svg>Réduire</button></div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Global</div>
+
+<a href="Main.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"></path></svg>Vue d’ensemble</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M5 15l4-4 3 3 6-7"></path></svg>Graphiques</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4"></path></svg>Récap de session</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 7v5l3 2"></path></svg>Horaires des marchés</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Assistant</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">News</div>
+
+<a href="Calendrier.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14v14H5zM5 10h14M9 4v4M15 4v4"></path></svg>Calendrier</a>
+
+
+<a href="Actus.html" class="on" aria-current="page"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3"></path></svg>Fil d’actus</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10l8-5 8 5M6 10v7M10 10v7M14 10v7M18 10v7M4 19h16"></path></svg>Recherche bancaire</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h2M8 8v8M12 5v14M16 8v8M20 11v2"></path></svg>Squawk</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Macro</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"></path></svg>Macro</span>
+
+<a href="Taux.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5L5 19M7 5a2 2 0 1 0 0 4a2 2 0 1 0 0-4zM17 15a2 2 0 1 0 0 4a2 2 0 1 0 0-4z"></path></svg>Taux</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Positionnement &amp; sentiment</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 11a3 3 0 1 0 0-6a3 3 0 1 0 0 6zM3 20c0-3 3-5 6-5s6 2 6 5M16 5a3 3 0 0 1 0 6M18 15c2 .5 3 2 3 5"></path></svg>Sentiment retail</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V10M10 20V4M15 20v-8M20 20v-5"></path></svg>COT</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16v11H4zM9 8V5h6v3M4 13h16"></path></svg>Positions des banques</span>
+
+<a href="Risque.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17a7 7 0 1 1 14 0M12 17l3-5"></path></svg>Sentiment de risque</a>
+
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Analyse</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6z"></path></svg>Markets Watch</span>
+
+<a href="Microstructure.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 10h14M4 14h8M4 18h12"></path></svg>Microstructure BTC</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c2-5 4-5 6 0s4 5 6 0 4-5 6 0"></path></svg>Saisonnalité</span>
+
+<a href="Heatmap.html" class=""><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"></path></svg>Heatmap fondamentale</a>
+
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 12h16M12 4v16"></path></svg>Heatmap technique</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"></path></svg>Indicateurs</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"></path></svg>Liquidité</span>
+
+</div>
+
+<div style="padding-top:14px">
+<div class="lbl" style="padding:0 16px 6px;font-size:10px">Compte</div>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z"></path></svg>Track record</span>
+
+
+<span><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6"></path></svg>Calculateur de risque</span>
+
+</div>
+
+</nav>
+<main style="flex:999 1 560px;min-width:0;display:flex;flex-direction:column">
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;min-height:36px;padding:6px 16px;border-bottom:1px solid #22201E;background:#050504">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="color:#E4C24A;width:14px;height:14px"><path d="M5 5h11v14H5zM16 8h3v9a2 2 0 0 1-2 2M8 9h5M8 12h5M8 15h3"></path></svg>
+<span class="dot" style="background:#E4C24A"></span>
+<h1 class="lbl" style="margin:0;color:#EDEAE6">Fil d’actus · lecture assistée</h1>
+<span style="width:7px;height:13px;background:#E4C24A"></span>
+<span style="flex:1"></span>
+<span class="chip hot" style="border-radius:11px">8 titres aujourd’hui</span>
+<span class="chip">Maquette · données fictives</span>
+</div>
+<div style="flex:1;display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;padding:16px">
+<section class="pn" aria-label="Fil d’actus" style="flex:1 1 290px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Fil d’actus</h2>
+<span class="chip cy"><span class="dot" style="background:#5CCBE3"></span>Direct</span>
+</div>
+<div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
+<div role="group" aria-label="Catégories" style="display:flex;flex-wrap:wrap;gap:6px">
+<button class="chip tg" aria-pressed="true">Tout</button><button class="chip tg" aria-pressed="false">Banque centrale</button><button class="chip tg" aria-pressed="false">Macro</button><button class="chip tg" aria-pressed="false">Crypto</button><button class="chip tg" aria-pressed="false">Matières premières</button>
+</div>
+<label style="display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid #3A3835;border-radius:3px;background:#050504;color:#85817A">
+<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14a7 7 0 1 0 0-14zM20 20l-4-4"></path></svg>
+<span class="sr">Filtrer les titres</span>
+<input type="text" placeholder="Filtrer les titres…" style="flex:1;min-width:0;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 13px 'Barlow',sans-serif">
+</label>
+</div>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">15:31</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Crypto</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">ETF bitcoin spot : quatrième séance consécutive de flux nets entrants</span>
+<span class="lbl" style="font-size:10px">Données de flux</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="true">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">15:12</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Banque centrale</span><span class="chip hot" style="height:18px">Fort impact</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">BoJ : le compte rendu de septembre évoque une nouvelle hausse si l’inflation sous-jacente approche 2 %</span>
+<span class="lbl" style="font-size:10px">Publication officielle</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">14:52</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Crypto</span><span class="chip hot" style="height:18px">Fort impact</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">Liquidations : 62 M$ de positions longues BTC effacées en cinq minutes</span>
+<span class="lbl" style="font-size:10px">Microstructure</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">14:30</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Macro</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">États-Unis : l’indice d’activité de la Fed de Chicago ressort à 0,18 contre −0,05 attendu</span>
+<span class="lbl" style="font-size:10px">Calendrier</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">13:05</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Matières premières</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">L’or se rapproche de 4 000 $ l’once, plus haut depuis trois semaines</span>
+<span class="lbl" style="font-size:10px">Fil d’agence</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">11:40</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Banque centrale</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">BCE : les comptes rendus de septembre décrivent des risques d’inflation équilibrés</span>
+<span class="lbl" style="font-size:10px">Publication officielle</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">09:20</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Macro</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">Royaume-Uni : les prix de l’immobilier reculent pour le deuxième mois consécutif</span>
+<span class="lbl" style="font-size:10px">Fil d’agence</span>
+</span>
+</button>
+
+<button class="it" aria-pressed="false">
+<span class="num" style="width:40px;flex:none;padding-top:2px;font-size:11px;color:#E4C24A">04:00</span>
+<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+<span style="display:flex;flex-wrap:wrap;gap:6px;align-items:center"><span class="chip" style="height:18px">Macro</span><span class="chip hot" style="height:18px">Fort impact</span></span>
+<span style="font-size:14px;line-height:1.4;font-weight:500">Chine : PIB du T3 à 4,7 % sur un an, sous le consensus de 4,8 %</span>
+<span class="lbl" style="font-size:10px">Publication officielle</span>
+</span>
+</button>
+
+</section>
+<article class="pn" aria-label="Article" style="flex:2 1 440px">
+<div class="ph">
+<svg class="ic grip" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h.01M9 12h.01M9 18h.01M15 6h.01M15 12h.01M15 18h.01"></path></svg><span class="dia"></span>
+<h2>Lecture · Banque centrale</h2>
+<button class="ib" aria-label="Réglages du panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 5v4M8 15v4"></path></svg></button><button class="ib" aria-label="Épingler le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4h6l-1 6 3 3H7l3-3-1-6zM12 13v7"></path></svg></button><button class="ib" aria-label="Verrouiller la disposition"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3"></path></svg></button><button class="ib" aria-label="Agrandir le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"></path></svg></button><button class="ib" aria-label="Fermer le panneau"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+</div>
+<div style="padding:22px 26px 26px;display:flex;flex-direction:column;gap:18px">
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center"><span class="chip hot">Banque centrale</span><span class="num" style="font-size:12px;color:#ABA7A2">Publication officielle · 19/10/2026 · 15:12 · lecture 3 min</span></div>
+<h3 style="margin:0;font:600 27px/1.25 'Barlow',sans-serif;color:#EDEAE6;max-width:760px">BoJ : le compte rendu de septembre évoque une nouvelle hausse si l’inflation sous-jacente approche 2 %</h3>
+<div style="position:relative;display:flex;align-items:center;justify-content:center;aspect-ratio:16/7;min-height:180px;background:#121110;border:1px dashed #3A3835">
+<span class="lbl" style="color:#ABA7A2">[Image d’illustration · source à brancher]</span>
+<span style="position:absolute;top:8px;left:8px;width:14px;height:14px;border-top:1px solid #8A7533;border-left:1px solid #8A7533"></span>
+<span style="position:absolute;right:8px;bottom:8px;width:14px;height:14px;border-right:1px solid #8A7533;border-bottom:1px solid #8A7533"></span>
+</div>
+<p style="margin:0;font-size:15.5px;line-height:1.65;color:#D9D5D0;max-width:760px">Le résumé des opinions de la réunion des 17 et 18 septembre, au cours de laquelle la Banque du Japon a relevé son taux directeur de 1,00 % à 1,25 %, montre un conseil partagé sur le rythme des prochaines hausses.</p><p style="margin:0;font-size:15.5px;line-height:1.65;color:#D9D5D0;max-width:760px">Plusieurs membres jugent qu’un nouveau relèvement serait approprié si l’inflation sous-jacente se rapproche durablement de la cible de 2 %. D’autres soulignent la faiblesse de la croissance, à 0,3 % sur un an, et préfèrent attendre les négociations salariales du printemps.</p><p style="margin:0;font-size:15.5px;line-height:1.65;color:#D9D5D0;max-width:760px">Le document ne donne pas de calendrier. La prochaine réunion se tient les 29 et 30 octobre ; les futures de taux y attribuent une probabilité de hausse d’environ 18 %.</p>
+
+<div style="border:1px solid #22201E;background:#050504;padding:16px 18px">
+<div class="lbl" style="color:#E4C24A">Points clés</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:12px">
+<div style="display:flex;gap:10px;align-items:flex-start"><span class="dia" style="margin-top:7px"></span><span style="font-size:14px;line-height:1.5;color:#EDEAE6">Hausse conditionnée à une inflation sous-jacente proche de 2 % (1,7 % actuellement).</span></div><div style="display:flex;gap:10px;align-items:flex-start"><span class="dia" style="margin-top:7px"></span><span style="font-size:14px;line-height:1.5;color:#EDEAE6">Croissance jugée fragile : PIB à 0,3 % sur un an.</span></div><div style="display:flex;gap:10px;align-items:flex-start"><span class="dia" style="margin-top:7px"></span><span style="font-size:14px;line-height:1.5;color:#EDEAE6">Probabilité de hausse le 30/10 : 18,4 % selon les futures.</span></div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+<span class="lbl" style="font-size:10px">Actifs liés</span>
+<span class="chip" style="height:26px;color:#EDEAE6">USD/JPY <span class="up">+0,35 %</span></span><span class="chip" style="height:26px;color:#EDEAE6">EUR/JPY <span class="up">+0,22 %</span></span><span class="chip" style="height:26px;color:#EDEAE6">AUD/JPY <span class="dn">−1,86 % 20 j</span></span>
+</div>
+</div>
+</article>
+<aside class="pn" aria-label="Assistant" style="flex:1 1 310px;display:flex;flex-direction:column">
+<div class="ph">
+<span style="width:14px;height:14px;margin-left:4px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#F6D44E,#B8862B 70%);box-shadow:0 0 10px rgba(246,212,78,.45)"></span>
+<h2>Assistant</h2>
+<span class="chip cy">Article chargé</span>
+<span class="chip">Muet</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;padding:16px">
+
+<div style="display:flex;justify-content:flex-end">
+<div style="max-width:92%;padding:12px 14px;border:1px solid #3A3835;border-radius:3px;background:#121110">
+<div class="lbl" style="font-size:9.5px;color:#85817A">Toi</div>
+<div style="margin-top:6px;font-size:14px;line-height:1.55;color:#EDEAE6">Qu’est-ce que ça change pour USD/JPY à court terme ?</div>
+
+</div>
+</div>
+
+<div style="display:flex;justify-content:flex-start">
+<div style="max-width:92%;padding:12px 14px;border:1px solid #8A7533;border-radius:3px;background:#0F0D07">
+<div class="lbl" style="font-size:9.5px;color:#E4C24A">Assistant</div>
+<div style="margin-top:6px;font-size:14px;line-height:1.55;color:#EDEAE6">Le compte rendu conditionne la prochaine hausse à une inflation sous-jacente proche de 2 %, alors qu’elle est à 1,7 %. Une hausse dès le 30 octobre reste minoritaire (18,4 % selon les futures). À court terme, c’est un soutien modéré pour le yen, mais l’écart de taux avec les États-Unis, 2,75 points, reste le facteur dominant. À surveiller : l’IPC national de vendredi 23 octobre.</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><a class="chip hot" href="#">Article · §2</a><a class="chip hot" href="Heatmap.html">Heatmap · JPY</a><a class="chip hot" href="Taux.html">Taux · BOJ</a></div>
+</div>
+</div>
+
+<div style="display:flex;justify-content:flex-end">
+<div style="max-width:92%;padding:12px 14px;border:1px solid #3A3835;border-radius:3px;background:#121110">
+<div class="lbl" style="font-size:9.5px;color:#85817A">Toi</div>
+<div style="margin-top:6px;font-size:14px;line-height:1.55;color:#EDEAE6">Et pour le BTC ?</div>
+
+</div>
+</div>
+
+<div style="display:flex;justify-content:flex-start">
+<div style="max-width:92%;padding:12px 14px;border:1px solid #8A7533;border-radius:3px;background:#0F0D07">
+<div class="lbl" style="font-size:9.5px;color:#E4C24A">Assistant</div>
+<div style="margin-top:6px;font-size:14px;line-height:1.55;color:#EDEAE6">Le lien est indirect. L’indice de sentiment est à 30, en zone risk-off, et 62 M$ de positions longues ont été liquidées à 14:52. Cet article seul ne permet pas d’établir un effet sur le BTC.</div>
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px"><a class="chip hot" href="Risque.html">Risque · indice</a><a class="chip hot" href="Microstructure.html">Microstructure</a></div>
+</div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:auto">
+<button class="sug">Résumer en 3 points</button><button class="sug">Impact sur USD/JPY</button><button class="sug">Comparer à juillet</button>
+</div>
+<label style="display:flex;align-items:flex-end;gap:8px;padding:8px 8px 8px 12px;border:1px solid #8A7533;border-radius:3px;background:#050504">
+<span class="sr">Question à l’assistant</span>
+<textarea rows="2" placeholder="Pose une question sur cet article…" style="flex:1;min-width:0;resize:none;border:0;outline:0;background:transparent;color:#EDEAE6;font:500 14px/1.45 'Barlow',sans-serif"></textarea>
+<button aria-label="Envoyer la question" style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;flex:none;border:0;border-radius:3px;background:#E4C24A;color:#000;cursor:pointer"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true" style="stroke-width:2"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
+</label>
+<div class="lbl" style="font-size:9.5px;text-align:center">Réponses fondées sur l’article et les modules du terminal · à vérifier</div>
+</div>
+</aside>
+</div>
+<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:10px 16px;border-top:1px solid #22201E;background:#050504">
+<span class="lbl" style="font-size:10px">Flux</span>
+<span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Fils d’agence</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Banques centrales</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Calendrier</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>Données de flux</span><span class="num" style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#ABA7A2"><span class="dot" style="background:#5CCBE3"></span>OKX WS</span>
+<span style="flex:1"></span>
+<span class="num" style="font-size:11px;color:#85817A">Dernière synchro 13:36:04 UTC</span>
+</div>
+</main>
+</div>
+</div>
+
+</body>
+</html>
