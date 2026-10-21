@@ -1,0 +1,225 @@
+{
+  "_comment": "Réponses réelles du REST public OKX EEA, enregistrées par curl le 20/10/2026 vers 10:35 UTC (curl -sS https://eea.okx.com<chemin>). Rejouées telles quelles par collector.test.ts. Erreurs OKX : HTTP 200 et code différent de \"0\" (exemple : instrument inconnu, code 51001).",
+  "base": "https://eea.okx.com",
+  "recorded_at": "2026-10-20T10:35:19Z",
+  "responses": {
+    "/api/v5/public/time": {
+      "code": "0",
+      "data": [
+        {
+          "ts": "1792492518988"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/market/ticker?instId=BTC-USDT-SWAP": {
+      "code": "0",
+      "data": [
+        {
+          "instType": "SWAP",
+          "instId": "BTC-USDT-SWAP",
+          "last": "81487.3",
+          "lastSz": "0.16",
+          "askPx": "81487.3",
+          "askSz": "167.82",
+          "bidPx": "81487.2",
+          "bidSz": "1409.31",
+          "open24h": "82188.9",
+          "high24h": "82733.4",
+          "low24h": "81166",
+          "volCcy24h": "57104.9366",
+          "vol24h": "5710493.66",
+          "ts": "1792492518368",
+          "sodUtc0": "81909.5",
+          "sodUtc8": "81912.3"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/public/funding-rate?instId=BTC-USDT-SWAP": {
+      "code": "0",
+      "data": [
+        {
+          "formulaType": "withRate",
+          "fundingRate": "0.0000132021683794",
+          "fundingTime": "1792512000000",
+          "impactValue": "20000.0000000000000000",
+          "instId": "BTC-USDT-SWAP",
+          "instType": "SWAP",
+          "interestRate": "0.0001000000000000",
+          "maxFundingRate": "0.00375",
+          "method": "current_period",
+          "minFundingRate": "-0.00375",
+          "nextFundingRate": "",
+          "nextFundingTime": "1792540800000",
+          "premium": "-0.0003930610809608",
+          "prevFundingTime": "1792483200000",
+          "settFundingRate": "0.0000519278180174",
+          "settState": "settled",
+          "ts": "1792492329159"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/public/open-interest?instType=SWAP&instId=BTC-USDT-SWAP": {
+      "code": "0",
+      "data": [
+        {
+          "instId": "BTC-USDT-SWAP",
+          "instType": "SWAP",
+          "oi": "3062153.07000001155",
+          "oiCcy": "30621.5307000001155",
+          "oiUsd": "2495045383.58907941095155",
+          "ts": "1792492520143"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/market/candles?instId=BTC-USDT-SWAP&bar=1m&limit=3": {
+      "code": "0",
+      "data": [
+        [
+          "1792492500000",
+          "81480.1",
+          "81487.3",
+          "81469.2",
+          "81487.3",
+          "833.44",
+          "8.3344",
+          "679056.10645",
+          "0"
+        ],
+        [
+          "1792492440000",
+          "81491",
+          "81497.8",
+          "81480",
+          "81480.1",
+          "518.83",
+          "5.1883",
+          "422792.07307",
+          "1"
+        ],
+        [
+          "1792492380000",
+          "81511.6",
+          "81511.7",
+          "81483.6",
+          "81490.9",
+          "1050.93",
+          "10.5093",
+          "856443.35036",
+          "1"
+        ]
+      ],
+      "msg": ""
+    },
+    "/api/v5/market/ticker?instId=ETH-USDT-SWAP": {
+      "code": "0",
+      "data": [
+        {
+          "instType": "SWAP",
+          "instId": "ETH-USDT-SWAP",
+          "last": "2383.37",
+          "lastSz": "0.85",
+          "askPx": "2383.38",
+          "askSz": "3014.68",
+          "bidPx": "2383.37",
+          "bidSz": "5192.68",
+          "open24h": "2417.82",
+          "high24h": "2429.2",
+          "low24h": "2369.03",
+          "volCcy24h": "2140943.324",
+          "vol24h": "21409433.24",
+          "ts": "1792492530669",
+          "sodUtc0": "2407.06",
+          "sodUtc8": "2393.35"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/public/funding-rate?instId=ETH-USDT-SWAP": {
+      "code": "0",
+      "data": [
+        {
+          "formulaType": "withRate",
+          "fundingRate": "0.0000145119041900",
+          "fundingTime": "1792512000000",
+          "impactValue": "20000.0000000000000000",
+          "instId": "ETH-USDT-SWAP",
+          "instType": "SWAP",
+          "interestRate": "0.0001000000000000",
+          "maxFundingRate": "0.0075",
+          "method": "current_period",
+          "minFundingRate": "-0.0075",
+          "nextFundingRate": "",
+          "nextFundingTime": "1792540800000",
+          "premium": "-0.0005193173489687",
+          "prevFundingTime": "1792483200000",
+          "settFundingRate": "0.0000433439933297",
+          "settState": "settled",
+          "ts": "1792492208211"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/public/open-interest?instType=SWAP&instId=ETH-USDT-SWAP": {
+      "code": "0",
+      "data": [
+        {
+          "instId": "ETH-USDT-SWAP",
+          "instType": "SWAP",
+          "oi": "6077680.8600000181",
+          "oiCcy": "607768.08600000181",
+          "oiUsd": "1448025697.9375843123793",
+          "ts": "1792492532143"
+        }
+      ],
+      "msg": ""
+    },
+    "/api/v5/market/candles?instId=ETH-USDT-SWAP&bar=1m&limit=3": {
+      "code": "0",
+      "data": [
+        [
+          "1792492500000",
+          "2382.55",
+          "2383.38",
+          "2382.23",
+          "2383.38",
+          "5858.27",
+          "585.827",
+          "1395838.594",
+          "0"
+        ],
+        [
+          "1792492440000",
+          "2383.51",
+          "2383.67",
+          "2382.56",
+          "2382.56",
+          "5446.44",
+          "544.644",
+          "1297876.68252",
+          "1"
+        ],
+        [
+          "1792492380000",
+          "2384.84",
+          "2384.84",
+          "2382.41",
+          "2383.52",
+          "23841.24",
+          "2384.124",
+          "5681160.03397",
+          "1"
+        ]
+      ],
+      "msg": ""
+    },
+    "/api/v5/market/ticker?instId=NOPE-USDT-SWAP": {
+      "code": "51001",
+      "data": [],
+      "msg": "Instrument ID, Instrument ID code, or Spread ID doesn't exist."
+    }
+  }
+}

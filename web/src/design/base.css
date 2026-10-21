@@ -1,0 +1,155 @@
+/* Styles de base et classes partagées. Aucune couleur ni taille en dur :
+   tout vient de design/tokens.css (importé une fois dans main.tsx). */
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg-app); }
+body {
+  color: var(--text-1);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  -webkit-font-smoothing: antialiased;
+}
+button, input { font: inherit; }
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--gold-hi); }
+:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
+
+.ic {
+  width: 16px; height: 16px; flex: none;
+  fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.lbl {
+  font: 500 var(--fs-label)/1.25 var(--font-mono);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.lbl--s { font-size: var(--fs-chip); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.up { color: var(--up); }
+.dn { color: var(--down); }
+.nt { color: var(--text-2); }
+.t1 { color: var(--text-1); }
+.t2 { color: var(--text-2); }
+.t3 { color: var(--text-3); }
+.gold { color: var(--gold); }
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.spacer { flex: 1; }
+.dot { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--line-strong); }
+.dot--up { background: var(--up); }
+.dot--gold { background: var(--gold); }
+.dot--down { background: var(--down); }
+.dia { width: 6px; height: 6px; flex: none; background: var(--gold); transform: rotate(45deg); }
+.cursor { width: 7px; height: 13px; flex: none; background: var(--gold); }
+
+/* Panneau */
+.pn {
+  position: relative; min-width: 0;
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
+}
+.pn::before, .pn::after {
+  content: ""; position: absolute; width: var(--hud-corner); height: var(--hud-corner);
+  border: 0 solid var(--gold-mid); pointer-events: none;
+}
+.pn::before { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+.pn::after { right: -1px; bottom: -1px; border-right-width: 1px; border-bottom-width: 1px; }
+.ph {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 8px;
+  min-height: var(--panel-header-h); padding: 0 6px 0 8px;
+  border-bottom: 1px solid var(--line);
+}
+.ph h2 {
+  margin: 0; flex: 1 1 120px; min-width: 0;
+  font: 500 var(--fs-label)/1.2 var(--font-mono);
+  letter-spacing: var(--tracking-label); text-transform: uppercase; color: var(--text-1);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.grip { color: var(--text-decor); stroke-width: 2.8; }
+
+/* Boutons */
+.ib {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--icon-button); height: var(--icon-button); flex: none; padding: 0;
+  border: 0; border-radius: var(--radius-control);
+  background: transparent; color: var(--text-3); cursor: pointer;
+}
+.ib:hover { color: var(--gold); background: var(--bg-panel-2); }
+.ib--boxed { width: var(--control-h); height: var(--control-h); border: 1px solid var(--line-strong); }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: var(--control-h); padding: 0 12px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-control);
+  background: var(--bg-panel); color: var(--text-1);
+  font: 500 13px var(--font-body); cursor: pointer; white-space: nowrap;
+}
+.btn:hover { border-color: var(--gold-mid); color: var(--gold-hi); }
+.btn--primary { background: var(--gold); border-color: var(--gold); color: var(--on-gold); font-weight: 600; }
+.btn--primary:hover { background: var(--gold-hi); border-color: var(--gold-hi); color: var(--on-gold); }
+.btn--ghost { background: transparent; border-color: transparent; color: var(--gold); }
+.btn[disabled], .btn[aria-disabled="true"].btn--inert { opacity: .45; cursor: not-allowed; }
+
+/* Puces */
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 22px; padding: 0 8px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-chip);
+  font: 500 var(--fs-chip)/1 var(--font-mono);
+  letter-spacing: var(--tracking-chip); text-transform: uppercase;
+  color: var(--text-2); white-space: nowrap; background: transparent;
+}
+.chip--hot { color: var(--gold); border-color: var(--gold-mid); }
+.chip--live { color: var(--up); border-color: var(--up-border); }
+.chip--down { color: var(--down); border-color: var(--down-border); }
+.chip--new { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+.chip--pending { border-style: dashed; color: var(--text-1); }
+.chip--round { border-radius: 11px; }
+.chip--s { height: 18px; }
+a.chip:hover { color: var(--gold-hi); border-color: var(--gold); }
+
+/* Bascules (segments) */
+.seg {
+  height: 28px; padding: 0 10px;
+  border: 1px solid var(--line-strong); background: transparent; color: var(--text-2);
+  font: 500 var(--fs-label) var(--font-mono); letter-spacing: .1em; cursor: pointer;
+}
+.seg + .seg { border-left: 0; }
+.seg[aria-pressed="true"] { border-color: var(--gold-mid); background: var(--gold-deep); color: var(--gold-hi); }
+.seg:hover { color: var(--gold-hi); }
+
+/* Pastilles de biais */
+.pill {
+  display: inline-flex; align-items: center; height: 24px; padding: 0 10px;
+  border-radius: var(--radius-pill);
+  font: 600 var(--fs-label)/1 var(--font-mono); letter-spacing: .14em; white-space: nowrap;
+}
+.pill--bullish { background: var(--pill-bullish-bg); color: var(--pill-bullish-fg); }
+.pill--neutral { background: var(--pill-neutral-bg); color: var(--pill-neutral-fg); }
+.pill--bearish { background: var(--pill-bearish-bg); color: var(--pill-bearish-fg); }
+
+/* Cellules d'état */
+.cell {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 84px; height: 40px; padding: 0 10px; border-radius: var(--radius-chip);
+  font: 600 13px var(--font-mono); font-variant-numeric: tabular-nums;
+}
+.cell--up-2 { background: var(--cell-up-2-bg); color: var(--cell-up-2-fg); }
+.cell--up-1 { background: var(--cell-up-1-bg); color: var(--cell-up-1-fg); }
+.cell--neutral { background: var(--cell-neutral-bg); color: var(--cell-neutral-fg); }
+.cell--down-1 { background: var(--cell-down-1-bg); color: var(--cell-down-1-fg); }
+.cell--down-2 { background: var(--cell-down-2-bg); color: var(--cell-down-2-fg); }
+.cell--z-up { background: var(--cell-z-up-bg); color: var(--cell-z-up-fg); }
+.cell--selected { outline: 1px solid var(--gold); outline-offset: 2px; }
+
+/* Flash de 300 ms sur changement de prix */
+@keyframes flash-up { from { color: var(--up); } }
+@keyframes flash-down { from { color: var(--down); } }
+.flash-up { animation: flash-up var(--flash-ms) ease-out; }
+.flash-down { animation: flash-down var(--flash-ms) ease-out; }
+
+/* Valeur absente : « — » et sa raison */
+.missing { color: var(--text-3); }

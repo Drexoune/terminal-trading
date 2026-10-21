@@ -1,0 +1,10 @@
+# Configuration de la CLI Supabase pour le Mode Online (voir supabase/README.md).
+# Volontairement réduite : la CLI complète les sections absentes par ses valeurs
+# par défaut (à vérifier au déploiement avec « supabase link » et
+# « supabase functions deploy »).
+project_id = "terminal-trading"
+
+[functions.okx-collector]
+# Appelée chaque minute par pg_cron (pg_net), sans JWT : l'appel est
+# authentifié par l'en-tête x-collector-secret, vérifié par la fonction.
+verify_jwt = false

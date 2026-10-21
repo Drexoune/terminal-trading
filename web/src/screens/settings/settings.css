@@ -1,0 +1,90 @@
+/* Écran Paramètres : cartes de mode (groupe radio), champs d'adresse, test,
+   action Appliquer, tableau comparatif. Aucune couleur en dur : tokens seuls. */
+
+.settings { display: flex; flex-direction: column; gap: 14px; padding: var(--pad); }
+
+/* Cartes de mode : trois colonnes sur grand écran, une seule sur téléphone. */
+.modes {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--gap);
+  min-width: 0; margin: 0; padding: 0; border: 0;
+}
+.mode-card {
+  position: relative; display: flex; flex-direction: column; gap: 10px; min-width: 0;
+  padding: 14px; cursor: pointer;
+  background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--radius-panel);
+}
+.mode-card:hover { border-color: var(--line-strong); }
+.mode-card--selected, .mode-card--selected:hover { background: var(--bg-selected); border-color: var(--gold-mid); }
+/* Coins HUD or sur la carte choisie, comme les panneaux. */
+.mode-card--selected::before, .mode-card--selected::after {
+  content: ""; position: absolute; width: var(--hud-corner); height: var(--hud-corner);
+  border: 0 solid var(--gold); pointer-events: none;
+}
+.mode-card--selected::before { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+.mode-card--selected::after { right: -1px; bottom: -1px; border-right-width: 1px; border-bottom-width: 1px; }
+
+.mode-card__head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-height: 24px; }
+.mode-card__choice { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
+.mode-card__title {
+  font: 700 20px/1 var(--font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--text-1);
+}
+.mode-card--selected .mode-card__title { color: var(--gold); }
+.mode-card__desc { margin: 0; color: var(--text-2); font-size: 13px; line-height: 1.5; }
+
+/* Bouton radio : anneau du design system, point or quand il est coché. */
+.mode-card__choice input {
+  appearance: none; display: grid; place-content: center; flex: none;
+  width: 18px; height: 18px; margin: 0;
+  border: 1px solid var(--line-strong); border-radius: 50%; background: var(--bg-panel-2); cursor: pointer;
+}
+.mode-card__choice input::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); transform: scale(0);
+}
+.mode-card__choice input:checked { border-color: var(--gold-mid); }
+.mode-card__choice input:checked::before { transform: scale(1); }
+.mode-card__choice input:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
+
+/* Champ d'adresse */
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; cursor: default; }
+.input {
+  width: 100%; min-width: 0; height: var(--control-h); padding: 0 10px;
+  border: 1px solid var(--line-strong); border-radius: var(--radius-control);
+  background: var(--bg-panel-2); color: var(--text-1); font-size: var(--fs-data);
+}
+.input::placeholder { color: var(--text-3); }
+.input:hover { border-color: var(--gold-mid); }
+.input:focus { outline: 1px solid var(--gold); outline-offset: 0; border-color: var(--gold-mid); }
+.input[aria-invalid="true"] { border-color: var(--down-border); }
+.field__error { margin: 0; color: var(--down); font-size: 12px; line-height: 1.4; }
+
+/* Test de joignabilité */
+.mode-card__test { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: auto; cursor: default; }
+.probe { display: flex; flex-direction: column; gap: 4px; flex: 1 1 160px; min-width: 0; }
+.probe:empty { display: none; }
+.probe__line {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-2);
+  white-space: normal; overflow-wrap: anywhere;
+}
+.probe__line--ok { color: var(--text-1); }
+.probe__line--ko { color: var(--down); }
+.probe__detail { font-size: 12px; line-height: 1.4; color: var(--text-2); overflow-wrap: anywhere; }
+
+/* Action principale */
+.settings__actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  padding-top: 14px; border-top: 1px solid var(--line);
+}
+.settings__hint { flex: 1 1 240px; margin: 0; color: var(--text-2); font-size: 13px; line-height: 1.5; }
+.settings__hint--warn { color: var(--gold); }
+.settings__note { margin: 0; color: var(--text-3); font-size: 12px; line-height: 1.5; }
+
+/* Tableau comparatif : défile dans sa boîte sur téléphone, jamais la page
+   (position relative : les textes .sr, absolus, restent dans la boîte). */
+.modes-table { position: relative; overflow-x: auto; }
+.modes-table table { width: 100%; min-width: 640px; border-collapse: collapse; table-layout: fixed; }
+.modes-table th, .modes-table td { padding: 10px 14px; text-align: left; vertical-align: top; }
+.modes-table thead th { height: 34px; padding-top: 0; padding-bottom: 0; vertical-align: middle; font-weight: 500; }
+.modes-table tbody th { width: 170px; font-weight: 500; }
+.modes-table thead td, .modes-table tbody th { width: 170px; }
+.modes-table tbody td, .modes-table tbody th { border-top: 1px solid var(--line); }
+.modes-table td { color: var(--text-2); font-size: 13px; line-height: 1.5; }

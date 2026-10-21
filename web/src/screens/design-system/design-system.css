@@ -1,0 +1,32 @@
+.ds { min-height: 100vh; background: var(--bg-app); }
+.ds__head {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 28px 40px;
+  border-bottom: 1px solid var(--line); background: var(--logo-gradient);
+}
+.ds__title { margin: 0; font: 700 34px/1 var(--font-display); letter-spacing: var(--tracking-logo); color: var(--gold); }
+.ds__body { max-width: 1440px; padding: 32px 40px 48px; display: flex; flex-direction: column; gap: 40px; }
+.ds__sec {
+  display: flex; align-items: center; gap: 10px; margin: 0 0 16px;
+  font: 600 22px/1.1 var(--font-display); letter-spacing: .08em; text-transform: uppercase; color: var(--text-1);
+}
+.ds__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 10px; }
+.ds__swatch { height: 64px; border-bottom: 1px solid var(--line); }
+.ds__note { margin-top: 6px; font-size: 12.5px; line-height: 1.35; color: var(--text-2); }
+.ds__typo { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.ds__typo:last-child { border-bottom: 0; }
+.kpi-xl { font: 600 var(--fs-kpi-xl)/1 var(--font-display); color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+.screen-title { font: 700 var(--fs-screen-title)/1.1 var(--font-display); letter-spacing: .12em; text-transform: uppercase; }
+.article-title { flex: 1; min-width: 260px; font: 600 22px/1.3 var(--font-body); }
+.reading { flex: 1; min-width: 260px; margin: 0; max-width: 720px; font: 400 15px/1.55 var(--font-body); color: var(--text-body); }
+.ds__cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 400px), 1fr)); gap: 12px; }
+.ds__card { padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.ds__row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.gauge-value { font: 700 40px/1 var(--font-display); }
+.ds__tooltip {
+  align-self: flex-start; padding: 10px 12px; background: var(--bg-panel-2);
+  border: 1px solid var(--gold-mid); border-radius: var(--radius-panel); box-shadow: var(--shadow-popover);
+}
+.ds__spec { margin-top: 6px; font-size: 12.5px; color: var(--text-2); }
+.ds__palette-demo { grid-column: 1 / -1; padding: 24px; background: var(--bg-chrome); }
+.ds__palette-demo .palette { margin: 0 auto; }
+.ds__cardnote { font-size: 12.5px; color: var(--text-2); }

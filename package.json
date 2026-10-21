@@ -1,0 +1,9 @@
+{
+  "name": "terminal-trading",
+  "private": true,
+  "type": "module",
+  "description": "Racine du dépôt : fonctions Vercel (api/) en modules ES. Le front vit dans web/.",
+  "engines": {
+    "node": "22.x"
+  }
+}

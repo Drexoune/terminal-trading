@@ -1,0 +1,54 @@
+.price-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 36px; padding: 16px 16px 6px; }
+.price-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-top: 8px; }
+.kpi {
+  font: 600 var(--fs-kpi)/1 var(--font-display); color: var(--gold-hi);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.kpi-change { font-size: 15px; }
+.stats { display: flex; flex-wrap: wrap; gap: 12px 28px; }
+.stat__value { margin-top: 6px; font-size: 14px; color: var(--text-1); }
+
+.chart-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin-bottom: 10px; }
+.legend { display: inline-flex; align-items: center; gap: 6px; }
+.key { width: 10px; height: 10px; }
+.key--asia { background: var(--band-asia-key); }
+.key--london { background: var(--band-london-key); }
+.key--ny { background: var(--band-ny-key); }
+.key--pd { width: 14px; height: 0; border-top: 1px dashed var(--gold); }
+.key--vwap { width: 14px; height: 0; border-top: 2px dotted var(--text-2); }
+
+.chart-box { position: relative; border: 1px solid var(--line); overflow: hidden; background: var(--bg-panel); }
+.chart-host { position: absolute; inset: 0; }
+.chart-bands { position: absolute; inset: 0 72px 28px 0; z-index: 1; pointer-events: none; }
+.band { position: absolute; top: 0; bottom: 0; }
+.band--asia { background: var(--band-asia); }
+.band--london { background: var(--band-london); border-left: 1px solid var(--line); }
+.band--ny { background: var(--band-ny); border-left: 1px solid var(--line-strong); }
+.band__label { position: absolute; top: 8px; left: 8px; }
+.band--ny .band__label { top: 28px; color: var(--gold); }
+.chart-empty {
+  position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center;
+  background: var(--bg-panel);
+}
+/* Le graphique se dessine au-dessus des bandes, sur un fond transparent. */
+.chart-host { z-index: 2; }
+
+.wl { overflow-x: auto; }
+.wl table { width: 100%; min-width: 600px; border-collapse: collapse; table-layout: fixed; }
+.wl th { height: 34px; padding: 0 6px; text-align: left; font-weight: 500; }
+.wl td { height: 42px; padding: 0 6px; border-top: 1px solid var(--line); }
+.wl th:first-child, .wl td:first-child { padding-left: 14px; }
+.wl th:last-child, .wl td:last-child { padding-right: 14px; }
+.wl .r { text-align: right; }
+.wl__asset { display: flex; align-items: baseline; gap: 10px; min-width: 0; }
+.wl__name { font-weight: 600; color: var(--text-1); white-space: nowrap; }
+.wl__sub { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.placeholder {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 8px;
+  padding: 16px; color: var(--text-2); font-size: 13px; line-height: 1.5;
+}
+.placeholder__dash { font: 600 28px/1 var(--font-display); color: var(--text-3); }
+/* Libellés PDH / PDL, alignés à droite dans la zone de tracé */
+.level-tag { position: absolute; right: 8px; z-index: 3; font-size: var(--fs-chip); color: var(--gold); }
+.chart-tags { position: absolute; inset: 0 72px 28px 0; z-index: 3; pointer-events: none; }

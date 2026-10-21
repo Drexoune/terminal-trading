@@ -1,0 +1,9 @@
+{
+  "_comment": "Jeu de démonstration repris de la maquette Main (données fictives). Utilisé UNIQUEMENT par e2e/fake_gateway.py pour comparer l'écran à design/maquettes/png/Main.png. Jamais chargé par l'application.",
+  "now": "2026-10-20T13:36:04Z",
+  "btc": { "last": 108420.5, "change24h": 0.0184, "high24h": 109180.0, "low24h": 106050.0,
+           "day_change": 0.0184, "vol_base24h": 169800, "funding": 0.000081, "oi_usd": 31.2e9,
+           "prev_day_high": 109050, "prev_day_low": 106380, "day_open": 106600, "day_low": 106250 },
+  "eth": { "last": 3912.4, "change24h": 0.0231 },
+  "latency_ms": 41
+}

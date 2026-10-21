@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM", "DOM.Iterable", "WebWorker"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "types": ["vite/client"],
+    // Les tests de api/ et supabase/functions/ sont hors de web/ : sans node_modules
+    // au-dessus d'eux, « vitest » doit être résolu vers celui du front.
+    "paths": { "vitest": ["./node_modules/vitest"] }
+  },
+  "include": ["src", "../api", "../supabase/functions", "vite-plugins"]
+}

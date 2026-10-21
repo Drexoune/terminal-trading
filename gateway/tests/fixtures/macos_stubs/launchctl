@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# Simulateur MINIMAL de launchctl, pour tester deploy/macos/*.sh hors macOS
+# (gateway/tests/test_macos_agent.py). Il ne reproduit que ce que les scripts
+# utilisent : enable, print (ligne « pid = … »), bootstrap (lance
+# ProgramArguments dans WorkingDirectory avec EnvironmentVariables), bootout
+# (SIGTERM). L'état vit dans $SIM_STATE. Le vrai launchd reste à vérifier sur le Mac.
+set -euo pipefail
+ST="$SIM_STATE"
+cmd="$1"
+shift
+echo "$cmd $*" >>"$ST/calls.log"
+case "$cmd" in
+  enable) ;;
+  print)
+    label="${1##*/}"
+    [[ -f "$ST/$label.loaded" ]] || { echo "Could not find service \"$label\"" >&2; exit 113; }
+    pid="$(cat "$ST/$label.pid" 2>/dev/null || true)"
+    echo "$1 = {"
+    if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
+      printf '\tstate = running\n\tpid = %s\n' "$pid"
+    else
+      printf '\tstate = not running\n'
+    fi
+    echo "}"
+    ;;
+  bootstrap)
+    label="$(python3 -I -c 'import plistlib,sys; print(plistlib.load(open(sys.argv[1],"rb"))["Label"])' "$2")"
+    [[ -f "$ST/$label.loaded" ]] && { echo "Bootstrap failed: 5: Input/output error" >&2; exit 5; }
+    touch "$ST/$label.loaded"
+    python3 -I - "$2" "$ST/$label.pid" <<'PY'
+import os
+import plistlib
+import subprocess
+import sys
+
+d = plistlib.load(open(sys.argv[1], "rb"))
+env = dict(os.environ)
+env.update(d.get("EnvironmentVariables", {}))
+out = open(d["StandardOutPath"], "ab")
+p = subprocess.Popen(d["ProgramArguments"], cwd=d["WorkingDirectory"], env=env,
+                     stdout=out, stderr=out, start_new_session=True)
+open(sys.argv[2], "w").write(str(p.pid))
+PY
+    ;;
+  bootout)
+    label="${1##*/}"
+    [[ -f "$ST/$label.loaded" ]] || { echo "Boot-out failed: 3: No such process" >&2; exit 3; }
+    pid="$(cat "$ST/$label.pid" 2>/dev/null || true)"
+    if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
+      echo "SIGTERM $pid" >>"$ST/calls.log"
+      kill -TERM "$pid"
+    fi
+    rm -f "$ST/$label.loaded" "$ST/$label.pid"
+    ;;
+  *) echo "launchctl simulé : commande $cmd non prise en charge" >&2; exit 64 ;;
+esac
