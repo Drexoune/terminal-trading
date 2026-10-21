@@ -1,0 +1,25 @@
+# Fichiers que Vercel ne reçoit pas au déploiement. Les motifs commencent par « / »
+# pour ne viser que la racine : « scripts/ » seul retirerait aussi
+# web/scripts/check-bundle.mjs, dont la build a besoin.
+
+# Secrets : jamais envoyés, même par « vercel deploy » depuis le Mac. Les variables
+# de production se posent dans le tableau de bord Vercel.
+.env
+.env.*
+*.env
+
+# Tests, fichier doré et script Python des fonctions : inutiles au déploiement, et
+# ils ne doivent devenir ni fonctions Node ni fonction Python.
+/api/_tests/
+
+# Rien d'autre que le front (web/), les fonctions (api/) et design/ ne sert à Vercel.
+/collectors/
+/gateway/
+/supabase/
+/deploy/
+/scripts/
+/docs/
+/design/maquettes/source/
+/.venv/
+/data/
+/logs/

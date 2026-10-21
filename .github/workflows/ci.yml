@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      # Environnement dans .venv, comme sur le Mac et la tour : la plist de l'agent
+      # launchd pointe sur .venv/bin/python, et le test du cycle installer / arrêter
+      # (launchctl simulé, gateway/tests/test_macos_agent.py) s'en sert.
+      - run: python -m venv .venv && .venv/bin/pip install -e '.[dev]'
+      - run: .venv/bin/ruff check collectors gateway scripts web/e2e/fake_gateway.py
+      - name: Syntaxe des scripts du Mac (deploy/macos)
+        run: for f in deploy/macos/*.sh; do bash -n "$f"; done
+      - run: .venv/bin/pytest -q
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: python -m venv ../.venv && ../.venv/bin/pip install -e '..[dev]'
+      - run: npm ci
+      - run: npm run typecheck
+      # Vitest couvre web/src, les fonctions Vercel (api/) et le collecteur
+      # Supabase (supabase/functions/) : voir web/vitest.config.ts.
+      - run: npm test
+      - run: npm run build && npm run check:bundle
+      - run: npx playwright install --with-deps chromium
+      # Les variables de l'e2e (VITE_DEFAULT_MODE=local, VITE_LOCAL_GATEWAY_URL vers
+      # la passerelle de démonstration :8790) sont posées par web/playwright.config.ts.
+      - run: npx playwright test
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparaison-maquettes
+          path: web/e2e/__artifacts__/

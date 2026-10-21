@@ -1,0 +1,32 @@
+# Secrets (.env.example seul est versionné)
+.env
+*.env
+.env.local
+.env.*.local
+!.env.example
+supabase/functions/.env
+
+# Vercel et Supabase (CLI) : liens de projet et fichiers temporaires
+.vercel/
+supabase/.temp/
+supabase/.branches/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+
+# Node
+node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+web/e2e/__artifacts__/
+
+# Données et journaux locaux, à la racine seulement (« data/ » sans « / » initial
+# exclurait aussi web/src/data/, le code des flux)
+/data/
+/logs/
+.DS_Store
