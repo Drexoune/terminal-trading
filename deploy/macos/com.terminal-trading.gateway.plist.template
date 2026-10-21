@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Agent launchd utilisateur : passerelle du terminal en Mode Local (docs/modes.md,
+  décision T-014).
+
+  MODÈLE : installer-local.sh remplace les marqueurs entre arobases par les
+  chemins réels du dépôt et écrit le résultat dans
+  ~/Library/LaunchAgents/com.terminal-trading.gateway.plist. Ne pas copier ce
+  fichier tel quel.
+
+  Clés (man launchd.plist, à vérifier sur le Mac) :
+  - RunAtLoad : démarre à l'installation et à chaque ouverture de session ;
+  - KeepAlive/SuccessfulExit = false : relancée après un plantage (code non nul,
+    signal), jamais après un arrêt propre (code 0, fichier d'arrêt) ;
+  - ThrottleInterval : au plus un lancement toutes les 30 s, pour ménager les
+    limites de connexion d'OKX en cas de plantages répétés ;
+  - ExitTimeOut : délai entre SIGTERM et SIGKILL quand launchd arrête l'agent ;
+  - ProcessType Background : priorité basse, l'usage du Mac passe devant.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.terminal-trading.gateway</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>@PYTHON@</string>
+    <string>-m</string>
+    <string>terminal_gateway</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>@ROOT@</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>GATEWAY_MODE</key>
+    <string>local</string>
+    <key>PYTHONUNBUFFERED</key>
+    <string>1</string>
+    <key>PYTHONUTF8</key>
+    <string>1</string>
+  </dict>
+
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+
+  <key>ThrottleInterval</key>
+  <integer>30</integer>
+
+  <key>ExitTimeOut</key>
+  <integer>30</integer>
+
+  <key>ProcessType</key>
+  <string>Background</string>
+
+  <!-- Sorties du process (erreurs de démarrage, traces) ; le journal de la
+       passerelle elle-même reste logs/gateway.log, tourné chaque nuit. -->
+  <key>StandardOutPath</key>
+  <string>@ROOT@/logs/gateway-launchd.log</string>
+  <key>StandardErrorPath</key>
+  <string>@ROOT@/logs/gateway-launchd.log</string>
+</dict>
+</plist>

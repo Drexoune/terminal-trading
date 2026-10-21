@@ -1,0 +1,2827 @@
+{
+ "comment": "Généré par scripts/make_okx_golden.py depuis ws_messages.json : sorties de parse.py, que parse.ts doit reproduire à l'identique.",
+ "cases": [
+  {
+   "name": "trades:subscribe#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"id\": \"1\", \"event\": \"subscribe\", \"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"connId\": \"3e4f009d\"}",
+   "control": {
+    "event": "subscribe",
+    "raw": {
+     "id": "1",
+     "event": "subscribe",
+     "arg": {
+      "channel": "trades",
+      "instId": "BTC-USDT-SWAP"
+     },
+     "connId": "3e4f009d"
+    }
+   }
+  },
+  {
+   "name": "tickers:subscribe#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"id\": \"1\", \"event\": \"subscribe\", \"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"connId\": \"3e4f009d\"}",
+   "control": {
+    "event": "subscribe",
+    "raw": {
+     "id": "1",
+     "event": "subscribe",
+     "arg": {
+      "channel": "tickers",
+      "instId": "BTC-USDT-SWAP"
+     },
+     "connId": "3e4f009d"
+    }
+   }
+  },
+  {
+   "name": "funding-rate:subscribe#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"id\": \"1\", \"event\": \"subscribe\", \"arg\": {\"channel\": \"funding-rate\", \"instId\": \"BTC-USDT-SWAP\"}, \"connId\": \"3e4f009d\"}",
+   "control": {
+    "event": "subscribe",
+    "raw": {
+     "id": "1",
+     "event": "subscribe",
+     "arg": {
+      "channel": "funding-rate",
+      "instId": "BTC-USDT-SWAP"
+     },
+     "connId": "3e4f009d"
+    }
+   }
+  },
+  {
+   "name": "open-interest:subscribe#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"id\": \"1\", \"event\": \"subscribe\", \"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"connId\": \"3e4f009d\"}",
+   "control": {
+    "event": "subscribe",
+    "raw": {
+     "id": "1",
+     "event": "subscribe",
+     "arg": {
+      "channel": "open-interest",
+      "instId": "BTC-USDT-SWAP"
+     },
+     "connId": "3e4f009d"
+    }
+   }
+  },
+  {
+   "name": "open-interest:push#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"oi\": \"3049523.58000001202\", \"oiCcy\": \"30495.2358000001202\", \"oiUsd\": \"2482065182.71002978330638\", \"ts\": \"1792487334785\"}]}",
+   "events": [
+    {
+     "kind": "open_interest",
+     "inst": "BTC-USDT-SWAP",
+     "oi_base": 30495.23580000012,
+     "oi_usd": 2482065182.7100296,
+     "ts_source": 1792487334785,
+     "ts_recv": 1792487342043
+    }
+   ]
+  },
+  {
+   "name": "open-interest:push#1",
+   "recv_ms": 1792487345189,
+   "raw": "{\"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"oi\": \"3049627.17000001222\", \"oiCcy\": \"30496.2717000001222\", \"oiUsd\": \"2482481905.94076994742216\", \"ts\": \"1792487344968\"}]}",
+   "events": [
+    {
+     "kind": "open_interest",
+     "inst": "BTC-USDT-SWAP",
+     "oi_base": 30496.27170000012,
+     "oi_usd": 2482481905.94077,
+     "ts_source": 1792487344968,
+     "ts_recv": 1792487345189
+    }
+   ]
+  },
+  {
+   "name": "open-interest:push#2",
+   "recv_ms": 1792487355102,
+   "raw": "{\"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"oi\": \"3049623.160000012\", \"oiCcy\": \"30496.23160000012\", \"oiUsd\": \"2483170906.14580977106\", \"ts\": \"1792487354890\"}]}",
+   "events": [
+    {
+     "kind": "open_interest",
+     "inst": "BTC-USDT-SWAP",
+     "oi_base": 30496.23160000012,
+     "oi_usd": 2483170906.1458097,
+     "ts_source": 1792487354890,
+     "ts_recv": 1792487355102
+    }
+   ]
+  },
+  {
+   "name": "open-interest:push#3",
+   "recv_ms": 1792487364939,
+   "raw": "{\"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"oi\": \"3049360.67000001196\", \"oiCcy\": \"30493.6067000001196\", \"oiUsd\": \"2483204170.56512973945856\", \"ts\": \"1792487364707\"}]}",
+   "events": [
+    {
+     "kind": "open_interest",
+     "inst": "BTC-USDT-SWAP",
+     "oi_base": 30493.60670000012,
+     "oi_usd": 2483204170.5651298,
+     "ts_source": 1792487364707,
+     "ts_recv": 1792487364939
+    }
+   ]
+  },
+  {
+   "name": "open-interest:push#4",
+   "recv_ms": 1792487384911,
+   "raw": "{\"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"oi\": \"3049611.250000012\", \"oiCcy\": \"30496.11250000012\", \"oiUsd\": \"2483249647.095009771408\", \"ts\": \"1792487384703\"}]}",
+   "events": [
+    {
+     "kind": "open_interest",
+     "inst": "BTC-USDT-SWAP",
+     "oi_base": 30496.11250000012,
+     "oi_usd": 2483249647.09501,
+     "ts_source": 1792487384703,
+     "ts_recv": 1792487384911
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81407.9\", \"lastSz\": \"0.26\", \"askPx\": \"81408\", \"askSz\": \"34.15\", \"bidPx\": \"81407.9\", \"bidSz\": \"2346.38\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8686\", \"vol24h\": \"6075186.86\", \"ts\": \"1792487341770\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81407.9,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8686,
+     "ts_source": 1792487341770,
+     "ts_recv": 1792487342043
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#1",
+   "recv_ms": 1792487342215,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81407.9\", \"lastSz\": \"0.26\", \"askPx\": \"81408\", \"askSz\": \"35.06\", \"bidPx\": \"81407.9\", \"bidSz\": \"2346.36\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8686\", \"vol24h\": \"6075186.86\", \"ts\": \"1792487341965\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81407.9,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8686,
+     "ts_source": 1792487341965,
+     "ts_recv": 1792487342215
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#2",
+   "recv_ms": 1792487342215,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81407.9\", \"lastSz\": \"0.26\", \"askPx\": \"81408\", \"askSz\": \"35.06\", \"bidPx\": \"81407.9\", \"bidSz\": \"2346.33\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8686\", \"vol24h\": \"6075186.86\", \"ts\": \"1792487342071\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81407.9,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8686,
+     "ts_source": 1792487342071,
+     "ts_recv": 1792487342215
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#3",
+   "recv_ms": 1792487342561,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81408\", \"lastSz\": \"0.3\", \"askPx\": \"81408\", \"askSz\": \"36.29\", \"bidPx\": \"81407.9\", \"bidSz\": \"2348.9\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487342270\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81408.0,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487342270,
+     "ts_recv": 1792487342561
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#4",
+   "recv_ms": 1792487342715,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81408\", \"lastSz\": \"0.3\", \"askPx\": \"81408\", \"askSz\": \"36.29\", \"bidPx\": \"81407.9\", \"bidSz\": \"2348.93\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487342466\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81408.0,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487342466,
+     "ts_recv": 1792487342715
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#5",
+   "recv_ms": 1792487342827,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81408\", \"lastSz\": \"0.3\", \"askPx\": \"81408\", \"askSz\": \"36.29\", \"bidPx\": \"81407.9\", \"bidSz\": \"2348.77\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487342568\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81408.0,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487342568,
+     "ts_recv": 1792487342827
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#6",
+   "recv_ms": 1792487342961,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81408\", \"lastSz\": \"0.3\", \"askPx\": \"81408\", \"askSz\": \"36.13\", \"bidPx\": \"81407.9\", \"bidSz\": \"2348.72\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487342669\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81408.0,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487342669,
+     "ts_recv": 1792487342961
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#7",
+   "recv_ms": 1792487343157,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81408\", \"lastSz\": \"0.3\", \"askPx\": \"81408\", \"askSz\": \"36.13\", \"bidPx\": \"81407.9\", \"bidSz\": \"2348.92\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487342867\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81408.0,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487342867,
+     "ts_recv": 1792487343157
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#8",
+   "recv_ms": 1792487343222,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81408\", \"lastSz\": \"19.52\", \"askPx\": \"81408\", \"askSz\": \"6.62\", \"bidPx\": \"81407.9\", \"bidSz\": \"2351.61\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487343003\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81408.0,
+     "bid": 81407.9,
+     "ask": 81408.0,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487343003,
+     "ts_recv": 1792487343222
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#9",
+   "recv_ms": 1792487343420,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81411\", \"lastSz\": \"0.06\", \"askPx\": \"81411.1\", \"askSz\": \"279.47\", \"bidPx\": \"81411\", \"bidSz\": \"2058.62\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60751.8712\", \"vol24h\": \"6075187.12\", \"ts\": \"1792487343122\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81411.0,
+     "bid": 81411.0,
+     "ask": 81411.1,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60751.8712,
+     "ts_source": 1792487343122,
+     "ts_recv": 1792487343420
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#10",
+   "recv_ms": 1792487343513,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81411\", \"lastSz\": \"0.06\", \"askPx\": \"81411.1\", \"askSz\": \"635.84\", \"bidPx\": \"81411\", \"bidSz\": \"2067.44\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487343267\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81411.0,
+     "bid": 81411.0,
+     "ask": 81411.1,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487343267,
+     "ts_recv": 1792487343513
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#11",
+   "recv_ms": 1792487343716,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81411\", \"lastSz\": \"0.06\", \"askPx\": \"81411.1\", \"askSz\": \"674.9\", \"bidPx\": \"81411\", \"bidSz\": \"2076.01\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487343465\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81411.0,
+     "bid": 81411.0,
+     "ask": 81411.1,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487343465,
+     "ts_recv": 1792487343716
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#12",
+   "recv_ms": 1792487343814,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81411.1\", \"lastSz\": \"0.39\", \"askPx\": \"81411.1\", \"askSz\": \"824.88\", \"bidPx\": \"81411\", \"bidSz\": \"2075.65\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487343569\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81411.1,
+     "bid": 81411.0,
+     "ask": 81411.1,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487343569,
+     "ts_recv": 1792487343814
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#13",
+   "recv_ms": 1792487343917,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81413.9\", \"lastSz\": \"0.13\", \"askPx\": \"81413.9\", \"askSz\": \"83.89\", \"bidPx\": \"81413.8\", \"bidSz\": \"2088.71\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487343746\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81413.9,
+     "bid": 81413.8,
+     "ask": 81413.9,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487343746,
+     "ts_recv": 1792487343917
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#14",
+   "recv_ms": 1792487344117,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81413.9\", \"lastSz\": \"0.01\", \"askPx\": \"81413.9\", \"askSz\": \"81.91\", \"bidPx\": \"81413.8\", \"bidSz\": \"2100.1\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487343868\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81413.9,
+     "bid": 81413.8,
+     "ask": 81413.9,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487343868,
+     "ts_recv": 1792487344117
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#15",
+   "recv_ms": 1792487344210,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81413.9\", \"lastSz\": \"0.01\", \"askPx\": \"81413.9\", \"askSz\": \"74.44\", \"bidPx\": \"81413.8\", \"bidSz\": \"2099.98\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487343988\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81413.9,
+     "bid": 81413.8,
+     "ask": 81413.9,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487343988,
+     "ts_recv": 1792487344210
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#16",
+   "recv_ms": 1792487344416,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81413.8\", \"lastSz\": \"5.08\", \"askPx\": \"81413.9\", \"askSz\": \"74.36\", \"bidPx\": \"81413.8\", \"bidSz\": \"2094.62\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.7179\", \"vol24h\": \"6075371.79\", \"ts\": \"1792487344133\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81413.8,
+     "bid": 81413.8,
+     "ask": 81413.9,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.7179,
+     "ts_source": 1792487344133,
+     "ts_recv": 1792487344416
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#17",
+   "recv_ms": 1792487344517,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81419.2\", \"lastSz\": \"0.03\", \"askPx\": \"81419.2\", \"askSz\": \"1009.28\", \"bidPx\": \"81419.1\", \"bidSz\": \"2202.58\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.9364\", \"vol24h\": \"6075393.64\", \"ts\": \"1792487344272\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81419.2,
+     "bid": 81419.1,
+     "ask": 81419.2,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.9364,
+     "ts_source": 1792487344272,
+     "ts_recv": 1792487344517
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#18",
+   "recv_ms": 1792487344714,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81419.2\", \"lastSz\": \"0.03\", \"askPx\": \"81419.2\", \"askSz\": \"963.82\", \"bidPx\": \"81419.1\", \"bidSz\": \"2205.08\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.9364\", \"vol24h\": \"6075393.64\", \"ts\": \"1792487344469\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81419.2,
+     "bid": 81419.1,
+     "ask": 81419.2,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.9364,
+     "ts_source": 1792487344469,
+     "ts_recv": 1792487344714
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#19",
+   "recv_ms": 1792487344825,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81419.2\", \"lastSz\": \"0.03\", \"askPx\": \"81419.2\", \"askSz\": \"960.78\", \"bidPx\": \"81419.1\", \"bidSz\": \"2205.08\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.9364\", \"vol24h\": \"6075393.64\", \"ts\": \"1792487344593\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81419.2,
+     "bid": 81419.1,
+     "ask": 81419.2,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.9364,
+     "ts_source": 1792487344593,
+     "ts_recv": 1792487344825
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#20",
+   "recv_ms": 1792487345015,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81419.2\", \"lastSz\": \"0.03\", \"askPx\": \"81419.2\", \"askSz\": \"960.79\", \"bidPx\": \"81419.1\", \"bidSz\": \"2215.2\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.9364\", \"vol24h\": \"6075393.64\", \"ts\": \"1792487344770\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81419.2,
+     "bid": 81419.1,
+     "ask": 81419.2,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.9364,
+     "ts_source": 1792487344770,
+     "ts_recv": 1792487345015
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#21",
+   "recv_ms": 1792487345209,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81419.2\", \"lastSz\": \"0.03\", \"askPx\": \"81419.2\", \"askSz\": \"617.31\", \"bidPx\": \"81419.1\", \"bidSz\": \"2215.44\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.9364\", \"vol24h\": \"6075393.64\", \"ts\": \"1792487344967\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81419.2,
+     "bid": 81419.1,
+     "ask": 81419.2,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.9364,
+     "ts_source": 1792487344967,
+     "ts_recv": 1792487345209
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#22",
+   "recv_ms": 1792487345411,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425\", \"lastSz\": \"0.07\", \"askPx\": \"81425.6\", \"askSz\": \"207.26\", \"bidPx\": \"81425.5\", \"bidSz\": \"1635.05\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60753.9364\", \"vol24h\": \"6075393.64\", \"ts\": \"1792487345166\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.0,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60753.9364,
+     "ts_source": 1792487345166,
+     "ts_recv": 1792487345411
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#23",
+   "recv_ms": 1792487345513,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425\", \"lastSz\": \"0.07\", \"askPx\": \"81425.6\", \"askSz\": \"1134.55\", \"bidPx\": \"81425.5\", \"bidSz\": \"1593.44\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7797\", \"vol24h\": \"6075577.97\", \"ts\": \"1792487345273\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.0,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7797,
+     "ts_source": 1792487345273,
+     "ts_recv": 1792487345513
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#24",
+   "recv_ms": 1792487345715,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1281.1\", \"bidPx\": \"81425.5\", \"bidSz\": \"1303.93\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7797\", \"vol24h\": \"6075577.97\", \"ts\": \"1792487345423\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7797,
+     "ts_source": 1792487345423,
+     "ts_recv": 1792487345715
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#25",
+   "recv_ms": 1792487345819,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.69\", \"bidPx\": \"81425.5\", \"bidSz\": \"1120.44\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7797\", \"vol24h\": \"6075577.97\", \"ts\": \"1792487345568\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7797,
+     "ts_source": 1792487345568,
+     "ts_recv": 1792487345819
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#26",
+   "recv_ms": 1792487345912,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.69\", \"bidPx\": \"81425.5\", \"bidSz\": \"507.36\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7797\", \"vol24h\": \"6075577.97\", \"ts\": \"1792487345668\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7797,
+     "ts_source": 1792487345668,
+     "ts_recv": 1792487345912
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#27",
+   "recv_ms": 1792487346114,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.69\", \"bidPx\": \"81425.5\", \"bidSz\": \"937.18\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7797\", \"vol24h\": \"6075577.97\", \"ts\": \"1792487345868\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7797,
+     "ts_source": 1792487345868,
+     "ts_recv": 1792487346114
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#28",
+   "recv_ms": 1792487346212,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.7\", \"bidPx\": \"81425.5\", \"bidSz\": \"1021.91\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7797\", \"vol24h\": \"6075577.97\", \"ts\": \"1792487346067\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7797,
+     "ts_source": 1792487346067,
+     "ts_recv": 1792487346212
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#29",
+   "recv_ms": 1792487346496,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.86\", \"bidPx\": \"81425.5\", \"bidSz\": \"183.99\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7973\", \"vol24h\": \"6075579.73\", \"ts\": \"1792487346269\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7973,
+     "ts_source": 1792487346269,
+     "ts_recv": 1792487346496
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#30",
+   "recv_ms": 1792487346694,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.86\", \"bidPx\": \"81425.5\", \"bidSz\": \"237.37\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7973\", \"vol24h\": \"6075579.73\", \"ts\": \"1792487346467\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7973,
+     "ts_source": 1792487346467,
+     "ts_recv": 1792487346694
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#31",
+   "recv_ms": 1792487346795,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.84\", \"bidPx\": \"81425.5\", \"bidSz\": \"237.35\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7973\", \"vol24h\": \"6075579.73\", \"ts\": \"1792487346571\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7973,
+     "ts_source": 1792487346571,
+     "ts_recv": 1792487346795
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#32",
+   "recv_ms": 1792487347029,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.85\", \"bidPx\": \"81425.5\", \"bidSz\": \"575.32\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7973\", \"vol24h\": \"6075579.73\", \"ts\": \"1792487346767\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7973,
+     "ts_source": 1792487346767,
+     "ts_recv": 1792487347029
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#33",
+   "recv_ms": 1792487347123,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"1.76\", \"askPx\": \"81425.6\", \"askSz\": \"1276.85\", \"bidPx\": \"81425.5\", \"bidSz\": \"575.32\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7973\", \"vol24h\": \"6075579.73\", \"ts\": \"1792487346869\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7973,
+     "ts_source": 1792487346869,
+     "ts_recv": 1792487347123
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#34",
+   "recv_ms": 1792487347217,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"2\", \"askPx\": \"81425.6\", \"askSz\": \"1244.93\", \"bidPx\": \"81425.5\", \"bidSz\": \"844.67\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60755.7973\", \"vol24h\": \"6075579.73\", \"ts\": \"1792487347038\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60755.7973,
+     "ts_source": 1792487347038,
+     "ts_recv": 1792487347217
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#35",
+   "recv_ms": 1792487347427,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"2\", \"askPx\": \"81425.6\", \"askSz\": \"1244.94\", \"bidPx\": \"81425.5\", \"bidSz\": \"281.22\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60756.1173\", \"vol24h\": \"6075611.73\", \"ts\": \"1792487347171\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60756.1173,
+     "ts_source": 1792487347171,
+     "ts_recv": 1792487347427
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#36",
+   "recv_ms": 1792487347625,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"2\", \"askPx\": \"81425.6\", \"askSz\": \"1244.97\", \"bidPx\": \"81425.5\", \"bidSz\": \"227.96\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60756.1173\", \"vol24h\": \"6075611.73\", \"ts\": \"1792487347371\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60756.1173,
+     "ts_source": 1792487347371,
+     "ts_recv": 1792487347625
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#37",
+   "recv_ms": 1792487347819,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"2\", \"askPx\": \"81425.6\", \"askSz\": \"1244.97\", \"bidPx\": \"81425.5\", \"bidSz\": \"185.6\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60756.1173\", \"vol24h\": \"6075611.73\", \"ts\": \"1792487347570\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60756.1173,
+     "ts_source": 1792487347570,
+     "ts_recv": 1792487347819
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#38",
+   "recv_ms": 1792487348025,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"2\", \"askPx\": \"81425.6\", \"askSz\": \"1244.97\", \"bidPx\": \"81425.5\", \"bidSz\": \"185.98\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60756.1173\", \"vol24h\": \"6075611.73\", \"ts\": \"1792487347769\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60756.1173,
+     "ts_source": 1792487347769,
+     "ts_recv": 1792487348025
+    }
+   ]
+  },
+  {
+   "name": "tickers:push#39",
+   "recv_ms": 1792487348118,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instType\": \"SWAP\", \"instId\": \"BTC-USDT-SWAP\", \"last\": \"81425.6\", \"lastSz\": \"2\", \"askPx\": \"81425.6\", \"askSz\": \"1245.09\", \"bidPx\": \"81425.5\", \"bidSz\": \"226.3\", \"open24h\": \"82733.5\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"81909.5\", \"sodUtc8\": \"81912.3\", \"volCcy24h\": \"60756.1173\", \"vol24h\": \"6075611.73\", \"ts\": \"1792487347874\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81425.6,
+     "bid": 81425.5,
+     "ask": 81425.6,
+     "open24h": 82733.5,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": 81909.5,
+     "vol_base24h": 60756.1173,
+     "ts_source": 1792487347874,
+     "ts_recv": 1792487348118
+    }
+   ]
+  },
+  {
+   "name": "funding-rate:push#0",
+   "recv_ms": 1792487342043,
+   "raw": "{\"arg\": {\"channel\": \"funding-rate\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"formulaType\": \"withRate\", \"fundingRate\": \"0.0000246364955628\", \"fundingTime\": \"1792512000000\", \"impactValue\": \"20000.0000000000000000\", \"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"interestRate\": \"0.0001000000000000\", \"maxFundingRate\": \"0.00375\", \"method\": \"current_period\", \"minFundingRate\": \"-0.00375\", \"nextFundingRate\": \"\", \"nextFundingTime\": \"1792540800000\", \"premium\": \"-0.0005317097969680\", \"prevFundingTime\": \"1792483200000\", \"settFundingRate\": \"0.0000519278180174\", \"settState\": \"settled\", \"ts\": \"1792487308124\"}]}",
+   "events": [
+    {
+     "kind": "funding",
+     "inst": "BTC-USDT-SWAP",
+     "rate": 2.46364955628e-05,
+     "funding_time": 1792512000000,
+     "prev_funding_time": 1792483200000,
+     "interval_ms": 28800000,
+     "ts_source": 1792487308124,
+     "ts_recv": 1792487342043
+    }
+   ]
+  },
+  {
+   "name": "funding-rate:push#1",
+   "recv_ms": 1792487354317,
+   "raw": "{\"arg\": {\"channel\": \"funding-rate\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"formulaType\": \"withRate\", \"fundingRate\": \"0.0000246082646846\", \"fundingTime\": \"1792512000000\", \"impactValue\": \"20000.0000000000000000\", \"instId\": \"BTC-USDT-SWAP\", \"instType\": \"SWAP\", \"interestRate\": \"0.0001000000000000\", \"maxFundingRate\": \"0.00375\", \"method\": \"current_period\", \"minFundingRate\": \"-0.00375\", \"nextFundingRate\": \"\", \"nextFundingTime\": \"1792540800000\", \"premium\": \"-0.0004455627838467\", \"prevFundingTime\": \"1792483200000\", \"settFundingRate\": \"0.0000519278180174\", \"settState\": \"settled\", \"ts\": \"1792487354136\"}]}",
+   "events": [
+    {
+     "kind": "funding",
+     "inst": "BTC-USDT-SWAP",
+     "rate": 2.46082646846e-05,
+     "funding_time": 1792512000000,
+     "prev_funding_time": 1792483200000,
+     "interval_ms": 28800000,
+     "ts_source": 1792487354136,
+     "ts_recv": 1792487354317
+    }
+   ]
+  },
+  {
+   "name": "candle1m:subscribe#0",
+   "recv_ms": 1792487342085,
+   "raw": "{\"id\": \"1\", \"event\": \"subscribe\", \"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"connId\": \"065bbb53\"}",
+   "control": {
+    "event": "subscribe",
+    "raw": {
+     "id": "1",
+     "event": "subscribe",
+     "arg": {
+      "channel": "candle1m",
+      "instId": "BTC-USDT-SWAP"
+     },
+     "connId": "065bbb53"
+    }
+   }
+  },
+  {
+   "name": "candle1m:push#0",
+   "recv_ms": 1792487342085,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81408.0\", \"81402.9\", \"81408.0\", \"300.66\", \"3.0066\", \"244746.03637000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81408.0,
+     "l": 81402.9,
+     "c": 81408.0,
+     "vol_base": 3.0066,
+     "vol_quote": 244746.03637,
+     "confirmed": false,
+     "ts_recv": 1792487342085
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#1",
+   "recv_ms": 1792487342397,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81408.0\", \"81402.9\", \"81407.9\", \"300.92\", \"3.0092\", \"244957.69691000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81408.0,
+     "l": 81402.9,
+     "c": 81407.9,
+     "vol_base": 3.0092,
+     "vol_quote": 244957.69691,
+     "confirmed": false,
+     "ts_recv": 1792487342397
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#2",
+   "recv_ms": 1792487343328,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81411.1\", \"81402.9\", \"81411.1\", \"485.59\", \"4.8559\", \"395298.36627000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81411.1,
+     "l": 81402.9,
+     "c": 81411.1,
+     "vol_base": 4.8559,
+     "vol_quote": 395298.36627,
+     "confirmed": false,
+     "ts_recv": 1792487343328
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#3",
+   "recv_ms": 1792487344368,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81413.9\", \"81402.9\", \"81413.9\", \"507.39\", \"5.0739\", \"413046.52033000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81413.9,
+     "l": 81402.9,
+     "c": 81413.9,
+     "vol_base": 5.0739,
+     "vol_quote": 413046.52033,
+     "confirmed": false,
+     "ts_recv": 1792487344368
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#4",
+   "recv_ms": 1792487344368,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81413.9\", \"81402.9\", \"81413.9\", \"507.44\", \"5.0744\", \"413087.22728000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81413.9,
+     "l": 81402.9,
+     "c": 81413.9,
+     "vol_base": 5.0744,
+     "vol_quote": 413087.22728,
+     "confirmed": false,
+     "ts_recv": 1792487344368
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#5",
+   "recv_ms": 1792487345382,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.0\", \"81402.9\", \"81425.0\", \"691.77\", \"6.9177\", \"563163.16405000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.0,
+     "l": 81402.9,
+     "c": 81425.0,
+     "vol_base": 6.9177,
+     "vol_quote": 563163.16405,
+     "confirmed": false,
+     "ts_recv": 1792487345382
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#6",
+   "recv_ms": 1792487346392,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.6\", \"81402.9\", \"81425.6\", \"693.53\", \"6.9353\", \"564596.25461000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.6,
+     "l": 81402.9,
+     "c": 81425.6,
+     "vol_base": 6.9353,
+     "vol_quote": 564596.25461,
+     "confirmed": false,
+     "ts_recv": 1792487346392
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#7",
+   "recv_ms": 1792487347410,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.6\", \"81402.9\", \"81425.6\", \"725.53\", \"7.2553\", \"590652.44661000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.6,
+     "l": 81402.9,
+     "c": 81425.6,
+     "vol_base": 7.2553,
+     "vol_quote": 590652.44661,
+     "confirmed": false,
+     "ts_recv": 1792487347410
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#8",
+   "recv_ms": 1792487348366,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.6\", \"81402.9\", \"81425.5\", \"726.68\", \"7.2668\", \"591588.83986000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.6,
+     "l": 81402.9,
+     "c": 81425.5,
+     "vol_base": 7.2668,
+     "vol_quote": 591588.83986,
+     "confirmed": false,
+     "ts_recv": 1792487348366
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#9",
+   "recv_ms": 1792487349400,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.6\", \"81402.9\", \"81425.6\", \"765.26\", \"7.6526\", \"623002.83634000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.6,
+     "l": 81402.9,
+     "c": 81425.6,
+     "vol_base": 7.6526,
+     "vol_quote": 623002.83634,
+     "confirmed": false,
+     "ts_recv": 1792487349400
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#10",
+   "recv_ms": 1792487350381,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.6\", \"81402.9\", \"81425.5\", \"779.05\", \"7.7905\", \"634231.41303000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.6,
+     "l": 81402.9,
+     "c": 81425.5,
+     "vol_base": 7.7905,
+     "vol_quote": 634231.41303,
+     "confirmed": false,
+     "ts_recv": 1792487350381
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#11",
+   "recv_ms": 1792487351382,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81425.6\", \"81402.9\", \"81425.6\", \"780.55\", \"7.8055\", \"635452.79703000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81425.6,
+     "l": 81402.9,
+     "c": 81425.6,
+     "vol_base": 7.8055,
+     "vol_quote": 635452.79703,
+     "confirmed": false,
+     "ts_recv": 1792487351382
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#12",
+   "recv_ms": 1792487352287,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81432.0\", \"81402.9\", \"81432.0\", \"1133.62\", \"11.3362\", \"922963.19776000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81432.0,
+     "l": 81402.9,
+     "c": 81432.0,
+     "vol_base": 11.3362,
+     "vol_quote": 922963.19776,
+     "confirmed": false,
+     "ts_recv": 1792487352287
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#13",
+   "recv_ms": 1792487352701,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81432.0\", \"81402.9\", \"81432.0\", \"1134.35\", \"11.3435\", \"923557.65136000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81432.0,
+     "l": 81402.9,
+     "c": 81432.0,
+     "vol_base": 11.3435,
+     "vol_quote": 923557.65136,
+     "confirmed": false,
+     "ts_recv": 1792487352701
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#14",
+   "recv_ms": 1792487353385,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.7\", \"1178.58\", \"11.7858\", \"959575.62332000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.7,
+     "vol_base": 11.7858,
+     "vol_quote": 959575.62332,
+     "confirmed": false,
+     "ts_recv": 1792487353385
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#15",
+   "recv_ms": 1792487353607,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1181.30\", \"11.8130\", \"961790.61724000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 11.813,
+     "vol_quote": 961790.61724,
+     "confirmed": false,
+     "ts_recv": 1792487353607
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#16",
+   "recv_ms": 1792487354325,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.7\", \"1194.81\", \"11.9481\", \"972792.29694000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.7,
+     "vol_base": 11.9481,
+     "vol_quote": 972792.29694,
+     "confirmed": false,
+     "ts_recv": 1792487354325
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#17",
+   "recv_ms": 1792487355313,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1195.98\", \"11.9598\", \"973745.07106000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 11.9598,
+     "vol_quote": 973745.07106,
+     "confirmed": false,
+     "ts_recv": 1792487355313
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#18",
+   "recv_ms": 1792487355716,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1196.09\", \"11.9609\", \"973834.64802000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 11.9609,
+     "vol_quote": 973834.64802,
+     "confirmed": false,
+     "ts_recv": 1792487355716
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#19",
+   "recv_ms": 1792487356808,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1197.11\", \"11.9711\", \"974665.27074000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 11.9711,
+     "vol_quote": 974665.27074,
+     "confirmed": false,
+     "ts_recv": 1792487356808
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#20",
+   "recv_ms": 1792487357345,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.7\", \"1203.25\", \"12.0325\", \"979665.29992000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.7,
+     "vol_base": 12.0325,
+     "vol_quote": 979665.29992,
+     "confirmed": false,
+     "ts_recv": 1792487357345
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#21",
+   "recv_ms": 1792487357734,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1213.57\", \"12.1357\", \"988069.24889000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 12.1357,
+     "vol_quote": 988069.24889,
+     "confirmed": false,
+     "ts_recv": 1792487357734
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#22",
+   "recv_ms": 1792487358359,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1213.63\", \"12.1363\", \"988118.10905000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 12.1363,
+     "vol_quote": 988118.10905,
+     "confirmed": false,
+     "ts_recv": 1792487358359
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#23",
+   "recv_ms": 1792487361614,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.6\", \"1213.69\", \"12.1369\", \"988166.96921000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.6,
+     "vol_base": 12.1369,
+     "vol_quote": 988166.96921,
+     "confirmed": false,
+     "ts_recv": 1792487361614
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#24",
+   "recv_ms": 1792487362339,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.7\", \"1216.43\", \"12.1643\", \"990398.25259000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.7,
+     "vol_base": 12.1643,
+     "vol_quote": 990398.25259,
+     "confirmed": false,
+     "ts_recv": 1792487362339
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#25",
+   "recv_ms": 1792487363452,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.0\", \"1260.55\", \"12.6055\", \"1026326.75231000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.0,
+     "vol_base": 12.6055,
+     "vol_quote": 1026326.75231,
+     "confirmed": false,
+     "ts_recv": 1792487363452
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#26",
+   "recv_ms": 1792487364816,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.0\", \"1260.98\", \"12.6098\", \"1026676.91421000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.0,
+     "vol_base": 12.6098,
+     "vol_quote": 1026676.91421,
+     "confirmed": false,
+     "ts_recv": 1792487364816
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#27",
+   "recv_ms": 1792487365466,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81433.0\", \"1264.03\", \"12.6403\", \"1029160.62071000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81433.0,
+     "vol_base": 12.6403,
+     "vol_quote": 1029160.62071,
+     "confirmed": false,
+     "ts_recv": 1792487365466
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#28",
+   "recv_ms": 1792487365838,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81432.9\", \"1270.17\", \"12.7017\", \"1034160.60077000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81432.9,
+     "vol_base": 12.7017,
+     "vol_quote": 1034160.60077,
+     "confirmed": false,
+     "ts_recv": 1792487365838
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#29",
+   "recv_ms": 1792487366464,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.3\", \"1312.65\", \"13.1265\", \"1068752.86270000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.3,
+     "vol_base": 13.1265,
+     "vol_quote": 1068752.8627,
+     "confirmed": false,
+     "ts_recv": 1792487366464
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#30",
+   "recv_ms": 1792487368892,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.3\", \"1315.61\", \"13.1561\", \"1071163.14308000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.3,
+     "vol_base": 13.1561,
+     "vol_quote": 1071163.14308,
+     "confirmed": false,
+     "ts_recv": 1792487368892
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#31",
+   "recv_ms": 1792487369395,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.4\", \"1515.61\", \"15.1561\", \"1234019.94308000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.4,
+     "vol_base": 15.1561,
+     "vol_quote": 1234019.94308,
+     "confirmed": false,
+     "ts_recv": 1792487369395
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#32",
+   "recv_ms": 1792487370402,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.4\", \"1515.73\", \"15.1573\", \"1234117.65716000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.4,
+     "vol_base": 15.1573,
+     "vol_quote": 1234117.65716,
+     "confirmed": false,
+     "ts_recv": 1792487370402
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#33",
+   "recv_ms": 1792487370933,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.3\", \"1526.42\", \"15.2642\", \"1242822.34243000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.3,
+     "vol_base": 15.2642,
+     "vol_quote": 1242822.34243,
+     "confirmed": false,
+     "ts_recv": 1792487370933
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#34",
+   "recv_ms": 1792487371462,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.4\", \"1541.06\", \"15.4106\", \"1254743.46019000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.4,
+     "vol_base": 15.4106,
+     "vol_quote": 1254743.46019,
+     "confirmed": false,
+     "ts_recv": 1792487371462
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#35",
+   "recv_ms": 1792487374349,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.3\", \"1546.56\", \"15.4656\", \"1259222.01669000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.3,
+     "vol_base": 15.4656,
+     "vol_quote": 1259222.01669,
+     "confirmed": false,
+     "ts_recv": 1792487374349
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#36",
+   "recv_ms": 1792487374863,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.3\", \"1546.58\", \"15.4658\", \"1259238.30235000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.3,
+     "vol_base": 15.4658,
+     "vol_quote": 1259238.30235,
+     "confirmed": false,
+     "ts_recv": 1792487374863
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#37",
+   "recv_ms": 1792487375473,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.4\", \"1547.08\", \"15.4708\", \"1259645.44435000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.4,
+     "vol_base": 15.4708,
+     "vol_quote": 1259645.44435,
+     "confirmed": false,
+     "ts_recv": 1792487375473
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#38",
+   "recv_ms": 1792487375894,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.4\", \"1547.09\", \"15.4709\", \"1259653.58719000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.4,
+     "vol_base": 15.4709,
+     "vol_quote": 1259653.58719,
+     "confirmed": false,
+     "ts_recv": 1792487375894
+    }
+   ]
+  },
+  {
+   "name": "candle1m:push#39",
+   "recv_ms": 1792487376274,
+   "raw": "{\"arg\": {\"channel\": \"candle1m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487340000\", \"81402.9\", \"81433.7\", \"81402.9\", \"81428.3\", \"1598.14\", \"15.9814\", \"1301222.73434000\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "1m",
+     "t": 1792487340000,
+     "o": 81402.9,
+     "h": 81433.7,
+     "l": 81402.9,
+     "c": 81428.3,
+     "vol_base": 15.9814,
+     "vol_quote": 1301222.73434,
+     "confirmed": false,
+     "ts_recv": 1792487376274
+    }
+   ]
+  },
+  {
+   "name": "trades:push#0",
+   "recv_ms": 1792487342128,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265494\", \"px\": \"81408\", \"sz\": \"0.3\", \"side\": \"buy\", \"ts\": \"1792487342011\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271242575}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265494,
+     "count": 1,
+     "px": 81408.0,
+     "sz": 0.3,
+     "side": "buy",
+     "ts_source": 1792487342011,
+     "ts_recv": 1792487342128
+    }
+   ]
+  },
+  {
+   "name": "trades:push#1",
+   "recv_ms": 1792487342986,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265495\", \"px\": \"81408\", \"sz\": \"10\", \"side\": \"buy\", \"ts\": \"1792487342867\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271243912}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265495,
+     "count": 1,
+     "px": 81408.0,
+     "sz": 10.0,
+     "side": "buy",
+     "ts_source": 1792487342867,
+     "ts_recv": 1792487342986
+    }
+   ]
+  },
+  {
+   "name": "trades:push#2",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265507\", \"px\": \"81408\", \"sz\": \"26.14\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"12\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265507,
+     "count": 12,
+     "px": 81408.0,
+     "sz": 26.14,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#3",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265508\", \"px\": \"81408.1\", \"sz\": \"0.14\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265508,
+     "count": 1,
+     "px": 81408.1,
+     "sz": 0.14,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#4",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265509\", \"px\": \"81408.5\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265509,
+     "count": 1,
+     "px": 81408.5,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#5",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265511\", \"px\": \"81408.6\", \"sz\": \"0.02\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265511,
+     "count": 2,
+     "px": 81408.6,
+     "sz": 0.02,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#6",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265512\", \"px\": \"81408.7\", \"sz\": \"0.07\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265512,
+     "count": 1,
+     "px": 81408.7,
+     "sz": 0.07,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#7",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265513\", \"px\": \"81409.1\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265513,
+     "count": 1,
+     "px": 81409.1,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#8",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265516\", \"px\": \"81409.2\", \"sz\": \"2.94\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"3\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265516,
+     "count": 3,
+     "px": 81409.2,
+     "sz": 2.94,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#9",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265517\", \"px\": \"81409.5\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265517,
+     "count": 1,
+     "px": 81409.5,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#10",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265520\", \"px\": \"81409.6\", \"sz\": \"0.91\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"3\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265520,
+     "count": 3,
+     "px": 81409.6,
+     "sz": 0.91,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#11",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265522\", \"px\": \"81409.7\", \"sz\": \"0.16\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265522,
+     "count": 2,
+     "px": 81409.7,
+     "sz": 0.16,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#12",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265523\", \"px\": \"81410\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265523,
+     "count": 1,
+     "px": 81410.0,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#13",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265524\", \"px\": \"81410.3\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265524,
+     "count": 1,
+     "px": 81410.3,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#14",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265526\", \"px\": \"81410.6\", \"sz\": \"0.02\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265526,
+     "count": 2,
+     "px": 81410.6,
+     "sz": 0.02,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#15",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265529\", \"px\": \"81410.7\", \"sz\": \"0.08\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"3\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265529,
+     "count": 3,
+     "px": 81410.7,
+     "sz": 0.08,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#16",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265530\", \"px\": \"81411\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487342939\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271244150}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265530,
+     "count": 1,
+     "px": 81411.0,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487342939,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#17",
+   "recv_ms": 1792487343057,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265534\", \"px\": \"81411.1\", \"sz\": \"143.83\", \"side\": \"buy\", \"ts\": \"1792487342941\", \"count\": \"4\", \"source\": \"0\", \"seqId\": 347271244505}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265534,
+     "count": 4,
+     "px": 81411.1,
+     "sz": 143.83,
+     "side": "buy",
+     "ts_source": 1792487342941,
+     "ts_recv": 1792487343057
+    }
+   ]
+  },
+  {
+   "name": "trades:push#18",
+   "recv_ms": 1792487343179,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265535\", \"px\": \"81411\", \"sz\": \"0.06\", \"side\": \"sell\", \"ts\": \"1792487343058\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271245472}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265535,
+     "count": 1,
+     "px": 81411.0,
+     "sz": 0.06,
+     "side": "sell",
+     "ts_source": 1792487343058,
+     "ts_recv": 1792487343179
+    }
+   ]
+  },
+  {
+   "name": "trades:push#19",
+   "recv_ms": 1792487343572,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265537\", \"px\": \"81411.1\", \"sz\": \"0.5\", \"side\": \"buy\", \"ts\": \"1792487343455\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271245826}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265537,
+     "count": 2,
+     "px": 81411.1,
+     "sz": 0.5,
+     "side": "buy",
+     "ts_source": 1792487343455,
+     "ts_recv": 1792487343572
+    }
+   ]
+  },
+  {
+   "name": "trades:push#20",
+   "recv_ms": 1792487343639,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265545\", \"px\": \"81411.1\", \"sz\": \"0.36\", \"side\": \"buy\", \"ts\": \"1792487343525\", \"count\": \"8\", \"source\": \"0\", \"seqId\": 347271245988}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265545,
+     "count": 8,
+     "px": 81411.1,
+     "sz": 0.36,
+     "side": "buy",
+     "ts_source": 1792487343525,
+     "ts_recv": 1792487343639
+    }
+   ]
+  },
+  {
+   "name": "trades:push#21",
+   "recv_ms": 1792487343639,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265549\", \"px\": \"81411.3\", \"sz\": \"0.04\", \"side\": \"buy\", \"ts\": \"1792487343525\", \"count\": \"4\", \"source\": \"0\", \"seqId\": 347271245988}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265549,
+     "count": 4,
+     "px": 81411.3,
+     "sz": 0.04,
+     "side": "buy",
+     "ts_source": 1792487343525,
+     "ts_recv": 1792487343639
+    }
+   ]
+  },
+  {
+   "name": "trades:push#22",
+   "recv_ms": 1792487343639,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265550\", \"px\": \"81411.4\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343525\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271245988}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265550,
+     "count": 1,
+     "px": 81411.4,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343525,
+     "ts_recv": 1792487343639
+    }
+   ]
+  },
+  {
+   "name": "trades:push#23",
+   "recv_ms": 1792487343639,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265551\", \"px\": \"81411.5\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343525\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271245988}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265551,
+     "count": 1,
+     "px": 81411.5,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343525,
+     "ts_recv": 1792487343639
+    }
+   ]
+  },
+  {
+   "name": "trades:push#24",
+   "recv_ms": 1792487343639,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265552\", \"px\": \"81411.8\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343525\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271245988}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265552,
+     "count": 1,
+     "px": 81411.8,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343525,
+     "ts_recv": 1792487343639
+    }
+   ]
+  },
+  {
+   "name": "trades:push#25",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265553\", \"px\": \"81411.9\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343534\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246558}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265553,
+     "count": 1,
+     "px": 81411.9,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343534,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#26",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265554\", \"px\": \"81411.9\", \"sz\": \"0.61\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265554,
+     "count": 1,
+     "px": 81411.9,
+     "sz": 0.61,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#27",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265555\", \"px\": \"81412\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265555,
+     "count": 1,
+     "px": 81412.0,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#28",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265557\", \"px\": \"81412.1\", \"sz\": \"0.08\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265557,
+     "count": 2,
+     "px": 81412.1,
+     "sz": 0.08,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#29",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265559\", \"px\": \"81412.2\", \"sz\": \"1.53\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265559,
+     "count": 2,
+     "px": 81412.2,
+     "sz": 1.53,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#30",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265560\", \"px\": \"81412.6\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265560,
+     "count": 1,
+     "px": 81412.6,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#31",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265562\", \"px\": \"81412.7\", \"sz\": \"0.63\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"2\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265562,
+     "count": 2,
+     "px": 81412.7,
+     "sz": 0.63,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#32",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265563\", \"px\": \"81412.9\", \"sz\": \"0.07\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265563,
+     "count": 1,
+     "px": 81412.9,
+     "sz": 0.07,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#33",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265564\", \"px\": \"81413.4\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265564,
+     "count": 1,
+     "px": 81413.4,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#34",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265565\", \"px\": \"81413.5\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265565,
+     "count": 1,
+     "px": 81413.5,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#35",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265566\", \"px\": \"81413.6\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265566,
+     "count": 1,
+     "px": 81413.6,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#36",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265567\", \"px\": \"81413.7\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265567,
+     "count": 1,
+     "px": 81413.7,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#37",
+   "recv_ms": 1792487343650,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265568\", \"px\": \"81413.8\", \"sz\": \"0.01\", \"side\": \"buy\", \"ts\": \"1792487343535\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246676}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265568,
+     "count": 1,
+     "px": 81413.8,
+     "sz": 0.01,
+     "side": "buy",
+     "ts_source": 1792487343535,
+     "ts_recv": 1792487343650
+    }
+   ]
+  },
+  {
+   "name": "trades:push#38",
+   "recv_ms": 1792487343651,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265569\", \"px\": \"81413.9\", \"sz\": \"1.13\", \"side\": \"buy\", \"ts\": \"1792487343536\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271246824}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265569,
+     "count": 1,
+     "px": 81413.9,
+     "sz": 1.13,
+     "side": "buy",
+     "ts_source": 1792487343536,
+     "ts_recv": 1792487343651
+    }
+   ]
+  },
+  {
+   "name": "trades:push#39",
+   "recv_ms": 1792487343681,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"3007265570\", \"px\": \"81413.9\", \"sz\": \"3.52\", \"side\": \"buy\", \"ts\": \"1792487343565\", \"count\": \"1\", \"source\": \"0\", \"seqId\": 347271247841}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 3007265570,
+     "count": 1,
+     "px": 81413.9,
+     "sz": 3.52,
+     "side": "buy",
+     "ts_source": 1792487343565,
+     "ts_recv": 1792487343681
+    }
+   ]
+  },
+  {
+   "name": "pong",
+   "recv_ms": 1792487342000,
+   "raw": "pong",
+   "control": {
+    "event": "pong",
+    "raw": {}
+   }
+  },
+  {
+   "name": "error",
+   "recv_ms": 1792487342000,
+   "raw": "{\"event\": \"error\", \"code\": \"60018\", \"msg\": \"Wrong URL or channel\", \"connId\": \"a4d3ae55\"}",
+   "control": {
+    "event": "error",
+    "raw": {
+     "event": "error",
+     "code": "60018",
+     "msg": "Wrong URL or channel",
+     "connId": "a4d3ae55"
+    }
+   }
+  },
+  {
+   "name": "notice",
+   "recv_ms": 1792487342000,
+   "raw": "{\"event\": \"notice\", \"code\": \"64008\", \"msg\": \"The connection will soon be closed for a service upgrade.\", \"connId\": \"a4d3ae55\"}",
+   "control": {
+    "event": "notice",
+    "raw": {
+     "event": "notice",
+     "code": "64008",
+     "msg": "The connection will soon be closed for a service upgrade.",
+     "connId": "a4d3ae55"
+    }
+   }
+  },
+  {
+   "name": "trade sans count",
+   "recv_ms": 1792487342100,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"10\", \"px\": \"81408.5\", \"sz\": \"0.3\", \"side\": \"sell\", \"ts\": \"1792487342011\"}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 10,
+     "count": 1,
+     "px": 81408.5,
+     "sz": 0.3,
+     "side": "sell",
+     "ts_source": 1792487342011,
+     "ts_recv": 1792487342100
+    }
+   ]
+  },
+  {
+   "name": "trade count vide",
+   "recv_ms": 1792487342100,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"tradeId\": \"10\", \"px\": \"81408.5\", \"sz\": \"0.3\", \"side\": \"sell\", \"ts\": \"1792487342011\", \"count\": \"\"}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "BTC-USDT-SWAP",
+     "trade_id": 10,
+     "count": 1,
+     "px": 81408.5,
+     "sz": 0.3,
+     "side": "sell",
+     "ts_source": 1792487342011,
+     "ts_recv": 1792487342100
+    }
+   ]
+  },
+  {
+   "name": "trade agrégé",
+   "recv_ms": 1792487342100,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"ETH-USDT-SWAP\"}, \"data\": [{\"instId\": \"ETH-USDT-SWAP\", \"tradeId\": \"10\", \"px\": \"4012\", \"sz\": \"0.3\", \"side\": \"sell\", \"ts\": \"1792487342011\", \"count\": \"3\"}, {\"instId\": \"ETH-USDT-SWAP\", \"tradeId\": \"11\", \"px\": \"81408.5\", \"sz\": \"0.3\", \"side\": \"buy\", \"ts\": \"1792487342011\"}]}",
+   "events": [
+    {
+     "kind": "trade",
+     "inst": "ETH-USDT-SWAP",
+     "trade_id": 10,
+     "count": 3,
+     "px": 4012.0,
+     "sz": 0.3,
+     "side": "sell",
+     "ts_source": 1792487342011,
+     "ts_recv": 1792487342100
+    },
+    {
+     "kind": "trade",
+     "inst": "ETH-USDT-SWAP",
+     "trade_id": 11,
+     "count": 1,
+     "px": 81408.5,
+     "sz": 0.3,
+     "side": "buy",
+     "ts_source": 1792487342011,
+     "ts_recv": 1792487342100
+    }
+   ]
+  },
+  {
+   "name": "ticker incomplet",
+   "recv_ms": 1792487342200,
+   "raw": "{\"arg\": {\"channel\": \"tickers\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"last\": \"81407.9\", \"bidPx\": \"\", \"askPx\": \"\", \"high24h\": \"83067.4\", \"low24h\": \"81166\", \"sodUtc0\": \"\", \"ts\": \"1792487342011\"}]}",
+   "events": [
+    {
+     "kind": "ticker",
+     "inst": "BTC-USDT-SWAP",
+     "last": 81407.9,
+     "bid": null,
+     "ask": null,
+     "open24h": null,
+     "high24h": 83067.4,
+     "low24h": 81166.0,
+     "sod_utc0": null,
+     "vol_base24h": null,
+     "ts_source": 1792487342011,
+     "ts_recv": 1792487342200
+    }
+   ]
+  },
+  {
+   "name": "funding sans échéance précédente",
+   "recv_ms": 1792487342300,
+   "raw": "{\"arg\": {\"channel\": \"funding-rate\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"fundingRate\": \"-0.0000125\", \"fundingTime\": \"1792512000000\", \"prevFundingTime\": \"\", \"ts\": \"1792487340000\"}]}",
+   "events": [
+    {
+     "kind": "funding",
+     "inst": "BTC-USDT-SWAP",
+     "rate": -1.25e-05,
+     "funding_time": 1792512000000,
+     "prev_funding_time": null,
+     "interval_ms": null,
+     "ts_source": 1792487340000,
+     "ts_recv": 1792487342300
+    }
+   ]
+  },
+  {
+   "name": "open interest sans dollars",
+   "recv_ms": 1792487342400,
+   "raw": "{\"arg\": {\"channel\": \"open-interest\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"instId\": \"BTC-USDT-SWAP\", \"oiCcy\": \"30495.2358\", \"oiUsd\": \"\", \"ts\": \"1792487334785\"}]}",
+   "events": [
+    {
+     "kind": "open_interest",
+     "inst": "BTC-USDT-SWAP",
+     "oi_base": 30495.2358,
+     "oi_usd": null,
+     "ts_source": 1792487334785,
+     "ts_recv": 1792487342400
+    }
+   ]
+  },
+  {
+   "name": "bougies 5m, close puis suivante",
+   "recv_ms": 1792487400100,
+   "raw": "{\"arg\": {\"channel\": \"candle5m\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [[\"1792487100000\", \"81402.9\", \"81420\", \"81390.1\", \"81410\", \"1200.5\", \"12.005\", \"977290.1\", \"1\"], [\"1792487400000\", \"81410\", \"81410\", \"81410\", \"81410\", \"0\", \"0\", \"0\", \"0\"]]}",
+   "events": [
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "5m",
+     "t": 1792487100000,
+     "o": 81402.9,
+     "h": 81420.0,
+     "l": 81390.1,
+     "c": 81410.0,
+     "vol_base": 12.005,
+     "vol_quote": 977290.1,
+     "confirmed": true,
+     "ts_recv": 1792487400100
+    },
+    {
+     "kind": "candle",
+     "inst": "BTC-USDT-SWAP",
+     "bar": "5m",
+     "t": 1792487400000,
+     "o": 81410.0,
+     "h": 81410.0,
+     "l": 81410.0,
+     "c": 81410.0,
+     "vol_base": 0.0,
+     "vol_quote": 0.0,
+     "confirmed": false,
+     "ts_recv": 1792487400100
+    }
+   ]
+  },
+  {
+   "name": "données vides",
+   "recv_ms": 1792487342500,
+   "raw": "{\"arg\": {\"channel\": \"trades\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": []}",
+   "events": []
+  },
+  {
+   "name": "canal inconnu",
+   "recv_ms": 1792487342500,
+   "raw": "{\"arg\": {\"channel\": \"books5\", \"instId\": \"BTC-USDT-SWAP\"}, \"data\": [{\"asks\": [], \"bids\": [], \"ts\": \"1\"}]}",
+   "control": {
+    "event": "unknown",
+    "raw": {
+     "arg": {
+      "channel": "books5",
+      "instId": "BTC-USDT-SWAP"
+     },
+     "data": [
+      {
+       "asks": [],
+       "bids": [],
+       "ts": "1"
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "message sans canal",
+   "recv_ms": 1792487342500,
+   "raw": "{\"op\": \"unknown\"}",
+   "control": {
+    "event": "unknown",
+    "raw": {
+     "op": "unknown"
+    }
+   }
+  }
+ ]
+}

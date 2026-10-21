@@ -88,4 +88,23 @@
 
   /* Mouvement */
   --flash-ms: 300ms;          /* flash sur changement de prix */
+
+  /* Ajouts P0 (20/10/2026) : valeurs relevées dans design/maquettes/html/Main.html
+     et DesignSystem.html, qui n'avaient pas encore de token. */
+  --on-gold: #000000;                                   /* texte sur fond or */
+  --band-asia: rgba(92, 203, 227, .05);                 /* bandes de session (graphiques) */
+  --band-london: rgba(237, 234, 230, .035);
+  --band-ny: rgba(228, 194, 74, .06);
+  --band-asia-key: rgba(92, 203, 227, .22);             /* pastilles de légende des bandes */
+  --band-london-key: rgba(237, 234, 230, .16);
+  --band-ny-key: rgba(228, 194, 74, .3);
+  --series-price-fill: rgba(228, 194, 74, .08);         /* aire sous la courbe de prix */
+  --orb: radial-gradient(circle at 35% 35%, #F6D44E, #B8862B 70%);  /* orbe de l'assistant */
+  --orb-glow: 0 0 8px rgba(246, 212, 78, .5);
+  --shadow-popover: 0 8px 24px rgba(0, 0, 0, .6);
+  --shadow-dialog: 0 20px 60px rgba(0, 0, 0, .8);
+  --backdrop: rgba(0, 0, 0, .55);                       /* fond derrière la palette */
+  --nav-active: linear-gradient(90deg, #2B2511, rgba(43, 37, 17, 0));
+  --radius-dialog: 4px;
+  --fs-nav: 13.5px;
 }
