@@ -10,10 +10,13 @@
 -- message, ts_recv = heure de réception par le collecteur.
 
 -- Extensions de planification (pg_cron) et d'appel HTTP depuis Postgres (pg_net).
--- Schémas conformes aux exemples de la doc Supabase (à vérifier au déploiement :
--- si l'extension est déjà activée depuis le tableau de bord, « if not exists »
--- la laisse où elle est).
+-- Schémas et droits conformes à la doc Supabase (Cron, « Install ») ; si
+-- l'extension est déjà activée depuis le tableau de bord, « if not exists » la
+-- laisse où elle est. Les droits sur le schéma cron permettent à la tâche de
+-- purge (plus bas) de vider cron.job_run_details.
 create extension if not exists pg_cron with schema pg_catalog;
+grant usage on schema cron to postgres;
+grant all privileges on all tables in schema cron to postgres;
 create extension if not exists pg_net with schema extensions;
 
 -- Instantané par minute et par instrument : ticker, funding, open interest.
@@ -90,6 +93,10 @@ revoke all on table public.okx_snapshots, public.okx_candles_1m,
   public.collector_runs, public.collector_gaps from anon, authenticated;
 grant select, insert, update, delete on table public.okx_snapshots, public.okx_candles_1m,
   public.collector_runs, public.collector_gaps to service_role;
+-- Séquences des colonnes identity : les droits par défaut de Supabase les
+-- ouvriraient aux rôles publics.
+revoke all on sequence public.collector_runs_id_seq, public.collector_gaps_id_seq
+  from anon, authenticated;
 
 -- Rétention : 90 jours de données.
 create or replace function public.okx_retention(keep interval default interval '90 days')
@@ -105,15 +112,17 @@ $$;
 
 -- Les fonctions du schéma public sont exposées par l'API (/rest/v1/rpc) :
 -- personne d'autre que le propriétaire (postgres, qui exécute pg_cron) ne l'appelle.
-revoke execute on function public.okx_retention(interval) from public, anon, authenticated;
+-- service_role compris : les droits par défaut de Supabase le lui accorderaient,
+-- et la clé secrète pourrait alors tout effacer (keep => '0 days').
+revoke execute on function public.okx_retention(interval)
+  from public, anon, authenticated, service_role;
 
--- Chaque jour à 03:17 UTC (pg_cron compte en UTC sur Supabase, à vérifier au
--- déploiement). Une tâche de même nom est remplacée, jamais dupliquée.
+-- Chaque jour à 03:17 UTC (pg_cron compte en UTC sur Supabase). Une tâche de même nom est remplacée, jamais dupliquée.
 select cron.schedule('okx-retention-daily', '17 3 * * *', 'select public.okx_retention()');
 
 -- Historique de pg_cron : 7 jours (la tâche minute en ajoute 1 440 lignes par
--- jour dans cron.job_run_details). Tâche séparée : si le droit de purger cette
--- table manquait (à vérifier au déploiement), la rétention des données
--- continuerait, et l'échec se lirait dans cron.job_run_details.
+-- jour dans cron.job_run_details). Tâche séparée : si la purge échouait, la
+-- rétention des données continuerait, et l'échec se lirait dans
+-- cron.job_run_details.
 select cron.schedule('cron-history-purge-daily', '27 3 * * *',
   $$delete from cron.job_run_details where end_time < now() - interval '7 days'$$);

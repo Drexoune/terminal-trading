@@ -29,17 +29,18 @@ Le front n'appelle jamais Supabase. Aucune clé n'est dans le dépôt ; la clé 
 
 ## Mise en place, pas à pas
 
-Prérequis : la CLI Supabase (`brew install supabase/tap/supabase` sur le Mac), `openssl`, un compte Supabase. Toutes les commandes se lancent depuis la racine du dépôt.
+Prérequis : la CLI Supabase (`brew install supabase/tap/supabase` sur le Mac ; ou `npm install supabase --save-dev` puis `npx supabase …`, Node.js 20 ou plus), `openssl`, un compte Supabase. Docker n'est pas nécessaire. Le mot de passe de la base est demandé par `supabase link` et `supabase db push`. Toutes les commandes se lancent depuis la racine du dépôt.
 
 ### 1. Créer un projet dédié
 
 Dans le tableau de bord Supabase, créer un **nouveau projet réservé au terminal**. Ne pas réutiliser le projet de l'app Joyo ni celui du tableau de bord drexbot. On évite ainsi qu'une clé, une politique ou un quota soit partagé, et le projet peut être coupé seul.
 
-- Région : **Europe** (Paris `eu-west-3` ou Francfort `eu-central-1`). La base, pg_net et l'Edge Function restent ainsi au plus près d'OKX EEA et des fonctions Vercel (`cdg1`).
+- Région : une **région précise**, pas la région générale « Europe » (elle vaut Francfort par défaut, mais peut placer le projet à Londres ou à Zurich). Cliquer sur « Need a specific region? » et choisir **West EU (Paris)** `eu-west-3`, à défaut **Central EU (Frankfurt)** `eu-central-1`. La base, pg_net et l'Edge Function restent ainsi au plus près d'OKX EEA et des fonctions Vercel (`cdg1`).
+- Bloc *Security* : laisser **Enable Data API** coché (PostgREST sert les écritures du collecteur et la lecture de `/api/collector-health`). « Automatically expose new tables » peut rester décoché : la migration accorde elle-même les droits à `service_role`.
 - Mot de passe de la base : le garder dans le gestionnaire de mots de passe. Il ne sert qu'à `supabase link`.
 - Noter la référence du projet, `<ref>` dans `https://<ref>.supabase.co`.
 
-> À vérifier au moment de créer le projet : l'offre gratuite limite le nombre de projets actifs par compte (deux au dernier relevé). Si Joyo et drexbot les occupent déjà, il faut en mettre un en pause ou passer à une offre payante. Voir « Coût » plus bas.
+> L'offre gratuite permet **deux projets actifs**, comptés sur toutes les organisations où l'on est Owner ou Administrator ; un projet en pause ne compte pas. Si Joyo et drexbot les occupent déjà, en mettre un en pause ou passer à une offre payante. Voir « Coût » plus bas.
 
 ### 2. Lier le dépôt au projet
 
@@ -54,7 +55,7 @@ supabase link --project-ref <ref>
 supabase db push
 ```
 
-La migration crée les quatre tables, active la RLS sans aucune politique, active `pg_cron` et `pg_net`, et planifie deux tâches quotidiennes : `okx-retention-daily` (03:17 UTC, 90 jours de données) et `cron-history-purge-daily` (03:27 UTC, 7 jours d'historique pg_cron). Contrôle : le *Table Editor* liste `okx_snapshots`, `okx_candles_1m`, `collector_runs` et `collector_gaps`, chacune avec la RLS activée.
+La migration crée les quatre tables, active la RLS sans aucune politique, active `pg_cron` et `pg_net` (avec les droits de la doc Supabase sur le schéma `cron`), et planifie deux tâches quotidiennes : `okx-retention-daily` (03:17 UTC, 90 jours de données) et `cron-history-purge-daily` (03:27 UTC, 7 jours d'historique pg_cron). Contrôle : le *Table Editor* liste `okx_snapshots`, `okx_candles_1m`, `collector_runs` et `collector_gaps`, chacune avec la RLS activée.
 
 ### 4. Poser le secret d'appel
 
@@ -75,7 +76,7 @@ rm supabase/collector.env
 
 Garder ce terminal ouvert jusqu'à l'étape 6 : la variable y sert encore.
 
-`SUPABASE_URL` et la clé secrète du projet sont fournies à la fonction par la plateforme, sans action de notre part (à vérifier au déploiement). La fonction lit d'abord la nouvelle clé (`SUPABASE_SECRET_KEYS`, objet JSON dont elle prend `default`), puis l'ancienne clé `SUPABASE_SERVICE_ROLE_KEY` à défaut.
+`SUPABASE_URL` et la clé secrète du projet sont fournies à la fonction par la plateforme, sans action de notre part (doc Supabase, « Default secrets »). Ne pas les poser avec `supabase secrets set` : les noms commençant par `SUPABASE_` y sont réservés. La fonction lit d'abord la nouvelle clé (`SUPABASE_SECRET_KEYS`, objet JSON dont elle prend `default`), puis l'ancienne clé `SUPABASE_SERVICE_ROLE_KEY` à défaut.
 
 Facultatif : `OKX_INSTRUMENTS=BTC-USDT-SWAP,ETH-USDT-SWAP` (valeur par défaut ; 10 instruments perpétuels au plus).
 
@@ -87,6 +88,8 @@ supabase functions deploy okx-collector
 
 `config.toml` porte déjà `verify_jwt = false`. Équivalent en ligne de commande : `--no-verify-jwt`. Sans ce réglage, la plateforme exigerait un JWT et refuserait l'appel de pg_cron.
 
+Sans Docker, la CLI empaquette la fonction côté Supabase. Si elle réclame Docker, forcer ce mode : `supabase functions deploy okx-collector --use-api`.
+
 ### 6. Essayer un passage à la main
 
 ```bash
@@ -97,13 +100,15 @@ printf 'x-collector-secret: %s\n' "$COLLECTOR_SECRET" \
 unset COLLECTOR_SECRET
 ```
 
-Réponse attendue (HTTP 200) : `{"ok":true,…,"rows":6,"gaps":0,"okx_offset_ms":…,"rtt_ms":…,"errors":[]}`. Six lignes, soit deux instantanés et deux bougies closes par instrument. Sans l'en-tête, la réponse est 401 ; en GET, 405. Une réponse 500 détaille l'erreur dans `errors` ou `error`.
+Réponse attendue (HTTP 200) : `{"ok":true,…,"rows":6,"gaps":0,"okx_offset_ms":…,"rtt_ms":…,"errors":[]}`. Six lignes : par instrument, un instantané et deux bougies closes. Sans l'en-tête, la réponse est 401 ; en GET, 405. Une réponse 500 détaille l'erreur dans `errors` ou `error`.
 
 ### 7. Planifier l'appel chaque minute
 
-Ouvrir `cron.sql`, copier son contenu dans le *SQL Editor* du projet et remplacer **dans l'éditeur** les deux valeurs du bloc 1 : l'URL du projet et le secret de l'étape 4. Exécuter. Ne jamais enregistrer de version remplie dans le dépôt.
+Ouvrir `cron.sql`, copier son contenu dans le *SQL Editor* du projet et remplacer **dans l'éditeur** les deux valeurs en tête du bloc : l'URL du projet et le secret de l'étape 4. Exécuter. Ne jamais enregistrer de version remplie dans le dépôt.
 
-Le script range les deux valeurs dans Vault, chiffrées, puis crée la tâche `okx-collector-every-minute`. Il refuse de s'exécuter tant que les valeurs d'exemple sont en place, et peut être rejoué sans créer de doublon.
+Le script range les deux valeurs dans Vault, chiffrées, puis crée la tâche `okx-collector-every-minute`. Tant que les valeurs d'exemple sont en place, il s'arrête sans rien créer. Il peut être rejoué sans créer de doublon.
+
+Le passage manuel de l'étape 6 et le premier passage planifié sont séparés de quelques minutes : `collector_gaps` signale alors ces minutes manquantes une fois. C'est normal.
 
 ### 8. Vérifier
 
@@ -123,7 +128,7 @@ select started_at, finished_at, ok, error, rows, okx_offset_ms, rtt_ms
 
 ### 9. Brancher le Mode Online (Vercel)
 
-Côté Vercel, la fonction `/api/collector-health` lit le journal avec deux variables d'environnement, côté serveur uniquement : `SUPABASE_URL` (`https://<ref>.supabase.co`) et `SUPABASE_SECRET_KEY`, la clé secrète `sb_secret_…` (*Project Settings → API Keys*). Une ancienne clé `service_role` convient aussi. Jamais la clé publiable : la RLS ne lui laisse rien lire. Tant que ces variables manquent, la route répond `configured: false`, avec la raison.
+Côté Vercel, la fonction `/api/collector-health` lit le journal avec deux variables d'environnement, côté serveur uniquement : `SUPABASE_URL` (`https://<ref>.supabase.co`) et `SUPABASE_SECRET_KEY`, la clé secrète `sb_secret_…` (*Settings → API Keys*). Une ancienne clé `service_role` convient encore, mais Supabase retire les anciennes clés d'ici fin 2026 : prendre la `sb_secret_…`. Jamais la clé publiable : la RLS ne lui laisse rien lire. Tant que ces variables manquent, la route répond `configured: false`, avec la raison.
 
 ## Ce qui est stocké
 
@@ -142,7 +147,7 @@ Règles du collecteur :
 - Les écritures sont des upserts : rejouer un passage ne crée pas de doublon.
 - Un funding ou un open interest absent ou illisible laisse ses colonnes à `null`, jamais à une valeur inventée. L'instantané part quand même et l'erreur est consignée.
 - Une erreur sur un instrument n'empêche pas les autres. Le passage est alors journalisé avec `ok = false` et le message, et la fonction répond 500, ce qui le rend visible aussi dans `net._http_response`.
-- Les trous sont **signalés, jamais comblés ni masqués**. Lire 3 bougies par passage tolère un passage manqué sans trou ; à partir de deux passages manqués, les minutes perdues apparaissent dans `collector_gaps`.
+- Les trous sont **signalés, jamais comblés ni masqués**. Chaque passage lit les 3 dernières bougies, dont celle en cours (ignorée), donc 2 bougies closes : un passage manqué ne laisse pas de trou ; à partir de deux passages manqués, les minutes perdues apparaissent dans `collector_gaps`.
 
 Ce qui n'est pas stocké : ni trades ni carnet d'ordres (le temps réel reste dans le navigateur), aucune donnée de compte, aucune clé.
 
@@ -157,27 +162,28 @@ Mesurés sur Postgres 16 avec la migration, pour une journée et 2 instruments, 
 | `collector_runs` | 1 440 | ≈ 0,3 Mo | ≈ 24 Mo |
 | `collector_gaps` | 0 en régime normal | négligeable | négligeable |
 
-Le total plafonne vers **130 Mo** une fois la rétention de 90 jours atteinte. S'y ajoutent l'historique de pg_cron (7 jours, environ 10 000 lignes) et les réponses gardées par pg_net (quelques heures), soit quelques Mo. Chaque instrument supplémentaire ajoute environ 50 Mo à 90 jours.
+Le total plafonne vers **130 Mo** une fois la rétention de 90 jours atteinte. S'y ajoutent l'historique de pg_cron (7 jours, environ 10 000 lignes) et les réponses gardées par pg_net (6 heures), soit quelques Mo. Chaque instrument supplémentaire ajoute environ 50 Mo à 90 jours.
 
 ## Coût
 
-Prévu pour tenir dans l'**offre gratuite** (chiffres relevés avant le déploiement, à vérifier sur la page de tarifs Supabase) :
+Prévu pour tenir dans l'**offre gratuite** (chiffres relus dans les sources de la page de tarifs Supabase le 21/10/2026) :
 
 - base : environ 130 Mo utilisés sur les 500 Mo inclus ;
 - Edge Functions : 1 440 appels par jour, soit environ 44 600 par mois, pour 500 000 inclus. Un passage dure 1 à 2 s, presque entièrement en attente réseau ; mesure hors Supabase : 1,5 s ;
 - trafic sortant : quelques Ko par passage.
 
-Points de vigilance de l'offre gratuite, à vérifier au déploiement :
+Points de vigilance de l'offre gratuite :
 
 - **nombre de projets actifs limité** (voir l'étape 1) ;
-- **pause après une période d'inactivité**. Il reste à vérifier si les appels de pg_cron comptent comme une activité. Si le projet est mis en pause, le collecteur s'arrête : `/api/collector-health` montre alors un dernier passage de plus en plus ancien, et les minutes perdues apparaissent dans `collector_gaps` à la reprise.
+- les invocations et le trafic sortant inclus sont **partagés par toute l'organisation** : si Joyo ou drexbot sont dans la même organisation, leurs consommations s'additionnent ;
+- **pause après 7 jours de faible activité**. La doc compte les appels à l'API du projet ; les écritures PostgREST du collecteur, chaque minute, en sont, mais elle ne dit pas explicitement si elles suffisent. Supabase prévient par e-mail environ une semaine avant. Reprise : tableau de bord → projet → « Resume project ». Si le projet est mis en pause, le collecteur s'arrête : `/api/collector-health` montre alors un dernier passage de plus en plus ancien, et les minutes perdues apparaissent dans `collector_gaps` à la reprise.
 
 ## Surveiller
 
 - Écran **Paramètres** du terminal, bouton « Tester » du Mode Online : `/api/collector-health` donne l'âge du dernier passage, ainsi que le nombre de passages, d'échecs et de minutes manquantes sur 24 h.
 - En SQL : les requêtes de l'étape 8, plus `select * from public.collector_gaps order by detected_at desc limit 10;`.
 - Erreurs à connaître :
-  - `limite de débit OKX atteinte` (HTTP 429) : les limites OKX sont par adresse IP, et l'IP de sortie des Edge Functions est probablement partagée avec d'autres utilisateurs de la plateforme (à vérifier). Quelques 429 isolés sont possibles ; une série doit alerter ;
+  - `limite de débit OKX atteinte` (HTTP 429) : les limites OKX sont par adresse IP, et l'IP de sortie des Edge Functions n'est pas fixe et peut être partagée avec d'autres utilisateurs de la plateforme (doc Supabase). Quelques 429 isolés sont possibles ; une série doit alerter ;
   - `code 51001` : instrument inconnu, vérifier `OKX_INSTRUMENTS` ;
   - `PostgREST 401` : clé secrète refusée.
 
@@ -186,7 +192,7 @@ Points de vigilance de l'offre gratuite, à vérifier au déploiement :
 | But | Action |
 | --- | --- |
 | Suspendre la collecte (données gardées, rétention active) | `select cron.unschedule('okx-collector-every-minute');` |
-| Reprendre | réexécuter le bloc 2 de `cron.sql` |
+| Reprendre | réexécuter `cron.sql` en entier (valeurs remplies dans l'éditeur) |
 | Changer le secret d'appel | nouvelle valeur dans `supabase secrets set`, puis réexécuter `cron.sql` en entier (Vault est mis à jour) |
 | Retirer la fonction | `supabase functions delete okx-collector`, après avoir suspendu la tâche |
 | Tout arrêter | suspendre, puis `select cron.unschedule('okx-retention-daily'); select cron.unschedule('cron-history-purge-daily');` ; mettre le projet en pause ou le supprimer (*Project Settings → General*) |

@@ -50,19 +50,21 @@ Supabase (projet dédié, région Europe)                   │ journal
 ### Mise en place
 
 1. **Supabase** : suivre `supabase/README.md` de bout en bout. Il faut un projet dédié en région Europe, la migration, le secret d'appel `COLLECTOR_SECRET`, le déploiement de la fonction, puis `cron.sql`. Garder l'URL du projet et la clé secrète `sb_secret_…` pour l'étape suivante.
-2. **Projet Vercel** (vercel.com → *Add New → Project*, importer le dépôt `Drexoune/terminal-trading`). Les noms de menus et de réglages ci-dessous viennent de la doc Vercel lue avant ce chantier : vercel.com n'était pas joignable depuis l'environnement de développement, ils sont donc à vérifier au déploiement.
-   - *Root Directory* : la racine du dépôt. `vercel.json` y fixe l'installation (`cd web && npm ci`), la construction (`npm run build && npm run check:bundle`), le dossier publié (`web/dist`) et la région des fonctions (`cdg1`). *Framework Preset* : Other.
-   - *Node.js Version* : 22.x.
-   - Déployer par l'import Git (chaque push). Un `vercel deploy` lancé depuis le Mac marche aussi : `.vercelignore` n'envoie ni `.env`, ni les dossiers inutiles au front et aux fonctions. Ses motifs sont ancrés à la racine (`/scripts/`), sans quoi `web/scripts/check-bundle.mjs`, appelé par la construction, serait retiré.
-   - *Environment Variables*, côté serveur uniquement, jamais préfixées `VITE_` :
-     - `SUPABASE_URL` = `https://<ref>.supabase.co` ;
-     - `SUPABASE_SECRET_KEY` = la clé secrète, à marquer *Sensitive*.
+2. **Projet Vercel** (vercel.com → *Add New… → Project*, importer le dépôt `Drexoune/terminal-trading`). Menus et réglages relus dans la doc Vercel le 21/10/2026, et build répété en local avec la CLI Vercel 65.
+   - Le dépôt GitHub doit contenir les fichiers commençant par un point (`.vercelignore`, `.gitignore`) : un dépôt envoyé par l'interface web de GitHub les perd. Les pousser avec git.
+   - Si le dépôt n'apparaît pas : *Configure GitHub App* sur l'écran d'import, et donner à l'app Vercel l'accès au dépôt. Sur l'offre Hobby, le dépôt doit appartenir au compte personnel, et l'auteur des commits doit être le propriétaire du compte Vercel (adresse e-mail git vérifiée sur GitHub).
+   - *Root Directory* : vide (racine du dépôt). *Framework Preset* : Other. Ne rien saisir dans *Build Command*, *Output Directory* ni *Install Command* : `vercel.json` les fixe (`cd web && npm ci`, `cd web && npm run build && npm run check:bundle`, `web/dist`) ainsi que la région des fonctions (`cdg1`, Paris).
+   - Version de Node : 22.x, fixée par `engines` dans le `package.json` de la racine (elle prime sur le réglage du projet).
+   - *Environment Variables* (*Settings → Environment Variables*), côté serveur uniquement, jamais préfixées `VITE_` :
+     - `SUPABASE_URL` = `https://<ref>.supabase.co`, type *Config* ;
+     - `SUPABASE_SECRET_KEY` = la clé `sb_secret_…`, type *Secret* (illisible une fois enregistrée).
 
-     Sans elles, tout marche sauf l'état du collecteur (« collecteur non configuré »).
+     Une variable ajoutée ou modifiée ne vaut que pour les déploiements suivants : redéployer. Sans elles, tout marche sauf l'état du collecteur (« collecteur non configuré »).
    - Variables publiques facultatives : `VITE_DEFAULT_MODE`, inutile sur Vercel puisque le défaut y est déjà « online ». Laisser `VITE_TOUR_GATEWAY_URL` vide : posée au build, l'adresse de la tour serait lisible dans le bundle public. La saisir plutôt dans Paramètres, sur chaque appareil.
-   - *Deployment Protection* : l'activer (Vercel Authentication) pour que l'interface et les fonctions ne soient pas publiques. Les déploiements couverts dépendent de l'offre Vercel (à vérifier).
-3. **Vérifier** :
-   - `https://<projet>.vercel.app/api/health` doit répondre `"mode": "online"`, `"host": "vercel"` et `"fn_region": "cdg1"` ;
+   - *Deployment Protection* (*Settings → Deployment Protection*) : Vercel Authentication avec la portée **All Deployments**, gratuite sur Hobby depuis septembre 2026. La protection standard laisse le domaine de production public.
+   - Un `vercel deploy --prod` lancé depuis le Mac marche aussi : `.vercelignore` n'envoie ni `.env`, ni les dossiers inutiles au front et aux fonctions. Ses motifs sont ancrés à la racine (`/scripts/`), sans quoi `web/scripts/check-bundle.mjs`, appelé par la construction, serait retiré.
+3. **Vérifier**, dans un navigateur connecté à Vercel (avec la protection, un `curl` reçoit la page de connexion) :
+   - `https://<projet>.vercel.app/api/health` doit répondre `"mode": "online"`, `"host": "vercel"` et `"fn_region": "cdg1"` (`null` si Vercel n'expose pas ses variables système : ce n'est pas une mauvaise région) ;
    - `/api/collector-health` doit répondre `"configured": true`, avec un `age_ms` inférieur à 3 minutes ;
    - dans le terminal : Paramètres → Mode Online → **Tester**.
 

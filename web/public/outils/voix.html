@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Test des voix · squawk</title>
+<!--
+  Étape E0 du plan P1 (T-024) : quelles voix le navigateur du Mac propose, comment
+  elles lisent les chiffres (signe moins, « pb », heures), et si la lecture part sans
+  geste de l'utilisateur une fois la voix débloquée. Page autonome : aucune requête
+  réseau, rien n'est envoyé. Le rapport se copie à la main dans la conversation.
+-->
+<style>
+  :root {
+    --bg-app: #000000; --bg-panel: #0A0A09; --bg-panel-2: #121110;
+    --line: #22201E; --line-strong: #3A3835;
+    --text-1: #EDEAE6; --text-2: #ABA7A2; --text-3: #85817A;
+    --gold: #E4C24A; --up: #5CCBE3; --down: #D95B55;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-app); color: var(--text-1);
+    font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em;
+    color: var(--text-2); margin: 28px 0 8px; }
+  p { color: var(--text-2); margin: 4px 0 12px; }
+  section { background: var(--bg-panel); border: 1px solid var(--line); padding: 12px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select { font: inherit; color: var(--text-1); background: var(--bg-panel-2);
+    border: 1px solid var(--line-strong); padding: 6px 10px; min-height: 32px; }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--gold); }
+  button:focus-visible, select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+  button.primary { border-color: var(--gold); color: var(--gold); }
+  select { max-width: 100%; }
+  label { color: var(--text-2); }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line);
+    vertical-align: top; }
+  th { color: var(--text-3); font-weight: 500; }
+  td.text { min-width: 240px; }
+  @media (max-width: 640px) {
+    table.cards thead { display: none; }
+    table.cards tr, table.cards td { display: block; }
+    table.cards tr { border-bottom: 1px solid var(--line-strong); padding: 6px 0; }
+    table.cards td { border: 0; padding: 4px 0; }
+    table.cards td.text { min-width: 0; }
+  }
+  .mono { font-family: ui-monospace, "JetBrains Mono", Menlo, monospace; }
+  .ok { color: var(--up); } .ko { color: var(--down); } .muted { color: var(--text-3); }
+  #status { min-height: 1.5em; }
+  textarea { width: 100%; min-height: 140px; background: var(--bg-panel-2); color: var(--text-1);
+    border: 1px solid var(--line-strong); font: 12px/1.4 ui-monospace, Menlo, monospace; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Test des voix · squawk</h1>
+  <p>Ouvrir cette page dans le navigateur qui affichera le terminal (Safari ou Chrome sur le Mac).
+    Commencer par « Activer voix et son », puis lire chaque phrase et noter ce qui a été entendu.
+    Terminer par « Copier le rapport » et coller le texte dans la conversation.</p>
+
+  <section>
+    <div class="row">
+      <button id="unlock" class="primary">Activer voix et son</button>
+      <button id="stop">Arrêter</button>
+      <button id="copy">Copier le rapport</button>
+    </div>
+    <p id="status" class="muted" role="status" aria-live="polite">Voix non activée.</p>
+    <div class="row">
+      <label for="voice-fr">Voix française</label>
+      <select id="voice-fr"></select>
+      <label for="voice-en">Voix anglaise</label>
+      <select id="voice-en"></select>
+    </div>
+  </section>
+
+  <h2>Phrases</h2>
+  <p>« Lire » part d'un clic. « Dans 10 s » part d'un minuteur, sans geste : c'est ainsi que le
+    squawk lira un chiffre arrivé par le flux.</p>
+  <section class="scroll">
+    <table class="cards">
+      <thead><tr><th>Phrase</th><th>Texte</th><th>Lecture</th><th>Entendu</th><th>Mesure</th></tr></thead>
+      <tbody id="phrases"></tbody>
+    </table>
+  </section>
+
+  <h2>Voix disponibles (fr et en)</h2>
+  <section class="scroll">
+    <table>
+      <thead><tr><th>Nom</th><th>Langue</th><th>Locale</th><th>Par défaut</th><th>Identifiant</th></tr></thead>
+      <tbody id="voices"></tbody>
+    </table>
+  </section>
+
+  <h2>Rapport</h2>
+  <section>
+    <textarea id="report" readonly aria-label="Rapport JSON"></textarea>
+  </section>
+</main>
+
+<script>
+"use strict";
+const PHRASES = [
+  { id: "brut-moins", lang: "fr", text: "IPC américain : −0,2 % sur un mois, consensus 0,3 %." },
+  { id: "normalise", lang: "fr", text: "IPC américain : moins 0,2 pour cent sur un mois, consensus 0,3 pour cent." },
+  { id: "pb", lang: "fr", text: "Fed : baisse de 25 pb, fourchette 3,50 % – 3,75 %." },
+  { id: "pb-normalise", lang: "fr", text: "Fed : baisse de 25 points de base, fourchette de 3,50 à 3,75 pour cent." },
+  { id: "emploi", lang: "fr", text: "Emplois non agricoles : 143 000, consensus 170 000. Chômage : 4,1 pour cent." },
+  { id: "heure", lang: "fr", text: "Publication à 14 h 30, heure de Paris." },
+  { id: "vo-en", lang: "en", text: "Headline CPI minus 0.2 percent month over month, expected 0.3 percent." },
+];
+const WATCHDOG_MS = 20000;
+
+const synth = window.speechSynthesis;
+const state = { startedAt: new Date().toISOString(), voices: [], results: [], audio: null,
+  unlocked: false };
+let audioCtx = null;
+const $ = (id) => document.getElementById(id);
+
+function status(text, cls) {
+  const el = $("status");
+  el.textContent = text;
+  el.className = cls || "";
+}
+
+function loadVoices() {
+  return new Promise((resolve) => {
+    if (!synth) return resolve([]);
+    const now = synth.getVoices();
+    if (now.length) return resolve(now);
+    const done = () => { clearTimeout(timer); synth.removeEventListener("voiceschanged", done);
+      resolve(synth.getVoices()); };
+    const timer = setTimeout(done, 3000);
+    synth.addEventListener("voiceschanged", done);
+  });
+}
+
+function fillVoices(list) {
+  const kept = list.filter((v) => /^(fr|en)/i.test(v.lang));
+  state.voices = kept.map((v) => ({ name: v.name, lang: v.lang, localService: v.localService,
+    default: v.default, voiceURI: v.voiceURI }));
+  const tbody = $("voices");
+  tbody.textContent = "";
+  for (const v of state.voices) {
+    const tr = document.createElement("tr");
+    for (const x of [v.name, v.lang, v.localService ? "oui" : "non", v.default ? "oui" : "",
+      v.voiceURI]) {
+      const td = document.createElement("td");
+      td.textContent = x;
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+  if (!state.voices.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="muted">— aucune voix fr ou en exposée par ce navigateur</td></tr>';
+  }
+  for (const lang of ["fr", "en"]) {
+    const sel = $("voice-" + lang);
+    sel.textContent = "";
+    const mine = kept.filter((v) => v.lang.toLowerCase().startsWith(lang));
+    for (const v of mine) {
+      const o = document.createElement("option");
+      o.value = v.voiceURI;
+      o.textContent = `${v.name} · ${v.lang}${v.localService ? "" : " · réseau"}`;
+      sel.appendChild(o);
+    }
+    if (!mine.length) {
+      const o = document.createElement("option");
+      o.value = "";
+      o.textContent = "— aucune";
+      sel.appendChild(o);
+    }
+    const preferred = mine.find((v) => v.lang.toLowerCase() === (lang === "fr" ? "fr-fr" : "en-us"));
+    if (preferred) sel.value = preferred.voiceURI;
+  }
+  renderReport();
+}
+
+function voiceFor(lang) {
+  const uri = $("voice-" + lang).value;
+  return synth.getVoices().find((v) => v.voiceURI === uri) || null;
+}
+
+function beep() {
+  const Ctx = window.AudioContext || window.webkitAudioContext;
+  if (!Ctx) return Promise.resolve({ available: false });
+  audioCtx = audioCtx || new Ctx();
+  return audioCtx.resume().then(() => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.frequency.value = 880;
+    gain.gain.value = 0.08;
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.12);
+    return { available: true, state: audioCtx.state, sampleRate: audioCtx.sampleRate };
+  }).catch((err) => ({ available: true, error: String(err) }));
+}
+
+function speak(phrase, trigger) {
+  if (!synth) { status("Ce navigateur n'a pas de synthèse vocale.", "ko"); return null; }
+  const voice = voiceFor(phrase.lang);
+  const result = { id: phrase.id, trigger, voice: voice ? voice.name : null,
+    voiceLang: voice ? voice.lang : null, requestedAt: Date.now(), startDelayMs: null,
+    durationMs: null, outcome: "pending", heard: null };
+  const u = new SpeechSynthesisUtterance(phrase.text);
+  u.lang = voice ? voice.lang : (phrase.lang === "fr" ? "fr-FR" : "en-US");
+  if (voice) u.voice = voice;
+  let started = null;
+  const watchdog = setTimeout(() => {
+    if (result.outcome === "pending") { result.outcome = "timeout"; update(result); }
+  }, WATCHDOG_MS);
+  u.onstart = () => { started = Date.now(); result.startDelayMs = started - result.requestedAt;
+    update(result); };
+  u.onend = () => { clearTimeout(watchdog);
+    if (result.outcome === "pending") result.outcome = started ? "ended" : "ended-without-start";
+    if (started) result.durationMs = Date.now() - started;
+    update(result); };
+  u.onerror = (e) => { clearTimeout(watchdog); result.outcome = "error:" + (e.error || "inconnu");
+    update(result); };
+  state.results.push(result);
+  synth.speak(u);
+  update(result);
+  return result;
+}
+
+function update(result) {
+  const cell = document.querySelector(`[data-measure="${result.id}"]`);
+  if (cell) {
+    const ok = result.outcome === "ended";
+    cell.className = "mono " + (ok ? "ok" : result.outcome === "pending" ? "muted" : "ko");
+    cell.textContent = `${result.trigger} · ${result.outcome}` +
+      (result.startDelayMs != null ? ` · départ ${result.startDelayMs} ms` : "") +
+      (result.durationMs != null ? ` · ${result.durationMs} ms` : "");
+  }
+  renderReport();
+}
+
+function markHeard(id, verdict) {
+  const last = [...state.results].reverse().find((r) => r.id === id);
+  if (!last) { status("Lire la phrase avant de la noter.", "ko"); return; }
+  last.heard = verdict;
+  status(`« ${id} » noté : ${verdict === "ok" ? "lu correctement" : "lu de travers"}.`);
+  renderReport();
+}
+
+function renderPhrases() {
+  const tbody = $("phrases");
+  for (const p of PHRASES) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td class="mono">${p.id}</td><td class="text"></td>
+      <td><div class="row"><button data-act="now">Lire</button>
+      <button data-act="later">Dans 10 s</button></div></td>
+      <td><div class="row"><button data-act="ok" aria-label="${p.id} lu correctement">Juste</button>
+      <button data-act="ko" aria-label="${p.id} lu de travers">Faux</button></div></td>
+      <td data-measure="${p.id}" class="mono muted">—</td>`;
+    tr.querySelector(".text").textContent = p.text;
+    tr.querySelector('[data-act="now"]').onclick = () => speak(p, "clic");
+    tr.querySelector('[data-act="later"]').onclick = () => {
+      status(`« ${p.id} » sera lu dans 10 s, sans geste.`);
+      setTimeout(() => speak(p, "minuteur"), 10000);
+    };
+    tr.querySelector('[data-act="ok"]').onclick = () => markHeard(p.id, "ok");
+    tr.querySelector('[data-act="ko"]').onclick = () => markHeard(p.id, "ko");
+    tbody.appendChild(tr);
+  }
+}
+
+function report() {
+  return { userAgent: navigator.userAgent, startedAt: state.startedAt,
+    unlocked: state.unlocked, voices: state.voices, results: state.results, audio: state.audio };
+}
+
+function renderReport() { $("report").value = JSON.stringify(report(), null, 2); }
+
+$("unlock").onclick = async () => {
+  state.audio = await beep();
+  if (synth) {
+    synth.cancel();
+    const u = new SpeechSynthesisUtterance("Voix activée");
+    const v = voiceFor("fr");
+    u.lang = v ? v.lang : "fr-FR";
+    if (v) u.voice = v;
+    synth.speak(u);
+  }
+  state.unlocked = true;
+  status("Voix et son activés pour cette page.", "ok");
+  renderReport();
+};
+$("stop").onclick = () => { if (synth) synth.cancel(); status("Lecture arrêtée."); };
+$("copy").onclick = async () => {
+  const text = JSON.stringify(report(), null, 2);
+  try {
+    await navigator.clipboard.writeText(text);
+    status("Rapport copié : le coller dans la conversation.", "ok");
+  } catch {
+    const area = $("report");
+    area.value = text;
+    area.focus();
+    area.select();
+    status("Copie automatique refusée : le texte du rapport est sélectionné, faire Cmd+C.", "ko");
+  }
+};
+
+renderPhrases();
+loadVoices().then(fillVoices);
+if (synth) synth.addEventListener("voiceschanged", () => fillVoices(synth.getVoices()));
+</script>
+</body>
+</html>
