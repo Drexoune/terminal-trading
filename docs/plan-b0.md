@@ -1,6 +1,6 @@
 # Plan B0 — Fondations du module Bourse
 
-> **Proposé le 19/11/2026, en attente de l'accord de Clément.** Rien n'est codé. Cadre : `docs/plan-bourse.md` (validé, T-036) et décisions T-027 à T-034.
+> **Validé le 19/11/2026 (T-037), codé le même jour.** Cadre : `docs/plan-bourse.md` (validé, T-036) et décisions T-027 à T-034. Mise en service : `docs/bourse-mise-en-service.md`.
 
 ## 1. Objectif et porte
 
@@ -8,7 +8,7 @@ B0 pose ce dont toutes les étapes suivantes ont besoin : accès protégé, tabl
 
 **Porte de B0.** Sur le site en ligne, après une nuit sans intervention :
 
-- un titre américain (AAPL), un ETF du PEA (Amundi MSCI World, CW8 à Paris) et le cours EUR/USD de la BCE sont relevés automatiquement ;
+- les lignes du portefeuille de Clément (T-037 : six lignes du PEA, toutes européennes) et le cours EUR/USD de la BCE sont relevés automatiquement ;
 - chacun affiche sa source, sa date de valeur et son heure de réception ;
 - toute route `/api/bourse/*` refuse de répondre sans le mot de passe d'application ;
 - aucune clé dans le bundle du front (`check:bundle`).
@@ -17,7 +17,7 @@ B0 pose ce dont toutes les étapes suivantes ont besoin : accès protégé, tabl
 
 | Tâche | Contenu | Vérification |
 | --- | --- | --- |
-| B0.1 Exploration | `scripts/explore_bourse.py` : une réponse réelle de chaque source (SEC, BCE, GLEIF, ESMA FIRDS, OpenFIGI, Alpha Vantage, Tiingo, Massive), gardée comme fichier de référence des tests. Mesure des formats, des en-têtes, des réponses de quota dépassé | fichiers reçus et relus |
+| B0.1 Exploration | sources sans clé (BCE, GLEIF, ESMA FIRDS, OpenFIGI) depuis l'environnement de développement, le 19/11 ; sources à clé et SEC par la tâche `explore` de l'Edge Function, depuis l'adresse IP de Supabase (T-037). Réponses gardées comme fichiers de référence des tests | fichiers reçus et relus |
 | B0.2 Accès | mot de passe d'application, cookie de session signé, limitation des essais ; script qui produit l'empreinte | tests Vitest (empreinte, signature, expiration, falsification, essais) |
 | B0.3 Tables | migration Supabase des tables de B0, RLS sans politique, droits retirés aux rôles publics | migration appliquée sur une base locale, contrôles des droits |
 | B0.4 Référentiel | sociétés américaines (liste de la SEC), table des ETF éligibles au PEA reprise du Trading Desk, règle d'éligibilité PEA d'une action (émetteur → pays du siège), ISIN → mnémonique (OpenFIGI) | tests sur une liste témoin d'ISIN |
@@ -67,8 +67,8 @@ Toute route autre que `POST /session` exige le cookie ; sinon 401, sans rien ré
 
 ## 6. Accès par mot de passe (T-031)
 
-- **Empreinte** : `scripts/bourse_password.py` demande le mot de passe sans l'afficher et imprime `BOURSE_PASSWORD_HASH` (scrypt, sel aléatoire, paramètres inclus) et `BOURSE_SESSION_SECRET` (32 octets aléatoires). Clément les colle dans Vercel ; le mot de passe n'est stocké nulle part.
-- **Session** : cookie `__Host-bourse`, `HttpOnly`, `Secure`, `SameSite=Strict`, `Path=/`, signé HMAC-SHA256 avec `BOURSE_SESSION_SECRET`, expiration dans le contenu signé (30 jours proposés, question 2). Changer le secret ferme toutes les sessions.
+- **Empreinte** : `scripts/bourse_password.py` demande le mot de passe sans l'afficher et imprime `BOURSE_PASSWORD_HASH` (PBKDF2-SHA256, 600 000 itérations, sel aléatoire, paramètres inclus) et `BOURSE_SESSION_SECRET`. PBKDF2 plutôt que scrypt : WebCrypto le fournit partout (Vercel, Vite, Vitest) sans dépendance propre à Node. Clément les colle dans Vercel ; le mot de passe n'est stocké nulle part.
+- **Session** : cookie `__Host-bourse`, `HttpOnly`, `Secure`, `SameSite=Strict`, `Path=/`, signé HMAC-SHA256 avec `BOURSE_SESSION_SECRET`, expiration de 30 jours dans le contenu signé (T-037). Changer le secret ferme toutes les sessions.
 - **Requêtes qui modifient** : en plus de `SameSite=Strict`, contrôle de l'en-tête `Origin` et du type `application/json`.
 - **Essais** : 5 refus en 15 minutes pour une même adresse (empreinte de l'IP, jamais l'IP en clair) → 429 pendant 15 minutes. Comparaison à temps constant.
 - **Développement** : le cookie `Secure` passe sur `http://localhost` dans Chrome ; Safari le refuse en HTTP. À vérifier ; au besoin, nom de cookie sans préfixe en développement seulement.
@@ -88,7 +88,7 @@ Toute route autre que `POST /session` exige le cookie ; sinon 401, sans rien ré
 
 ## 8. Écrans de B0
 
-- **Menu** : nouvelle section « Bourse » en bas du menu latéral, avec Portefeuille (`PTF`, B1), Fiche action (`EQ`, B2), Screener (`EQS`, B3), Watchlists (`WL`, B3), Calendrier boursier (`EVTS`, B4), Super-investisseurs (`13F`, B4) et Sources (`BSRC`, B0). Les écrans pas encore construits gardent le panneau « à venir » de P0 avec leur étape. Le test de géométrie de la Vue d'ensemble (maquette Main) doit rester juste : la section s'ajoute sous les autres sans les déplacer.
+- **Menu** : nouvelle section « Bourse » en bas du menu latéral, **repliable et repliée par défaut** (ouverte d'office sur un écran Bourse) : dépliée, elle allongeait la page de 51 px et le test de géométrie de la maquette Main l'a refusée. Elle contient avec Portefeuille (`PTF`, B1), Fiche action (`EQ`, B2), Screener (`EQS`, B3), Watchlists (`WL`, B3), Calendrier boursier (`EVTS`, B4), Super-investisseurs (`13F`, B4) et Sources (`BSRC`, B0). Les écrans pas encore construits gardent le panneau « à venir » de P0 avec leur étape. Le test de géométrie de la Vue d'ensemble (maquette Main) doit rester juste : la section s'ajoute sous les autres sans les déplacer.
 - **Connexion** : panneau centré, un champ mot de passe, un bouton ; message d'erreur sans détail ; « Trop d'essais, réessayer à HH:MM » sur 429.
 - **Sources** (`BSRC`) : une ligne par source (BCE, Massive, Alpha Vantage, SEC, OpenFIGI) avec dernier passage, réussite ou erreur, lignes, quota restant, prochaine exécution ; puis les trois cotations de la porte avec clôture, date de valeur, source et heure de réception. « — » avec la raison pour toute valeur absente.
 
@@ -124,10 +124,10 @@ Mesurés en B0.1, jamais supposés :
 | avant la porte | coller les clés dans Vercel et dans les secrets des Edge Functions Supabase ; produire l'empreinte du mot de passe avec `scripts/bourse_password.py` et la coller dans Vercel |
 | porte | ouvrir l'écran Sources le lendemain matin et confirmer |
 
-## 12. Questions
+## 12. Questions tranchées (T-037)
 
-| | Question | Recommandation |
+| | Question | Réponse |
 | --- | --- | --- |
-| Q1 | Où explorer les sources à clé (Alpha Vantage, Tiingo, Massive, OpenFIGI) | **sur le Mac**, avec les clés du `.env`, comme E0. Les sources sans clé (SEC, BCE, GLEIF, ESMA) s'explorent depuis l'environnement de développement, si tu acceptes d'y ouvrir ces adresses |
-| Q2 | Durée d'une session | **30 jours**, sur un navigateur à toi ; déconnexion possible à tout moment |
-| Q3 | Titres de la porte | **AAPL, CW8 (Paris), EUR/USD** ; à remplacer par des lignes de ton portefeuille si tu préfères |
+| Q1 | Où explorer les sources à clé | **en ligne** : tâche `explore` de l'Edge Function, depuis l'adresse IP de Supabase ; sources sans clé depuis l'environnement de développement (T-037) |
+| Q2 | Durée d'une session | **30 jours** (T-037) |
+| Q3 | Titres de la porte | **les lignes du portefeuille de Clément** et EUR/USD (T-037) |

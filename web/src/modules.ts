@@ -3,7 +3,8 @@
 
 import type { IconName } from './components/Icon';
 
-export type Phase = 'P0' | 'P1' | 'P2' | 'P3' | 'P4' | 'P5' | 'P6' | 'P7';
+export type Phase = 'P0' | 'P1' | 'P2' | 'P3' | 'P4' | 'P5' | 'P6' | 'P7'
+  | 'B0' | 'B1' | 'B2' | 'B3' | 'B4';   // module Bourse (docs/plan-bourse.md)
 
 export interface ModuleDef {
   id: string;
@@ -17,7 +18,7 @@ export interface ModuleDef {
   description: string; // ligne de la palette
 }
 
-export const SECTIONS = ['Global', 'News', 'Macro', 'Positionnement & sentiment', 'Analyse', 'Compte'];
+export const SECTIONS = ['Global', 'News', 'Macro', 'Positionnement & sentiment', 'Analyse', 'Compte', 'Bourse'];
 
 export const MODULES: ModuleDef[] = [
   { id: 'overview', label: 'Vue d’ensemble', section: 'Global', path: '/', icon: 'overview', phase: 'P0', command: 'HOME', category: 'Global', description: 'Vue d’ensemble' },
@@ -46,6 +47,23 @@ export const MODULES: ModuleDef[] = [
   { id: 'calculator', label: 'Calculateur de risque', section: 'Compte', path: '/calculateur', icon: 'calculator', phase: 'P6', command: 'CALC', category: 'Compte', description: 'Calculateur de risque' },
 ];
 
+/**
+ * Module Bourse (décisions T-027 à T-036) : section ajoutée sous celles de la
+ * maquette, sans maquette propre (T-033). Les 24 modules du plan restent dans
+ * MODULES ; le menu et la palette lisent ALL_MODULES.
+ */
+export const BOURSE_MODULES: ModuleDef[] = [
+  { id: 'portfolio', label: 'Portefeuille', section: 'Bourse', path: '/bourse/portefeuille', icon: 'portfolio', phase: 'B1', command: 'PTF', category: 'Bourse', description: 'Portefeuille : enveloppes, performance, allocation' },
+  { id: 'equity', label: 'Fiche action', section: 'Bourse', path: '/bourse/action', icon: 'equity', phase: 'B2', command: 'EQ', category: 'Bourse', description: 'Fiche action : comptes, valorisation, DCF' },
+  { id: 'screener', label: 'Screener', section: 'Bourse', path: '/bourse/screener', icon: 'screener', phase: 'B3', command: 'EQS', category: 'Bourse', description: 'Screener actions, filtre PEA' },
+  { id: 'watchlists', label: 'Watchlists', section: 'Bourse', path: '/bourse/watchlists', icon: 'list', phase: 'B3', command: 'WL', category: 'Bourse', description: 'Listes de surveillance' },
+  { id: 'events', label: 'Calendrier boursier', section: 'Bourse', path: '/bourse/calendrier', icon: 'events', phase: 'B4', command: 'EVTS', category: 'Bourse', description: 'Résultats, dividendes, divisions, IPO' },
+  { id: 'investors', label: 'Super-investisseurs', section: 'Bourse', path: '/bourse/13f', icon: 'investors', phase: 'B4', command: '13F', category: 'Bourse', description: 'Portefeuilles 13F et mouvements trimestriels' },
+  { id: 'sources', label: 'Sources', section: 'Bourse', path: '/bourse/sources', icon: 'sources', phase: 'B0', command: 'BSRC', category: 'Bourse', description: 'Sources du module Bourse : relevés, quota, dernières clôtures' },
+];
+
+export const ALL_MODULES: ModuleDef[] = [...MODULES, ...BOURSE_MODULES];
+
 /** Écrans hors menu (paramètres, planche de référence) : le menu reste celui de la maquette. */
 export const EXTRA_SCREENS = [
   { id: 'settings', path: '/parametres', command: 'SET', description: 'Paramètres · mode de fonctionnement (Online, Local, Tour)', category: 'Réglages' },
@@ -55,5 +73,5 @@ export const EXTRA_SCREENS = [
 export const SETTINGS_PATH = '/parametres';
 
 export function moduleByPath(path: string): ModuleDef | undefined {
-  return MODULES.find((m) => m.path === path);
+  return ALL_MODULES.find((m) => m.path === path);
 }

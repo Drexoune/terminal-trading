@@ -14,7 +14,7 @@ export function PlaceholderScreen({ module }: { module: ModuleDef }) {
           <div className="placeholder" style={{ minHeight: 240 }}>
             <span className="placeholder__dash" aria-hidden="true">—</span>
             <span>Cet écran arrive en {module.phase}. Aucune donnée n’est affichée d’ici là.</span>
-            <span className="lbl lbl--s">Spécification : docs/ecrans.md</span>
+            <span className="lbl lbl--s">Spécification : {module.phase.startsWith('B') ? 'docs/plan-bourse.md' : 'docs/ecrans.md'}</span>
           </div>
         </Panel>
       </div>

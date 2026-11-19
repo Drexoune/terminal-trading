@@ -6,13 +6,13 @@ import { Command } from 'cmdk';
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '../components/Icon';
-import { EXTRA_SCREENS, MODULES } from '../modules';
+import { ALL_MODULES, EXTRA_SCREENS } from '../modules';
 import './palette.css';
 
 export interface PaletteEntry { command: string; description: string; category: string; path: string; phase?: string }
 
 export const ENTRIES: PaletteEntry[] = [
-  ...MODULES.map((m) => ({ command: m.command, description: m.description, category: m.category, path: m.path, phase: m.phase })),
+  ...ALL_MODULES.map((m) => ({ command: m.command, description: m.description, category: m.category, path: m.path, phase: m.phase })),
   ...EXTRA_SCREENS.map((s) => ({ command: s.command, description: s.description, category: s.category, path: s.path })),
 ];
 

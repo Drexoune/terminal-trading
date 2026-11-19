@@ -60,6 +60,15 @@
 }
 .nav-section { padding-top: 14px; }
 .nav-section__title { padding: 0 16px 6px; font-size: var(--fs-chip); }
+/* Titre de section repliable (module Bourse) : bouton sans fond, flèche d'état. */
+.nav-section__toggle {
+  display: flex; align-items: center; gap: 6px; width: 100%; margin: 0; border: 0;
+  background: transparent; text-align: left; cursor: pointer;
+}
+.nav-section__toggle::after { content: "▸"; font-size: 10px; color: var(--text-3); }
+.nav-section__toggle[aria-expanded="true"]::after { content: "▾"; }
+.nav-section__toggle:hover { color: var(--text-1); }
+.nav-section__toggle:focus-visible { outline: 1px solid var(--gold); outline-offset: -1px; }
 .nav a {
   display: flex; align-items: center; gap: 10px; min-height: var(--control-h); padding: 0 14px;
   border-left: 2px solid transparent; font: 500 var(--fs-nav) var(--font-body); color: var(--text-2);

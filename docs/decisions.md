@@ -41,6 +41,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-034 | 19/11/2026 | Note de l'action | Percentiles descriptifs sur quatre axes, détail affiché, marquée « non testée » |
 | T-035 | 19/11/2026 | Calendrier P1 révisé | Rafale de mesure sur le rapport emploi du 04/12 ; répétition sur la productivité du 08/12 ; porte inchangée le 10/12 |
 | T-036 | 19/11/2026 | Plan Bourse | Plan révisé (`docs/plan-bourse.md`) validé par Clément ; B0 commence par son plan détaillé |
+| T-037 | 19/11/2026 | Plan B0 | Validé : exploration en ligne, session de 30 jours, porte sur les lignes du portefeuille ; menu Bourse repliable |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -378,3 +379,18 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 ## T-036 — Plan Bourse validé · 19/11/2026
 
 **Décision de Clément.** Il valide le plan révisé du module Bourse (`docs/plan-bourse.md`, version du 19/11/2026, décisions T-027 à T-034). Comme pour chaque phase, B0 commence par un plan détaillé (`docs/plan-b0.md`), validé avant d'écrire du code.
+
+## T-037 — Plan B0 validé · 19/11/2026
+
+**Décision de Clément.** Il valide le plan B0 (`docs/plan-b0.md`) et demande de coder sans attendre :
+
+- **Exploration en ligne**, pas sur le Mac : les sources sans clé depuis l'environnement de développement (adresses ouvertes dans un environnement personnel « Trading »), les sources à clé et la SEC par la tâche `explore` de l'Edge Function `bourse-jobs`, c'est-à-dire depuis l'adresse IP qui fera les relevés ;
+- **session de 30 jours** ;
+- **porte sur les lignes de son portefeuille** et EUR/USD, plutôt que sur des titres d'exemple.
+
+**Conséquences.**
+
+- Le PEA ne compte que des titres européens : la porte repose sur Alpha Vantage (six requêtes par nuit sur un budget de 20) et sur la BCE ; Massive n'a rien à relever tant qu'aucune ligne américaine n'est suivie.
+- Les lignes suivies s'insèrent par un script SQL gardé hors du dépôt (données personnelles) jusqu'à l'import de B1.
+- La section « Bourse » du menu est repliable et repliée par défaut : dépliée, elle allongeait la page au-delà de la maquette Main.
+- Mot de passe : PBKDF2-SHA256 (WebCrypto) au lieu de scrypt, pour un même code sur Vercel, Vite et Vitest.

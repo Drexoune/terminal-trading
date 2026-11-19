@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { MODULES, SETTINGS_PATH } from './modules';
+import { ALL_MODULES, MODULES, SETTINGS_PATH } from './modules';
 import { CommandPalette, usePaletteShortcut } from './palette/CommandPalette';
+import { SourcesScreen } from './screens/bourse/Sources';
 import { Charts } from './screens/charts/Charts';
 import { DesignSystem } from './screens/design-system/DesignSystem';
 import { Overview } from './screens/overview/Overview';
@@ -9,7 +10,7 @@ import { PlaceholderScreen } from './screens/placeholder/Placeholder';
 import { SettingsScreen } from './screens/settings/Settings';
 import { AppShell } from './shell/AppShell';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);
@@ -18,7 +19,7 @@ function Shell() {
     <>
       <AppShell onOpenPalette={() => setPalette(true)}>
         <Routes>
-          {MODULES.map((m) => {
+          {ALL_MODULES.map((m) => {
             const Screen = IMPLEMENTED[m.id];
             return <Route key={m.id} path={m.path}
               element={Screen ? <Screen /> : <PlaceholderScreen module={m} />} />;
