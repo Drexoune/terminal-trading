@@ -25,6 +25,8 @@ const fakes: Record<string, Record<string, unknown>> = {
   },
   'instruments.ts': { GET: () => { throw new Error('boum'); } },
   'okx-time.ts': {},
+  'bourse.ts': Object.fromEntries(['GET', 'POST', 'DELETE'].map((m) => [m, async (r: Request) => Response.json(
+    { method: r.method, path: new URL(r.url).pathname, body: r.method === 'GET' ? '' : await r.text() })])),
 };
 
 beforeAll(async () => {
@@ -88,6 +90,17 @@ describe('middleware /api/* de Vite', () => {
     const r = await fetch(`${base}/api/health`, { method: 'POST', body: '{}' });
     expect(r.status).toBe(405);
     expect(r.headers.get('allow')).toBe('GET, HEAD');
+  });
+
+  it('module à routeur interne : sous-chemin, POST avec corps, DELETE', async () => {
+    const g = await fetch(`${base}/api/bourse/sources?x=1`);
+    expect(await g.json()).toEqual({ method: 'GET', path: '/api/bourse/sources', body: '' });
+    const p = await fetch(`${base}/api/bourse/session`, { method: 'POST', body: '{"password":"x"}', headers: { 'content-type': 'application/json' } });
+    expect(await p.json()).toEqual({ method: 'POST', path: '/api/bourse/session', body: '{"password":"x"}' });
+    const d = await fetch(`${base}/api/bourse/session`, { method: 'DELETE' });
+    expect((await d.json()).method).toBe('DELETE');
+    expect((await fetch(`${base}/api/bourse/a/b`)).status).toBe(404);
+    expect((await fetch(`${base}/api/bourse/x`, { method: 'PUT' })).status).toBe(405);
   });
 
   it('module sans GET : 405', async () => {

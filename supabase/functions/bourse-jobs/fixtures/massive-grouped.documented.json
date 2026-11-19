@@ -1,0 +1,12 @@
+{
+  "_doc": "Forme documentée de GET /v2/aggs/grouped/locale/us/market/stocks/{date} (Massive, ex-Polygon). Valeurs d'essai. À remplacer par la réponse réelle de la tâche explore (docs/plan-b0.md, B0.1).",
+  "adjusted": false,
+  "queryCount": 3,
+  "resultsCount": 3,
+  "status": "OK",
+  "results": [
+    {"T": "AAPL", "v": 41234567, "vw": 228.1234, "o": 227.5, "c": 229.31, "h": 230.02, "l": 226.9, "t": 1794978000000, "n": 512345},
+    {"T": "MSFT", "v": 20123456, "vw": 431.2, "o": 430, "c": 432.75, "h": 434.1, "l": 428.8, "t": 1794978000000, "n": 301234},
+    {"T": "BAD", "v": 1, "o": 1, "c": null, "h": 1, "l": 1, "t": 1794978000000}
+  ]
+}

@@ -19,6 +19,11 @@ const PATTERNS = [
   [/\beyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/, 'jeton JWT (clé service_role ?)'],
   [/\bSUPABASE_[A-Z_]*(KEY|SECRET)\b/, 'nom de variable secrète Supabase'],
   [/\bCOLLECTOR_SECRET\b/, 'nom du secret du collecteur'],
+  // Module Bourse : mot de passe, session et clés des sources restent côté serveur.
+  [/\bBOURSE_(PASSWORD_HASH|SESSION_SECRET|JOBS_SECRET)\b/, 'nom d’un secret du module Bourse'],
+  [/\b(GEMINI|ALPHA_VANTAGE|TIINGO|MASSIVE|OPENFIGI)_API_KEY\b/, 'nom de clé d’une source boursière'],
+  [/pbkdf2-sha256\$\d+\$/, 'empreinte de mot de passe'],
+  [/\bAIza[0-9A-Za-z_-]{35}\b/, 'clé API Google (Gemini)'],
 ];
 
 function* files(dir) {

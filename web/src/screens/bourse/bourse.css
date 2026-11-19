@@ -1,0 +1,35 @@
+/* Module Bourse (B0) : connexion, écran Sources. Tokens seuls, aucune couleur en dur. */
+
+.bourse { display: flex; flex-direction: column; gap: var(--gap); padding: var(--pad); min-width: 0; }
+
+.bourse-login { display: flex; justify-content: center; padding: var(--pad); }
+.bourse-login form { display: flex; flex-direction: column; gap: 12px; padding: 16px; max-width: 360px; }
+.bourse-login p { margin: 0; color: var(--text-2); font-size: 13px; line-height: 1.5; }
+
+.btable { overflow-x: auto; }
+.btable table { width: 100%; min-width: 640px; border-collapse: collapse; }
+.btable th { height: 34px; padding: 0 8px; text-align: left; font-weight: 500; white-space: nowrap; }
+.btable td { height: 40px; padding: 4px 8px; border-top: 1px solid var(--line); vertical-align: middle; }
+.btable th:first-child, .btable td:first-child { padding-left: 14px; }
+.btable th:last-child, .btable td:last-child { padding-right: 14px; }
+.btable .r { text-align: right; }
+.btable__name { font-weight: 600; color: var(--text-1); }
+.btable__sub { display: block; }
+.btable__note { color: var(--text-2); font-size: 12px; line-height: 1.4; }
+.btable__err { color: var(--down); font-size: 12px; line-height: 1.4; }
+
+.bkv { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; padding: 14px; }
+.bkv__item { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.bkv__value { color: var(--text-1); font-size: 20px; }
+
+/* Téléphone : chaque ligne de tableau devient une carte. */
+@media (max-width: 640px) {
+  .btable table { min-width: 0; }
+  .btable thead { display: none; }
+  .btable tr { display: block; padding: 8px 14px; border-top: 1px solid var(--line); }
+  .btable td { display: flex; justify-content: space-between; gap: 12px; height: auto; padding: 3px 0; border: 0; }
+  .btable th:first-child, .btable td:first-child { padding-left: 0; }
+  .btable th:last-child, .btable td:last-child { padding-right: 0; }
+  .btable td::before { content: attr(data-label); color: var(--text-3); font-size: var(--fs-chip); text-transform: uppercase; letter-spacing: .06em; flex: none; }
+  .btable .r { text-align: right; }
+}

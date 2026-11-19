@@ -5,7 +5,10 @@
   "outputDirectory": "web/dist",
   "framework": null,
   "regions": ["cdg1"],
-  "rewrites": [{ "source": "/((?!api/|api$).*)", "destination": "/index.html" }],
+  "rewrites": [
+    { "source": "/api/bourse/:path", "destination": "/api/bourse?path=:path" },
+    { "source": "/((?!api/|api$).*)", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",

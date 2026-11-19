@@ -7,3 +7,9 @@ project_id = "terminal-trading"
 # Appelée chaque minute par pg_cron (pg_net), sans JWT : l'appel est
 # authentifié par l'en-tête x-collector-secret, vérifié par la fonction.
 verify_jwt = false
+
+[functions.bourse-jobs]
+# Module Bourse (B0) : appelée par pg_cron (supabase/cron-bourse.sql) et à la
+# main pour la tâche explore. Sans JWT : l'en-tête x-jobs-secret est vérifié
+# par la fonction.
+verify_jwt = false

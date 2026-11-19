@@ -66,6 +66,11 @@ EVENTS: dict[str, dict] = {
     "ppi": {"primary": f"{BLS}/news.release/ppi.nr0.htm",
             "after": [f"{BLS}/news.release/ppi.htm", f"{BLS}/news.release/ppi.t01.htm"],
             "series": "WPSFD4"},
+    # Productivité et coûts (trimestriel) : répétition de la capture le 08/12 (T-035).
+    # Adresses construites comme les autres communiqués, confirmées par la sonde.
+    "prod2": {"primary": f"{BLS}/news.release/prod2.nr0.htm",
+              "after": [f"{BLS}/news.release/prod2.htm", f"{BLS}/news.release/prod2.t01.htm"],
+              "series": "PRS85006092"},
     "claims": {"primary": "https://www.dol.gov/ui/data.pdf", "after": [], "series": None},
 }
 
@@ -76,20 +81,23 @@ PROBE_URLS = [
     f"{BLS}/news.release/empsit.nr0.htm",
     f"{BLS}/news.release/ppi.nr0.htm",
     f"{BLS}/news.release/ppi.htm",
+    f"{BLS}/news.release/prod2.nr0.htm",
     f"{BLS}/schedule/news_release/bls.ics",
     f"{BLS}/schedule/news_release/cpi.htm",
     f"{BLS}/schedule/news_release/empsit.htm",
     f"{BLS}/schedule/news_release/ppi.htm",
+    f"{BLS}/schedule/news_release/prod2.htm",
     f"{BLS}/bls/2025-lapse-revised-release-dates.htm",
     f"{BLS}/bls/news-release/cpi.htm",
     f"{BLS}/feed/bls_latest.rss",
     "https://www.dol.gov/ui/data.pdf",
 ]
 
-ARCHIVE_INDEX = {e: f"{BLS}/bls/news-release/{e}.htm" for e in ("cpi", "empsit", "ppi")}
+ARCHIVE_INDEX = {e: f"{BLS}/bls/news-release/{e}.htm" for e in ("cpi", "empsit", "ppi", "prod2")}
 
 TITLE_RE = re.compile(rb"<title[^>]*>(.*?)</title>", re.S | re.I)
-PERIOD_RE = re.compile(r"(\d{4}) M(\d{2}) Results")
+# Mensuel « 2026 M10 Results », trimestriel « 2026 Q03 Results ».
+PERIOD_RE = re.compile(r"(\d{4}) (?:M(\d{2})|Q0?([1-4])) Results")
 EMBARGO_RE = re.compile(
     r"embargoed\s+until\s+(\d{1,2}:\d{2}\s*[ap]\.?m\.?\s*\(ET\)\s*[A-Za-z]+,\s*[A-Za-z]+\.?\s+\d{1,2},\s*\d{4})",
     re.I)
@@ -119,7 +127,8 @@ def describe(body: bytes) -> dict:
         out["title"] = title
         p = PERIOD_RE.search(title)
         if p:
-            out["period"] = f"{p.group(1)}-{p.group(2)}"
+            out["period"] = (f"{p.group(1)}-{p.group(2)}" if p.group(2)
+                             else f"{p.group(1)}-Q{p.group(3)}")
     text = " ".join(body[:80_000].decode("utf-8", "replace").split())
     e = EMBARGO_RE.search(text)
     if e:

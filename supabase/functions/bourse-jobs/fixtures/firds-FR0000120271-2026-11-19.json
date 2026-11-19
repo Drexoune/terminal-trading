@@ -1,0 +1,90 @@
+{
+ "responseHeader": {
+  "status": 0,
+  "QTime": 1,
+  "params": {
+   "q": "isin:FR0000120271",
+   "rows": "2",
+   "wt": "json"
+  }
+ },
+ "response": {
+  "numFound": 101,
+  "start": 0,
+  "numFoundExact": true,
+  "docs": [
+   {
+    "_root_": "1552778818",
+    "type_s": "parent",
+    "id": "1552778818",
+    "isin": "FR0000120271",
+    "collectorParent": [
+     "FR0000120271",
+     "SGMX",
+     "2025-11-18T00:00:00Z",
+     "TOTAL",
+     "ESVUFN",
+     "529900S21EQ1BO4ESM68",
+     "2011-01-28T00:01:00Z",
+     "2020-12-31T22:59:59Z"
+    ],
+    "mic": "SGMX",
+    "upcoming_rca": "FR",
+    "valid_from_date": "2025-11-18T00:00:00Z",
+    "gnr_full_name": "TOTAL",
+    "gnr_cfi_code": "ESVUFN",
+    "gnr_comm_derivative_flag": "No",
+    "gnr_short_name": "TOTALENERGIES S/SH VTG FPD",
+    "gnr_notional_curr_code": "EUR",
+    "lei": "529900S21EQ1BO4ESM68",
+    "mrkt_issr_trdng_rqst_flag": "No",
+    "mrkt_trdng_start_date": "2011-01-28T00:01:00Z",
+    "mrkt_trdng_trmination_date": "2020-12-31T22:59:59Z",
+    "drv_sp_prc_value_sign_flag": "No",
+    "latest_received_flag": "1",
+    "never_published_flag": "0",
+    "rca_mic": "XPAR",
+    "status": "TERM",
+    "status_label": "Terminated",
+    "_version_": 1881882961700192282,
+    "publication_date": "2026-11-15T00:44:05.621Z"
+   },
+   {
+    "_root_": "1553099830",
+    "type_s": "parent",
+    "id": "1553099830",
+    "isin": "FR0000120271",
+    "collectorParent": [
+     "FR0000120271",
+     "TRQM",
+     "2025-11-18T00:00:00Z",
+     "TOTAL SE",
+     "ESVUFN",
+     "529900S21EQ1BO4ESM68",
+     "2008-08-15T00:00:00Z",
+     "2020-12-31T22:59:59Z"
+    ],
+    "mic": "TRQM",
+    "upcoming_rca": "FR",
+    "valid_from_date": "2025-11-18T00:00:00Z",
+    "gnr_full_name": "TOTAL SE",
+    "gnr_cfi_code": "ESVUFN",
+    "gnr_comm_derivative_flag": "No",
+    "gnr_short_name": "TOTALENERGIES S/SH VTG FPD",
+    "gnr_notional_curr_code": "EUR",
+    "lei": "529900S21EQ1BO4ESM68",
+    "mrkt_issr_trdng_rqst_flag": "No",
+    "mrkt_trdng_start_date": "2008-08-15T00:00:00Z",
+    "mrkt_trdng_trmination_date": "2020-12-31T22:59:59Z",
+    "drv_sp_prc_value_sign_flag": "No",
+    "latest_received_flag": "1",
+    "never_published_flag": "0",
+    "rca_mic": "XPAR",
+    "status": "TERM",
+    "status_label": "Terminated",
+    "_version_": 1881882770300469309,
+    "publication_date": "2026-11-15T00:41:02.552Z"
+   }
+  ]
+ }
+}

@@ -26,12 +26,12 @@ python scripts/explore_news.py rss
 
 Renvoyer les deux archives.
 
-## 2. Jour de publication : rafale sur le PPI du vendredi 13/11
+## 2. Jour de publication : rafale sur le rapport emploi du vendredi 04/12
 
 Publication à 08:30 à New York, soit **14:30 à Paris**. Lancer avant **14:20**, Mac branché, et le laisser allumé jusqu'à 14:40 :
 
 ```bash
-python scripts/explore_bls.py burst --event ppi --at "2026-11-13 08:30"
+python scripts/explore_bls.py burst --event empsit --at "2026-12-04 08:30"
 ```
 
 Dans un deuxième terminal, en même temps :
@@ -45,7 +45,7 @@ python scripts/explore_news.py watch --minutes 30
 - `--at` est l'heure **de New York**, pas celle de Paris.
 - Mesure seule : aucun chiffre n'est lu ni affiché.
 
-Si la rafale n'a pas pu être lancée le 13/11, le dire : une autre publication sera proposée, date vérifiée sur le calendrier du BLS. Ne pas la lancer pendant la répétition du 04/12, où la capture du terminal interroge déjà le BLS.
+La rafale prévue sur le PPI du 13/11 n'a pas été lancée, et le BLS ne publie rien d'autre à 08:30 avant le 04/12 (T-035). Ne pas la relancer pendant la répétition du 08/12 ni pendant la porte du 10/12 : la capture du terminal interroge alors déjà le BLS.
 
 ## 3. Sur trois jours : Tree of Alpha seul
 
@@ -61,9 +61,10 @@ Mesure le volume et le délai du flux gratuit de Tree of Alpha (T-021) avant tou
 python scripts/explore_bls.py archives --event cpi --count 36
 python scripts/explore_bls.py archives --event empsit --count 36
 python scripts/explore_bls.py archives --event ppi --count 36
+python scripts/explore_bls.py archives --event prod2 --count 12
 ```
 
-Une page toutes les 5 s, environ 3 minutes par commande. Lancées le même jour, les trois commandes remplissent le même dossier : l'archive produite par la dernière contient les trois. Ces 36 derniers mois de communiqués forment le corpus du parseur (verbes réels, publications irrégulières de 2025-2026).
+Une page toutes les 5 s, environ 3 minutes par commande. `prod2` (productivité et coûts, trimestriel, 12 publications soit 3 ans) sert à la répétition du 08/12. Lancées le même jour, les quatre commandes remplissent le même dossier : l'archive produite par la dernière contient les quatre. Ces 36 derniers mois de communiqués forment le corpus du parseur (verbes réels, publications irrégulières de 2025-2026).
 
 ## 5. Page de test des voix
 
@@ -81,7 +82,7 @@ La page ne fait aucune requête réseau.
 | Étape | Archive | Sert à |
 | --- | --- | --- |
 | 1 | `data/explore/bls/<date>_probe.zip`, `data/explore/news/<date>_rss.zip` | en-têtes, cache, formats réels des flux |
-| 2 | `data/explore/bls/<date>_burst_ppi.zip`, `data/explore/news/<date>_watch.zip` | délai réel de publication, comportement du cache, délai des fils d'actus |
+| 2 | `data/explore/bls/<date>_burst_empsit.zip`, `data/explore/news/<date>_watch.zip` | délai réel de publication, comportement du cache, délai des fils d'actus |
 | 3 | `data/explore/news/<date>_watch.zip` | volume et délai de Tree of Alpha |
 | 4 | `data/explore/bls/<date>_archives.zip` | corpus du parseur |
 | 5 | rapport JSON copié | choix des voix et normalisation des nombres pour le squawk |

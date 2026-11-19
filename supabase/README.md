@@ -130,6 +130,10 @@ select started_at, finished_at, ok, error, rows, okx_offset_ms, rtt_ms
 
 Côté Vercel, la fonction `/api/collector-health` lit le journal avec deux variables d'environnement, côté serveur uniquement : `SUPABASE_URL` (`https://<ref>.supabase.co`) et `SUPABASE_SECRET_KEY`, la clé secrète `sb_secret_…` (*Settings → API Keys*). Une ancienne clé `service_role` convient encore, mais Supabase retire les anciennes clés d'ici fin 2026 : prendre la `sb_secret_…`. Jamais la clé publiable : la RLS ne lui laisse rien lire. Tant que ces variables manquent, la route répond `configured: false`, avec la raison.
 
+## Module Bourse
+
+Le module Bourse (étape B0) ajoute sa migration, l'Edge Function `bourse-jobs` et le script de planification `cron-bourse.sql` au même projet. Mise en service pas à pas : `docs/bourse-mise-en-service.md`.
+
 ## Ce qui est stocké
 
 Horodatages en `timestamptz`, stockés en UTC. `ts_source` est l'heure OKX de la donnée, `ts_recv` l'heure de réception par la fonction.
