@@ -39,6 +39,8 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-032 | 19/11/2026 | Données du Trading Desk | Import unique des lignes du PEA et des liquidités ; l'artefact reste en lecture |
 | T-033 | 19/11/2026 | Écrans Bourse | Conçus directement avec le design system, sans maquette ; captures à 1 440 et 390 px |
 | T-034 | 19/11/2026 | Note de l'action | Percentiles descriptifs sur quatre axes, détail affiché, marquée « non testée » |
+| T-035 | 19/11/2026 | Calendrier P1 révisé | Rafale de mesure sur le rapport emploi du 04/12 ; répétition sur la productivité du 08/12 ; porte inchangée le 10/12 |
+| T-036 | 19/11/2026 | Plan Bourse | Plan révisé (`docs/plan-bourse.md`) validé par Clément ; B0 commence par son plan détaillé |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -360,3 +362,19 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 **Décision de Clément.** La note est descriptive et transparente : quatre axes (qualité, croissance, valorisation, solidité), chacun en percentile dans l'univers couvert, avec le détail des mesures affiché. Elle est marquée « non testée » : elle n'a été validée sur aucun historique et ne prédit rien.
 
 **Conséquences.** Aucune pondération cachée. Une mesure manquante se voit (« — » et la raison) et ne compte pas comme une note basse.
+
+## T-035 — Calendrier P1 révisé · 19/11/2026
+
+**Contexte.** La mesure en rafale prévue sur le PPI du 13/11 n'a pas été lancée. D'après le calendrier du BLS (relevé par recherche, bls.gov n'étant pas joignable depuis l'environnement de développement), aucune autre publication à 08:30 New York n'a lieu avant le rapport emploi du 04/12 ; la semaine du 23/11 est celle de Thanksgiving.
+
+**Décision de Clément.**
+
+- **Ven. 04/12, 14:30 Paris** : rapport emploi de novembre, mesure en rafale par `scripts/explore_bls.py` (mesure seule, aucun chiffre lu).
+- **Mar. 08/12, 14:30 Paris** : productivité et coûts du 3e trimestre (révisé), **répétition générale** de la capture complète, à la place du 04/12.
+- **Jeu. 10/12, 14:30 Paris** : CPI de novembre, **porte** inchangée (T-015).
+
+**Conséquences.** Deux jours seulement entre la répétition et la porte, sans autre publication du BLS entre les deux : les défauts vus le 08/12 se corrigent le 09/12. La capture et le script d'exploration savent lire le communiqué trimestriel de productivité (`prod2`, période « 2026-Q3 »). Les dates restent à confirmer sur le calendrier du BLS par la sonde du Mac.
+
+## T-036 — Plan Bourse validé · 19/11/2026
+
+**Décision de Clément.** Il valide le plan révisé du module Bourse (`docs/plan-bourse.md`, version du 19/11/2026, décisions T-027 à T-034). Comme pour chaque phase, B0 commence par un plan détaillé (`docs/plan-b0.md`), validé avant d'écrire du code.

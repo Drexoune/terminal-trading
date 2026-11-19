@@ -1,6 +1,6 @@
 # Plan « Bourse et patrimoine » — actions, analyse et portefeuille
 
-> **Version du 19/11/2026, décisions de Clément intégrées (T-027 à T-034, § 10). En attente de son accord avant d'écrire B0.** Rien n'est codé.
+> **Version du 19/11/2026, décisions de Clément intégrées (T-027 à T-034, § 10), validée le 19/11/2026 (T-036).** Chaque étape a son plan détaillé, validé avant d'écrire : B0 dans `docs/plan-b0.md`.
 
 Demande de Clément (18/11/2026) : screener mondial, données financières historiques, analyse business, transactions d'initiés, synthèses IA des rapports, calculateur DCF, rétrospectives de valorisation, avis communautaire sur X (Grok), suivi de portefeuille complet (TWR, MWR, TRI), import .xlsx puis actualisation quotidienne, multi-enveloppes (PEA, CTO, assurance-vie, comptes d'espèces), allocation et risques, dividendes, benchmarks, super-investisseurs, calendrier boursier, transcripts, watchlists. LLM : Gemini (clé gratuite, dans Vercel) ; avis X : API Grok (clé dans Vercel). Reprendre des morceaux du Trading Desk pour le portefeuille.
 

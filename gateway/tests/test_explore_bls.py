@@ -181,3 +181,17 @@ def test_describe_reads_title_period_and_embargo():
 def test_release_time_is_new_york_time_across_dst():
     assert bls.parse_release_time("2026-11-13 08:30") == 1794576600       # 13:30 UTC (EST)
     assert bls.parse_release_time("2026-10-15 08:30") == 1792067400       # 12:30 UTC (EDT)
+
+
+def test_describe_reads_quarterly_period():
+    page = PAGE.replace("Producer Price Index News Release summary - {y} M{m} Results",
+                        "Productivity and Costs summary - {y} Q{m} Results")
+    d = bls.describe(page.format(y=2026, m="03", day="Tuesday, December 8, 2026",
+                                 verb="increased").encode())
+    assert d["period"] == "2026-Q3"
+    assert d["embargo"] == "8:30 a.m. (ET) Tuesday, December 8, 2026"
+
+
+def test_prod2_is_known_for_burst_and_archives():
+    assert "prod2" in bls.EVENTS and "prod2" in bls.ARCHIVE_INDEX
+    assert bls.EVENTS["prod2"]["primary"].endswith("/news.release/prod2.nr0.htm")

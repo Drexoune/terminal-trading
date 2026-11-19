@@ -1,6 +1,6 @@
 # Plan P1 — Calendrier et actus
 
-> **Proposé le 27/10/2026, révisé le 11/11/2026 avec les décisions de Clément (T-015 à T-025, `docs/decisions.md`), validé le 11/11/2026 (T-026).**
+> **Proposé le 27/10/2026, révisé le 11/11/2026 avec les décisions de Clément (T-015 à T-025, `docs/decisions.md`), validé le 11/11/2026 (T-026). Calendrier d'ici la porte révisé le 19/11/2026 (T-035).**
 
 Sources de ce plan : `docs/plan.md`, `docs/ecrans.md` (§ 1 à 3), les maquettes `Calendrier`, `Actus` et `Main`, le code de P0, et une recherche documentaire contre-vérifiée (docs officielles, dépôts publics qui consomment ces sources). Depuis l'environnement de développement, seul le flux ForexFactory est joignable (relevé en réel les 26 et 27/10/2026). Le BLS, Tree of Alpha et les banques centrales ne le sont pas : leurs formats viennent de vraies captures publiées sur GitHub, et tout ce qui est marqué « à mesurer » le sera par des scripts d'exploration lancés sur le Mac (étape E0, T-024).
 
@@ -9,7 +9,7 @@ Sources de ce plan : `docs/plan.md`, `docs/ecrans.md` (§ 1 à 3), les maquettes
 | Module | Contenu | Écran |
 | --- | --- | --- |
 | Calendrier | agenda de la semaine, prévision ForexFactory, heure officielle, chiffre réel capté à la source, surprise, fiche indicateur, réaction du BTC | `/calendrier` (`USD ECO`), panneau « Prochains événements » de la Vue d'ensemble |
-| Capture à l'heure H | CPI, rapport sur l'emploi (NFP, chômage, salaire horaire) et PPI lus sur bls.gov à 08:30 New York | ligne du calendrier, bandeau, squawk, alerte |
+| Capture à l'heure H | CPI, rapport sur l'emploi (NFP, chômage, salaire horaire) et PPI lus sur bls.gov à 08:30 New York ; productivité et coûts (productivité, coûts salariaux unitaires) pour la répétition du 08/12 (T-035) | ligne du calendrier, bandeau, squawk, alerte |
 | Fil d'actus | banques centrales, macro, crypto ; titres dans leur langue d'origine, marqués « VO » (T-019) | `/actus` (`TOP`), panneau « Titres urgents » |
 | Squawk | annonce vocale des chiffres captés, des décisions de banque centrale et des titres urgents | bouton de la barre du haut |
 | Alertes | prix et funding OKX, publication, seuil de surprise, T−5 min, mots-clés | cloche de la barre du haut, panneau « Alertes actives », écran `/alertes`, Telegram (T-020) |
@@ -34,9 +34,10 @@ Pourquoi pas « moins d'une seconde depuis 08:30:00 » : le BLS bloque en temps 
 
 | Date | Publication | Usage |
 | --- | --- | --- |
-| ven. 13/11, 14:30 | PPI d'octobre | première mesure réelle : script d'exploration en rafale, sans lecture des chiffres |
+| ven. 13/11, 14:30 | PPI d'octobre | mesure en rafale prévue, non lancée ; aucune autre publication du BLS à 08:30 avant le 04/12 |
 | jeudis 19/11 et 03/12, 14:30 ; mer. 25/11 (Thanksgiving) | inscriptions au chômage (DOL) | mesures de délai, facultatives |
-| ven. 04/12, 14:30 | rapport sur l'emploi de novembre | **répétition générale** de la capture complète |
+| ven. 04/12, 14:30 | rapport sur l'emploi de novembre | première mesure réelle : script d'exploration en rafale, sans lecture des chiffres (T-035) |
+| mar. 08/12, 14:30 | productivité et coûts, 3e trimestre révisé | **répétition générale** de la capture complète (T-035) |
 | jeu. 10/12, 14:30 | CPI de novembre | **porte** |
 | mar. 15/12, 14:30 | PPI de novembre | après le 11/12, fin du financement fédéral : publication à risque |
 
@@ -202,16 +203,16 @@ Une étape à la fois, chacune vérifiée avant la suivante.
 
 | Étape | Contenu | Vérification |
 | --- | --- | --- |
-| E0 | Scripts d'exploration lancés sur le Mac (T-024) : ForexFactory, sonde BLS et calendrier, **rafale sur le PPI du 13/11** (mesure seule), communiqués archivés, Tree of Alpha sur quelques jours, flux RSS, FinancialJuice, page de test des voix. Les réponses deviennent les fichiers de référence des tests. | fichiers reçus et relus |
+| E0 | Scripts d'exploration lancés sur le Mac (T-024) : ForexFactory, sonde BLS et calendrier, **rafale sur le rapport emploi du 04/12** (mesure seule, T-035), communiqués archivés, Tree of Alpha sur quelques jours, flux RSS, FinancialJuice, page de test des voix. Les réponses deviennent les fichiers de référence des tests. | fichiers reçus et relus |
 | E1 | Socle de la passerelle : services multiples, Bus, SQLite, configuration ; côté front, préfixes et fraîcheur par source | tests Python et Vitest |
 | E2 | Calendrier sans capture : ForexFactory, calendrier BLS, tables, API, écran Calendrier, panneau « Prochains événements » | géométrie ±2 px, tests de fuseau |
-| E3 | Capture BLS, surprise, mesures de délai, maintien du Mac éveillé ; test Playwright déterministe (la fausse passerelle publie un chiffre à T+5 s, affichage en moins d'1 s) | **répétition réelle sur le rapport emploi du 04/12** |
+| E3 | Capture BLS, surprise, mesures de délai, maintien du Mac éveillé ; test Playwright déterministe (la fausse passerelle publie un chiffre à T+5 s, affichage en moins d'1 s) | **répétition réelle sur la productivité du 08/12** (T-035) |
 | E4 | Squawk et alertes : cloche, son, notifications, Telegram, écran `/alertes`, panneau « Alertes actives » | essais sur le Mac et le téléphone |
 | E5 | **Porte** : CPI du 10/12 à 14:30 Paris, en Mode Local | délais enregistrés et affichés |
 | E6 | Fil d'actus : RSS, Tree of Alpha, FinancialJuice, catégories, doublons ; écran Actus, panneau « Titres urgents » | géométrie, captures réelles rejouées |
 | E7 | Mode Online : Edge Function `ff-calendar`, `/api/calendar`, panneaux « — » avec raison | contrats des fonctions, essai en ligne |
 
-E0 à E4 doivent tenir avant le 04/12. Le fil d'actus (E6) et le Mode Online (E7) viennent après la porte, qui ne dépend que de la capture, de l'affichage et de l'alerte. Si le temps le permet, E6 passe avant la porte : le chiffre provisoire tiré de FinancialJuice (T-022) en dépend.
+E1 à E4 doivent tenir avant la répétition du 08/12 ; la rafale du 04/12 et les communiqués archivés (E0) les nourrissent, sans les attendre pour commencer. Le fil d'actus (E6) et le Mode Online (E7) viennent après la porte, qui ne dépend que de la capture, de l'affichage et de l'alerte. Si le temps le permet, E6 passe avant la porte : le chiffre provisoire tiré de FinancialJuice (T-022) en dépend.
 
 ## 14. Tests prioritaires
 
@@ -229,10 +230,11 @@ E0 à E4 doivent tenir avant le 04/12. Le fil d'actus (E6) et le Mode Online (E7
 
 | Quand | Quoi |
 | --- | --- |
-| avant le 13/11 | lancer sur le Mac les premiers scripts d'exploration (je les écris en E0), dont la rafale sur le PPI du vendredi 13/11 à 14:30 ; Mac allumé et éveillé |
+| dès que possible | lancer sur le Mac les étapes 1, 3, 4 et 5 de `docs/exploration-p1.md` (sonde, flux, Tree of Alpha, communiqués archivés, voix) |
+| ven. 04/12, avant 14:20 | rafale sur le rapport emploi (`docs/exploration-p1.md` § 2) ; Mac allumé et éveillé |
 | avant E3 | créer l'adresse e-mail dédiée et la mettre dans le `.env` du Mac (`BLS_CONTACT_EMAIL`) |
 | avant E4 | créer le bot Telegram avec @BotFather, mettre `TELEGRAM_BOT_TOKEN` et `TELEGRAM_CHAT_ID` dans le `.env` du Mac |
-| 04/12 et 10/12, 14:15 | Mac allumé, passerelle lancée, terminal ouvert en Mode Local |
+| 08/12 et 10/12, 14:15 | Mac allumé, passerelle lancée, terminal ouvert en Mode Local |
 
 ## 16. Décisions prises (11/11/2026)
 
