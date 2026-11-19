@@ -1,0 +1,13 @@
+{
+  "//": "Lu par Vercel (@vercel/node) pour compiler api/*.ts : sans lui, les unions discriminées ne se resserrent pas et chaque build affiche de fausses erreurs TS. La vérification de types du dépôt reste celle de web/ (tsc -b).",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "lib": ["ES2023", "DOM", "DOM.Iterable"]
+  },
+  "include": ["*.ts", "_lib/**/*.ts"]
+}

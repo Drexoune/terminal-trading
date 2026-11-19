@@ -11,7 +11,8 @@
 -- appelle l'Edge Function en POST avec l'en-tête x-collector-secret. Les deux
 -- valeurs sont gardées chiffrées dans Vault et relues à chaque appel.
 
--- 1. Secrets dans Vault (créés, ou mis à jour si le script est rejoué).
+-- Un seul bloc : si les valeurs d'exemple sont encore là, rien n'est créé,
+-- ni secret ni tâche, même si l'éditeur exécute les instructions une à une.
 do $$
 declare
   v_project_url      text := 'https://VOTRE-REF.supabase.co';  -- à remplacer : URL du projet
@@ -25,6 +26,8 @@ begin
   if length(v_collector_secret) < 32 then
     raise exception 'le secret d''appel doit faire 32 caractères au moins (openssl rand -hex 32)';
   end if;
+
+  -- 1. Secrets dans Vault (créés, ou mis à jour si le script est rejoué).
   foreach v_name in array array['project_url', 'collector_secret'] loop
     v_value := case v_name when 'project_url' then rtrim(v_project_url, '/') else v_collector_secret end;
     if exists (select 1 from vault.secrets where name = v_name) then
@@ -33,26 +36,27 @@ begin
       perform vault.create_secret(v_value, v_name);
     end if;
   end loop;
-end $$;
 
--- 2. Appel chaque minute. Une tâche de même nom est remplacée, jamais dupliquée.
---    Délai de 20 s : un passage normal dure moins de 2 s (10 requêtes OKX).
-select cron.schedule(
-  'okx-collector-every-minute',
-  '* * * * *',
-  $$
-  select net.http_post(
-    url := (select decrypted_secret from vault.decrypted_secrets where name = 'project_url')
-           || '/functions/v1/okx-collector',
-    headers := jsonb_build_object(
-      'Content-Type', 'application/json',
-      'x-collector-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'collector_secret')
-    ),
-    body := '{}'::jsonb,
-    timeout_milliseconds := 20000
-  ) as request_id;
-  $$
-);
+  -- 2. Appel chaque minute. Une tâche de même nom est remplacée, jamais dupliquée.
+  --    Délai de 20 s : un passage normal dure moins de 2 s (10 requêtes OKX) ;
+  --    le défaut de pg_net est de 2 s.
+  perform cron.schedule(
+    'okx-collector-every-minute',
+    '* * * * *',
+    $job$
+    select net.http_post(
+      url := (select decrypted_secret from vault.decrypted_secrets where name = 'project_url')
+             || '/functions/v1/okx-collector',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'x-collector-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'collector_secret')
+      ),
+      body := '{}'::jsonb,
+      timeout_milliseconds := 20000
+    ) as request_id;
+    $job$
+  );
+end $$;
 
 -- Vérifier (quelques minutes après) :
 --   La tâche existe et est active :
@@ -64,7 +68,7 @@ select cron.schedule(
 --      order by start_time desc limit 10;
 --   Réponse de la fonction (200 = passage ok, 401 = secret différent de
 --   COLLECTOR_SECRET, 500 = erreur détaillée dans content) ; pg_net garde ces
---   réponses quelques heures :
+--   réponses 6 heures :
 --     select id, status_code, content, error_msg, created from net._http_response
 --      order by created desc limit 10;
 --   Journal du collecteur :
@@ -73,4 +77,4 @@ select cron.schedule(
 --
 -- Arrêter le collecteur (les données restent, la rétention continue) :
 --     select cron.unschedule('okx-collector-every-minute');
--- Le relancer : réexécuter l'étape 2.
+-- Le relancer : réexécuter ce script en entier.

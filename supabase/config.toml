@@ -1,7 +1,6 @@
 # Configuration de la CLI Supabase pour le Mode Online (voir supabase/README.md).
 # Volontairement réduite : la CLI complète les sections absentes par ses valeurs
-# par défaut (à vérifier au déploiement avec « supabase link » et
-# « supabase functions deploy »).
+# par défaut (vérifié avec la CLI 2.121 : link, db push, functions deploy).
 project_id = "terminal-trading"
 
 [functions.okx-collector]

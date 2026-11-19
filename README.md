@@ -16,7 +16,7 @@ Le mode dit où tourne le moteur de données. Il se choisit **sur chaque apparei
 
 ## Lancer en local
 
-Prérequis : Python ≥ 3.11 et Node.js ≥ 22.
+Prérequis : Python ≥ 3.11 et Node.js ≥ 22.13 (≥ 22.21 derrière un proxy).
 
 ```bash
 python -m venv .venv
