@@ -1,8 +1,10 @@
 // @vitest-environment node
 /// <reference types="node" />
-// Relevés du module Bourse : lecture des réponses (BCE réelle du 19/11/2026,
-// formes documentées pour Massive, Alpha Vantage et la SEC), passages complets
-// sur base simulée, budget Alpha Vantage, journal, concordance avec la migration.
+// Relevés du module Bourse : lecture des réponses réelles (BCE du 19/11/2026 ;
+// Massive, Alpha Vantage et SEC relevées par la tâche explore le 20/11/2026,
+// depuis Supabase), passages complets sur base simulée, budget Alpha Vantage,
+// journal, concordance avec la migration. Les cas limites (clôture nulle,
+// lignes invalides) sont ajoutés aux réponses réelles dans les tests.
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { Db, FetchLike, ResponseLike, Row } from '../okx-collector/postgrest.ts';
@@ -14,14 +16,16 @@ import { decimalText, parseAlphaDaily, parseCsv, parseEcbCsv, parseMassiveGroupe
 
 const read = (rel: string) => readFileSync(new URL(rel, import.meta.url), 'utf-8');
 const ECB = read('./fixtures/ecb-exr-2026-11-19.csv');
-const MASSIVE = JSON.parse(read('./fixtures/massive-grouped.documented.json'));
-const ALPHA = JSON.parse(read('./fixtures/alpha-daily-CW8.PAR.documented.json'));
+const MASSIVE = JSON.parse(read('./fixtures/massive-grouped-2026-11-19.json'));
+const ALPHA = JSON.parse(read('./fixtures/alpha-daily-CW8.PAR-2026-11-19.json'));
 const ALPHA_QUOTA = JSON.parse(read('./fixtures/alpha-quota.documented.json'));
-const SEC = JSON.parse(read('./fixtures/sec-tickers-exchange.documented.json'));
+const SEC = JSON.parse(read('./fixtures/sec-tickers-exchange-2026-11-18.json'));
 const MIGRATION = read('../../migrations/20261119120000_bourse_b0.sql');
 
 // Jeudi 19/11/2026 06:30 UTC.
 const NOW = Date.parse('2026-11-19T06:30:00Z');
+// Vendredi 20/11/2026 06:15 UTC : relevé US de la séance du 19/11 (celle de la réponse Massive).
+const NOW_US = Date.parse('2026-11-20T06:15:00Z');
 
 function response(status: number, body: unknown): ResponseLike {
   return { ok: status >= 200 && status < 300, status, text: async () => (typeof body === 'string' ? body : JSON.stringify(body)) };
@@ -43,7 +47,7 @@ class MemoryDb implements Db {
 }
 
 const LISTINGS: Row[] = [
-  { id: 1, source_symbol: 'AAPL', currency: 'USD', price_source: 'massive' },
+  { id: 1, source_symbol: 'YPF', currency: 'USD', price_source: 'massive' },
   { id: 2, source_symbol: 'NVDA', currency: 'USD', price_source: 'massive' },
   { id: 3, source_symbol: 'CW8.PAR', currency: 'EUR', price_source: 'alphavantage' },
   { id: 4, source_symbol: 'ESE.PAR', currency: 'EUR', price_source: 'alphavantage' },
@@ -97,33 +101,54 @@ describe('lecture des réponses', () => {
     for (const bad of ['0.0000', '-1', 'abc', '', null, Number.NaN, '1,5']) expect(decimalText(bad)).toBeNull();
   });
 
-  it('Massive : clôtures par symbole, ligne sans clôture écartée', () => {
+  it('Massive réelle : statut DELAYED accepté, clôtures par symbole', () => {
+    expect(MASSIVE.status).toBe('DELAYED');
     const { closes, count } = parseMassiveGrouped(MASSIVE);
-    expect(count).toBe(3);
-    expect(closes.get('AAPL')).toEqual({ symbol: 'AAPL', close: '229.31', source_ts: '2026-11-18T05:00:00.000Z' });
+    expect(count).toBe(20);
+    expect(closes.size).toBe(20);
+    expect(closes.get('YPF')).toEqual({ symbol: 'YPF', close: '33.28', source_ts: '2026-11-19T21:00:00.000Z' });
+    expect(closes.get('POMG')?.close).toBe('26.1537');
+  });
+
+  it('Massive : ligne sans clôture écartée, erreur reconnue', () => {
+    const withBad = { ...MASSIVE, results: [...MASSIVE.results, { T: 'BAD', v: 1, o: 1, c: null, h: 1, l: 1, t: 1795122000000 }] };
+    const { closes, count } = parseMassiveGrouped(withBad);
+    expect(count).toBe(21);
     expect(closes.has('BAD')).toBe(false);
     expect(() => parseMassiveGrouped({ status: 'ERROR', error: 'Unknown API Key' })).toThrow(/Unknown API Key/);
   });
 
-  it('Alpha Vantage : série triée, clôture nulle écartée ; quota et erreur reconnus', () => {
+  it('Alpha Vantage réelle : série triée ; clôture nulle écartée ; quota et erreur reconnus', () => {
     const r = parseAlphaDaily(ALPHA);
     expect(r.kind).toBe('series');
     if (r.kind !== 'series') return;
-    expect(r.rows).toEqual([
-      { value_date: '2026-11-17', close: '611.8000' },
-      { value_date: '2026-11-18', close: '614.2500' },
-    ]);
-    expect(r.refreshed).toBe('2026-11-18');
+    expect(r.rows.map((x) => x.value_date)).toEqual(['2026-07-03', '2026-11-13', '2026-11-16', '2026-11-17', '2026-11-18', '2026-11-19']);
+    expect(r.rows.at(-1)).toEqual({ value_date: '2026-11-19', close: '688.7200' });
+    expect(r.refreshed).toBe('2026-11-19');
+    expect(r.timezone).toBe('US/Eastern');
+    const series = { ...ALPHA['Time Series (Daily)'], '2026-11-16': { ...ALPHA['Time Series (Daily)']['2026-11-16'], '4. close': '0.0000' } };
+    const zero = parseAlphaDaily({ ...ALPHA, 'Time Series (Daily)': series });
+    expect(zero.kind === 'series' && zero.rows.map((x) => x.value_date)).not.toContain('2026-11-16');
     expect(parseAlphaDaily(ALPHA_QUOTA).kind).toBe('quota');
     expect(parseAlphaDaily({ Note: 'Thank you for using Alpha Vantage!' }).kind).toBe('quota');
     expect(parseAlphaDaily({ 'Error Message': 'Invalid API call.' })).toEqual({ kind: 'error', message: 'Invalid API call.' });
     expect(parseAlphaDaily({}).kind).toBe('error');
   });
 
-  it('SEC : doublons et lignes invalides écartés', () => {
+  it('SEC réelle : « data » avant « fields », place OTC gardée', () => {
+    expect(Object.keys(SEC).filter((k) => k !== '_doc')).toEqual(['data', 'fields']);
     const { companies, skipped } = parseSecTickers(SEC);
-    expect(companies.map((c) => c.ticker)).toEqual(['AAPL', 'MSFT', 'BRK-B', 'BRK-A', 'OTCX']);
+    expect(skipped).toBe(0);
+    expect(companies).toHaveLength(48);
+    expect(companies[0]).toEqual({ cik: 320193, ticker: 'AAPL', name: 'Apple Inc.', exchange: 'Nasdaq' });
+    expect(companies.at(-1)).toEqual({ cik: 2163910, ticker: 'MZTFF', name: 'Mizrahi Tefahot Bank Ltd/ADR', exchange: 'OTC' });
+  });
+
+  it('SEC : doublons et lignes invalides écartés, place absente gardée à null', () => {
+    const data = [...SEC.data, SEC.data[0], ['x', 'Ligne invalide', 'BAD', null], [12345, 'Hors cote', 'OTCX', null]];
+    const { companies, skipped } = parseSecTickers({ ...SEC, data });
     expect(skipped).toBe(2);
+    expect(companies).toHaveLength(49);
     expect(companies.at(-1)).toEqual({ cik: 12345, ticker: 'OTCX', name: 'Hors cote', exchange: null });
   });
 });
@@ -171,14 +196,14 @@ describe('ecb-fx', () => {
 describe('us-close', () => {
   it('garde les cotations suivies, signale celles sans clôture, clé en en-tête', async () => {
     const seen: { url: string; headers: Record<string, string> }[] = [];
-    const d = deps({ fetch: async (url, init) => { seen.push({ url, headers: init?.headers ?? {} }); return response(200, MASSIVE); } });
+    const d = deps({ now: () => NOW_US, fetch: async (url, init) => { seen.push({ url, headers: init?.headers ?? {} }); return response(200, MASSIVE); } });
     const r = await runJob('us-close', d);
-    expect(seen).toEqual([{ url: `${MASSIVE_BASE}/v2/aggs/grouped/locale/us/market/stocks/2026-11-18?adjusted=false`,
+    expect(seen).toEqual([{ url: `${MASSIVE_BASE}/v2/aggs/grouped/locale/us/market/stocks/2026-11-19?adjusted=false`,
       headers: { Authorization: 'Bearer massive-key-123' } }]);
-    expect(r).toMatchObject({ ok: true, rows: 1, note: 'sans clôture le 2026-11-18 : NVDA' });
+    expect(r).toMatchObject({ ok: true, rows: 1, note: 'sans clôture le 2026-11-19 : NVDA' });
     const price = (d.db as MemoryDb).rows('prices')[0];
-    expect(price).toEqual({ listing_id: 1, value_date: '2026-11-18', close: '229.31', adj_close: null, currency: 'USD',
-      source: 'Massive', source_ts: '2026-11-18T05:00:00.000Z', received_at: '2026-11-19T06:30:00.000Z' });
+    expect(price).toEqual({ listing_id: 1, value_date: '2026-11-19', close: '33.28', adj_close: null, currency: 'USD',
+      source: 'Massive', source_ts: '2026-11-19T21:00:00.000Z', received_at: '2026-11-20T06:15:00.000Z' });
     expect(Object.keys(price).sort()).toEqual(migrationColumns('prices').sort());
   });
 
@@ -213,11 +238,11 @@ describe('eu-close', () => {
     expect(urls[0].startsWith(`${ALPHA_URL}?function=TIME_SERIES_DAILY&symbol=CW8.PAR&outputsize=compact&apikey=`)).toBe(true);
     expect(d.quota).toEqual([20, 20, 20]);
     expect(d.slept).toEqual([2000]);
-    expect(r).toMatchObject({ ok: true, rows: 4, requests: 2, note: 'quota atteint' });
+    expect(r).toMatchObject({ ok: true, rows: 12, requests: 2, note: 'quota atteint' });
     const rows = (d.db as MemoryDb).rows('prices');
-    expect(rows.map((p) => [p.listing_id, p.value_date, p.close])).toEqual([
-      [3, '2026-11-17', '611.8000'], [3, '2026-11-18', '614.2500'],
-      [4, '2026-11-17', '611.8000'], [4, '2026-11-18', '614.2500'],
+    expect(rows.map((p) => p.listing_id)).toEqual([3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4]);
+    expect(rows.filter((p) => p.value_date === '2026-11-19').map((p) => [p.listing_id, p.close])).toEqual([
+      [3, '688.7200'], [4, '688.7200'],
     ]);
   });
 
@@ -268,7 +293,7 @@ describe('ref-sec', () => {
     const d = deps({ fetch: async (url, init) => { expect(url).toBe(SEC_TICKERS_URL); seen.push(init?.headers ?? {}); return response(200, SEC); } });
     const r = await runJob('ref-sec', d);
     expect(seen[0]['User-Agent']).toBe('terminal-trading/0.1 (terminal@exemple.org)');
-    expect(r).toMatchObject({ ok: true, rows: 5, note: '2 ligne(s) écartée(s)' });
+    expect(r).toMatchObject({ ok: true, rows: 48, note: null });
     const row = (d.db as MemoryDb).rows('sec_companies')[0];
     expect(Object.keys(row).sort()).toEqual(migrationColumns('sec_companies').sort());
   });
@@ -288,5 +313,16 @@ describe('explore', () => {
     expect(JSON.stringify(report)).not.toMatch(/alpha-key-456|massive-key-123|tiingo-key-789/);
     expect(report.find((p) => p.name === 'alpha-daily')!.body).toContain('apikey=***');
     expect((d.db as MemoryDb).writes).toEqual([]);
+  });
+
+  it('réponse longue : début et fin renvoyés, clés masquées dans les deux', async () => {
+    const long = `{"results":[${'1,'.repeat(2_000)}1],"status":"OK","key":"massive-key-123"}`;
+    const d = deps({ fetch: async () => response(200, long) });
+    const report = (await runJob('explore', d)).report as { name: string; body?: string; tail?: string }[];
+    const m = report.find((p) => p.name === 'massive-grouped')!;
+    expect(m.body).toHaveLength(1_500);
+    expect(m.tail).toMatch(/"status":"OK","key":"\*\*\*"}$/);
+    expect(m.tail!.length).toBeLessThanOrEqual(800);
+    expect(report.find((p) => p.name === 'openfigi')!.tail).toBeDefined();
   });
 });

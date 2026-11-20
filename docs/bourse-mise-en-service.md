@@ -89,7 +89,7 @@ printf 'x-jobs-secret: %s\n' "$BOURSE_JOBS_SECRET" \
 
 La tâche interroge une fois la BCE, la SEC, Massive, Alpha Vantage (une requête du quota), Tiingo et OpenFIGI, **depuis Supabase**, c'est-à-dire depuis l'adresse IP qui fera les relevés. Elle n'écrit rien en base. Les clés sont masquées dans `explore.json`.
 
-**Renvoyer `explore.json` dans la conversation** : ces réponses réelles remplacent les fixtures « documentées » des tests (`supabase/functions/bourse-jobs/fixtures/*.documented.json`).
+Chaque réponse arrive avec son début (`body`) et, si elle est longue, sa fin (`tail`). Les fichiers de référence des tests en ont été tirés le 20/11/2026 (`docs/plan-b0.md` § 10). Relancer `explore` sert ensuite à vérifier qu'une source n'a pas changé de format.
 
 Puis, pour remplir la base sans attendre la nuit :
 

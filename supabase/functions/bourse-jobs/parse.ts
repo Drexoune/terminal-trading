@@ -1,8 +1,8 @@
 // Lecture des réponses des sources du module Bourse (étape B0). Fonctions
 // pures, sans dépendance, testées par Vitest sur des réponses réelles
-// (fixtures/*-2026-11-19.*) ou, quand la source exige une clé ou une adresse
-// de contact, sur la forme documentée (fixtures/*.documented.json) en
-// attendant la réponse réelle de la tâche « explore » (docs/plan-b0.md, B0.1).
+// (fixtures/*-2026-11-*.*, relevées par la tâche « explore » depuis Supabase
+// le 20/11/2026). Seul le message de quota d'Alpha Vantage reste sous sa forme
+// documentée (fixtures/alpha-quota.documented.json) : jamais encore reçu.
 //
 // Règle commune : une valeur illisible est écartée et comptée, jamais
 // remplacée par une valeur inventée. Les cours restent en texte décimal
@@ -82,9 +82,12 @@ export function parseEcbCsv(text: string): { rates: FxRate[]; skipped: number } 
 export interface DailyClose { symbol: string; close: string; source_ts: string | null }
 
 /**
- * GET /v2/aggs/grouped/locale/us/market/stocks/{date} : {status, resultsCount,
- * results: [{T, o, h, l, c, v, vw, t, n}]} ; t = début de la journée en ms.
- * Forme documentée, à confirmer par la tâche « explore ».
+ * GET /v2/aggs/grouped/locale/us/market/stocks/{date} : {queryCount, resultsCount,
+ * adjusted, results: [{T, o, h, l, c, v, vw, t, n}], status, request_id, count}.
+ * Réponse réelle du 20/11/2026 : status « DELAYED » sur l'offre gratuite (« OK »
+ * sinon) ; t = fin de séance en ms (16:00 à New York), pas le début du jour ;
+ * v peut s'écrire en notation exponentielle ; la liste contient des titres de
+ * test (ZTEST, ZZZTS…), sans effet puisque seules les cotations suivies sont gardées.
  */
 export function parseMassiveGrouped(body: unknown): { closes: Map<string, DailyClose>; count: number } {
   const b = (body ?? {}) as { status?: unknown; results?: unknown; error?: unknown; message?: unknown };
@@ -143,7 +146,11 @@ export function parseAlphaDaily(body: unknown): AlphaResult {
 
 export interface SecCompany { cik: number; ticker: string; name: string; exchange: string | null }
 
-/** company_tickers_exchange.json : {"fields": ["cik","name","ticker","exchange"], "data": [[…]]}. */
+/**
+ * company_tickers_exchange.json : {"data": [[cik, name, ticker, exchange]…], "fields":
+ * ["cik","name","ticker","exchange"]} (réponse réelle : « data » d'abord, « fields »
+ * à la fin ; places Nasdaq, NYSE, OTC…). Les colonnes sont lues par leur nom.
+ */
 export function parseSecTickers(body: unknown): { companies: SecCompany[]; skipped: number } {
   const b = (body ?? {}) as { fields?: unknown; data?: unknown };
   if (!Array.isArray(b.fields) || !Array.isArray(b.data)) throw new Error('SEC : champs « fields » et « data » attendus');

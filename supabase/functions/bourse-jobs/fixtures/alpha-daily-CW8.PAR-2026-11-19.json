@@ -1,0 +1,54 @@
+{
+    "_doc": "Réponse réelle d'Alpha Vantage (TIME_SERIES_DAILY, CW8.PAR, compact) du Fri, 20 Nov 2026 14:36:43 GMT (tâche explore, depuis Supabase). Extrait : les 5 jours les plus récents et le plus ancien des 100.",
+    "Meta Data": {
+        "1. Information": "Daily Prices (open, high, low, close) and Volumes",
+        "2. Symbol": "CW8.PAR",
+        "3. Last Refreshed": "2026-11-19",
+        "4. Output Size": "Compact",
+        "5. Time Zone": "US/Eastern"
+    },
+    "Time Series (Daily)": {
+        "2026-11-19": {
+            "1. open": "697.3000",
+            "2. high": "697.9900",
+            "3. low": "686.6500",
+            "4. close": "688.7200",
+            "5. volume": "4668"
+        },
+        "2026-11-18": {
+            "1. open": "696.9900",
+            "2. high": "698.6200",
+            "3. low": "689.2700",
+            "4. close": "691.1100",
+            "5. volume": "6772"
+        },
+        "2026-11-17": {
+            "1. open": "699.7100",
+            "2. high": "702.0500",
+            "3. low": "689.0000",
+            "4. close": "691.2400",
+            "5. volume": "7072"
+        },
+        "2026-11-16": {
+            "1. open": "709.9900",
+            "2. high": "710.9400",
+            "3. low": "703.9000",
+            "4. close": "706.3900",
+            "5. volume": "5744"
+        },
+        "2026-11-13": {
+            "1. open": "711.5000",
+            "2. high": "716.2000",
+            "3. low": "705.9100",
+            "4. close": "708.8000",
+            "5. volume": "5585"
+        },
+        "2026-07-03": {
+            "1. open": "683.9100",
+            "2. high": "684.8800",
+            "3. low": "682.2300",
+            "4. close": "684.5200",
+            "5. volume": "4581"
+        }
+    }
+}
