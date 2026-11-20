@@ -99,3 +99,6 @@ La page ne fait aucune requête réseau.
   - L'index du rapport emploi publie déjà le lien du 04/12 (`empsit_12042026.htm`), qui répond 404 avant la publication.
 - **Tree of Alpha** : écoute lancée le 20/11 à 16:01 pour 3 jours. Le Python de python.org n'a pas de magasin de certificats : sans `SSL_CERT_FILE` pointant vers `certifi`, la connexion `wss://` échoue (`CERTIFICATE_VERIFY_FAILED`). Le script s'en chargera lui-même en E1.
 - **Encore à faire** : la rafale du 04/12 et la page de test des voix (§ 5).
+- **ForexFactory, relevé du 20/11/2026** : les heures du XML (`ff_calendar_thisweek.xml`) sont en **UTC**, et non en heure de New York. Les 126 événements concordent avec le JSON, qui porte un décalage explicite (« 2026-11-15T16:30:00-05:00 » = « 9:30pm » dans le XML). L'identifiant de série est la fin du lien (« 112-us-core-retail-sales-mm »). `ETag` et `Last-Modified` sont présents ; le fichier est régénéré vers hh:42. Le XML suffit : une seule requête conditionnelle par heure.
+- **Calendrier du BLS (`bls.ics`)** : 313 publications, toutes en `TZID=US-Eastern`, traduit en `America/New_York`.
+

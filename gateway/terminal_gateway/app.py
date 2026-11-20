@@ -120,6 +120,19 @@ def create_app(settings: Settings, service: OkxService | None = None,
             log.warning("graphique %s %s indisponible : %s", inst, range, exc)
             raise HTTPException(502, f"OKX indisponible : {exc}") from exc
 
+    @app.get("/api/calendar")
+    async def calendar(week: str | None = None) -> dict:
+        svc = next((s for s in services if getattr(s, "name", None) == "calendar"), None)
+        if svc is None:
+            raise HTTPException(503, "service calendar non activé (GATEWAY_SERVICES)")
+        target = week or svc.current_week()
+        if target is None:
+            raise HTTPException(503, "agenda pas encore relevé")
+        try:
+            return await svc.week(target)
+        except ValueError as exc:
+            raise HTTPException(400, str(exc)) from exc
+
     @app.websocket("/ws")
     async def ws_endpoint(ws: WebSocket) -> None:
         origin = ws.headers.get("origin")

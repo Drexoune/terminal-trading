@@ -153,8 +153,8 @@ def test_secrets_stay_out_of_repr(tmp_path):
 
 
 def test_planned_services_are_refused_until_their_step(tmp_path):
-    with pytest.raises(ValueError, match="arrive en E2"):
-        build_services(make_settings(tmp_path, services=("okx", "calendar")), Bus(), None)
+    with pytest.raises(ValueError, match="arrive en E3"):
+        build_services(make_settings(tmp_path, services=("okx", "release")), Bus(), None)
 
 
 # --- passerelle multi-services ------------------------------------------------------

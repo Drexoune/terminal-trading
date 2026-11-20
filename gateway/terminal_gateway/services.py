@@ -27,7 +27,7 @@ class Service(Protocol):
 
 
 # Étape de P1 où chaque service arrive (docs/plan-p1.md § 13).
-PLANNED = {"calendar": "E2", "release": "E3", "news": "E6", "alert": "E4"}
+PLANNED = {"release": "E3", "news": "E6", "alert": "E4"}
 
 
 def build_services(settings: Settings, bus: Bus, storage: Storage | None) -> list[Service]:
@@ -37,6 +37,11 @@ def build_services(settings: Settings, bus: Bus, storage: Storage | None) -> lis
         if name == "okx":
             from .okx_service import OkxService
             out.append(OkxService(bus, settings.okx_region, settings.instruments, settings.log_dir))
+        elif name == "calendar":
+            from .calendar_service import CalendarService
+            if storage is None:
+                raise ValueError("service calendar : base SQLite requise")
+            out.append(CalendarService(bus, storage, settings))
         else:
             raise ValueError(f"GATEWAY_SERVICES : le service « {name} » arrive en {PLANNED[name]}")
     return out
