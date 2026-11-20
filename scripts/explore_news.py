@@ -39,6 +39,12 @@ from zoneinfo import ZoneInfo
 import httpx
 import websockets
 
+
+def ws_ssl_context():
+    """Contexte TLS du collecteur OKX : SSL_CERT_FILE ou SSL_CERT_DIR, sinon certifi."""
+    from terminal_collectors.okx.ws import ssl_context
+    return ssl_context()
+
 ROOT = Path(__file__).resolve().parents[1]
 PARIS = ZoneInfo("Europe/Paris")
 VERSION = "0.1"
@@ -199,8 +205,11 @@ async def watch_tree(rec: Recorder, until: float, stats: dict) -> None:
     attempt = 0
     while time.time() < until:
         try:
+            # Python de python.org (macOS) : pas de magasin de certificats système ;
+            # même contexte que le collecteur OKX (SSL_CERT_FILE, sinon certifi).
             async with websockets.connect(TREE_WS, ping_interval=20, ping_timeout=10,
-                                          open_timeout=10, max_size=2**22) as ws:
+                                          open_timeout=10, max_size=2**22,
+                                          ssl=ws_ssl_context()) as ws:
                 rec.write({"label": "tree-open", "t_ms": now_ms(), "attempt": attempt})
                 attempt = 0
                 while time.time() < until:

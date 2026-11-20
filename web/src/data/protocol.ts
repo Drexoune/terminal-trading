@@ -50,6 +50,10 @@ export interface FeedState {
   outages: Outage[];               // 10 dernières coupures
   last_error: string | null;
   rejected?: string[];             // abonnements refusés par OKX (« tickers FOO-USDT-SWAP »)
+  // Sources de P1 (agenda, BLS, fil d'actus) : nom affiché et seuils de fraîcheur propres.
+  label?: string;
+  late_after_ms?: number;
+  stale_after_ms?: number;
 }
 
 /** Écart d'horloge avec OKX : machine de la passerelle, ou navigateur en Mode Online. */
@@ -107,6 +111,8 @@ export interface LatencyState {
 export const WATCHED_TOPICS = [
   'ticker:', 'trade:', 'funding:', 'oi:', 'candle:1m:', 'feed:', 'clock:', 'instrument:', 'gaps:',
   'gateway:',
+  // P1 : agenda, publications, fil d'actus, alertes (docs/plan-p1.md § 5).
+  'calendar:', 'release:', 'news:', 'alert:',
 ];
 
 // --- Sources du worker (sources/gatewaySource.ts, sources/okxSource.ts) ----------

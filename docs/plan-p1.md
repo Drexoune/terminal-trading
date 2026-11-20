@@ -204,7 +204,7 @@ Une étape à la fois, chacune vérifiée avant la suivante.
 | Étape | Contenu | Vérification |
 | --- | --- | --- |
 | E0 | Scripts d'exploration lancés sur le Mac (T-024) : ForexFactory, sonde BLS et calendrier, **rafale sur le rapport emploi du 04/12** (mesure seule, T-035), communiqués archivés, Tree of Alpha sur quelques jours, flux RSS, FinancialJuice, page de test des voix. Les réponses deviennent les fichiers de référence des tests. | fichiers reçus et relus |
-| E1 | Socle de la passerelle : services multiples, Bus, SQLite, configuration ; côté front, préfixes et fraîcheur par source | tests Python et Vitest |
+| E1 | Socle de la passerelle : services multiples, Bus, SQLite, configuration ; côté front, préfixes et fraîcheur par source | tests Python et Vitest — **codé le 20/11/2026** : `services.py` (GATEWAY_SERVICES), Bus (suppression, rétention, écouteurs synchrones), `storage.py` (WAL, fil unique, migration 1 : tables de l'agenda), `useKeys` et seuils de fraîcheur par source dans la barre de flux |
 | E2 | Calendrier sans capture : ForexFactory, calendrier BLS, tables, API, écran Calendrier, panneau « Prochains événements » | géométrie ±2 px, tests de fuseau |
 | E3 | Capture BLS, surprise, mesures de délai, maintien du Mac éveillé ; test Playwright déterministe (la fausse passerelle publie un chiffre à T+5 s, affichage en moins d'1 s) | **répétition réelle sur la productivité du 08/12** (T-035) |
 | E4 | Squawk et alertes : cloche, son, notifications, Telegram, écran `/alertes`, panneau « Alertes actives » | essais sur le Mac et le téléphone |

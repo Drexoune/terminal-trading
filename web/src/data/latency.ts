@@ -79,9 +79,15 @@ export type Freshness = 'live' | 'late' | 'stale' | 'down';
 export const LATE_AFTER_MS = 2_000;   // point or : retard > 2 s
 export const STALE_AFTER_MS = 15_000; // badge « périmé »
 
-export function freshness(ageMs: number | null, connected: boolean): Freshness {
+/**
+ * Fraîcheur d'un flux selon l'âge de son dernier message. Seuils par défaut :
+ * ceux du temps réel (2 s, 15 s) ; une source lente (agenda horaire) donne
+ * les siens (feed:<source>.late_after_ms / stale_after_ms).
+ */
+export function freshness(ageMs: number | null, connected: boolean,
+  lateAfterMs = LATE_AFTER_MS, staleAfterMs = STALE_AFTER_MS): Freshness {
   if (!connected || ageMs === null) return 'down';
-  if (ageMs > STALE_AFTER_MS) return 'stale';
-  if (ageMs > LATE_AFTER_MS) return 'late';
+  if (ageMs > staleAfterMs) return 'stale';
+  if (ageMs > lateAfterMs) return 'late';
   return 'live';
 }
