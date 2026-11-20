@@ -33,6 +33,8 @@ from . import APP_NAME, VERSION
 from .bus import Bus
 from .config import Settings
 from .okx_service import OkxService
+from .services import Service, build_services, needs_storage
+from .storage import Storage
 
 log = logging.getLogger(__name__)
 
@@ -50,27 +52,52 @@ def gateway_identity(settings: Settings) -> dict:
 
 
 def create_app(settings: Settings, service: OkxService | None = None,
-               bus: Bus | None = None) -> FastAPI:
+               bus: Bus | None = None, services: list[Service] | None = None,
+               storage: Storage | None = None) -> FastAPI:
+    """`service` : un service OKX (ou de démonstration) seul, comme en P0 ;
+    `services` : la liste complète. Sans l'un ni l'autre, GATEWAY_SERVICES décide."""
     bus = bus or Bus()
-    service = service if service is not None else OkxService(
-        bus, settings.okx_region, settings.instruments, settings.log_dir)
+    if services is None:
+        if service is not None:
+            services = [service]
+        else:
+            storage = storage or Storage(settings.db_path)
+            services = build_services(settings, bus, storage)
+    if storage is None and needs_storage(services):
+        storage = Storage(settings.db_path)
+    # Service principal des données de marché (graphique, champs historiques de /api/health).
+    market = next((s for s in services
+                   if getattr(s, "name", "okx") == "okx" or hasattr(s, "chart")), None)
     started_ms = now_ms()
     identity = gateway_identity(settings)
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        await service.start()
-        # Le service publie la source des données ; la passerelle y ajoute la
-        # machine et le mode annoncé, quel que soit le service (réel ou démo).
-        bus.publish("gateway:meta", {**(bus.get("gateway:meta") or {}), **identity})
+        if storage is not None and needs_storage(services):
+            await storage.open()
+        started: list = []
         try:
+            for s in services:
+                await s.start()
+                started.append(s)
+            # Les services publient la source des données ; la passerelle y ajoute la
+            # machine et le mode annoncé, quel que soit le service (réel ou démo).
+            bus.publish("gateway:meta", {**(bus.get("gateway:meta") or {}), **identity})
             yield
         finally:
-            await service.stop()
+            for s in reversed(started):
+                try:
+                    await s.stop()
+                except Exception:
+                    log.exception("arrêt du service %s en erreur", getattr(s, "name", s))
+            if storage is not None and needs_storage(services):
+                await storage.close()
 
     app = FastAPI(title=f"{APP_NAME} — passerelle", version=VERSION, lifespan=lifespan)
     app.state.bus = bus
-    app.state.service = service
+    app.state.service = market
+    app.state.services = services
+    app.state.storage = storage
     app.add_middleware(CORSMiddleware, allow_origins=list(settings.allowed_origins),
                        allow_methods=["GET"], allow_headers=["*"])
 
@@ -78,12 +105,15 @@ def create_app(settings: Settings, service: OkxService | None = None,
     async def health() -> dict:
         return {"app": APP_NAME, "version": VERSION, "ts": now_ms(),
                 "uptime_s": round((now_ms() - started_ms) / 1000),
-                "clients": bus.subscriber_count, **service.health(), **identity}
+                "clients": bus.subscriber_count, **(market.health() if market else {}),
+                "services": {getattr(s, "name", "okx"): s.health() for s in services}, **identity}
 
     @app.get("/api/chart")
     async def chart(inst: str = "BTC-USDT-SWAP", range: str = "1D") -> dict:
+        if market is None or not hasattr(market, "chart"):
+            raise HTTPException(503, "service OKX non activé (GATEWAY_SERVICES)")
         try:
-            return await service.chart(inst, range)
+            return await market.chart(inst, range)
         except KeyError as exc:
             raise HTTPException(404, str(exc)) from exc
         except Exception as exc:

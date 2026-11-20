@@ -8,7 +8,7 @@
 // de mode ou d'adresse active redémarre le worker et vide le store : le
 // contenu d'un mode ne se mélange jamais à celui d'un autre.
 
-import { useSyncExternalStore } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 import type { FromWorker, ToWorker } from './worker';
 import type { ConnState, LatencyState } from './protocol';
 import { WATCHED_TOPICS } from './protocol';
@@ -34,8 +34,27 @@ function notify(key: string): void {
   listeners.get(key)?.forEach((l) => l());
 }
 
+/** Abonnés par préfixe (useKeys) et liste mise en cache, recalculée après un changement. */
+const prefixListeners = new Map<string, Set<Listener>>();
+const prefixCache = new Map<string, [string, unknown][]>();
+
+function notifyPrefixes(key: string | null): void {
+  for (const [prefix, set] of prefixListeners) {
+    if (key !== null && !key.startsWith(prefix)) continue;
+    prefixCache.delete(prefix);
+    set.forEach((l) => l());
+  }
+}
+
+/** Publie une valeur ; null (suppression envoyée par la passerelle) retire la clé. */
 export function setValue(key: string, value: unknown): void {
+  if (value === null || value === undefined) {
+    const had = values.delete(key);
+    if (had) { notify(key); notifyPrefixes(key); }
+    return;
+  }
   values.set(key, value);
+  notifyPrefixes(key);
   // Un écouteur en erreur ne doit jamais empêcher les autres mises à jour du lot.
   itemListeners.get(key)?.forEach((l) => {
     try { l(value); } catch (e) { console.error(`écouteur de ${key} en erreur`, e); }
@@ -52,6 +71,32 @@ export function clearValues(): void {
   const keys = new Set([...values.keys(), ...listeners.keys()]);
   values.clear();
   keys.forEach(notify);
+  notifyPrefixes(null);
+}
+
+/** Clés présentes sous un préfixe, triées, avec leur valeur ; liste stable entre deux changements. */
+export function keysWithPrefix<T>(prefix: string): [string, T][] {
+  let list = prefixCache.get(prefix);
+  if (!list) {
+    list = [...values].filter(([k]) => k.startsWith(prefix)).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+    prefixCache.set(prefix, list);
+  }
+  return list as [string, T][];
+}
+
+export function subscribePrefix(prefix: string, l: Listener): () => void {
+  let set = prefixListeners.get(prefix);
+  if (!set) prefixListeners.set(prefix, (set = new Set()));
+  set.add(l);
+  // Le cache reste : React se désabonne et se réabonne souvent, et une nouvelle
+  // liste à chaque réabonnement relancerait le rendu sans fin.
+  return () => { set!.delete(l); };
+}
+
+/** Toutes les clés d'un préfixe (« feed: », « calendar:week: »…) avec leur valeur. */
+export function useKeys<T>(prefix: string): [string, T][] {
+  const subscribe = useCallback((l: Listener) => subscribePrefix(prefix, l), [prefix]);
+  return useSyncExternalStore(subscribe, () => keysWithPrefix<T>(prefix));
 }
 
 export function subscribeKey(key: string, l: Listener): () => void {

@@ -33,3 +33,17 @@ describe('détail des flux au survol', () => {
     expect(feedDetail('déconnecté', undefined)).toBe('déconnecté');
   });
 });
+
+describe('fraîcheur par source (P1)', async () => {
+  const { feedFreshness } = await import('./FeedBar');
+  const now = 10_000_000;
+  it('seuils du temps réel par défaut, seuils propres à la source sinon', () => {
+    expect(feedFreshness(feed({ last_message_ms: now - 20_000 }), now, true)).toBe('stale');
+    const agenda = feed({ name: 'calendar', label: 'Agenda', last_message_ms: now - 20 * 60_000,
+      late_after_ms: 75 * 60_000, stale_after_ms: 3 * 3_600_000 });
+    expect(feedFreshness(agenda, now, true)).toBe('live');
+    expect(feedFreshness({ ...agenda, last_message_ms: now - 2 * 3_600_000 }, now, true)).toBe('late');
+    expect(feedFreshness({ ...agenda, last_message_ms: now - 4 * 3_600_000 }, now, true)).toBe('stale');
+    expect(feedFreshness(agenda, now, false)).toBe('down');
+  });
+});

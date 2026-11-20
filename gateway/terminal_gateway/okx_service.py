@@ -62,6 +62,8 @@ def utc_day_start(ms: int) -> int:
 
 
 class OkxService:
+    name = "okx"
+
     def __init__(self, bus: Bus, region: str, instruments: tuple[str, ...],
                  log_dir: Path) -> None:
         self.bus = bus

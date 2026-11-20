@@ -6,17 +6,21 @@ import { useSettings } from '../config/settings';
 import { fetchCollectorHealth, type CollectorHealth } from '../data/gateway';
 import { freshness, type Freshness } from '../data/latency';
 import type { FeedState, GapsState } from '../data/protocol';
-import { useConn, useValue } from '../data/store';
+import { useConn, useKeys, useValue } from '../data/store';
 import { fmtDuration } from '../lib/format';
 import { fmtHms } from '../lib/time';
 import { SETTINGS_PATH } from '../modules';
 import { COLLECTOR_POLL_MS, collectorStatus } from '../screens/settings/health';
 import { useNow } from './useNow';
 
-function feedFreshness(feed: FeedState | undefined, now: number, sourceUp: boolean): Freshness {
+export function feedFreshness(feed: FeedState | undefined, now: number, sourceUp: boolean): Freshness {
   if (!sourceUp || !feed || feed.status !== 'connected') return 'down';
-  return freshness(feed.last_message_ms != null ? now - feed.last_message_ms : null, true);
+  return freshness(feed.last_message_ms != null ? now - feed.last_message_ms : null, true,
+    feed.late_after_ms, feed.stale_after_ms);
 }
+
+/** Flux OKX affichés à part (WS et bougies) ; les autres clés feed: sont les sources de P1. */
+const OKX_FEEDS = new Set(['feed:okx-public', 'feed:okx-business']);
 
 const LABEL: Record<Freshness, string> = {
   live: 'connecté', late: 'retard > 2 s', stale: 'périmé', down: 'déconnecté',
@@ -75,6 +79,7 @@ export function FeedBar() {
   const pub = useValue<FeedState>('feed:okx-public');
   const biz = useValue<FeedState>('feed:okx-business');
   const gaps = useValue<GapsState>('gaps:okx');
+  const others = useKeys<FeedState>('feed:').filter(([k]) => !OKX_FEEDS.has(k));
   const collector = useCollectorHealth(mode === 'online');
   const pubState = feedFreshness(pub, now, up);
   const bizState = feedFreshness(biz, now, up);
@@ -90,7 +95,12 @@ export function FeedBar() {
         return ['Collecteur Supabase', c.state, c.label] as [string, Freshness, string];
       })()]
     : [['Passerelle', up ? freshness(conn?.lastMessage != null ? now - conn.lastMessage : null, true) : 'down',
-        !up && conn?.reason ? `${LABEL.down} · ${conn.reason}` : undefined], ...okx];
+        !up && conn?.reason ? `${LABEL.down} · ${conn.reason}` : undefined], ...okx,
+      // Sources de P1 publiées par la passerelle (agenda, BLS, fil d'actus), avec leurs propres seuils.
+      ...others.map(([, f]): [string, Freshness, string] => {
+        const st = feedFreshness(f, now, up);
+        return [f.label ?? f.name, st, feedDetail(LABEL[st], f)];
+      })];
   const def = modeDef(mode);
   return (
     <div className="feedbar">
