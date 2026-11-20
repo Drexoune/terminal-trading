@@ -7,8 +7,8 @@
 //   eu-close  une requête Alpha Vantage par cotation suivie, dans le budget du
 //             jour (25 requêtes sur la clé gratuite) ; reprise au passage suivant
 //   ref-sec   liste des sociétés et mnémoniques de la SEC (une fois par semaine)
-//   explore   une réponse de chaque source, renvoyée telle quelle (tronquée,
-//             clés masquées) : exploration B0.1, à lancer à la main
+//   explore   une réponse de chaque source, renvoyée telle quelle (début et
+//             fin, clés masquées) : exploration B0.1, à lancer à la main
 //
 // Chaque passage est journalisé dans bourse_runs. Une clôture absente n'est
 // jamais recopiée : la cotation garde sa dernière clôture connue, avec sa date.
@@ -37,6 +37,9 @@ export const ALPHA_SPACING_MS = 2_000;
 const ECB_DAYS = 10;
 const SEC_BATCH = 1_000;
 const EXPLORE_CHARS = 1_500;
+// Fin de la réponse, en plus du début : certains champs arrivent après la liste
+// des résultats (« status » chez Massive, « fields » à la SEC).
+const EXPLORE_TAIL_CHARS = 800;
 const ERROR_MAX_CHARS = 2_000;
 
 export interface Rpc { (fn: string, args: Record<string, unknown>): Promise<unknown> }
@@ -266,6 +269,8 @@ async function explore(deps: JobDeps): Promise<Outcome> {
         name: p.name, status: r.status, ms: deps.now() - t0, size: text.length,
         headers: 'headers' in r ? pickHeaders((r as unknown as { headers: Headers }).headers) : null,
         body: redactWith(text.slice(0, EXPLORE_CHARS), keys),
+        ...(text.length > EXPLORE_CHARS
+          ? { tail: redactWith(text.slice(Math.max(EXPLORE_CHARS, text.length - EXPLORE_TAIL_CHARS)), keys) } : {}),
       });
     } catch (e) {
       report.push({ name: p.name, error: redactWith(e instanceof Error ? e.message : String(e), keys) });

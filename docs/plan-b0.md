@@ -115,6 +115,16 @@ Mesurés en B0.1, jamais supposés :
 - OpenFIGI : requête par ISIN, limites avec et sans clé ;
 - réécriture `vercel.json` vers une fonction unique, et limite de fonctions du plan Hobby.
 
+### Constats de la tâche `explore` (20/11/2026, depuis Supabase)
+
+Les sept sources répondent en HTTP 200. Les réponses (début et fin) sont gardées comme fichiers de référence des tests, dans `supabase/functions/bourse-jobs/fixtures/`.
+
+- **Massive** : `status` vaut `DELAYED` sur l'offre gratuite. `t` marque la fin de séance (16:00 à New York), pas le début du jour. La séance du 19/11 était disponible le 20/11 à 14:36 UTC. La liste compte 12 619 lignes, dont des titres de test (`ZTEST`, `ZZZTS`…).
+- **SEC** : `data` précède `fields`, et les places sont Nasdaq, NYSE et OTC. La tâche `ref-sec` a écrit 10 398 sociétés.
+- **Alpha Vantage** : la forme est conforme à la documentation (`CW8.PAR`, 100 jours, fuseau `US/Eastern`). La clôture de Paris du 19/11 était là le 20/11 à 14:22 UTC. Le message de quota dépassé n'a pas encore été reçu : il reste sous sa forme documentée.
+- **BCE** : la réponse a mis 10 s, contre moins de 2 s pour les autres sources. C'est à surveiller.
+- **Réécriture `vercel.json`** : la fonction reçoit le chemin d'origine *et* le paramètre `path`. Le correctif est dans la PR #3.
+
 ## 11. Ce dont j'ai besoin de toi
 
 | Quand | Quoi |
