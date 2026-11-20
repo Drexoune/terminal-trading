@@ -14,6 +14,7 @@
 -- publications à l'heure d'été comme à l'heure d'hiver.
 --   ecb-fx    16:30, lundi à vendredi (fixing BCE vers 16:00 Francfort)
 --   us-close  06:15, mardi à samedi   (clôtures US de la veille)
+--   us-backfill 06:20, mardi à samedi (historique Tiingo des cotations US nouvellement suivies ; sans appel sinon)
 --   eu-close  06:30 et 06:45, mardi à samedi (8 cotations par passage au plus)
 --   ref-sec   dimanche 05:00          (liste des sociétés de la SEC)
 
@@ -43,6 +44,7 @@ begin
     select * from (values
       ('bourse-ecb-fx',    '30 16 * * 1-5', 'ecb-fx'),
       ('bourse-us-close',  '15 6 * * 2-6',  'us-close'),
+      ('bourse-us-backfill', '20 6 * * 2-6', 'us-backfill'),
       ('bourse-eu-close',  '30 6 * * 2-6',  'eu-close'),
       ('bourse-eu-close-2','45 6 * * 2-6',  'eu-close'),
       ('bourse-ref-sec',   '0 5 * * 0',     'ref-sec')

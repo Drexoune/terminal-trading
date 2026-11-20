@@ -15,10 +15,10 @@
 
 import type { Db, FetchLike, Row } from '../okx-collector/postgrest.ts';
 import {
-  parseAlphaDaily, parseEcbCsv, parseMassiveGrouped, parseSecTickers,
+  parseAlphaDaily, parseEcbCsv, parseMassiveGrouped, parseSecTickers, parseTiingoDaily,
 } from './parse.ts';
 
-export const JOBS = ['ecb-fx', 'us-close', 'eu-close', 'ref-sec', 'explore'] as const;
+export const JOBS = ['ecb-fx', 'us-close', 'us-backfill', 'eu-close', 'ref-sec', 'explore'] as const;
 export type Job = (typeof JOBS)[number];
 
 export const ECB_URL = 'https://data-api.ecb.europa.eu/service/data/EXR/D..EUR.SP00.A';
@@ -32,6 +32,10 @@ export const OPENFIGI_URL = 'https://api.openfigi.com/v3/mapping';
 export const ALPHA_DEFAULT_MAX = 20;
 /** Cotations Alpha Vantage traitées au plus par passage (durée bornée d'une Edge Function). */
 export const ALPHA_PER_RUN = 8;
+/** Rattrapage US : une cotation suivie avec moins de clôtures que ce seuil reçoit son historique (Tiingo). */
+export const BACKFILL_MIN_CLOSES = 60;
+export const BACKFILL_DAYS = 150;
+export const BACKFILL_PER_RUN = 5;
 /** Écart entre deux appels Alpha Vantage. */
 export const ALPHA_SPACING_MS = 2_000;
 const ECB_DAYS = 10;
@@ -222,6 +226,48 @@ async function euClose(deps: JobDeps): Promise<Outcome> {
   return { rows, requests, note: notes.join(' ; ') || null, errors };
 }
 
+/**
+ * Rattrapage des cotations américaines : Massive ne donne qu'une journée par
+ * appel ; une cotation nouvellement suivie reçoit ses 150 derniers jours de
+ * Tiingo (un appel par titre, 1 000 par jour sur l'offre gratuite). Sans
+ * cotation à rattraper, aucun appel.
+ */
+async function usBackfill(deps: JobDeps): Promise<Outcome> {
+  const listings = await trackedListings(deps.db, 'massive');
+  const todo: TrackedListing[] = [];
+  for (const l of listings) {
+    const have = await deps.db.select<{ value_date: string }>('prices', {
+      select: 'value_date', listing_id: `eq.${l.id}`, limit: String(BACKFILL_MIN_CLOSES) });
+    if (have.length < BACKFILL_MIN_CLOSES) todo.push(l);
+  }
+  if (!todo.length) return { rows: 0, requests: 0, note: 'aucune cotation à rattraper', errors: [] };
+  const key = deps.env('TIINGO_API_KEY');
+  if (!key) throw new Error('TIINGO_API_KEY absente');
+  const start = addDays(civilDate(deps.now(), 'America/New_York'), -BACKFILL_DAYS);
+  let rows = 0;
+  let requests = 0;
+  const errors: string[] = [];
+  for (const l of todo.slice(0, BACKFILL_PER_RUN)) {
+    if (requests > 0) await deps.sleep(1_000);
+    requests++;
+    try {
+      const url = `${TIINGO_BASE}/tiingo/daily/${encodeURIComponent(l.source_symbol.toLowerCase())}/prices?startDate=${start}`;
+      const { status, text } = await getText(deps, url, { Authorization: `Token ${key}`, Accept: 'application/json' });
+      if (status !== 200) { errors.push(`${l.source_symbol} : Tiingo HTTP ${status} ${redactWith(text.slice(0, 80), [key])}`); continue; }
+      const parsed = parseTiingoDaily(jsonOf(text, 'Tiingo'));
+      const receivedAt = new Date(deps.now()).toISOString();
+      const batch = parsed.rows.map((r) => ({ listing_id: l.id, value_date: r.value_date, close: r.close, adj_close: null,
+        currency: l.currency, source: 'Tiingo', source_ts: null, received_at: receivedAt }));
+      await deps.db.upsert('prices', batch, 'listing_id,value_date,source');
+      rows += batch.length;
+    } catch (e) {
+      errors.push(`${l.source_symbol} : ${redactWith(e instanceof Error ? e.message : String(e), [key])}`);
+    }
+  }
+  const left = todo.length - requests;
+  return { rows, requests, note: left > 0 ? `${left} cotation(s) au passage suivant` : `historique de ${requests} cotation(s) depuis le ${start}`, errors };
+}
+
 async function refSec(deps: JobDeps): Promise<Outcome> {
   const { status, text } = await getText(deps, SEC_TICKERS_URL, { 'User-Agent': secUserAgent(deps.env), Accept: 'application/json' }, 30_000);
   if (status !== 200) throw new Error(`SEC : HTTP ${status}${status === 403 ? ' (adresse de contact refusée ou débit dépassé)' : ''}`);
@@ -291,7 +337,7 @@ function pickHeaders(h: Headers | undefined): Record<string, string> | null {
 }
 
 const RUNNERS: Record<Job, (deps: JobDeps) => Promise<Outcome>> = {
-  'ecb-fx': ecbFx, 'us-close': usClose, 'eu-close': euClose, 'ref-sec': refSec, explore,
+  'ecb-fx': ecbFx, 'us-close': usClose, 'us-backfill': usBackfill, 'eu-close': euClose, 'ref-sec': refSec, explore,
 };
 
 /** Lance une tâche et la journalise dans bourse_runs (sauf explore, qui n'écrit rien). */

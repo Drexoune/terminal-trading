@@ -11,11 +11,15 @@ export interface BourseDb {
   select<T>(table: string, params: Record<string, string>): Promise<T[]>;
   count(table: string, params: Record<string, string>): Promise<number>;
   insert(table: string, rows: Record<string, unknown>[]): Promise<void>;
+  /** Supprime les lignes filtrées ; renvoie leur nombre. */
+  remove(table: string, params: Record<string, string>): Promise<number>;
+  /** Fonction SQL (/rest/v1/rpc/<fn>) ; renvoie son résultat JSON. */
+  rpc<T>(fn: string, args: Record<string, unknown>): Promise<T>;
 }
 
 export function createBourseDb(cfg: SupabaseConfig, fetchFn: FetchFn): BourseDb {
   async function call(table: string, params: Record<string, string>, init: RequestInit): Promise<Response> {
-    if (!IDENT.test(table)) throw new Error(`table invalide : ${table}`);
+    if (!IDENT.test(table.replace(/^rpc\//, ''))) throw new Error(`table invalide : ${table}`);
     const url = `${cfg.url}/rest/v1/${table}${Object.keys(params).length ? `?${new URLSearchParams(params)}` : ''}`;
     let r: Response;
     try {
@@ -54,6 +58,18 @@ export function createBourseDb(cfg: SupabaseConfig, fetchFn: FetchFn): BourseDb 
       await call(table, {}, {
         method: 'POST', headers: { 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(rows),
       });
+    },
+    async remove(table, params) {
+      if (!Object.keys(params).length) throw new Error('suppression sans filtre refusée');
+      const r = await call(table, params, { method: 'DELETE', headers: { Prefer: 'return=representation', Accept: 'application/json' } });
+      const rows = await r.json().catch(() => []);
+      return Array.isArray(rows) ? rows.length : 0;
+    },
+    async rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+      const r = await call(`rpc/${fn}`, {}, {
+        method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify(args),
+      });
+      try { return await r.json() as T; } catch { throw new SupabaseError('réponse illisible', `rpc ${fn} : pas du JSON`); }
     },
   };
 }

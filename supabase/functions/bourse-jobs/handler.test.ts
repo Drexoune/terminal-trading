@@ -37,7 +37,7 @@ describe('bourse-jobs : contrôle de l’appel', () => {
     const { handler, run } = setup();
     const r = await handler(post('drop-table'));
     expect(r.status).toBe(400);
-    expect((await r.json()).error).toMatch(/ecb-fx, us-close, eu-close, ref-sec, explore/);
+    expect((await r.json()).error).toMatch(/ecb-fx, us-close, us-backfill, eu-close, ref-sec, explore/);
     expect(run).not.toHaveBeenCalled();
   });
 

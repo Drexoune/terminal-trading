@@ -43,6 +43,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-036 | 19/11/2026 | Plan Bourse | Plan révisé (`docs/plan-bourse.md`) validé par Clément ; B0 commence par son plan détaillé |
 | T-037 | 19/11/2026 | Plan B0 | Validé : exploration en ligne, session de 30 jours, porte sur les lignes du portefeuille ; menu Bourse repliable |
 | T-038 | 20/11/2026 | Plan B1 | Courtier XTB ; PEA et CTO ; performances depuis le 28/09/2026 ; benchmarks MSCI World et S&P 500 ; ventilation des ETF affichée |
+| T-039 | 20/11/2026 | Réalisation de B1 | Valorisation à la demande, import Baggr validé côté serveur, TRI non annualisé sous un an, rattrapage US par Tiingo |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -417,3 +418,12 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **Le CTO entre dans B1** (décision de Clément). Ses titres américains sont relevés par Massive, sans coût de quota ; ses intérêts et ses taxes sont des opérations du compte.
 - **Une ligne se suit sur la place où elle a été achetée.** L'export indique la place de chaque achat ; le script des lignes, hors dépôt, est corrigé en conséquence.
 - **L'aperçu de l'import contrôle la cohérence entre ISIN et mnémonique** à l'aide du référentiel (OpenFIGI) et propose l'ISIN du référentiel. Un export saisi à la main peut en effet porter l'ISIN d'un autre fonds de la même gamme.
+
+## T-039 — Réalisation de B1 · 20/11/2026
+
+**Contexte.** Le plan B1 prévoyait une tâche de valorisation chaque nuit et une table `daily_valuations`.
+
+**Décision.** La valorisation se calcule à chaque demande : avec quelques dizaines d'opérations, le calcul est immédiat et reste toujours cohérent avec les dernières clôtures. Le détail des écarts au plan est dans `docs/plan-b1.md` § 11.
+
+**Conséquences.** Les performances suivent les clôtures relevées chaque nuit sans tâche supplémentaire. Un cours manquant rend la valeur totale « — » avec sa raison, et la valeur partielle reste affichée.
+

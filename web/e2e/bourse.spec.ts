@@ -118,8 +118,8 @@ test('module non configuré : « — » et la raison, pas de formulaire', async 
 });
 
 test('écrans à venir : étape affichée, aucune donnée', async ({ page }) => {
-  await page.goto('/bourse/portefeuille');
-  await expect(page.getByText('Cet écran arrive en B1. Aucune donnée n’est affichée d’ici là.')).toBeVisible();
+  await page.goto('/bourse/action');
+  await expect(page.getByText('Cet écran arrive en B2. Aucune donnée n’est affichée d’ici là.')).toBeVisible();
 });
 
 for (const step of ['login', 'sources'] as const) {

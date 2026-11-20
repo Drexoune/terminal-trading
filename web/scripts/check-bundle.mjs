@@ -3,8 +3,10 @@
 
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const DIST = new URL('../dist/', import.meta.url).pathname;
+// fileURLToPath : un chemin avec espace (« terminal-trading 2 ») reste lisible.
+const DIST = fileURLToPath(new URL('../dist/', import.meta.url));
 
 const PATTERNS = [
   [/OK-ACCESS-(KEY|SIGN|PASSPHRASE)/i, 'en-tête d’authentification OKX'],

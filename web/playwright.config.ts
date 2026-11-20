@@ -33,7 +33,7 @@ export default defineConfig({
       timeout: 30_000,
     },
     {
-      command: 'npx vite --port 5174 --strictPort',
+      command: 'npx vite --host 127.0.0.1 --port 5174 --strictPort',
       url: 'http://127.0.0.1:5174',
       reuseExistingServer: false,
       timeout: 60_000,
