@@ -9,10 +9,10 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { Db, FetchLike, ResponseLike, Row } from '../okx-collector/postgrest.ts';
 import {
-  ALPHA_PER_RUN, ALPHA_URL, ECB_URL, MASSIVE_BASE, SEC_TICKERS_URL, civilDate, previousWeekday, redactWith,
+  ALPHA_PER_RUN, ALPHA_URL, BACKFILL_MIN_CLOSES, TIINGO_BASE, ECB_URL, MASSIVE_BASE, SEC_TICKERS_URL, civilDate, previousWeekday, redactWith,
   runJob, type JobDeps,
 } from './jobs.ts';
-import { decimalText, parseAlphaDaily, parseCsv, parseEcbCsv, parseMassiveGrouped, parseSecTickers } from './parse.ts';
+import { decimalText, parseAlphaDaily, parseCsv, parseEcbCsv, parseMassiveGrouped, parseSecTickers, parseTiingoDaily } from './parse.ts';
 
 const read = (rel: string) => readFileSync(new URL(rel, import.meta.url), 'utf-8');
 const ECB = read('./fixtures/ecb-exr-2026-11-19.csv');
@@ -20,6 +20,7 @@ const MASSIVE = JSON.parse(read('./fixtures/massive-grouped-2026-11-19.json'));
 const ALPHA = JSON.parse(read('./fixtures/alpha-daily-CW8.PAR-2026-11-19.json'));
 const ALPHA_QUOTA = JSON.parse(read('./fixtures/alpha-quota.documented.json'));
 const SEC = JSON.parse(read('./fixtures/sec-tickers-exchange-2026-11-18.json'));
+const TIINGO = JSON.parse(read('./fixtures/tiingo-daily-SPY-2026-11-19.json')).body;
 const MIGRATION = read('../../migrations/20261119120000_bourse_b0.sql');
 
 // Jeudi 19/11/2026 06:30 UTC.
@@ -324,5 +325,38 @@ describe('explore', () => {
     expect(m.tail).toMatch(/"status":"OK","key":"\*\*\*"}$/);
     expect(m.tail!.length).toBeLessThanOrEqual(800);
     expect(report.find((p) => p.name === 'openfigi')!.tail).toBeDefined();
+  });
+});
+
+describe('us-backfill (Tiingo)', () => {
+  it('réponse réelle : clôtures brutes triées, date sans heure', () => {
+    const { rows, skipped } = parseTiingoDaily(TIINGO);
+    expect(skipped).toBe(0);
+    expect(rows).toHaveLength(6);
+    expect(rows[0]).toEqual({ value_date: '2026-11-12', close: '757.12' });
+    expect(rows.at(-1)!.value_date).toBe('2026-11-19');
+    expect(() => parseTiingoDaily({ detail: 'Invalid token.' })).toThrow(/Tiingo : Invalid token/);
+  });
+
+  it('rattrape seulement les cotations à l’historique court ; clé en en-tête, jamais dans le journal', async () => {
+    const seen: { url: string; headers: Record<string, string> }[] = [];
+    const prices: Row[] = Array.from({ length: BACKFILL_MIN_CLOSES }, (_, k) => ({ listing_id: 2, value_date: `d${k}` }));
+    const db = new (class extends MemoryDb {
+      async select<T>(table: string, query: Record<string, string>): Promise<T[]> {
+        if (table === 'prices') return prices.filter((p) => `eq.${p.listing_id}` === query.listing_id) as T[];
+        return super.select<T>(table, query);
+      }
+    })({ instrument_listings: LISTINGS });
+    const d = deps({ db, fetch: async (url, init) => { seen.push({ url, headers: init?.headers ?? {} }); return response(200, TIINGO); } },
+      { TIINGO_API_KEY: 'tiingo-key-789' });
+    const r = await runJob('us-backfill', d);
+    expect(seen.map((x) => x.url)).toEqual([`${TIINGO_BASE}/tiingo/daily/ypf/prices?startDate=2026-06-22`]);
+    expect(seen[0].headers.Authorization).toBe('Token tiingo-key-789');
+    expect(r).toMatchObject({ ok: true, rows: 6, requests: 1 });
+    expect(db.rows('prices')[0]).toMatchObject({ listing_id: 1, value_date: '2026-11-12', close: '757.12', source: 'Tiingo', currency: 'USD' });
+    const fail = deps({ fetch: async () => response(401, '{"detail":"bad tiingo-key-789"}') }, { TIINGO_API_KEY: 'tiingo-key-789' });
+    const f = await runJob('us-backfill', fail);
+    expect(f.errors[0]).toContain('HTTP 401');
+    expect(JSON.stringify(f)).not.toContain('tiingo-key-789');
   });
 });

@@ -32,6 +32,9 @@ function fakeSupabase(state: { failures: number; tables?: Record<string, unknown
     expect((init?.headers as Record<string, string>).apikey).toBe(ENV.SUPABASE_SECRET_KEY);
     const table = u.pathname.replace('/rest/v1/', '');
     if (method === 'HEAD') return new Response(null, { status: 200, headers: { 'Content-Range': `*/${state.failures}` } });
+    if (method === 'POST' && table.startsWith('rpc/bourse_import')) {
+      return new Response(JSON.stringify({ envelope_id: 1, batch_id: 5, rows: 1, inserted: 1 }), { status: 200 });
+    }
     if (method === 'POST') { state.failures++; return new Response(null, { status: 201 }); }
     return new Response(JSON.stringify(state.tables?.[table] ?? []), { status: 200 });
   };
@@ -200,8 +203,8 @@ describe('routes protégées', () => {
     const r = await handleBourse(req('/api/bourse/sources', { cookie: await cookieOf() }), ctx(fetch));
     expect(r.status).toBe(200);
     const body = await r.json();
-    expect(body.jobs.map((j: { job: string }) => j.job)).toEqual(['ecb-fx', 'us-close', 'eu-close', 'ref-sec']);
-    expect(body.jobs[2].last_run).toMatchObject({ ok: true, rows: 14 });
+    expect(body.jobs.map((j: { job: string }) => j.job)).toEqual(['ecb-fx', 'us-close', 'us-backfill', 'eu-close', 'ref-sec']);
+    expect(body.jobs[3].last_run).toMatchObject({ ok: true, rows: 14 });
     expect(body.jobs[0].last_run).toBeNull();
     expect(body.quota).toEqual({ source: 'Alpha Vantage', day: '2026-11-19', used: 7, max: 20 });
     expect(body.fx).toEqual({ pair: 'EUR/USD', per_eur: '1.0989', value_date: '2026-11-18', received_at: '2026-11-18T16:30:05Z', source: 'BCE' });
@@ -236,5 +239,65 @@ describe('routes protégées', () => {
     const r = await handleBourse(req('/api/bourse/sources', { cookie: await cookieOf() }), ctx(fetch, { ...ENV, SUPABASE_URL: '' }));
     expect(r.status).toBe(503);
     expect((await r.json()).detail).toMatch(/non configuré/);
+  });
+});
+
+describe('portefeuille (B1)', () => {
+  const json = (path: string, method: string, body: unknown, cookie?: string, headers: Record<string, string> = {}) => req(path, {
+    method, body: body === undefined ? undefined : JSON.stringify(body), cookie,
+    headers: { 'content-type': 'application/json', origin: ORIGIN, ...headers },
+  });
+  const DEPOT = { Date: '2026-10-01', Type: 'Dépôt', Montant: 100, Devise: 'EUR', 'Référence': 'R1' };
+
+  it('session exigée, méthodes et origine contrôlées', async () => {
+    const { fetch } = fakeSupabase({ failures: 0 });
+    expect((await handleBourse(req('/api/bourse/portfolio'), ctx(fetch))).status).toBe(401);
+    expect((await handleBourse(json('/api/bourse/import', 'POST', { rows: [] }), ctx(fetch))).status).toBe(401);
+    const cookie = await cookieOf();
+    expect((await handleBourse(req('/api/bourse/import', { cookie }), ctx(fetch))).status).toBe(405);
+    expect((await handleBourse(req('/api/bourse/portfolio', { method: 'POST', cookie }), ctx(fetch))).status).toBe(405);
+    const foreign = json('/api/bourse/import', 'POST', { rows: [] }, cookie, { origin: 'https://ailleurs.example' });
+    expect((await handleBourse(foreign, ctx(fetch))).status).toBe(403);
+  });
+
+  it('portefeuille vide, enveloppe inconnue', async () => {
+    const { fetch } = fakeSupabase({ failures: 0 });
+    const cookie = await cookieOf();
+    const r = await handleBourse(req('/api/bourse/portfolio?envelope=all', { cookie }), ctx(fetch));
+    expect(r.status).toBe(200);
+    expect(await r.json()).toMatchObject({ envelopes: [], lines: [], perf_start: '2026-09-28' });
+    expect((await handleBourse(req('/api/bourse/portfolio?envelope=9', { cookie }), ctx(fetch))).status).toBe(404);
+    expect((await handleBourse(req('/api/bourse/portfolio?envelope=x', { cookie }), ctx(fetch))).status).toBe(400);
+  });
+
+  it('import : à blanc, erreurs ligne par ligne (422), puis pour de bon par la fonction SQL', async () => {
+    const { fetch, calls } = fakeSupabase({ failures: 0 });
+    const cookie = await cookieOf();
+    const base = { kind: 'PEA', broker: 'XTB', file_name: 'x.xlsx', file_sha256: 'a'.repeat(64) };
+    const dry = await handleBourse(json('/api/bourse/import', 'POST', { ...base, rows: [DEPOT], dry: true }, cookie), ctx(fetch));
+    expect(dry.status).toBe(200);
+    expect(await dry.json()).toMatchObject({ dry: true, envelope: 'PEA · XTB', rows: 1, errors: [], preview: [{ line: 2, kind: 'depot', amount: '100' }] });
+    expect(calls.some((c) => c.url.pathname.includes('rpc/'))).toBe(false);
+
+    const bad = await handleBourse(json('/api/bourse/import', 'POST', { ...base, rows: [DEPOT, { Date: '2026-10-01', Type: 'Virement' }] }, cookie), ctx(fetch));
+    expect(bad.status).toBe(422);
+    expect((await bad.json()).errors).toEqual([{ line: 3, message: 'type inconnu : « Virement »' }]);
+
+    const ok = await handleBourse(json('/api/bourse/import', 'POST', { ...base, rows: [DEPOT] }, cookie), ctx(fetch));
+    expect(ok.status).toBe(200);
+    expect((await ok.json()).result).toEqual({ envelope_id: 1, batch_id: 5, rows: 1, inserted: 1 });
+    const rpc = calls.find((c) => c.url.pathname.endsWith('rpc/bourse_import'))!;
+    expect(JSON.parse(rpc.body!)).toMatchObject({ p_kind: 'PEA', p_broker: 'XTB', p_perf_start: '2026-09-28',
+      p_rows: [{ trade_date: '2026-10-01', kind: 'depot', amount: '100', dedup_key: 'ref:R1', currency: 'EUR' }] });
+
+    expect((await handleBourse(json('/api/bourse/import', 'POST', { ...base, kind: 'Livret A', rows: [] }, cookie), ctx(fetch))).status).toBe(400);
+  });
+
+  it('annulation d’un lot', async () => {
+    const { fetch } = fakeSupabase({ failures: 0, tables: { import_batches: [{ id: 5 }] } });
+    const cookie = await cookieOf();
+    const r = await handleBourse(json('/api/bourse/import?batch=5', 'DELETE', undefined, cookie), ctx(fetch));
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ deleted: 5 });
   });
 });

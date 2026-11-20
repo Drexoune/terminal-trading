@@ -180,3 +180,28 @@ export function parseSecTickers(body: unknown): { companies: SecCompany[]; skipp
   }
   return { companies, skipped };
 }
+
+// --- Tiingo : historique quotidien d'un titre américain ------------------------------
+
+/**
+ * GET /tiingo/daily/{ticker}/prices?startDate=… : [{date: "AAAA-MM-JJT00:00:00.000Z",
+ * close, adjClose, open, high, low, volume, divCash, splitFactor}] (réponse
+ * réelle du 20/11/2026). On garde la clôture brute (non ajustée), comme Massive.
+ */
+export function parseTiingoDaily(body: unknown): { rows: { value_date: string; close: string }[]; skipped: number } {
+  if (!Array.isArray(body)) {
+    const detail = body && typeof body === 'object' && typeof (body as { detail?: unknown }).detail === 'string'
+      ? (body as { detail: string }).detail : 'liste attendue';
+    throw new Error(`Tiingo : ${detail.slice(0, 200)}`);
+  }
+  const rows: { value_date: string; close: string }[] = [];
+  let skipped = 0;
+  for (const r of body as Record<string, unknown>[]) {
+    const date = typeof r?.date === 'string' ? r.date.slice(0, 10) : '';
+    const close = decimalText(r?.close);
+    if (!DATE.test(date) || !close) { skipped++; continue; }
+    rows.push({ value_date: date, close });
+  }
+  rows.sort((a, b) => a.value_date.localeCompare(b.value_date));
+  return { rows, skipped };
+}

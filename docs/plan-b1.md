@@ -1,6 +1,6 @@
 # Plan B1 — Portefeuille
 
-> **Validé le 20/11/2026 (T-038 : XTB, PEA et CTO, performances depuis le 28/09/2026, benchmarks MSCI World et S&P 500, ventilation des ETF affichée).** Cadre : `docs/plan-bourse.md` (T-036), décisions T-027 à T-034, fondations de B0 (`docs/plan-b0.md`). Le code commence après la porte de B0, le 21/11 au matin, et cède la priorité à P1 autour du 04/12, du 08/12 et du 10/12 (T-027).
+> **Codé le 20/11/2026 (T-039 : écarts au plan ci-dessous).** Validé le 20/11/2026 (T-038 : XTB, PEA et CTO, performances depuis le 28/09/2026, benchmarks MSCI World et S&P 500, ventilation des ETF affichée).** Cadre : `docs/plan-bourse.md` (T-036), décisions T-027 à T-034, fondations de B0 (`docs/plan-b0.md`). Le code commence après la porte de B0, le 21/11 au matin, et cède la priorité à P1 autour du 04/12, du 08/12 et du 10/12 (T-027).
 
 ## 1. Objectif et porte
 
@@ -140,3 +140,13 @@ Conçu avec le design system, sans maquette (T-033). Morceaux repris du Trading 
 - Q3 : performances depuis le 28/09/2026 ;
 - Q4 : MSCI World et S&P 500, sans le CAC 40 ;
 - Q5 : ventilation affichée, saisie depuis les fiches des émetteurs.
+
+## 11. Écarts au plan, à la réalisation (T-039)
+
+- **Valorisation calculée à la demande** : `GET /api/bourse/portfolio` recalcule tout à partir des opérations, des clôtures et des cours BCE, en quelques millisecondes. Il n'y a pas de tâche `valuation` ni de table `daily_valuations` : rien à resynchroniser, et le résultat suit toujours les dernières clôtures. `rate_schedules` et `tax_rates` attendent les livrets et l'assurance-vie.
+- **Format d'import** : celui des exports de Clément, le modèle Baggr (feuille « Opérations », règles de la feuille « Aide »). Le navigateur lit le .xlsx sans dépendance (`web/src/bourse/xlsx.ts`, décompression native) ; le serveur valide tout (`api/_lib/bourse/importer.ts`). Les deux exports réels sont importés le 20/11/2026, sans erreur.
+- **Import atomique** : la fonction SQL `bourse_import` crée l'enveloppe, le lot et ses opérations dans une seule transaction. Supprimer un lot supprime ses opérations.
+- **TRI** : il n'est pas annualisé sous un an (TRI de la période, règle des normes GIPS). Il est annualisé au-delà.
+- **Rattrapage des cotations américaines** : nouvelle tâche `us-backfill` (Tiingo, 150 jours, 06:20 UTC du mardi au samedi). Elle ne fait aucun appel quand rien n'est à rattraper.
+- **Ventilation des ETF** : la table `instrument_exposures` et son affichage sont prêts. Les fiches des émetteurs restent à saisir, hors dépôt puisqu'elles révèlent les lignes ; d'ici là, la part est « Non ventilé ».
+
