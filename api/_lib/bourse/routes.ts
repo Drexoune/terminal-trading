@@ -59,8 +59,13 @@ export function routeOf(request: Request): { route: string; query: Request } {
   const url = new URL(request.url);
   let route = '';
   const m = /^\/api\/bourse\/([a-z0-9-]+)\/?$/.exec(url.pathname);
-  if (m) route = m[1];
-  else if (url.pathname.replace(/\/$/, '') === '/api/bourse') {
+  if (m) {
+    // Sur Vercel, la fonction reçoit le chemin d'origine ET le « path » ajouté
+    // par la réécriture de vercel.json : on le retire pour que readQuery ne le
+    // prenne pas pour un paramètre de la route.
+    route = m[1];
+    if (url.searchParams.get('path') === route) url.searchParams.delete('path');
+  } else if (url.pathname.replace(/\/$/, '') === '/api/bourse') {
     route = url.searchParams.get('path') ?? '';
     url.searchParams.delete('path');
   }

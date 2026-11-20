@@ -93,6 +93,17 @@ describe('routage', () => {
     expect(new URL(r.query.url).search).toBe('?listing=3');
   });
 
+  it('chemin d’origine avec le paramètre ajouté par la réécriture Vercel', async () => {
+    const r = routeOf(new Request('https://x/api/bourse/session?path=session'));
+    expect(r.route).toBe('session');
+    expect(new URL(r.query.url).search).toBe('');
+    const q = routeOf(new Request('https://x/api/bourse/quote?listing=3&path=quote'));
+    expect(q.route).toBe('quote');
+    expect(new URL(q.query.url).search).toBe('?listing=3');
+    const { fetch } = fakeSupabase({ failures: 0 });
+    expect((await handleBourse(req('/api/bourse/session?path=session'), ctx(fetch))).status).toBe(200);
+  });
+
   it('404 route inconnue, 405 méthode', async () => {
     const { fetch } = fakeSupabase({ failures: 0 });
     expect((await handleBourse(req('/api/bourse/admin'), ctx(fetch))).status).toBe(404);
