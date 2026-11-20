@@ -1,6 +1,6 @@
 # Plan B1 — Portefeuille
 
-> **Validé le 20/11/2026 (T-038 : XTB, PEA seul, performances depuis le 28/09/2026, benchmarks MSCI World et S&P 500, ventilation des ETF affichée).** Cadre : `docs/plan-bourse.md` (T-036), décisions T-027 à T-034, fondations de B0 (`docs/plan-b0.md`). Le code commence après la porte de B0, le 21/11 au matin, et cède la priorité à P1 autour du 04/12, du 08/12 et du 10/12 (T-027).
+> **Validé le 20/11/2026 (T-038 : XTB, PEA et CTO, performances depuis le 28/09/2026, benchmarks MSCI World et S&P 500, ventilation des ETF affichée).** Cadre : `docs/plan-bourse.md` (T-036), décisions T-027 à T-034, fondations de B0 (`docs/plan-b0.md`). Le code commence après la porte de B0, le 21/11 au matin, et cède la priorité à P1 autour du 04/12, du 08/12 et du 10/12 (T-027).
 
 ## 1. Objectif et porte
 
@@ -54,7 +54,7 @@ Ces calculs sont faits dans notre code, en décimal exact pour les montants (`nu
   - bêta et corrélation contre chaque benchmark, sur les jours communs.
 
   En dessous de 60 jours de données : « — · historique trop court ».
-- **Benchmarks** (T-038) : ETF de référence, dividendes réinvestis (plan Bourse § 1) : MSCI World (`CW8.PAR`) et S&P 500 (`ESE.PAR`, déjà suivi). Une seule requête Alpha Vantage de plus par nuit (`CW8.PAR`), soit 7 sur 20.
+- **Benchmarks** (T-038) : ETF de référence, dividendes réinvestis (plan Bourse § 1) : MSCI World (`CW8.PAR`) et S&P 500. Un benchmark déjà suivi comme ligne ne coûte rien de plus ; `CW8.PAR` ajoute au plus une requête Alpha Vantage par nuit, dans le budget de 20.
 - **Origine** : toutes les performances « depuis l'origine » partent du 28/09/2026 (T-038).
 
 ## 4. Tables (migration `…_bourse_b1.sql`)
@@ -136,7 +136,7 @@ Conçu avec le design system, sans maquette (T-033). Morceaux repris du Trading 
 
 **Réponses de Clément (20/11/2026, T-038)** :
 - Q1 : XTB ;
-- Q2 : PEA seul ;
+- Q2 : PEA seul, puis CTO ajouté après lecture des exports ;
 - Q3 : performances depuis le 28/09/2026 ;
 - Q4 : MSCI World et S&P 500, sans le CAC 40 ;
 - Q5 : ventilation affichée, saisie depuis les fiches des émetteurs.

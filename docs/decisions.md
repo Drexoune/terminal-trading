@@ -42,7 +42,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-035 | 19/11/2026 | Calendrier P1 révisé | Rafale de mesure sur le rapport emploi du 04/12 ; répétition sur la productivité du 08/12 ; porte inchangée le 10/12 |
 | T-036 | 19/11/2026 | Plan Bourse | Plan révisé (`docs/plan-bourse.md`) validé par Clément ; B0 commence par son plan détaillé |
 | T-037 | 19/11/2026 | Plan B0 | Validé : exploration en ligne, session de 30 jours, porte sur les lignes du portefeuille ; menu Bourse repliable |
-| T-038 | 20/11/2026 | Plan B1 | Courtier XTB ; PEA seul ; performances depuis le 28/09/2026 ; benchmarks MSCI World et S&P 500 ; ventilation des ETF affichée |
+| T-038 | 20/11/2026 | Plan B1 | Courtier XTB ; PEA et CTO ; performances depuis le 28/09/2026 ; benchmarks MSCI World et S&P 500 ; ventilation des ETF affichée |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -409,6 +409,11 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 **Conséquences.**
 
 - Les performances partent du 28/09/2026. Il faut donc les opérations depuis cette date : l'export XTB devient la source principale, et le Trading Desk ne sert plus qu'à contrôler les positions du jour. B1.4 (import .xlsx) passe avant B1.3.
-- `CAC.PAR` reste relevé parce que c'est une ligne du PEA, mais il ne sert pas de benchmark. Une seule requête Alpha Vantage de plus par nuit (`CW8.PAR`), soit 7 sur 20.
+- Un benchmark déjà suivi comme ligne ne coûte rien de plus ; `CW8.PAR` ajoute au plus une requête Alpha Vantage par nuit, dans le budget de 20.
 - Aucune source gratuite ne donne la composition des ETF. La ventilation par pays, secteur et devise est saisie depuis la fiche de chaque émetteur, avec l'adresse et la date de la fiche, puis affichée avec sa source et sa date. Une fiche de plus de 3 mois est marquée « périmée ». La part non couverte reste « Non ventilé ».
 
+**Complément du 20/11/2026, après lecture des exports XTB** (fichiers au format d'import Baggr, gardés hors du dépôt comme les lignes suivies) :
+
+- **Le CTO entre dans B1** (décision de Clément). Ses titres américains sont relevés par Massive, sans coût de quota ; ses intérêts et ses taxes sont des opérations du compte.
+- **Une ligne se suit sur la place où elle a été achetée.** L'export indique la place de chaque achat ; le script des lignes, hors dépôt, est corrigé en conséquence.
+- **L'aperçu de l'import contrôle la cohérence entre ISIN et mnémonique** à l'aide du référentiel (OpenFIGI) et propose l'ISIN du référentiel. Un export saisi à la main peut en effet porter l'ISIN d'un autre fonds de la même gamme.
