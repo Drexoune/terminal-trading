@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ALL_MODULES, MODULES, SETTINGS_PATH } from './modules';
 import { CommandPalette, usePaletteShortcut } from './palette/CommandPalette';
 import { PortfolioScreen } from './screens/bourse/Portfolio';
+import { CalendarScreen } from './screens/calendar/Calendar';
 import { SourcesScreen } from './screens/bourse/Sources';
 import { Charts } from './screens/charts/Charts';
 import { DesignSystem } from './screens/design-system/DesignSystem';
@@ -11,7 +12,7 @@ import { PlaceholderScreen } from './screens/placeholder/Placeholder';
 import { SettingsScreen } from './screens/settings/Settings';
 import { AppShell } from './shell/AppShell';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);

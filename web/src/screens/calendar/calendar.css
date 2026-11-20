@@ -1,0 +1,61 @@
+/* Calendrier économique (E2) : mesures relevées sur design/maquettes/png/Calendrier.png. Tokens seuls. */
+.cal { display: flex; flex-direction: column; align-items: stretch; gap: 12px; }
+.cal > * { min-width: 0; }
+.cal-tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.cal-week { display: flex; align-items: center; gap: 8px; }
+.cal-week__label { min-width: 144px; text-align: center; color: var(--text-1); font-family: var(--font-mono); font-size: 13px; }
+.btn--icon { width: var(--control-h); padding: 0; justify-content: center; }
+.cal-toggles { display: flex; flex-wrap: wrap; gap: 6px; }
+.cal-toggle { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border: 1px solid var(--line-strong);
+  border-radius: var(--radius-chip); background: transparent; color: var(--text-3); font: inherit; font-family: var(--font-mono);
+  font-size: var(--fs-chip); letter-spacing: var(--tracking-chip); cursor: pointer; }
+.cal-toggle[aria-pressed="true"] { border-color: var(--gold-mid); color: var(--gold); background: var(--bg-panel); }
+.flag { display: inline-block; width: 20px; height: 14px; object-fit: cover; border-radius: 1px; flex: none; }
+.flag--none { background: var(--bg-panel-2); }
+.cal-search input { width: 100%; height: var(--control-h); padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--radius-control);
+  background: var(--bg-panel); color: var(--text-1); font: inherit; }
+.cal-grid { display: grid; grid-template-columns: minmax(0, 1fr) 402px; gap: var(--gap); align-items: start; }
+.cal-side { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
+.cal-table { width: 100%; border-collapse: collapse; }
+.cal-table th { height: 34px; padding: 0 8px; text-align: left; font-weight: 500; white-space: nowrap; }
+.cal-table td { height: 46px; padding: 4px 8px; border-top: 1px solid var(--line); vertical-align: middle; }
+.cal-table th:first-child, .cal-table td:first-child { padding-left: 14px; }
+.cal-table th:last-child, .cal-table td:last-child { padding-right: 14px; }
+.cal-table .r { text-align: right; }
+.cal-day th { height: 36px; padding-left: 14px; border-top: 1px solid var(--line); background: var(--bg-panel-2); }
+.cal-today { margin-left: 12px; color: var(--gold); }
+.cal-row { cursor: pointer; }
+.cal-row:hover td { background: var(--bg-panel-2); }
+.cal-row.is-selected td, .cal-row--new td { background: var(--bg-selected); }
+.cal-row.is-past td { color: var(--text-2); }
+.cal-cur { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 13px; }
+.cal-title { min-width: 0; }
+.cal-title__btn { padding: 0; border: 0; background: none; color: var(--text-1); font: inherit; text-align: left; cursor: pointer; }
+.cal-vo, .cal-warn { display: block; }
+.cal-warn { color: var(--gold); }
+.cal-pending { margin-top: 4px; }
+.cal-off { margin-left: 6px; color: var(--gold-mid); font-size: 8px; vertical-align: middle; }
+.impact { display: inline-flex; gap: 2px; align-items: flex-end; height: 14px; }
+.impact i { display: block; width: 4px; height: 14px; background: var(--line-strong); }
+.impact i.on { background: var(--gold); }
+.cal-card { display: flex; flex-direction: column; gap: 10px; padding: 12px 14px; }
+.cal-card__kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.cal-card__kpis > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.cal-card__big { color: var(--gold); font-size: var(--fs-kpi); }
+.cal-card__meta { margin: 0; line-height: 1.5; }
+.cal-card__hist { min-height: 463px; }
+.cal-btc { min-height: 185px; }
+
+@media (max-width: 1100px) {
+  .cal-grid { grid-template-columns: minmax(0, 1fr); }
+}
+/* Téléphone : chaque événement devient une carte (aucun défilement horizontal). */
+@media (max-width: 640px) {
+  .cal-table thead { display: none; }
+  .cal-table tr.cal-row { display: grid; grid-template-columns: auto auto 1fr; gap: 4px 10px; padding: 8px 14px; border-top: 1px solid var(--line); }
+  .cal-table tr.cal-row td { height: auto; padding: 0; border: 0; }
+  .cal-table tr.cal-row td.cal-title { grid-column: 1 / -1; }
+  .cal-table tr.cal-row td.r { text-align: left; }
+  .cal-table tr.cal-row td.r::before { content: attr(data-label); }
+  .cal-card__kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

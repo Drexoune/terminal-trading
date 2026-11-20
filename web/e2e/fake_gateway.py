@@ -25,6 +25,7 @@ from terminal_gateway.bus import Bus
 from terminal_gateway.config import Settings
 
 FIX = json.loads((Path(__file__).parent / "fixtures" / "main-demo.json").read_text())
+CAL = json.loads((Path(__file__).parent / "fixtures" / "calendar-demo.json").read_text())
 START = int(datetime.fromisoformat(FIX["now"].replace("Z", "+00:00")).timestamp() * 1000)
 DELTA = START - time.time_ns() // 1_000_000
 
@@ -93,6 +94,19 @@ class DemoService:
                                               "ts_source": now, "ts_recv": now})
         self.bus.publish("clock:okx", {"offset_ms": 3.0, "uncertainty_ms": 9.0, "ok": True,
                                        "ts_recv": now})
+        # Agenda de démonstration (maquette Calendrier) : semaine, prochains événements, flux.
+        stamp = {"source_ts_ms": now - 600_000, "received_ms": now - 120_000}
+        week = {**CAL["week"], "forexfactory": stamp}
+        self.bus.publish(f"calendar:week:{week['week']}", week)
+        upcoming = [e for e in week["events"]
+                    if e["time_ms"] > now and e["impact"] in ("High", "Medium")]
+        self.bus.publish("calendar:next", {"events": upcoming[:5], "computed_ms": now,
+                                           "week": week["week"], "forexfactory": stamp})
+        self.bus.publish("feed:calendar", {
+            "name": "calendar", "label": "Calendrier", "status": "connected",
+            "connected_since_ms": now - 3_600_000, "last_message_ms": now - 120_000,
+            "reconnects": 0, "outages": [], "last_error": None,
+            "late_after_ms": 75 * 60_000, "stale_after_ms": 3 * 3_600_000})
         self._task = asyncio.create_task(self._tick())
 
     async def _tick(self) -> None:

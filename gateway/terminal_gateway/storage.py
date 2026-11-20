@@ -75,6 +75,23 @@ MIGRATIONS: list[list[str]] = [
         "create index calendar_events_identity on calendar_events (identity, last_seen_ms)",
         "create index calendar_events_time on calendar_events (ff_time_ms)",
     ],
+    # 2 — calendrier officiel (E2) : une ligne par publication et par date annoncée ;
+    # une date qui change crée une nouvelle ligne (l'ancienne garde son dernier relevé).
+    [
+        """create table official_releases (
+             id integer primary key,
+             source text not null,                -- « BLS »
+             title text not null,                 -- « Consumer Price Index »
+             local_date text not null,
+             local_time text not null,
+             tz text not null,                    -- zone IANA
+             utc_ms integer not null,
+             first_seen_ms integer not null,
+             last_seen_ms integer not null,
+             unique (source, title, local_date, local_time)
+           )""",
+        "create index official_releases_time on official_releases (utc_ms)",
+    ],
 ]
 
 

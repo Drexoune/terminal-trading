@@ -32,6 +32,14 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => { if (open) setTimeout(() => input.current?.focus(), 0); }, [open]);
+  // Échap ferme la palette où que soit le focus : il n'entre dans le champ qu'au
+  // tour suivant de la boucle, et un Échap tapé aussitôt ne doit pas être perdu.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') { e.preventDefault(); onClose(); } };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
 
   if (!open) return null;
   const go = (path: string) => { onClose(); navigate(path); };
@@ -43,7 +51,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
           const e = ENTRIES.find((x) => x.command === value);
           return e ? matchEntry(e, search) : 0;
         }}
-        onKeyDown={(e) => { if (e.key === 'Escape') { e.preventDefault(); onClose(); } }}>
+>
         <label className="palette__input">
           <Icon name="search" size={18} />
           <span className="sr">Commande</span>
