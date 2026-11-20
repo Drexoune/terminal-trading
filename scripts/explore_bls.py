@@ -93,7 +93,10 @@ PROBE_URLS = [
     "https://www.dol.gov/ui/data.pdf",
 ]
 
-ARCHIVE_INDEX = {e: f"{BLS}/bls/news-release/{e}.htm" for e in ("cpi", "empsit", "ppi", "prod2")}
+# Index des communiqués archivés. Celui de la productivité s'appelle « prod.htm »
+# (relevé le 20/11/2026 : « prod2.htm » répond 404), ses communiqués « prod2_MMJJAAAA.htm ».
+ARCHIVE_INDEX = {e: f"{BLS}/bls/news-release/{e}.htm" for e in ("cpi", "empsit", "ppi")}
+ARCHIVE_INDEX["prod2"] = f"{BLS}/bls/news-release/prod.htm"
 
 TITLE_RE = re.compile(rb"<title[^>]*>(.*?)</title>", re.S | re.I)
 # Mensuel « 2026 M10 Results », trimestriel « 2026 Q03 Results ».
