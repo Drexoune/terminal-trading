@@ -86,3 +86,16 @@ La page ne fait aucune requête réseau.
 | 3 | `data/explore/news/<date>_watch.zip` | volume et délai de Tree of Alpha |
 | 4 | `data/explore/bls/<date>_archives.zip` | corpus du parseur |
 | 5 | rapport JSON copié | choix des voix et normalisation des nombres pour le squawk |
+
+## Résultats
+
+### 20/11/2026 : lancés par Claude Code sur le Mac
+
+- **Flux RSS** : les 15 flux répondent en HTTP 200. FinancialJuice renvoie 100 articles. RBA n'en renvoie qu'un seul, à revoir en E6. Archive : `data/explore/news/2026-11-20_rss.zip`.
+- **Sonde du BLS** : toutes les adresses répondent en 200, en 50 à 600 ms, depuis le Mac avec l'adresse de contact dans le User-Agent. Les pages des communiqués (`*.nr0.htm`, `*.htm`) ne portent ni `Last-Modified` ni `ETag`, donc aucune requête conditionnelle n'est possible : la capture d'E3 relit la page entière (90 ko pour `cpi.nr0.htm`). L'API v1 répond `no-cache, no-store`.
+- **Calendrier du BLS** : les dates relevées sur les pages `schedule/news_release/*.htm` sont rapport emploi le 04/12, productivité (révisée) le 08/12, CPI le 10/12 et PPI le 15/12, toutes à 08:30 à New York.
+- **Communiqués archivés** : 36 pour le CPI, le rapport emploi et le PPI, et 12 pour la productivité, soit 120 pages. Archive : `data/explore/bls/2026-11-20_archives.zip`.
+  - L'index de la productivité s'appelle `bls/news-release/prod.htm`, et non `prod2.htm` (404). Le script est corrigé.
+  - L'index du rapport emploi publie déjà le lien du 04/12 (`empsit_12042026.htm`), qui répond 404 avant la publication.
+- **Tree of Alpha** : écoute lancée le 20/11 à 16:01 pour 3 jours. Le Python de python.org n'a pas de magasin de certificats : sans `SSL_CERT_FILE` pointant vers `certifi`, la connexion `wss://` échoue (`CERTIFICATE_VERIFY_FAILED`). Le script s'en chargera lui-même en E1.
+- **Encore à faire** : la rafale du 04/12 et la page de test des voix (§ 5).
