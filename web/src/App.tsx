@@ -13,10 +13,11 @@ import { PlaceholderScreen } from './screens/placeholder/Placeholder';
 import { SettingsScreen } from './screens/settings/Settings';
 import { SquawkScreen } from './screens/squawk/Squawk';
 import { NewsScreen } from './screens/news/News';
+import { HoursScreen } from './screens/hours/Hours';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);

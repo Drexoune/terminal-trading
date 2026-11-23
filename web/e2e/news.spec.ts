@@ -58,6 +58,21 @@ test('Actus : titres en VO, filtres, lecture avec heures de la source et de lect
   await expect(article.getByLabel(/aucun résumé dans le flux/)).toBeVisible();
 });
 
+test('Actus : mots du domaine surlignés, liste modifiable (Mode Online seulement)', async ({ page }) => {
+  await page.goto('/actus');
+  const list = page.getByRole('list', { name: 'Titres' });
+  await expect(list.locator('.news-row').first()).toBeVisible({ timeout: 15_000 });
+  await expect(list.locator('mark.news-hl', { hasText: 'bitcoin' }).first()).toBeVisible();
+  await expect(list.locator('mark.news-hl', { hasText: 'ETFs' }).first()).toBeVisible();
+  await expect(list.locator('mark.news-hl', { hasText: 'CPI' }).first()).toBeVisible();
+  await page.getByText(/Mots surlignés · \d+ · liste par défaut/).click();
+  const words = page.getByRole('list', { name: 'Mots surlignés' });
+  await expect(words.getByText('Nvidia', { exact: true })).toBeVisible();
+  await page.getByPlaceholder('Ajouter un mot ou une expression…').fill('Lululemon');
+  await page.getByRole('button', { name: 'Ajouter' }).click();
+  await expect(page.getByRole('status')).toContainText('Mode Online seulement');
+});
+
 test('Vue d’ensemble : Titres urgents = 4 derniers titres à fort impact', async ({ page }) => {
   await page.goto('/');
   const panel = page.getByRole('region', { name: 'Titres urgents' });

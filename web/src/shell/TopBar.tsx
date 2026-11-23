@@ -4,7 +4,8 @@ import { Button, IconButton, Missing } from '../components/ui';
 import { modeDef, type Mode } from '../config/modes';
 import { useSettings } from '../config/settings';
 import { fmtDuration, fmtNumber, fmtSigned, NBSP } from '../lib/format';
-import { MARKETS, fmtHm, fmtHms, isMarketOpen } from '../lib/time';
+import { exchange, marketStatus } from '../hours/exchanges';
+import { MARKETS, fmtHm, fmtHms } from '../lib/time';
 import { freshness } from '../data/latency';
 import type { ClockState, FeedState, Ticker } from '../data/protocol';
 import { MAIN_INST, useConn, useLatency, useValue } from '../data/store';
@@ -17,10 +18,13 @@ export function Clocks({ now }: { now: number }) {
   return (
     <div className="num clocks" aria-label="Horloges des places">
       {MARKETS.map((m) => {
-        const open = isMarketOpen(m, now);
+        // Jours fériés et séances écourtées compris (module Horaires des marchés).
+        const st = marketStatus(exchange(m.code), now);
+        const open = st.state === 'ouvert';
+        const why = st.holiday ? `fermé (${st.holiday})` : open ? 'marché ouvert' : 'marché fermé';
         return (
           <span key={m.code} className={`clock${m.code === 'NY' && open ? ' clock--ny-open' : ''}`}
-            title={`${m.name} (${m.tz}) : ${open ? 'marché ouvert' : 'marché fermé'}`}>
+            title={`${m.name} (${m.tz}) : ${why}`}>
             <span className={`dot${open ? ' dot--gold' : ''}`} />
             {m.code} <span className="clock__time">{fmtHm(now, m.tz)}</span>
             <span className="sr">{open ? ', ouvert' : ', fermé'}</span>

@@ -1,0 +1,41 @@
+/* Horaires des marchés (P1) : pas de maquette, construit avec le design system (T-033). Tokens seuls. */
+.hours-grid { display: grid; grid-template-columns: minmax(0, 1fr) 402px; gap: var(--gap); align-items: start; }
+.hours-grid > * { min-width: 0; }
+.hours-main { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
+.hours-tl { padding: 14px 14px 10px; }
+.hours-tl__row { display: grid; grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 10px; height: 30px; }
+.hours-tl__name { color: var(--text-1); font-family: var(--font-mono); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hours-tl__track { position: relative; height: 14px; background: var(--bg-panel-2); }
+.hours-tl__bar { position: absolute; top: 0; bottom: 0; background: var(--gold-mid); }
+.hours-tl__bar.is-open { background: var(--gold); }
+.hours-tl__bar--continu { background: var(--line-strong); }
+.hours-tl__off { position: absolute; inset: 0; display: flex; align-items: center; padding-left: 6px; color: var(--text-3); font-size: 10px; }
+.hours-tl__now { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--up); }
+.hours-tl__axis { position: relative; height: 16px; margin-left: 106px; color: var(--text-3); font-size: 10px; }
+.hours-tl__axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.hours-table { width: 100%; border-collapse: collapse; }
+.hours-table th { height: 34px; padding: 0 8px; text-align: left; font-weight: 500; white-space: nowrap; }
+.hours-table td { height: 52px; padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: middle; }
+.hours-table th:first-child, .hours-table td:first-child { padding-left: 14px; }
+.hours-table th:last-child, .hours-table td:last-child { padding-right: 14px; }
+.hours-table .r { text-align: right; }
+.hours-place { display: flex; flex-direction: column; gap: 3px; }
+.hours-place b { color: var(--text-1); font-weight: 500; }
+.hours-next { color: var(--text-1); white-space: nowrap; }
+.hours-sess .lbl { display: block; margin-top: 3px; }
+.hours-closures { margin: 0; padding: 0; list-style: none; }
+.hours-closures li { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.hours-closures li:first-child { border-top: 0; }
+.hours-closures .num { color: var(--gold); }
+.hours-src { margin: 0; padding: 12px 14px; border-top: 1px solid var(--line); line-height: 1.6; }
+.hours-src a { color: var(--text-2); }
+@media (max-width: 1100px) { .hours-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 760px) {
+  .hours-table .hide-s, .hours-table .hide-xs { display: none; }
+  .hours-table td, .hours-table th { padding-left: 6px; padding-right: 6px; }
+  .hours-table .hours-next { white-space: normal; font-size: 12px; }
+  .hours-place .lbl { display: none; }
+  .hours-tl__axis span:nth-child(even) { display: none; }
+  .hours-tl__row { grid-template-columns: 64px minmax(0, 1fr); }
+  .hours-tl__axis { margin-left: 74px; }
+}

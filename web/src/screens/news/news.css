@@ -3,6 +3,16 @@
 .news-grid > * { min-width: 0; }
 .news-tools { display: flex; flex-direction: column; gap: 12px; padding: 14px; border-bottom: 1px solid var(--line); }
 .news-cats .cal-toggle { text-transform: uppercase; }
+.news-hl { padding: 0 1px; border-bottom: 1px solid var(--gold-mid); background: transparent; color: var(--gold-hi, var(--gold)); }
+.news-hl-edit summary { cursor: pointer; color: var(--text-2); }
+.news-hl-edit[open] summary { margin-bottom: 10px; }
+.news-hl-list { display: flex; flex-wrap: wrap; gap: 6px; max-height: 168px; margin: 0 0 10px; padding: 0; overflow-y: auto; list-style: none; }
+.news-hl-list li { display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 4px 0 8px; border: 1px solid var(--line-strong);
+  border-radius: var(--radius-chip); color: var(--text-1); font-size: 12px; }
+.news-hl-list button { width: 18px; height: 18px; padding: 0; border: 0; background: none; color: var(--text-3); cursor: pointer; font: inherit; }
+.news-hl-list button:hover { color: var(--gold); }
+.news-hl-add { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.news-hl-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; }
 .news-search input { width: 100%; height: var(--control-h); padding: 0 12px; border: 1px solid var(--line-strong);
   border-radius: var(--radius-control); background: var(--bg-panel); color: var(--text-1); font: inherit; }
 .news-list { margin: 0; padding: 0; list-style: none; max-height: 980px; overflow-y: auto; }

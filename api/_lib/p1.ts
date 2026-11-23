@@ -7,6 +7,7 @@
 //                                   et réactions du BTC des 40 derniers jours, état de la capture,
 //                                   titres du fil d'actus des 48 dernières heures (O6)
 //   GET /api/p1/calendar?week=…     une semaine de l'archive (« AAAA-Wnn »)
+//   POST /api/p1/highlights         mots surlignés du fil d'actus (T-050), derrière le mot de passe
 //   POST /api/p1/displayed          heure d'affichage d'un chiffre capté (porte P1), la première
 //                                   seulement, dans la minute qui suit sa publication
 
@@ -14,8 +15,37 @@ import { HttpError, json, NO_STORE, readQuery, respond } from './http.js';
 import type { Context } from './routes.js';
 import { rest, supabaseConfig, type SupabaseConfig } from './supabase.js';
 import type { FetchFn } from './okx.js';
+import { sameOriginJson } from './bourse/auth.js';
+import { sessionProblem } from './bourse/routes.js';
 
-export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'feed:news', 'news:feeds', 'release:state', 'release:last'] as const;
+/** Mots surlignés du fil d'actus (T-050) : 1 à 200 mots ou expressions, 40 caractères au plus. */
+export const HIGHLIGHT_MAX = 200;
+const HIGHLIGHT_WORD = /^[\p{L}\p{N}][\p{L}\p{N} &.'’+\-/]{0,39}$/u;
+
+export function validHighlights(body: unknown): string[] {
+  const words = (body as { words?: unknown } | null)?.words;
+  if (!Array.isArray(words)) throw new HttpError(400, 'words : liste de mots attendue');
+  const seen = new Set<string>();
+  const clean = words.map((w) => String(w).trim().replace(/\s+/g, ' '))
+    .filter((w) => w && !seen.has(w.toLowerCase()) && seen.add(w.toLowerCase()));   // première graphie gardée
+  if (clean.length > HIGHLIGHT_MAX) throw new HttpError(400, `${HIGHLIGHT_MAX} mots au plus`);
+  const bad = clean.find((w) => !HIGHLIGHT_WORD.test(w));
+  if (bad !== undefined) throw new HttpError(400, `mot refusé : « ${bad.slice(0, 40)} » (lettres, chiffres, espaces et & . ' + - / ; 40 caractères au plus)`);
+  return clean;
+}
+
+async function saveHighlights(cfg: SupabaseConfig, fetchFn: FetchFn, now: number, words: string[]) {
+  const r = await fetchFn(`${cfg.url}/rest/v1/p1_state?on_conflict=key`, {
+    method: 'POST',
+    headers: { ...cfg.headers, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates,return=minimal' },
+    body: JSON.stringify([{ key: 'news:highlight', value: { words, updated_ms: now }, updated_ms: now }]),
+    signal: AbortSignal.timeout(4000),
+  });
+  if (!r.ok) throw new HttpError(502, `Supabase indisponible : HTTP ${r.status} sur p1_state`);
+  return { words, updated_ms: now };
+}
+
+export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'feed:news', 'news:feeds', 'news:highlight', 'release:state', 'release:last'] as const;
 /** Titres du fil d'actus (O6) relus au chargement : 48 dernières heures, 400 au plus. */
 export const NEWS_MS = 48 * 3_600_000;
 export const NEWS_MAX = 400;
@@ -115,6 +145,21 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
         throw new HttpError(400, 'JSON illisible');
       }
       return json(await p1Displayed(cfg.config, ctx.deps.fetch, ctx.deps.now(), body), NO_STORE);
+    }
+    if (path === 'highlights') {
+      // Écriture derrière le mot de passe d'application (T-031) ; la lecture passe par /state.
+      if (request.method !== 'POST') throw new HttpError(405, 'méthode non autorisée : POST attendu');
+      if (!sameOriginJson(request)) throw new HttpError(403, 'requête refusée : même origine et corps JSON exigés');
+      const problem = await sessionProblem(request, ctx.env, ctx.deps.now());
+      if (problem) throw new HttpError(problem.status, problem.reason);
+      if (!cfg.ok) throw new HttpError(503, `non configuré : ${cfg.reason}`);
+      let body: unknown;
+      try {
+        body = await request.json();
+      } catch {
+        throw new HttpError(400, 'JSON illisible');
+      }
+      return json(await saveHighlights(cfg.config, ctx.deps.fetch, ctx.deps.now(), validHighlights(body)), NO_STORE);
     }
     if (request.method !== 'GET') throw new HttpError(405, 'méthode non autorisée : GET attendu');
     if (path === 'state') {

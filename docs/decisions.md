@@ -54,6 +54,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-047 | 23/11/2026 | Écritures des alertes en ligne | Vercel vérifie la session et relaie à l'Edge Function p1-jobs ; P1_JOBS_SECRET aussi dans Vercel ; le Mac n'envoie plus d'alertes |
 | T-048 | 23/11/2026 | Réel de l'agenda | Chiffre structuré de FinancialJuice rattaché strictement à l'événement, marqué « FJ » ; jamais à la place du BLS |
 | T-049 | 23/11/2026 | P2 avant la porte P1 | Plan puis code de P2 sans attendre le 10/12, sans jamais toucher la capture de P1 ; P1 reste prioritaire |
+| T-050 | 23/11/2026 | Suivi de comptes X | Abandonné : aucune source gratuite et fiable ; le fil d'actus reste sur les banques centrales et FinancialJuice ; surlignage de mots-clés réglable sur ce fil |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -503,4 +504,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - Rien de P2 ne modifie la capture de P1 (`supabase/functions/p1-jobs/capture.ts` et ce qu'elle appelle, cron `p1-capture`, bandeau, `/api/p1/displayed`) ; P2 a ses propres tables, tâches et écran.
 - Tout problème de P1 (rapport emploi du 04/12, répétition du 08/12, IPC du 10/12) passe avant P2.
 - P2 commence en mode plan et attend l'accord de Clément avant d'écrire du code (`CLAUDE.md` § 7).
+
+## T-050 — Suivi de comptes X · 23/11/2026
+
+**Demande de Clément.** Un suivi de comptes X dans le fil d'actus, comptes choisis depuis le site, mots du domaine (Nvidia, Jensen, Fed…) surlignés, liste réglable, présentation inspirée du fil de X.
+
+**Faits vérifiés le 23/11/2026.**
+
+- API officielle de X : paiement à l'usage seulement, 0,005 $ par publication lue, aucun palier gratuit ; environ 30 $ par mois pour 20 comptes lus chaque minute.
+- Services tiers (SocialData 0,20 $ et twitterapi.io 0,15 $ pour 1 000 publications) : 2 à 7 $ par mois, mais données très probablement obtenues par aspiration, contraire aux conditions de X, sans garantie de durée.
+- Aspiration depuis Supabase : impossible sans compte connecté (adresses de centres de données bloquées), contraire aux conditions de X, risque de fermeture du compte.
+
+**Décision de Clément.** Pas de suivi de comptes X. Le fil d'actus garde les sources établies (8 banques centrales, FinancialJuice). Le surlignage des mots du domaine, avec une liste par défaut modifiable depuis le site, s'applique à ce fil.
 

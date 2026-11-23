@@ -12,6 +12,8 @@ import { useSettings } from '../../config/settings';
 import { ALERTS_STATUS_KEY, type AlertsOnlineStatus } from '../../data/online/alerts';
 import { useKeys, useValue } from '../../data/store';
 import { CATEGORY_LABEL, itemTime, urgentNews } from '../../news/news';
+import { Highlighted } from '../../news/Highlighted';
+import { useHighlights } from '../../news/highlight';
 import '../news/news.css';
 import { OFFLINE_REASON, useNews } from '../news/News';
 import { fmtHm } from '../../lib/time';
@@ -119,6 +121,7 @@ export function AlertsPanel() {
 export function HeadlinesPanel() {
   const { mode } = useSettings();
   const items = urgentNews(useNews());
+  const hl = useHighlights();
   return (
     <Panel title="Titres urgents" controls="none"
       chips={<Link className="chip chip--hot" to="/actus">Fil d’actus</Link>}>
@@ -134,7 +137,7 @@ export function HeadlinesPanel() {
                 <span className="news-row__time">{fmtHm(itemTime(i), 'Europe/Paris')}</span>
                 <span className="news-row__body">
                   <span className="news-row__chips"><span className="chip chip--s">{CATEGORY_LABEL[i.category]}</span></span>
-                  <span className="news-row__title" lang={i.lang}>{i.title}</span>
+                  <span className="news-row__title" lang={i.lang}><Highlighted text={i.title} words={hl.words} /></span>
                   <span className="lbl lbl--s" title="Langue d’origine (T-019)">{`${i.source} · VO`}</span>
                 </span>
               </Link>

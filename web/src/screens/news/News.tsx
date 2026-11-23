@@ -13,6 +13,8 @@ import {
   CATEGORIES, CATEGORY_LABEL, filterNews, fmtDateParis, itemTime, KIND_LABEL, readDelay, sortNews, todayCount,
   type FeedStatus, type NewsCategory, type NewsItem,
 } from '../../news/news';
+import { Highlighted } from '../../news/Highlighted';
+import { DEFAULT_HIGHLIGHTS, saveHighlights, useHighlights } from '../../news/highlight';
 import { SubHeader } from '../../shell/SubHeader';
 import { useNow } from '../../shell/useNow';
 
@@ -41,6 +43,7 @@ export function NewsScreen() {
   const [cat, setCat] = useState<NewsCategory | 'tout'>('tout');
   const [text, setText] = useState('');
   const [openId, setOpenId] = useState<number | null>(null);
+  const hl = useHighlights();
   const shown = useMemo(() => filterNews(items, cat, text), [items, cat, text]);
   const open = shown.find((i) => i.id === openId) ?? shown[0] ?? null;
   const blocked = feeds ? Object.entries(feeds).filter(([, f]) => f.status !== 'ok') : [];
@@ -68,6 +71,7 @@ export function NewsScreen() {
                   </button>
                 ))}
               </div>
+              <HighlightEditor words={hl.words} custom={hl.custom} online={mode === 'online'} />
               <label className="news-search">
                 <span className="sr">Filtrer les titres</span>
                 <input type="search" placeholder="Filtrer les titres…" value={text} onChange={(e) => setText(e.target.value)} />
@@ -84,7 +88,7 @@ export function NewsScreen() {
                       <span className="news-row__time" title={fmtDateParis(itemTime(i))}>{fmtHm(itemTime(i), PARIS)}</span>
                       <span className="news-row__body">
                         <ItemChips item={i} />
-                        <span className="news-row__title" lang={i.lang}>{i.title}</span>
+                        <span className="news-row__title" lang={i.lang}><Highlighted text={i.title} words={hl.words} /></span>
                         <span className="lbl lbl--s" title="Titre dans sa langue d’origine (T-019)">{`${KIND_LABEL[i.kind]} · ${i.source} · VO`}</span>
                       </span>
                     </button>
@@ -105,7 +109,7 @@ export function NewsScreen() {
                 <p className="news-read__meta">
                   {`${KIND_LABEL[open.kind]} · ${open.source} · ${fmtDateParis(itemTime(open))} · ${fmtHm(itemTime(open), PARIS)} (Paris)`}
                 </p>
-                <h2 className="news-read__title" lang={open.lang}>{open.title}</h2>
+                <h2 className="news-read__title" lang={open.lang}><Highlighted text={open.title} words={hl.words} /></h2>
                 {open.figure && (
                   <div className="news-read__figure" aria-label="Chiffre publié">
                     {([['Publié', open.figure.actual], ['Prévision', open.figure.forecast], ['Précédent', open.figure.previous], ['Révisé', open.figure.revised]] as const)
@@ -118,7 +122,7 @@ export function NewsScreen() {
                   </div>
                 )}
                 {open.summary
-                  ? <p className="news-read__summary" lang={open.lang}>{open.summary}</p>
+                  ? <p className="news-read__summary" lang={open.lang}><Highlighted text={open.summary} words={hl.words} /></p>
                   : <Missing reason="aucun résumé dans le flux : titre seul" />}
                 <dl className="news-read__facts">
                   <dt className="lbl lbl--s">Heure de la source</dt>
@@ -147,3 +151,50 @@ export function NewsScreen() {
     </>
   );
 }
+
+/** Liste des mots surlignés : ajout, retrait, retour à la liste par défaut (Mode Online, mot de passe). */
+function HighlightEditor({ words, custom, online }: { words: string[]; custom: boolean; online: boolean }) {
+  const [draft, setDraft] = useState('');
+  const [msg, setMsg] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const save = (next: string[], done: string) => {
+    if (!online) { setMsg('modification en Mode Online seulement (liste enregistrée dans Supabase)'); return; }
+    setBusy(true);
+    saveHighlights(next).then(() => setMsg(done), (e: Error) => setMsg(/^HTTP 401/.test(e.message)
+      ? 'session requise : saisir le mot de passe d’application dans Bourse, puis revenir ici'
+      : `non enregistré : ${e.message.replace(/^HTTP \d+\s*/, '').replace(/^\{"detail":"|"\}$/g, '')}`)).finally(() => setBusy(false));
+  };
+  const add = () => {
+    const w = draft.trim().replace(/\s+/g, ' ');
+    if (!w) return;
+    if (words.some((x) => x.toLowerCase() === w.toLowerCase())) { setMsg(`« ${w} » est déjà dans la liste`); return; }
+    save([...words, w], `« ${w} » ajouté`);
+    setDraft('');
+  };
+  return (
+    <details className="news-hl-edit">
+      <summary className="lbl lbl--s">{`Mots surlignés · ${words.length}${custom ? '' : ' · liste par défaut'}`}</summary>
+      <ul className="news-hl-list" aria-label="Mots surlignés">
+        {words.map((w) => (
+          <li key={w}>
+            <span>{w}</span>
+            <button type="button" aria-label={`Retirer ${w}`} disabled={busy}
+              onClick={() => save(words.filter((x) => x !== w), `« ${w} » retiré`)}>×</button>
+          </li>
+        ))}
+      </ul>
+      <form className="news-hl-add" onSubmit={(e) => { e.preventDefault(); add(); }}>
+        <label className="news-search"><span className="sr">Ajouter un mot</span>
+          <input value={draft} maxLength={40} placeholder="Ajouter un mot ou une expression…" onChange={(e) => setDraft(e.target.value)} />
+        </label>
+        <button type="submit" className="btn" disabled={busy || !draft.trim()}>Ajouter</button>
+      </form>
+      <div className="news-hl-foot">
+        <button type="button" className="btn btn--ghost" disabled={busy || !custom}
+          onClick={() => save([...DEFAULT_HIGHLIGHTS], 'liste par défaut rétablie')}>Liste par défaut</button>
+        {msg && <span className="lbl lbl--s" role="status">{msg}</span>}
+      </div>
+    </details>
+  );
+}
+
