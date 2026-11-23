@@ -92,6 +92,76 @@ MIGRATIONS: list[list[str]] = [
            )""",
         "create index official_releases_time on official_releases (utc_ms)",
     ],
+    # 3 — capture à l'heure H (E3) : première publication de chaque chiffre (jamais
+    # écrasée : `unique` + insertion sans remplacement), délais mesurés, journal des
+    # requêtes envoyées au BLS.
+    [
+        """create table releases (
+             id integer primary key,
+             indicator_id text not null references indicators (id),
+             release text not null,               -- « cpi », « empsit », « ppi », « prod2 »
+             period text not null,                -- « 2026-11 », « 2026-Q3 »
+             edition text not null default '',    -- « Preliminary », « Revised » (productivité)
+             ny_date text not null,               -- jour de publication à New York
+             value text,                          -- texte décimal tel que publié ; null si non lu
+             reason text,                         -- raison quand value est null
+             part text,                           -- « tableau A », « texte »
+             excerpt text,                        -- passage lu (citation de la source)
+             flags text not null default '[]',    -- JSON : « texte concordant », « hors bornes »…
+             timing text not null,                -- « attendue », « en avance », « en retard »
+             nature text not null default 'officielle',
+             scheduled_ms integer not null,
+             embargo_ms integer,
+             first_byte_ms integer,               -- premier octet de la page avec le chiffre
+             received_ms integer not null,        -- fin de lecture
+             url text not null,
+             machine text not null,
+             forecast text,                       -- prévision retenue (texte décimal)
+             forecast_raw text,
+             forecast_seen_ms integer,            -- dernière fois vue avant T
+             surprise text,                       -- réel - prévision (texte décimal)
+             z text,
+             z_n integer,
+             z_reason text,
+             regular integer not null default 1,  -- 0 : publication irrégulière, exclue de sigma
+             unique (indicator_id, period, edition)
+           )""",
+        "create index releases_indicator on releases (indicator_id, scheduled_ms)",
+        """create table release_timings (
+             id integer primary key,
+             release text not null,
+             period text not null,
+             edition text not null default '',
+             scheduled_ms integer not null,
+             last_without_ms integer,             -- envoi de la dernière requête sans le chiffre
+             first_send_ms integer,               -- envoi de la requête qui l'a rapporté
+             first_byte_ms integer,
+             parsed_ms integer,
+             bus_ms integer,
+             display_ms integer,                  -- heure d'affichage renvoyée par le front
+             okx_offset_ms real,                  -- horloge OKX - horloge locale
+             date_header text,                    -- en-tête Date de la réponse du BLS
+             unique (release, period, edition)
+           )""",
+        """create table release_polls (
+             id integer primary key,
+             release text not null,
+             scheduled_ms integer not null,
+             label text not null,                 -- « T-10min », « T-60s », « rafale », « fin »
+             url text not null,
+             send_ms integer not null,
+             first_byte_ms integer,
+             done_ms integer,
+             status integer,
+             size integer,
+             null_bytes integer,
+             period text,
+             embargo_date text,
+             verdict text,                        -- « référence », « inchangée », « attendue »…
+             error text
+           )""",
+        "create index release_polls_sched on release_polls (release, scheduled_ms)",
+    ],
 ]
 
 

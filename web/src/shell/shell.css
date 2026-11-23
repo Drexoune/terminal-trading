@@ -118,3 +118,15 @@
 .tip:hover .tip__body, .tip:focus-within .tip__body { display: block; }
 .tip__grid { display: grid; grid-template-columns: auto auto; gap: 4px 16px; margin-top: 8px; font-size: 12px; }
 .tip__grid > :nth-child(odd) { color: var(--text-2); }
+
+/* Bandeau de publication (E3) : dernière publication captée sur bls.gov, 15 minutes. */
+.release-banner { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; padding: 8px 16px;
+  border-bottom: 1px solid var(--gold-mid); background: var(--gold-deep); color: var(--text-1); }
+.release-banner__src { color: var(--gold); }
+.release-banner__warn { color: var(--down); }
+.release-banner__figs { display: flex; flex-wrap: wrap; gap: 6px 18px; min-width: 0; }
+.release-banner__fig { display: inline-flex; align-items: baseline; gap: 8px; min-width: 0; }
+.release-banner__value { color: var(--gold-hi); font-size: 15px; }
+.release-banner__timing { margin-left: auto; color: var(--text-2); }
+.tone-up { color: var(--up); }
+.tone-down { color: var(--down); }

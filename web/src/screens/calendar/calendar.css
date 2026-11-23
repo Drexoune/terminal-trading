@@ -43,6 +43,8 @@
 .cal-card__kpis > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .cal-card__big { color: var(--gold); font-size: var(--fs-kpi); }
 .cal-card__meta { margin: 0; line-height: 1.5; }
+.cal-card__quote { display: block; margin-top: 4px; color: var(--text-2); text-transform: none; letter-spacing: 0; }
+.cal-actual { color: var(--gold-hi); }
 .cal-card__hist { min-height: 463px; }
 .cal-btc { min-height: 185px; }
 

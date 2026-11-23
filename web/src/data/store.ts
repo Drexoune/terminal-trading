@@ -180,6 +180,12 @@ export function restartFeed(): void {
   startFeed();
 }
 
+/** Message vers la passerelle par le worker ; sans effet en Mode Online (aucune passerelle). */
+export function sendToGateway(msg: Record<string, unknown>): void {
+  const out: ToWorker = { type: 'send', msg };
+  worker?.postMessage(out);
+}
+
 /** Heure de la source (passerelle, ou horloge OKX en Mode Online), à défaut celle du navigateur. */
 export function gatewayNow(): number {
   const conn = values.get(CONN_KEY) as ConnState | undefined;

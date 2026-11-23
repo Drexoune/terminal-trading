@@ -2,8 +2,9 @@
 // Semaine en cours : clé calendar:week:<AAAA-Wnn> publiée par le service
 // « calendar » de la passerelle ; semaines passées : /api/calendar?week= (archive
 // du Mac). Heures à Paris, calculées depuis l'UTC ; titres en VO (T-019).
-// Réel, surprise, historique et réaction BTC arrivent avec la capture (E3) :
-// d'ici là, « — » et la raison, jamais une valeur de maquette.
+// Réel et surprise : chiffres captés sur bls.gov par le service « release » (E3),
+// clés release:… ; historique et réaction BTC suivent. Sinon « — » et la raison,
+// jamais une valeur de maquette.
 
 import './calendar.css';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,6 +15,9 @@ import {
   rowState, shiftWeek, timeLabel, todayParis, weekRangeLabel, type CalendarEvent, type CalendarWeek,
 } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
+import {
+  figureFor, figureIndex, figures, fmtDelay, fmtFigure, surpriseText, type ReleaseFigure,
+} from '../../calendar/releases';
 import { useSettings } from '../../config/settings';
 import { fetchJson } from '../../data/gateway';
 import { useKeys } from '../../data/store';
@@ -57,7 +61,11 @@ export function CalendarScreen() {
   }, [week, live?.week]);
 
   const data = week && week !== live?.week ? (other.state === 'ok' ? other.data : null) : live;
-  const events = useMemo(() => applyFilters(data?.events ?? [], { currencies, impacts, query }), [data, currencies, impacts, query]);
+  const releaseEntries = useKeys<unknown>('release:');
+  const index = useMemo(() => figureIndex(figures(releaseEntries)), [releaseEntries]);
+  const events = useMemo(() => applyFilters(data?.events ?? [], { currencies, impacts, query })
+    .map((e) => { const f = figureFor(e, index); return f ? { ...e, actual: f.value } : e; }),
+  [data, currencies, impacts, query, index]);
   const groups = useMemo(() => groupByDay(events), [events]);
   const sel = events.find((e) => e.id === selected)
     ?? events.find((e) => e.capture && (e.time_ms ?? 0) > now)
@@ -117,10 +125,10 @@ export function CalendarScreen() {
               <div className="placeholder"><span className="placeholder__dash" aria-hidden="true">—</span><span>{unavailable}</span></div>
             ) : other.state === 'loading' ? <div className="placeholder"><span>Chargement de l’archive…</span></div>
               : other.state === 'error' ? <div className="placeholder"><Missing reason={other.reason} /><span>{other.reason}</span></div>
-                : <WeekTable groups={groups} now={now} selected={sel?.id ?? null} onSelect={setSelected} archive={!!data?.archive} />}
+                : <WeekTable groups={groups} now={now} selected={sel?.id ?? null} onSelect={setSelected} archive={!!data?.archive} index={index} />}
           </Panel>
           <div className="cal-side">
-            <IndicatorCard ev={sel} now={now} />
+            <IndicatorCard ev={sel} now={now} fig={sel ? figureFor(sel, index) : null} />
             <Panel title="Réaction BTC · 30 min" label="Réaction du BTC" controls="none" testId="cal-btc">
               <div className="placeholder cal-btc">
                 <span className="placeholder__dash" aria-hidden="true">—</span>
@@ -134,8 +142,9 @@ export function CalendarScreen() {
   );
 }
 
-function WeekTable({ groups, now, selected, onSelect, archive }: {
+function WeekTable({ groups, now, selected, onSelect, archive, index }: {
   groups: { day: string; events: CalendarEvent[] }[]; now: number; selected: string | null; onSelect: (id: string) => void; archive: boolean;
+  index: Map<string, ReleaseFigure>;
 }) {
   const today = todayParis(now);
   if (!groups.length) return <div className="placeholder"><span className="placeholder__dash">—</span><span>Aucun événement pour ces filtres.</span></div>;
@@ -152,6 +161,7 @@ function WeekTable({ groups, now, selected, onSelect, archive }: {
           </th></tr>
           {g.events.map((e) => {
             const st = rowState(e, now);
+            const fig = figureFor(e, index);
             return (
               <tr key={e.id} className={`cal-row${st.kind === 'new' ? ' cal-row--new' : ''}${selected === e.id ? ' is-selected' : ''}${st.kind === 'past' ? ' is-past' : ''}`}
                 onClick={() => onSelect(e.id)} aria-selected={selected === e.id}>
@@ -167,10 +177,13 @@ function WeekTable({ groups, now, selected, onSelect, archive }: {
                   {st.kind === 'new' && <span className="chip chip--s chip--new">Nouveau</span>}
                   {e.time_mismatch && <span className="lbl lbl--s cal-warn" title="l’heure ForexFactory diffère du calendrier officiel">heure ForexFactory différente</span>}
                 </td>
-                <td className="r num">{e.actual ?? <Missing reason={actualReason(e, now)} />}</td>
+                <td className="r num" data-testid="cal-actual">
+                  {fig ? (fig.value !== null ? <span className="cal-actual" title={`BLS · ${fig.part ?? ''} · capté ${fmtDelay(fig.capture_delay_ms)} après l’heure prévue`}>{fmtFigure(fig)}</span>
+                    : <Missing reason={fig.reason ?? 'chiffre non lu'} />) : <Missing reason={actualReason(e, now)} />}
+                </td>
                 <td className="r num">{e.forecast_raw ? fmtValue(e.forecast, e.unit, e.forecast_raw) : <Missing reason="aucun consensus publié par ForexFactory" />}</td>
                 <td className="r num">{e.previous_raw ? fmtValue(e.previous, e.unit, e.previous_raw) : <Missing reason="aucune valeur précédente publiée" />}</td>
-                <td className="r num"><Missing reason={e.capture ? 'surprise z : avec le chiffre capté (E3)' : 'surprise : indicateur non capté'} /></td>
+                <td className="r num">{fig ? <Surprise fig={fig} /> : <Missing reason={e.capture ? 'surprise : après la publication captée' : 'surprise : indicateur non capté'} />}</td>
               </tr>
             );
           })}
@@ -181,23 +194,38 @@ function WeekTable({ groups, now, selected, onSelect, archive }: {
   );
 }
 
-function IndicatorCard({ ev, now }: { ev: CalendarEvent | null; now: number }) {
+function Surprise({ fig }: { fig: ReleaseFigure }) {
+  const s = surpriseText(fig);
+  if (s.text === '—') return <Missing reason={s.reason ?? 'indisponible'} />;
+  return <span className={s.tone ? `tone-${s.tone}` : undefined} title={s.reason ?? undefined}>{s.text}</span>;
+}
+
+function IndicatorCard({ ev, now, fig }: { ev: CalendarEvent | null; now: number; fig: ReleaseFigure | null }) {
   return (
     <Panel title={ev ? `Fiche · ${ev.title_fr ?? ev.title}` : 'Fiche'} label={`Fiche indicateur ${ev?.title_fr ?? ev?.title ?? ''}`.trim()} controls="none" testId="cal-card"
       chips={ev ? <Flag currency={ev.currency} /> : undefined}>
       {!ev ? <div className="placeholder"><span className="placeholder__dash">—</span><span>Sélectionner un événement.</span></div> : (
         <div className="cal-card">
           <div className="cal-card__kpis">
-            <div><span className="lbl lbl--s">Réel</span><span className="num cal-card__big">{ev.actual ?? <Missing reason={actualReason(ev, now)} />}</span></div>
+            <div><span className="lbl lbl--s">Réel</span><span className="num cal-card__big">{fig && fig.value !== null ? fmtFigure(fig) : <Missing reason={fig?.reason ?? actualReason(ev, now)} />}</span></div>
             <div><span className="lbl lbl--s">Consensus</span><span className="num">{fmtValue(ev.forecast, ev.unit, ev.forecast_raw)}</span></div>
             <div><span className="lbl lbl--s">Précédent</span><span className="num">{fmtValue(ev.previous, ev.unit, ev.previous_raw)}</span></div>
-            <div><span className="lbl lbl--s">Surprise</span><span className="num"><Missing reason="surprise z : avec le chiffre capté (E3)" /></span></div>
+            <div><span className="lbl lbl--s">Surprise</span><span className="num">{fig ? <Surprise fig={fig} /> : <Missing reason="surprise : après la publication captée" />}</span></div>
           </div>
           <p className="lbl lbl--s cal-card__meta">
             {ev.time_ms !== null ? `${dayLabel(todayLike(ev))} · ${timeLabel(ev)} Paris` : timeLabel(ev)}
             {ev.official ? ` · heure officielle ${ev.official.local_time} New York (BLS)` : ` · heure ${ev.time_kind} (ForexFactory)`}
             {ev.capture ? ' · capté à la source' : ''}
           </p>
+          {fig && (
+            <p className="lbl lbl--s cal-card__meta" data-testid="cal-card-capture">
+              {`BLS · ${fig.period}${fig.edition === 'Revised' ? ' révisé' : ''} · ${fig.part ?? ''} · capté ${fmtDelay(fig.capture_delay_ms)}`}
+              {typeof fig.display_delay_ms === 'number' ? ` · affiché ${fmtDelay(fig.display_delay_ms)}` : ''}
+              {fig.timing !== 'attendue' ? ` · publié ${fig.timing}` : ''}
+              {fig.forecast_age_ms !== null ? ` · prévision vue ${Math.round(fig.forecast_age_ms / 60_000)} min avant` : ''}
+              {fig.excerpt && <span className="cal-card__quote">« {fig.excerpt} »</span>}
+            </p>
+          )}
           <div className="placeholder cal-card__hist">
             <span className="placeholder__dash" aria-hidden="true">—</span>
             <span>{ev.capture

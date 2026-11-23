@@ -153,6 +153,68 @@ class DemoService:
         return {"demo": True, "feeds": []}
 
 
+class DemoRelease:
+    """Service « release » de démonstration (E3) : publie un chiffre capté quand le test
+    le demande (POST /test/release) et garde l'heure d'affichage renvoyée par le front."""
+
+    name = "release"
+
+    def __init__(self, bus: Bus) -> None:
+        self.bus = bus
+        self.displays: dict[str, int] = {}
+        self.bus_ms: int | None = None
+        self._task: asyncio.Task | None = None
+
+    async def start(self) -> None: ...
+
+    async def stop(self) -> None:
+        if self._task:
+            self._task.cancel()
+
+    def health(self) -> dict:
+        return {"demo": True}
+
+    def schedule(self, delay_ms: int) -> int:
+        t = now_ms() + delay_ms
+        self._task = asyncio.create_task(self._publish_at(t))
+        return t
+
+    async def _publish_at(self, t: int) -> None:
+        await asyncio.sleep(max(0, t - now_ms()) / 1000)
+        self.bus_ms = now_ms()
+        fig = {"indicator": "us-prod-qq", "label_fr": "Productivité non agricole (t/t)",
+               "unit": "%", "release": "prod2", "period": "2026-Q3", "edition": "Revised",
+               "ny_date": "2026-10-20",
+               "value": "4.1", "reason": None, "part": "texte",
+               "excerpt": "Nonfarm business sector labor productivity increased 4.1 percent",
+               "flags": [], "timing": "attendue", "nature": "officielle", "source": "BLS",
+               "url": "https://www.bls.gov/news.release/prod2.nr0.htm", "machine": "démo",
+               "scheduled_ms": t, "embargo_ms": t, "first_byte_ms": t + 900,
+               "received_ms": t + 950, "capture_delay_ms": 903, "clock_corrected": True,
+               "bus_ms": self.bus_ms, "forecast": "4.0", "forecast_raw": "4.0%",
+               "forecast_age_ms": 2_700_000, "surprise": "0.1", "z": None, "z_n": 0,
+               "z_provisional": False, "z_reason": "historique insuffisant (0/8)",
+               "regular": True, "display_ms": None}
+        key = "release:us-prod-qq:2026-Q3:Revised"
+        self.bus.publish(key, fig)
+        self.bus.publish("release:last", {
+            "release": "prod2", "title": "Productivity and Costs", "period": "2026-Q3",
+            "edition": "Revised", "ny_date": "2026-10-20", "keys": [key], "timing": "attendue",
+            "scheduled_ms": t, "bus_ms": self.bus_ms})
+
+    async def record_display(self, key: str, display_ms: object) -> bool:
+        if isinstance(display_ms, (int, float)) and key not in self.displays:
+            self.displays[key] = int(display_ms)
+            return True
+        return False
+
+    def clear(self) -> None:
+        for k in self.bus.keys("release:"):
+            self.bus.delete(k)
+        self.displays.clear()
+        self.bus_ms = None
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=8790)
@@ -162,7 +224,23 @@ def main() -> None:
                         log_dir=Path(tempfile.gettempdir()),
                         stop_file=Path(tempfile.gettempdir()) / "fake-gateway.stop")
     bus = Bus()
-    app = gw_app.create_app(settings, service=DemoService(bus), bus=bus)
+    release = DemoRelease(bus)
+    app = gw_app.create_app(settings, services=[DemoService(bus), release], bus=bus)
+
+    # Routes de test seulement (E3) : publier un chiffre, lire l'heure d'affichage, effacer.
+    @app.post("/test/release")
+    async def test_publish(delay_ms: int = 1000) -> dict:
+        return {"at_ms": release.schedule(delay_ms)}
+
+    @app.get("/test/release")
+    async def test_state() -> dict:
+        return {"bus_ms": release.bus_ms, "displays": release.displays}
+
+    @app.delete("/test/release")
+    async def test_clear() -> dict:
+        release.clear()
+        return {"ok": True}
+
     uvicorn.run(app, host="127.0.0.1", port=a.port, log_level="warning")
 
 

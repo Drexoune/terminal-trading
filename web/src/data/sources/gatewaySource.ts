@@ -131,6 +131,11 @@ export function createGatewaySource(opts: GatewaySourceOptions, sink: SourceSink
   }
 
   return {
+    send(msg) {
+      if (!ws || ws.readyState !== WS_OPEN) return false;
+      ws.send(JSON.stringify(msg));
+      return true;
+    },
     start() {
       stopped = false;
       connect();

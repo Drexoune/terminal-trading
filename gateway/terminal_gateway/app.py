@@ -4,6 +4,7 @@ Protocole /ws (JSON) :
 
   client -> {"op": "subscribe", "topics": ["ticker:", "trade:", ...]}   préfixes de clés
   client -> {"op": "ping", "id": 7, "t0": <ms navigateur>}
+  client -> {"op": "displayed", "key": "release:…", "t_gateway_ms": ms}   chiffre affiché
   serveur -> {"type": "hello", "app": ..., "version": ..., "ts_sent": ms}
   serveur -> {"type": "snapshot", "items": [[clé, valeur], ...], "ts_sent": ms}
   serveur -> {"type": "delta", "items": [[clé, valeur], ...], "ts_sent": ms}
@@ -133,6 +134,21 @@ def create_app(settings: Settings, service: OkxService | None = None,
         except ValueError as exc:
             raise HTTPException(400, str(exc)) from exc
 
+    def release_service():
+        return next((s for s in services if getattr(s, "name", None) == "release"), None)
+
+    @app.get("/api/releases")
+    async def releases(indicator: str | None = None, limit: int = 60) -> dict:
+        """Publications enregistrées (premières publications), les plus récentes d'abord."""
+        if storage is None or release_service() is None:
+            raise HTTPException(503, "service release non activé (GATEWAY_SERVICES)")
+        limit = max(1, min(limit, 500))
+        where, params = (("where indicator_id = ?", (indicator, limit)) if indicator
+                         else ("", (limit,)))
+        rows = await storage.query(
+            f"select * from releases {where} order by scheduled_ms desc limit ?", params)
+        return {"releases": rows}
+
     @app.websocket("/ws")
     async def ws_endpoint(ws: WebSocket) -> None:
         origin = ws.headers.get("origin")
@@ -165,6 +181,12 @@ def create_app(settings: Settings, service: OkxService | None = None,
                 if op == "ping":
                     await send({"type": "pong", "id": msg.get("id"), "t0": msg.get("t0"),
                                 "ts": now_ms()})
+                elif op == "displayed":
+                    # Heure d'affichage d'un chiffre capté, dans l'horloge de la passerelle
+                    # (le navigateur la corrige par ping/pong) : mesure de la porte P1.
+                    svc = release_service()
+                    if svc is not None:
+                        await svc.record_display(str(msg.get("key", "")), msg.get("t_gateway_ms"))
                 elif op == "subscribe":
                     topics = [str(t) for t in msg.get("topics", [])][:50]
                     if sub is not None:

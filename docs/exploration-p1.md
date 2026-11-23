@@ -102,3 +102,29 @@ La page ne fait aucune requête réseau.
 - **ForexFactory, relevé du 20/11/2026** : les heures du XML (`ff_calendar_thisweek.xml`) sont en **UTC**, et non en heure de New York. Les 126 événements concordent avec le JSON, qui porte un décalage explicite (« 2026-11-15T16:30:00-05:00 » = « 9:30pm » dans le XML). L'identifiant de série est la fin du lien (« 112-us-core-retail-sales-mm »). `ETag` et `Last-Modified` sont présents ; le fichier est régénéré vers hh:42. Le XML suffit : une seule requête conditionnelle par heure.
 - **Calendrier du BLS (`bls.ics`)** : 313 publications, toutes en `TZID=US-Eastern`, traduit en `America/New_York`.
 
+
+### 22/11/2026 : analyse de l'écoute Tree of Alpha (résultats provisoires, 46 h sur 72)
+
+Écoute lancée le 20/11 à 16:01 (`explore_news.py watch --minutes 4320 --no-fj`), toujours en cours jusqu'au lundi 23/11 vers 16:01. Relevé du 22/11 à 14:20, sur 46 h :
+
+- **Volume** : 161 messages, soit 3,5 par heure en moyenne, très inégal : 116 le vendredi après-midi (heures de marché américaines), 33 le samedi, 12 le dimanche. Écart médian entre deux messages : 2,3 min ; plus long silence : 17 min.
+- **Contenu** : 83 messages « direct » (comptes X : Elon Musk, The Block, CoinDesk, Lookonchain, Wu Blockchain…), 56 « Blogs » (CNBC, Forbes, Cointelegraph, Decrypt…), 12 « usGov » (Maison-Blanche, SEC, FTC, Fed), 9 « Proposals » (votes de DAO), 1 Telegram. **Aucun chiffre macro** (ni BLS, ni banque centrale en direct) : Tree of Alpha ne remplace ni la capture du BLS, ni les flux RSS des banques centrales.
+- **Délai du flux gratuit** : les messages « direct » et « Proposals » arrivent sans délai (médiane −20 ms : notre horloge et la leur diffèrent de quelques dizaines de ms). Les messages « Blogs » et « usGov » portent un champ `delay: 5000` et arrivent 5 s après leur heure source (médiane 4 985 ms, maximum 15,5 s). Le flux gratuit retarde donc de 5 s les actualités, pas les tweets.
+- **Connexion instable** : 225 ouvertures en 46 h. Durée médiane d'une connexion : 70 s. Fermetures : 144 sans trame de fermeture, 80 « keepalive ping timeout » (code 1011), 3 délais d'ouverture dépassés. La reconnexion immédiate (2 s) a suffi : les reprises de plus de 15 min correspondent aux veilles du Mac la nuit.
+- **Format** : JSON sans clé, champs `title`, `body`, `time` (ms), `_id`, `link` ou `url`, `suggestions` (cryptos et paires reconnues), `info` (identifiants X, retweet, réponse). `_id` sert d'identifiant natif pour le dédoublonnage.
+
+**Conséquences pour E6** : le flux gratuit suffit pour les titres crypto (pas d'abonnement à 500 $/mois à ce stade, T-021) ; le collecteur doit se reconnecter en continu sans alerter à chaque fermeture (une coupure par minute est normale), et marquer « +5 s » les actualités retardées. Ces conclusions sont à confirmer sur les 72 h complètes.
+
+### 22/11/2026 : corpus du parseur BLS (étape E3)
+
+Les 120 communiqués archivés et les 4 pages résumé de la sonde ont été lus par le parseur d'E3 (`gateway/terminal_gateway/bls_release.py`). Constats qui ont guidé son écriture :
+
+- **IPC et PPI** : la page résumé (`*.nr0.htm`) porte un tableau A en HTML structuré. Le chiffre est lu dans le tableau et recoupé avec la phrase du texte ; un désaccord bloque la lecture.
+- **Emploi et productivité** : la page résumé n'a aucun tableau. Les chiffres viennent du texte, par une liste fermée de tournures réelles (« rose by 165,000 », « changed little in July (+73,000) », « Both nonfarm payroll employment (-23,000) and… », « edged up by 114,000 »).
+- **Le communiqué révisé de la productivité porte la même période que le préliminaire** (« 2026 Q03 » pour le 05/11 comme pour le 08/12). La nouveauté se juge donc sur la date d'embargo, jamais sur la période seule. C'est ce qui sera testé à la répétition du 08/12.
+- **Le titre HTML n'est pas fiable pour la période** : « M13 » pour décembre (rapport emploi), « Q01 » pour un rapport mensuel (avril 2024), « Q05 » pour le 4e trimestre. La période se lit dans l'en-tête du texte (« THE EMPLOYMENT SITUATION -- MARCH 2024 », « Fourth Quarter and Annual Averages 2025, Preliminary »), qui varie aussi en casse.
+- **Embargo** : la virgule après le jour manque parfois (« Friday October 11, 2024 ») ; le jour de semaine est vérifié.
+- **Publications irrégulières** : IPC de novembre 2025 « over the 2 months from September 2025 to November 2025 » (refusé, exclu du calcul de z) ; glissements sur un an d'octobre 2026 non publiés (« - »).
+- **Résultat** : sur 36 publications, IPC 35 (la 36e est l'irrégulière), emploi 35 sur 35 pour l'emploi salarié et le chômage, 33 pour le salaire horaire (2 communiqués ne donnent la variation qu'en cents), PPI 36, productivité 12 sur 12. Chaque valeur manquante a sa raison.
+- **PPI sous-jacent** : l'indice « final demand less foods and energy » n'est pas dans la page résumé (le tableau A ne donne que l'indice hors alimentation, énergie et commerce). Il reste « — » avec sa raison en E3 ; à décider avant le PPI du 15/12.
+- La page `empsit_12042026.htm` (publication à venir, déjà liée dans l'index) répond 404 : le parseur la reconnaît comme page d'erreur.

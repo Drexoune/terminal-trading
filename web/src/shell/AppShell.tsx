@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { FeedBar } from './FeedBar';
+import { ReleaseBanner } from './ReleaseBanner';
 import { Sidebar } from './Sidebar';
 import { TopBar } from './TopBar';
 
@@ -10,6 +11,7 @@ export function AppShell({ children, onOpenPalette }: { children: ReactNode; onO
       <div className="body-row">
         <Sidebar />
         <main className="main">
+          <ReleaseBanner />
           {children}
           <FeedBar />
         </main>

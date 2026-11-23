@@ -1,0 +1,1560 @@
+{
+ "cpi_01112024": {
+  "edition": null,
+  "embargo_date": "2024-01-11",
+  "page": "ok",
+  "period": "2023-12",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.9",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "3.4"
+  }
+ },
+ "cpi_01132026": {
+  "edition": null,
+  "embargo_date": "2026-01-13",
+  "page": "ok",
+  "period": "2025-12",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.6",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "2.7"
+  }
+ },
+ "cpi_01152025": {
+  "edition": null,
+  "embargo_date": "2025-01-15",
+  "page": "ok",
+  "period": "2024-12",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "3.2",
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": "2.9"
+  }
+ },
+ "cpi_02122025": {
+  "edition": null,
+  "embargo_date": "2025-02-12",
+  "page": "ok",
+  "period": "2025-01",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.4",
+   "us-core-cpi-yy": "3.3",
+   "us-cpi-mm": "0.5",
+   "us-cpi-yy": "3.0"
+  }
+ },
+ "cpi_02132024": {
+  "edition": null,
+  "embargo_date": "2024-02-13",
+  "page": "ok",
+  "period": "2024-01",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.4",
+   "us-core-cpi-yy": "3.9",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "3.1"
+  }
+ },
+ "cpi_02132026": {
+  "edition": null,
+  "embargo_date": "2026-02-13",
+  "page": "ok",
+  "period": "2026-01",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "2.5",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.4"
+  }
+ },
+ "cpi_03112026": {
+  "edition": null,
+  "embargo_date": "2026-03-11",
+  "page": "ok",
+  "period": "2026-02",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.5",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "2.4"
+  }
+ },
+ "cpi_03122024": {
+  "edition": null,
+  "embargo_date": "2024-03-12",
+  "page": "ok",
+  "period": "2024-02",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.4",
+   "us-core-cpi-yy": "3.8",
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": "3.2"
+  }
+ },
+ "cpi_03122025": {
+  "edition": null,
+  "embargo_date": "2025-03-12",
+  "page": "ok",
+  "period": "2025-02",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "3.1",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.8"
+  }
+ },
+ "cpi_04102024": {
+  "edition": null,
+  "embargo_date": "2024-04-10",
+  "page": "ok",
+  "period": "2024-03",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.4",
+   "us-core-cpi-yy": "3.8",
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": "3.5"
+  }
+ },
+ "cpi_04102025": {
+  "edition": null,
+  "embargo_date": "2025-04-10",
+  "page": "ok",
+  "period": "2025-03",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.1",
+   "us-core-cpi-yy": "2.8",
+   "us-cpi-mm": "-0.1",
+   "us-cpi-yy": "2.4"
+  }
+ },
+ "cpi_04102026": {
+  "edition": null,
+  "embargo_date": "2026-04-10",
+  "page": "ok",
+  "period": "2026-03",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.6",
+   "us-cpi-mm": "0.9",
+   "us-cpi-yy": "3.3"
+  }
+ },
+ "cpi_05122026": {
+  "edition": null,
+  "embargo_date": "2026-05-12",
+  "page": "ok",
+  "period": "2026-04",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.4",
+   "us-core-cpi-yy": "2.8",
+   "us-cpi-mm": "0.6",
+   "us-cpi-yy": "3.8"
+  }
+ },
+ "cpi_05132025": {
+  "edition": null,
+  "embargo_date": "2025-05-13",
+  "page": "ok",
+  "period": "2025-04",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.8",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.3"
+  }
+ },
+ "cpi_05152024": {
+  "edition": null,
+  "embargo_date": "2024-05-15",
+  "page": "ok",
+  "period": "2024-04",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.6",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "3.4"
+  }
+ },
+ "cpi_06102026": {
+  "edition": null,
+  "embargo_date": "2026-06-10",
+  "page": "ok",
+  "period": "2026-05",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.9",
+   "us-cpi-mm": "0.5",
+   "us-cpi-yy": "4.2"
+  }
+ },
+ "cpi_06112025": {
+  "edition": null,
+  "embargo_date": "2025-06-11",
+  "page": "ok",
+  "period": "2025-05",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.1",
+   "us-core-cpi-yy": "2.8",
+   "us-cpi-mm": "0.1",
+   "us-cpi-yy": "2.4"
+  }
+ },
+ "cpi_06122024": {
+  "edition": null,
+  "embargo_date": "2024-06-12",
+  "page": "ok",
+  "period": "2024-05",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "3.4",
+   "us-cpi-mm": "0.0",
+   "us-cpi-yy": "3.3"
+  }
+ },
+ "cpi_07112024": {
+  "edition": null,
+  "embargo_date": "2024-07-11",
+  "page": "ok",
+  "period": "2024-06",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.1",
+   "us-core-cpi-yy": "3.3",
+   "us-cpi-mm": "-0.1",
+   "us-cpi-yy": "3.0"
+  }
+ },
+ "cpi_07142026": {
+  "edition": null,
+  "embargo_date": "2026-07-14",
+  "page": "ok",
+  "period": "2026-06",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.0",
+   "us-core-cpi-yy": "2.6",
+   "us-cpi-mm": "-0.4",
+   "us-cpi-yy": "3.5"
+  }
+ },
+ "cpi_07152025": {
+  "edition": null,
+  "embargo_date": "2025-07-15",
+  "page": "ok",
+  "period": "2025-06",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.9",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "2.7"
+  }
+ },
+ "cpi_08122025": {
+  "edition": null,
+  "embargo_date": "2025-08-12",
+  "page": "ok",
+  "period": "2025-07",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.1",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.7"
+  }
+ },
+ "cpi_08122026": {
+  "edition": null,
+  "embargo_date": "2026-08-12",
+  "page": "ok",
+  "period": "2026-07",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "2.5",
+   "us-cpi-mm": "0.1",
+   "us-cpi-yy": "3.4"
+  }
+ },
+ "cpi_08142024": {
+  "edition": null,
+  "embargo_date": "2024-08-14",
+  "page": "ok",
+  "period": "2024-07",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "3.2",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.9"
+  }
+ },
+ "cpi_09112024": {
+  "edition": null,
+  "embargo_date": "2024-09-11",
+  "page": "ok",
+  "period": "2024-08",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.2",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.5"
+  }
+ },
+ "cpi_09112025": {
+  "edition": null,
+  "embargo_date": "2025-09-11",
+  "page": "ok",
+  "period": "2025-08",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.1",
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": "2.9"
+  }
+ },
+ "cpi_09112026": {
+  "edition": null,
+  "embargo_date": "2026-09-11",
+  "page": "ok",
+  "period": "2026-08",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "2.4",
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": "3.4"
+  }
+ },
+ "cpi_10102024": {
+  "edition": null,
+  "embargo_date": "2024-10-10",
+  "page": "ok",
+  "period": "2024-09",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.3",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.4"
+  }
+ },
+ "cpi_10142026": {
+  "edition": null,
+  "embargo_date": "2026-10-14",
+  "page": "ok",
+  "period": "2026-09",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "2.6",
+   "us-cpi-mm": "0.6",
+   "us-cpi-yy": "3.7"
+  }
+ },
+ "cpi_10242025": {
+  "edition": null,
+  "embargo_date": "2025-10-24",
+  "page": "ok",
+  "period": "2025-09",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "3.0",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "3.0"
+  }
+ },
+ "cpi_11102026": {
+  "edition": null,
+  "embargo_date": "2026-11-10",
+  "page": "ok",
+  "period": "2026-10",
+  "reasons": {
+   "us-core-cpi-yy": "non publié par le BLS (« - »)",
+   "us-cpi-yy": "non publié par le BLS (« - »)"
+  },
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": null,
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": null
+  }
+ },
+ "cpi_11132024": {
+  "edition": null,
+  "embargo_date": "2024-11-13",
+  "page": "ok",
+  "period": "2024-10",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.3",
+   "us-cpi-mm": "0.2",
+   "us-cpi-yy": "2.6"
+  }
+ },
+ "cpi_11142023": {
+  "edition": null,
+  "embargo_date": "2023-11-14",
+  "page": "ok",
+  "period": "2023-10",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.2",
+   "us-core-cpi-yy": "4.0",
+   "us-cpi-mm": "0.0",
+   "us-cpi-yy": "3.2"
+  }
+ },
+ "cpi_12112024": {
+  "edition": null,
+  "embargo_date": "2024-12-11",
+  "page": "ok",
+  "period": "2024-11",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "3.3",
+   "us-cpi-mm": "0.3",
+   "us-cpi-yy": "2.7"
+  }
+ },
+ "cpi_12122023": {
+  "edition": null,
+  "embargo_date": "2023-12-12",
+  "page": "ok",
+  "period": "2023-11",
+  "reasons": {},
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": "4.0",
+   "us-cpi-mm": "0.1",
+   "us-cpi-yy": "3.1"
+  }
+ },
+ "cpi_12182025": {
+  "edition": null,
+  "embargo_date": "2025-12-18",
+  "page": "ok",
+  "period": "2025-11",
+  "reasons": {
+   "us-core-cpi-mm": "publication irrégulière : variation sur plusieurs mois (shutdown)",
+   "us-cpi-mm": "publication irrégulière : variation sur plusieurs mois (shutdown)"
+  },
+  "values": {
+   "us-core-cpi-mm": null,
+   "us-core-cpi-yy": "2.6",
+   "us-cpi-mm": null,
+   "us-cpi-yy": "2.7"
+  }
+ },
+ "cpi_nr0_2026-11-20": {
+  "edition": null,
+  "embargo_date": "2026-11-10",
+  "page": "ok",
+  "period": "2026-10",
+  "reasons": {
+   "us-core-cpi-yy": "non publié par le BLS (« - »)",
+   "us-cpi-yy": "non publié par le BLS (« - »)"
+  },
+  "values": {
+   "us-core-cpi-mm": "0.3",
+   "us-core-cpi-yy": null,
+   "us-cpi-mm": "0.4",
+   "us-cpi-yy": null
+  }
+ },
+ "empsit_01052024": {
+  "edition": null,
+  "embargo_date": "2024-01-05",
+  "page": "ok",
+  "period": "2023-12",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "216",
+   "us-unemployment": "3.7"
+  }
+ },
+ "empsit_01092026": {
+  "edition": null,
+  "embargo_date": "2026-01-09",
+  "page": "ok",
+  "period": "2025-12",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "50",
+   "us-unemployment": "4.4"
+  }
+ },
+ "empsit_01102025": {
+  "edition": null,
+  "embargo_date": "2025-01-10",
+  "page": "ok",
+  "period": "2024-12",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "256",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_02022024": {
+  "edition": null,
+  "embargo_date": "2024-02-02",
+  "page": "ok",
+  "period": "2024-01",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.6",
+   "us-nfp": "353",
+   "us-unemployment": "3.7"
+  }
+ },
+ "empsit_02072025": {
+  "edition": null,
+  "embargo_date": "2025-02-07",
+  "page": "ok",
+  "period": "2025-01",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.5",
+   "us-nfp": "143",
+   "us-unemployment": "4.0"
+  }
+ },
+ "empsit_02112026": {
+  "edition": null,
+  "embargo_date": "2026-02-11",
+  "page": "ok",
+  "period": "2026-01",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "130",
+   "us-unemployment": "4.3"
+  }
+ },
+ "empsit_03062026": {
+  "edition": null,
+  "embargo_date": "2026-03-06",
+  "page": "ok",
+  "period": "2026-02",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "-92",
+   "us-unemployment": "4.4"
+  }
+ },
+ "empsit_03072025": {
+  "edition": null,
+  "embargo_date": "2025-03-07",
+  "page": "ok",
+  "period": "2025-02",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "151",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_03082024": {
+  "edition": null,
+  "embargo_date": "2024-03-08",
+  "page": "ok",
+  "period": "2024-02",
+  "reasons": {
+   "us-ahe-mm": "variation publiée en cents seulement, sans pourcentage"
+  },
+  "values": {
+   "us-ahe-mm": null,
+   "us-nfp": "275",
+   "us-unemployment": "3.9"
+  }
+ },
+ "empsit_04032026": {
+  "edition": null,
+  "embargo_date": "2026-04-03",
+  "page": "ok",
+  "period": "2026-03",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "178",
+   "us-unemployment": "4.3"
+  }
+ },
+ "empsit_04042025": {
+  "edition": null,
+  "embargo_date": "2025-04-04",
+  "page": "ok",
+  "period": "2025-03",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "228",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_04052024": {
+  "edition": null,
+  "embargo_date": "2024-04-05",
+  "page": "ok",
+  "period": "2024-03",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "303",
+   "us-unemployment": "3.8"
+  }
+ },
+ "empsit_05022025": {
+  "edition": null,
+  "embargo_date": "2025-05-02",
+  "page": "ok",
+  "period": "2025-04",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "177",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_05032024": {
+  "edition": null,
+  "embargo_date": "2024-05-03",
+  "page": "ok",
+  "period": "2024-04",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "175",
+   "us-unemployment": "3.9"
+  }
+ },
+ "empsit_05082026": {
+  "edition": null,
+  "embargo_date": "2026-05-08",
+  "page": "ok",
+  "period": "2026-04",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "115",
+   "us-unemployment": "4.3"
+  }
+ },
+ "empsit_06052026": {
+  "edition": null,
+  "embargo_date": "2026-06-05",
+  "page": "ok",
+  "period": "2026-05",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "172",
+   "us-unemployment": "4.3"
+  }
+ },
+ "empsit_06062025": {
+  "edition": null,
+  "embargo_date": "2025-06-06",
+  "page": "ok",
+  "period": "2025-05",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "139",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_06072024": {
+  "edition": null,
+  "embargo_date": "2024-06-07",
+  "page": "ok",
+  "period": "2024-05",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "272",
+   "us-unemployment": "4.0"
+  }
+ },
+ "empsit_07022026": {
+  "edition": null,
+  "embargo_date": "2026-07-02",
+  "page": "ok",
+  "period": "2026-06",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "57",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_07032025": {
+  "edition": null,
+  "embargo_date": "2025-07-03",
+  "page": "ok",
+  "period": "2025-06",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "147",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_07052024": {
+  "edition": null,
+  "embargo_date": "2024-07-05",
+  "page": "ok",
+  "period": "2024-06",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "206",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_08012025": {
+  "edition": null,
+  "embargo_date": "2025-08-01",
+  "page": "ok",
+  "period": "2025-07",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "73",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_08022024": {
+  "edition": null,
+  "embargo_date": "2024-08-02",
+  "page": "ok",
+  "period": "2024-07",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "114",
+   "us-unemployment": "4.3"
+  }
+ },
+ "empsit_08072026": {
+  "edition": null,
+  "embargo_date": "2026-08-07",
+  "page": "ok",
+  "period": "2026-07",
+  "reasons": {
+   "us-ahe-mm": "phrase du salaire horaire non reconnue"
+  },
+  "values": {
+   "us-ahe-mm": null,
+   "us-nfp": "-23",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_09042026": {
+  "edition": null,
+  "embargo_date": "2026-09-04",
+  "page": "ok",
+  "period": "2026-08",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "162",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_09052025": {
+  "edition": null,
+  "embargo_date": "2025-09-05",
+  "page": "ok",
+  "period": "2025-08",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.3",
+   "us-nfp": "22",
+   "us-unemployment": "4.3"
+  }
+ },
+ "empsit_09062024": {
+  "edition": null,
+  "embargo_date": "2024-09-06",
+  "page": "ok",
+  "period": "2024-08",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "142",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_10022026": {
+  "edition": null,
+  "embargo_date": "2026-10-02",
+  "page": "ok",
+  "period": "2026-09",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.1",
+   "us-nfp": "29",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_10042024": {
+  "edition": null,
+  "embargo_date": "2024-10-04",
+  "page": "ok",
+  "period": "2024-09",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "254",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_11012024": {
+  "edition": null,
+  "embargo_date": "2024-11-01",
+  "page": "ok",
+  "period": "2024-10",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "12",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_11062026": {
+  "edition": null,
+  "embargo_date": "2026-11-06",
+  "page": "ok",
+  "period": "2026-10",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "165",
+   "us-unemployment": "4.1"
+  }
+ },
+ "empsit_11202025": {
+  "edition": null,
+  "embargo_date": "2025-11-20",
+  "page": "ok",
+  "period": "2025-09",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.2",
+   "us-nfp": "119",
+   "us-unemployment": "4.4"
+  }
+ },
+ "empsit_12042026": {
+  "edition": null,
+  "embargo_date": null,
+  "page": "page d'erreur",
+  "period": null,
+  "reasons": {},
+  "values": {}
+ },
+ "empsit_12062024": {
+  "edition": null,
+  "embargo_date": "2024-12-06",
+  "page": "ok",
+  "period": "2024-11",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "227",
+   "us-unemployment": "4.2"
+  }
+ },
+ "empsit_12082023": {
+  "edition": null,
+  "embargo_date": "2023-12-08",
+  "page": "ok",
+  "period": "2023-11",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "199",
+   "us-unemployment": "3.7"
+  }
+ },
+ "empsit_12162025": {
+  "edition": null,
+  "embargo_date": "2025-12-16",
+  "page": "ok",
+  "period": "2025-11",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.1",
+   "us-nfp": "64",
+   "us-unemployment": "4.6"
+  }
+ },
+ "empsit_nr0_2026-11-20": {
+  "edition": null,
+  "embargo_date": "2026-11-06",
+  "page": "ok",
+  "period": "2026-10",
+  "reasons": {},
+  "values": {
+   "us-ahe-mm": "0.4",
+   "us-nfp": "165",
+   "us-unemployment": "4.1"
+  }
+ },
+ "ppi_01122024": {
+  "edition": null,
+  "embargo_date": "2024-01-12",
+  "page": "ok",
+  "period": "2023-12",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.1"
+  }
+ },
+ "ppi_01142025": {
+  "edition": null,
+  "embargo_date": "2025-01-14",
+  "page": "ok",
+  "period": "2024-12",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.2"
+  }
+ },
+ "ppi_01142026": {
+  "edition": null,
+  "embargo_date": "2026-01-14",
+  "page": "ok",
+  "period": "2025-11",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.2"
+  }
+ },
+ "ppi_01302026": {
+  "edition": null,
+  "embargo_date": "2026-01-30",
+  "page": "ok",
+  "period": "2025-12",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.5"
+  }
+ },
+ "ppi_02132025": {
+  "edition": null,
+  "embargo_date": "2025-02-13",
+  "page": "ok",
+  "period": "2025-01",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.4"
+  }
+ },
+ "ppi_02162024": {
+  "edition": null,
+  "embargo_date": "2024-02-16",
+  "page": "ok",
+  "period": "2024-01",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.3"
+  }
+ },
+ "ppi_02272026": {
+  "edition": null,
+  "embargo_date": "2026-02-27",
+  "page": "ok",
+  "period": "2026-01",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.5"
+  }
+ },
+ "ppi_03132025": {
+  "edition": null,
+  "embargo_date": "2025-03-13",
+  "page": "ok",
+  "period": "2025-02",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.0"
+  }
+ },
+ "ppi_03142024": {
+  "edition": null,
+  "embargo_date": "2024-03-14",
+  "page": "ok",
+  "period": "2024-02",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.6"
+  }
+ },
+ "ppi_03182026": {
+  "edition": null,
+  "embargo_date": "2026-03-18",
+  "page": "ok",
+  "period": "2026-02",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.7"
+  }
+ },
+ "ppi_04112024": {
+  "edition": null,
+  "embargo_date": "2024-04-11",
+  "page": "ok",
+  "period": "2024-03",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.2"
+  }
+ },
+ "ppi_04112025": {
+  "edition": null,
+  "embargo_date": "2025-04-11",
+  "page": "ok",
+  "period": "2025-03",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.4"
+  }
+ },
+ "ppi_04142026": {
+  "edition": null,
+  "embargo_date": "2026-04-14",
+  "page": "ok",
+  "period": "2026-03",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.5"
+  }
+ },
+ "ppi_05132026": {
+  "edition": null,
+  "embargo_date": "2026-05-13",
+  "page": "ok",
+  "period": "2026-04",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "1.4"
+  }
+ },
+ "ppi_05142024": {
+  "edition": null,
+  "embargo_date": "2024-05-14",
+  "page": "ok",
+  "period": "2024-04",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.5"
+  }
+ },
+ "ppi_05152025": {
+  "edition": null,
+  "embargo_date": "2025-05-15",
+  "page": "ok",
+  "period": "2025-04",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.5"
+  }
+ },
+ "ppi_06112026": {
+  "edition": null,
+  "embargo_date": "2026-06-11",
+  "page": "ok",
+  "period": "2026-05",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "1.1"
+  }
+ },
+ "ppi_06122025": {
+  "edition": null,
+  "embargo_date": "2025-06-12",
+  "page": "ok",
+  "period": "2025-05",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.1"
+  }
+ },
+ "ppi_06132024": {
+  "edition": null,
+  "embargo_date": "2024-06-13",
+  "page": "ok",
+  "period": "2024-05",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.2"
+  }
+ },
+ "ppi_07122024": {
+  "edition": null,
+  "embargo_date": "2024-07-12",
+  "page": "ok",
+  "period": "2024-06",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.2"
+  }
+ },
+ "ppi_07152026": {
+  "edition": null,
+  "embargo_date": "2026-07-15",
+  "page": "ok",
+  "period": "2026-06",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.3"
+  }
+ },
+ "ppi_07162025": {
+  "edition": null,
+  "embargo_date": "2025-07-16",
+  "page": "ok",
+  "period": "2025-06",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.0"
+  }
+ },
+ "ppi_08132024": {
+  "edition": null,
+  "embargo_date": "2024-08-13",
+  "page": "ok",
+  "period": "2024-07",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.1"
+  }
+ },
+ "ppi_08132026": {
+  "edition": null,
+  "embargo_date": "2026-08-13",
+  "page": "ok",
+  "period": "2026-07",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.0"
+  }
+ },
+ "ppi_08142025": {
+  "edition": null,
+  "embargo_date": "2025-08-14",
+  "page": "ok",
+  "period": "2025-07",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.9"
+  }
+ },
+ "ppi_09102025": {
+  "edition": null,
+  "embargo_date": "2025-09-10",
+  "page": "ok",
+  "period": "2025-08",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.1"
+  }
+ },
+ "ppi_09102026": {
+  "edition": null,
+  "embargo_date": "2026-09-10",
+  "page": "ok",
+  "period": "2026-08",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.4"
+  }
+ },
+ "ppi_09122024": {
+  "edition": null,
+  "embargo_date": "2024-09-12",
+  "page": "ok",
+  "period": "2024-08",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.2"
+  }
+ },
+ "ppi_10112024": {
+  "edition": null,
+  "embargo_date": "2024-10-11",
+  "page": "ok",
+  "period": "2024-09",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.0"
+  }
+ },
+ "ppi_10152026": {
+  "edition": null,
+  "embargo_date": "2026-10-15",
+  "page": "ok",
+  "period": "2026-09",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "1.3"
+  }
+ },
+ "ppi_11132026": {
+  "edition": null,
+  "embargo_date": "2026-11-13",
+  "page": "ok",
+  "period": "2026-10",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.3"
+  }
+ },
+ "ppi_11142024": {
+  "edition": null,
+  "embargo_date": "2024-11-14",
+  "page": "ok",
+  "period": "2024-10",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.2"
+  }
+ },
+ "ppi_11152023": {
+  "edition": null,
+  "embargo_date": "2023-11-15",
+  "page": "ok",
+  "period": "2023-10",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "-0.5"
+  }
+ },
+ "ppi_11252025": {
+  "edition": null,
+  "embargo_date": "2025-11-25",
+  "page": "ok",
+  "period": "2025-09",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.3"
+  }
+ },
+ "ppi_12122024": {
+  "edition": null,
+  "embargo_date": "2024-12-12",
+  "page": "ok",
+  "period": "2024-11",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.4"
+  }
+ },
+ "ppi_12132023": {
+  "edition": null,
+  "embargo_date": "2023-12-13",
+  "page": "ok",
+  "period": "2023-11",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.0"
+  }
+ },
+ "ppi_nr0_2026-11-20": {
+  "edition": null,
+  "embargo_date": "2026-11-13",
+  "page": "ok",
+  "period": "2026-10",
+  "reasons": {
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+  },
+  "values": {
+   "us-core-ppi-mm": null,
+   "us-ppi-mm": "0.3"
+  }
+ },
+ "prod2_01082026": {
+  "edition": "Preliminary",
+  "embargo_date": "2026-01-08",
+  "page": "ok",
+  "period": "2025-Q3",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "4.9",
+   "us-ulc-qq": "-1.9"
+  }
+ },
+ "prod2_01292026": {
+  "edition": "Revised",
+  "embargo_date": "2026-01-29",
+  "page": "ok",
+  "period": "2025-Q3",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "4.9",
+   "us-ulc-qq": "-1.9"
+  }
+ },
+ "prod2_03052026": {
+  "edition": "Preliminary",
+  "embargo_date": "2026-03-05",
+  "page": "ok",
+  "period": "2025-Q4",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "2.8",
+   "us-ulc-qq": "2.8"
+  }
+ },
+ "prod2_03242026": {
+  "edition": "Revised",
+  "embargo_date": "2026-03-24",
+  "page": "ok",
+  "period": "2025-Q4",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "1.8",
+   "us-ulc-qq": "4.4"
+  }
+ },
+ "prod2_05072026": {
+  "edition": "Preliminary",
+  "embargo_date": "2026-05-07",
+  "page": "ok",
+  "period": "2026-Q1",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "0.8",
+   "us-ulc-qq": "2.3"
+  }
+ },
+ "prod2_06042026": {
+  "edition": "Revised",
+  "embargo_date": "2026-06-04",
+  "page": "ok",
+  "period": "2026-Q1",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "0.3",
+   "us-ulc-qq": "1.8"
+  }
+ },
+ "prod2_06052025": {
+  "edition": "Revised",
+  "embargo_date": "2025-06-05",
+  "page": "ok",
+  "period": "2025-Q1",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "-1.5",
+   "us-ulc-qq": "6.6"
+  }
+ },
+ "prod2_08062026": {
+  "edition": "Preliminary",
+  "embargo_date": "2026-08-06",
+  "page": "ok",
+  "period": "2026-Q2",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "1.4",
+   "us-ulc-qq": "1.3"
+  }
+ },
+ "prod2_08072025": {
+  "edition": "Preliminary",
+  "embargo_date": "2025-08-07",
+  "page": "ok",
+  "period": "2025-Q2",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "2.4",
+   "us-ulc-qq": "1.6"
+  }
+ },
+ "prod2_09032026": {
+  "edition": "Revised",
+  "embargo_date": "2026-09-03",
+  "page": "ok",
+  "period": "2026-Q2",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "1.4",
+   "us-ulc-qq": "1.2"
+  }
+ },
+ "prod2_09042025": {
+  "edition": "Revised",
+  "embargo_date": "2025-09-04",
+  "page": "ok",
+  "period": "2025-Q2",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "3.3",
+   "us-ulc-qq": "1.0"
+  }
+ },
+ "prod2_11052026": {
+  "edition": "Preliminary",
+  "embargo_date": "2026-11-05",
+  "page": "ok",
+  "period": "2026-Q3",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "3.6",
+   "us-ulc-qq": "-0.7"
+  }
+ },
+ "prod2_nr0_2026-11-20": {
+  "edition": "Preliminary",
+  "embargo_date": "2026-11-05",
+  "page": "ok",
+  "period": "2026-Q3",
+  "reasons": {},
+  "values": {
+   "us-prod-qq": "3.6",
+   "us-ulc-qq": "-0.7"
+  }
+ }
+}

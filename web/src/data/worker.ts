@@ -15,7 +15,8 @@ import type { ConnState, DataSource, Item, LatencyState, SourceSink } from './pr
 import { createGatewaySource } from './sources/gatewaySource';
 import { createOkxSource } from './sources/okxSource';
 
-export type ToWorker = { type: 'start'; source: SourceConfig; topics: string[]; latencyKey: string };
+export type StartMsg = { type: 'start'; source: SourceConfig; topics: string[]; latencyKey: string };
+export type ToWorker = StartMsg | { type: 'send'; msg: Record<string, unknown> };   // send : vers la passerelle (op « displayed »)
 export type FromWorker = { type: 'batch'; items: Item[]; conn: ConnState; latency: LatencyState };
 
 const FLUSH_HZ = 15;
@@ -55,7 +56,7 @@ function makeSink(topics: string[], filter: boolean): SourceSink {
   };
 }
 
-function start(msg: ToWorker): void {
+function start(msg: StartMsg): void {
   // Un nouveau départ remplace la source en cours (changement de mode).
   source?.stop();
   pending = [];
@@ -105,6 +106,10 @@ function flush(): void {
 }
 
 ctx.onmessage = (ev: MessageEvent<ToWorker>) => {
+  if (ev.data.type === 'send') {
+    source?.send?.(ev.data.msg);
+    return;
+  }
   if (ev.data.type !== 'start') return;
   // Minuteries d'abord : même si la source échoue, l'état parvient à l'écran.
   if (!timersStarted) {

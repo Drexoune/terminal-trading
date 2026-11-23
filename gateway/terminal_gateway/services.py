@@ -27,7 +27,7 @@ class Service(Protocol):
 
 
 # Étape de P1 où chaque service arrive (docs/plan-p1.md § 13).
-PLANNED = {"release": "E3", "news": "E6", "alert": "E4"}
+PLANNED = {"news": "E6", "alert": "E4"}
 
 
 def build_services(settings: Settings, bus: Bus, storage: Storage | None) -> list[Service]:
@@ -42,6 +42,11 @@ def build_services(settings: Settings, bus: Bus, storage: Storage | None) -> lis
             if storage is None:
                 raise ValueError("service calendar : base SQLite requise")
             out.append(CalendarService(bus, storage, settings))
+        elif name == "release":
+            from .release_service import ReleaseService
+            if storage is None:
+                raise ValueError("service release : base SQLite requise")
+            out.append(ReleaseService(bus, storage, settings))
         else:
             raise ValueError(f"GATEWAY_SERVICES : le service « {name} » arrive en {PLANNED[name]}")
     return out

@@ -134,6 +134,8 @@ export interface DataSource {
   /** Arrêt propre : sockets fermées, minuteries et requêtes annulées ; plus aucun
    *  appel au puits une fois stop() rendu. */
   stop(): void;
+  /** Message vers la source (passerelle seulement : op « displayed ») ; false si impossible. */
+  send?(msg: Record<string, unknown>): boolean;
 }
 
 /** Sous-ensemble de WebSocket utilisé par les sources (injectable dans les tests). */
