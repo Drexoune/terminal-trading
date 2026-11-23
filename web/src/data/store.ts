@@ -15,6 +15,7 @@ import { WATCHED_TOPICS } from './protocol';
 import { modeDef, sourceFor, type Settings } from '../config/modes';
 import { activeUrl, getSettings, subscribeSettings } from '../config/settings';
 import { NOT_CONFIGURED } from './gateway';
+import { startP1Online } from './online/p1';
 
 type Listener = () => void;
 type ItemListener = (value: unknown) => void;
@@ -39,9 +40,13 @@ const prefixListeners = new Map<string, Set<Listener>>();
 const prefixCache = new Map<string, [string, unknown][]>();
 
 function notifyPrefixes(key: string | null): void {
+  // Le cache se vide pour TOUT préfixe concerné, écouté ou non : keysWithPrefix lu sans
+  // abonnement (calendar:next recalculé en Mode Online) ne doit jamais rendre une liste périmée.
+  for (const prefix of [...prefixCache.keys()]) {
+    if (key === null || key.startsWith(prefix)) prefixCache.delete(prefix);
+  }
   for (const [prefix, set] of prefixListeners) {
     if (key !== null && !key.startsWith(prefix)) continue;
-    prefixCache.delete(prefix);
     set.forEach((l) => l());
   }
 }
@@ -133,6 +138,7 @@ export function feedKey(s: Settings): string {
 }
 
 let worker: Worker | null = null;
+let stopP1: (() => void) | null = null;   // Mode Online : relecture de l'état de P1 (O2)
 let started = false;
 let activeKey: string | null = null;
 
@@ -148,6 +154,7 @@ export function startFeed(): void {
   }
   const settings = getSettings();
   activeKey = feedKey(settings);
+  if (settings.mode === 'online' && typeof window !== 'undefined' && !stopP1) stopP1 = startP1Online();
   const source = sourceFor(settings);
   if (!source) {
     // Seul le Mode Tour sans adresse arrive ici : rien à joindre, on le dit.
@@ -176,6 +183,8 @@ export function startFeed(): void {
 export function restartFeed(): void {
   worker?.terminate();
   worker = null;
+  stopP1?.();
+  stopP1 = null;
   clearValues();
   startFeed();
 }

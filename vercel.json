@@ -7,6 +7,7 @@
   "regions": ["cdg1"],
   "rewrites": [
     { "source": "/api/bourse/:path", "destination": "/api/bourse?path=:path" },
+    { "source": "/api/p1/:path", "destination": "/api/p1?path=:path" },
     { "source": "/((?!api/|api$).*)", "destination": "/index.html" }
   ],
   "headers": [

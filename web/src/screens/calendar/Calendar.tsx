@@ -1,7 +1,8 @@
 // Écran Calendrier économique (commande USD ECO, étape E2, docs/ecrans.md § 2).
 // Semaine en cours : clé calendar:week:<AAAA-Wnn> publiée par le service
-// « calendar » de la passerelle ; semaines passées : /api/calendar?week= (archive
-// du Mac). Heures à Paris, calculées depuis l'UTC ; titres en VO (T-019).
+// « calendar » de la passerelle, ou relue dans p1_state en Mode Online (plan « Tout en
+// ligne », O2) ; semaines passées : /api/calendar?week= (archive du Mac) ou
+// /api/p1/calendar?week= (archive en ligne). Heures à Paris, calculées depuis l'UTC ; titres en VO (T-019).
 // Réel et surprise : chiffres captés sur bls.gov par le service « release » (E3),
 // clés release:… ; révisions lues par l'API v1 ; réaction du BTC, clés reaction:… (Reaction.tsx).
 // Historique sur 5 ans : à venir. Sinon « — » et la raison,
@@ -22,7 +23,8 @@ import {
 } from '../../calendar/releases';
 import { useSettings } from '../../config/settings';
 import { fetchJson } from '../../data/gateway';
-import { useKeys } from '../../data/store';
+import { P1_STATUS_KEY, type P1Status } from '../../data/online/p1';
+import { useKeys, useValue } from '../../data/store';
 import { fmtHm } from '../../lib/time';
 import { SubHeader } from '../../shell/SubHeader';
 import { useNow } from '../../shell/useNow';
@@ -43,6 +45,7 @@ type Load = { state: 'idle' } | { state: 'loading' } | { state: 'error'; reason:
 export function CalendarScreen() {
   const { mode } = useSettings();
   const now = useNow();
+  const online = useValue<P1Status>(P1_STATUS_KEY);
   const weeks = useKeys<CalendarWeek>('calendar:week:');
   const live = weeks.length ? weeks[weeks.length - 1][1] : null;
   const [week, setWeek] = useState<string | null>(null);     // null : semaine en cours
@@ -57,11 +60,12 @@ export function CalendarScreen() {
     if (!week || week === live?.week) { setOther({ state: 'idle' }); return; }
     const ctl = new AbortController();
     setOther({ state: 'loading' });
-    fetchJson<CalendarWeek>(`/api/calendar?week=${week}`, { signal: ctl.signal, timeoutMs: 8000 })
+    const path = mode === 'online' ? `/api/p1/calendar?week=${week}` : `/api/calendar?week=${week}`;
+    fetchJson<CalendarWeek>(path, { signal: ctl.signal, timeoutMs: 8000 })
       .then((data) => setOther({ state: 'ok', data }))
       .catch((e: unknown) => { if (!ctl.signal.aborted) setOther({ state: 'error', reason: (e as Error).message }); });
     return () => ctl.abort();
-  }, [week, live?.week]);
+  }, [week, live?.week, mode]);
 
   const data = week && week !== live?.week ? (other.state === 'ok' ? other.data : null) : live;
   const releaseEntries = useKeys<unknown>('release:');
@@ -82,9 +86,9 @@ export function CalendarScreen() {
     apply(next);
   };
   const weekNo = target ? Number(target.slice(-2)) : null;
-  const unavailable = mode === 'online'
-    ? 'agenda en Mode Online : Edge Function ff-calendar à l’étape E7 ; en attendant, Mode Local'
-    : !live ? 'agenda pas encore reçu : activer le service calendar de la passerelle (GATEWAY_SERVICES=okx,calendar)' : null;
+  const unavailable = live ? null : mode === 'online'
+    ? (online?.reason ?? (online ? 'agenda en ligne pas encore relevé (Edge Function p1-jobs, tâche ff-calendar)' : 'agenda en ligne : lecture en cours'))
+    : 'agenda pas encore reçu : activer le service calendar de la passerelle (GATEWAY_SERVICES=okx,calendar)';
 
   return (
     <>

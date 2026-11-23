@@ -25,7 +25,7 @@ import { loadEnv, type Plugin } from 'vite';
 /** Nom de route accepté : pas de « _ » initial (api/_lib, api/_tests) ; un sous-chemin pour NESTED seulement. */
 const ROUTE = /^\/api\/([a-z0-9][a-z0-9-]*)(?:\/([a-z0-9][a-z0-9-]*))?\/?$/;
 /** Fonctions à routeur interne (api/<nom>.ts sert /api/<nom>/<route>). */
-const NESTED = new Set(['bourse']);
+const NESTED = new Set(['bourse', 'p1']);
 const BODY_METHODS = ['POST', 'DELETE'];
 const MAX_BODY = 64 * 1024;
 

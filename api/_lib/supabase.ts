@@ -88,10 +88,10 @@ export function supabaseConfig(env: Env): ConfigResult {
   return { ok: true, config: { url: u.origin, headers: auth.headers } };
 }
 
-interface RestResult { rows: unknown[]; total: number | null }
+export interface RestResult { rows: unknown[]; total: number | null }
 
 /** Une requête PostgREST (GET, ou HEAD pour un simple décompte). */
-async function rest(cfg: SupabaseConfig, fetchFn: FetchFn, method: 'GET' | 'HEAD', table: string,
+export async function rest(cfg: SupabaseConfig, fetchFn: FetchFn, method: 'GET' | 'HEAD', table: string,
                     params: Record<string, string>, count: boolean): Promise<RestResult> {
   const url = `${cfg.url}/rest/v1/${table}?${new URLSearchParams(params)}`;
   let r: Response;

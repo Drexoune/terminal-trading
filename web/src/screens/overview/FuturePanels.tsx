@@ -38,7 +38,7 @@ export function UpcomingEventsPanel() {
       chips={<Link className="chip chip--hot" to="/calendrier">Calendrier</Link>}>
       {events.length === 0 ? (
         <Placeholder phase="P1" height={326}
-          text={mode === 'online' ? 'Agenda en Mode Online : Edge Function ff-calendar à l’étape E7.'
+          text={mode === 'online' ? 'Agenda en ligne : aucun événement d’impact fort ou moyen à venir, ou agenda pas encore relevé (Edge Function p1-jobs).'
             : next ? 'Aucune publication d’impact fort ou moyen d’ici la fin de la semaine.'
               : 'Agenda non reçu : activer le service calendar de la passerelle.'} />
       ) : (

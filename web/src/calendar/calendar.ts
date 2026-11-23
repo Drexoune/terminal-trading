@@ -45,6 +45,14 @@ export interface CalendarWeek {
 
 export interface CalendarNext { events: CalendarEvent[]; computed_ms: number; week: string | null; forexfactory: SourceStamp | null }
 
+/** Cinq prochains événements Fort ou Moyen (même règle que calendar_service.next_events). */
+export function nextEvents(week: CalendarWeek | null | undefined, now: number, count = 5): CalendarNext {
+  const events = (week?.events ?? [])
+    .filter((e) => (e.impact === 'High' || e.impact === 'Medium') && e.time_ms !== null && e.time_ms > now)
+    .sort((a, b) => (a.time_ms as number) - (b.time_ms as number));
+  return { events: events.slice(0, count), computed_ms: now, week: week?.week ?? null, forexfactory: week?.forexfactory ?? null };
+}
+
 // --- devises et impact -----------------------------------------------------------------
 
 export const CURRENCIES = ['USD', 'EUR', 'GBP', 'JPY', 'CAD', 'AUD', 'NZD', 'CHF', 'CNY'] as const;

@@ -46,6 +46,11 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-039 | 20/11/2026 | Réalisation de B1 | Valorisation à la demande, import Baggr validé côté serveur, TRI non annualisé sous un an, rattrapage US par Tiingo |
 | T-040 | 23/11/2026 | Rattrapage d'une capture manquée | Relecture du communiqué (`.nr0`, page complète, copie archivée à la date) par le même parseur ; l'API v1 seulement si la page reste illisible, chiffre marqué « recalculé » ; révisions par l'API v1 |
 | T-041 | 23/11/2026 | PPI sous-jacent | Complété par l'API v1 (série WPSFD49104) dès sa mise à jour après la publication ; marqué « recalculé » |
+| T-042 | 23/11/2026 | Tout en ligne | P1 tourne sans le Mac : capture, agenda, alertes et Telegram sur Supabase (Edge Functions, Cron) et Vercel ; remplace T-016 et T-017 ; plan `docs/plan-online.md` |
+| T-043 | 23/11/2026 | Chiffre capté jusqu'à l'écran | Supabase Realtime, canal public de diffusion pour les données publiques seulement ; clé « publishable » dans le front ; révise T-012 |
+| T-044 | 23/11/2026 | Offre Supabase | Offre gratuite d'abord ; passage à Pro (environ 25 $/mois) si le projet est mis en pause |
+| T-045 | 23/11/2026 | Porte P1 en ligne | Capture en ligne visée pour le CPI du 10/12 ; le Mac capte en parallèle les 04/12, 08/12 et 10/12, en secours |
+| T-046 | 23/11/2026 | Flux continus en ligne | Alertes de prix à la minute (haut et bas de chaque bougie) ; Tree of Alpha abandonné en ligne |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -452,4 +457,20 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 **Décision de Clément.** Le PPI sous-jacent est complété par l'API v1.
 
 **Conséquences.** À la capture, la ligne est enregistrée vide, avec sa raison. Aux relectures de l'API (T+15 min, T+60 min, 12:00 New York), dès que la période apparaît, la valeur est complétée une seule fois : marque « recalculé », série et niveaux cités, heure du complément (`filled_ms`, migration 6), surprise et z calculés comme à la capture. Ce chiffre ne compte pas pour la porte (délai de l'API) et ne déclenche ni bandeau ni annonce vocale. Le délai réel de mise à jour de l'API sera mesuré au PPI du 15/12.
+
+## T-042 à T-046 — Tout en ligne · 23/11/2026
+
+**Demande de Clément.** Que tout tourne même quand le Mac est éteint. Trois options présentées : A, Vercel et Supabase seuls ; B, un petit serveur en ligne avec la passerelle Python actuelle (recommandée) ; C, la tour. **Clément retient A.**
+
+**Faits vérifiés le 23/11/2026** (documentation Supabase) : Edge Functions limitées à 150 s (offre gratuite) ou 400 s (payante) et 2 s de CPU par requête, WebSocket sortante possible pendant cette durée ; Supabase Cron jusqu'à une exécution par seconde ; projet gratuit mis en pause après 7 jours de « faible activité », sans préciser si les tâches planifiées comptent ; Realtime Broadcast public : abonnement avec la clé publishable, sans session.
+
+**Décisions de Clément.**
+
+- **T-042** : la capture du BLS, l'agenda, les alertes et Telegram passent sur Supabase et Vercel. La passerelle Python reste pour le Mode Local et le développement. **Remplace T-016** (le Mac fait foi) **et T-017** (ni capture ni alerte en Mode Online).
+- **T-043** : le chiffre capté arrive à l'écran par Supabase Realtime, sur un canal de diffusion public qui ne porte que des données publiques (chiffres du BLS, agenda). La clé publishable de Supabase entre dans le front. **Révise T-012** : la RLS reste sans politique sur toutes les tables ; la clé publishable ne lit aucune table ; les clés secrètes restent côté serveur ; les écritures (règles d'alerte, essai Telegram, heure d'affichage) passent par les fonctions Vercel derrière le mot de passe d'application (T-031).
+- **T-044** : offre gratuite d'abord ; si le projet est mis en pause, passage à Pro.
+- **T-045** : la capture en ligne vise la porte du 10/12. Filet de sécurité : la passerelle du Mac capte aussi les 04/12, 08/12 et 10/12. Les deux adresses IP sont différentes, chacune reste à une requête par seconde ; la mesure de la porte vient de la capture en ligne si elle a réussi, sinon de celle du Mac.
+- **T-046** : en ligne, les alertes de prix se jugent à la minute, sur le haut et le bas de chaque bougie 1 min (aucun franchissement manqué, jusqu'à une minute de retard). Tree of Alpha n'est pas repris en ligne ; les flux RSS couvrent les banques centrales et la macro.
+
+**Risques acceptés.** Deux mises en œuvre à tenir (Python et TypeScript), vérifiées contre le même corpus ; adresses IP de Supabase peut-être refusées par le BLS ou ForexFactory (sonde O0 avant tout) ; calendrier serré jusqu'au 10/12.
 

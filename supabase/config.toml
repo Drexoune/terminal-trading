@@ -13,3 +13,9 @@ verify_jwt = false
 # main pour la tâche explore. Sans JWT : l'en-tête x-jobs-secret est vérifié
 # par la fonction.
 verify_jwt = false
+
+[functions.p1-jobs]
+# Plan « Tout en ligne » (T-042) : sonde O0 (?job=explore), puis agenda, capture et
+# alertes de P1, appelés par pg_cron. Sans JWT : l'en-tête x-jobs-secret est vérifié
+# par la fonction (P1_JOBS_SECRET).
+verify_jwt = false

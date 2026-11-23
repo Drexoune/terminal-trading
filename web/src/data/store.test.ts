@@ -34,3 +34,18 @@ describe('store : suppressions et clés par préfixe (P1)', () => {
     off();
   });
 });
+
+describe('cache par préfixe', () => {
+  it('lu sans abonnement, il suit les ajouts, les suppressions et le vidage', async () => {
+    const { clearValues: clear, keysWithPrefix: keys, setValue: set } = await import('./store');
+    clear();
+    set('zz:a', 1);
+    expect(keys('zz:')).toEqual([['zz:a', 1]]);
+    set('zz:b', 2);
+    expect(keys('zz:')).toEqual([['zz:a', 1], ['zz:b', 2]]);
+    set('zz:a', null);
+    expect(keys('zz:')).toEqual([['zz:b', 2]]);
+    clear();
+    expect(keys('zz:')).toEqual([]);
+  });
+});

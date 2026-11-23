@@ -1,0 +1,893 @@
+{
+ "_comment": "Généré par scripts/make_calendar_golden.py ; ne pas modifier à la main.",
+ "ff_extra_xml": "\t<event>\n\t\t<title>CPI m/m</title>\n\t\t<country>USD</country>\n\t\t<date><![CDATA[12-10-2026]]></date>\n\t\t<time><![CDATA[1:30pm]]></time>\n\t\t<impact><![CDATA[High]]></impact>\n\t\t<forecast><![CDATA[0.3%]]></forecast>\n\t\t<previous><![CDATA[0.4%]]></previous>\n\t\t<url><![CDATA[https://www.forexfactory.com/calendar/78-us-cpi-mm]]></url>\n\t</event>\n\t<event>\n\t\t<title>Core PPI m/m</title>\n\t\t<country>USD</country>\n\t\t<date><![CDATA[12-15-2026]]></date>\n\t\t<time><![CDATA[1:00pm]]></time>\n\t\t<impact><![CDATA[Medium]]></impact>\n\t\t<forecast><![CDATA[0.2%]]></forecast>\n\t\t<previous />\n\t\t<url><![CDATA[https://www.forexfactory.com/calendar/88-us-core-ppi-mm]]></url>\n\t</event>\n\t<event>\n\t\t<title>S&amp;P Global Services PMI</title>\n\t\t<country>USD</country>\n\t\t<date><![CDATA[12-15-2026]]></date>\n\t\t<time><![CDATA[2:45pm]]></time>\n\t\t<impact><![CDATA[Medium]]></impact>\n\t\t<forecast><![CDATA[54.1]]></forecast>\n\t\t<previous><![CDATA[54.8]]></previous>\n\t\t<url><![CDATA[https://www.forexfactory.com/calendar/1-us-sp-global-services-pmi]]></url>\n\t</event>\n\t<event>\n\t\t<title>FOMC Member Speaks</title>\n\t\t<country>USD</country>\n\t\t<date><![CDATA[12-15-2026]]></date>\n\t\t<time><![CDATA[Tentative]]></time>\n\t\t<impact><![CDATA[Low]]></impact>\n\t\t<forecast />\n\t\t<previous />\n\t\t<url><![CDATA[https://www.forexfactory.com/calendar/9-us-fomc-member-speaks]]></url>\n\t</event>\n\t<event>\n\t\t<title>FOMC Member Speaks</title>\n\t\t<country>USD</country>\n\t\t<date><![CDATA[12-15-2026]]></date>\n\t\t<time><![CDATA[6:00pm]]></time>\n\t\t<impact><![CDATA[Low]]></impact>\n\t\t<forecast />\n\t\t<previous />\n\t\t<url><![CDATA[https://www.forexfactory.com/calendar/9-us-fomc-member-speaks]]></url>\n\t</event>\n",
+ "indicators": [
+  {
+   "id": "us-cpi-mm",
+   "label_fr": "IPC (m/m)",
+   "currency": "USD",
+   "ff_title": "CPI m/m",
+   "bls_release": "Consumer Price Index",
+   "official_series": "CUSR0000SA0",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-cpi-yy",
+   "label_fr": "IPC (sur un an)",
+   "currency": "USD",
+   "ff_title": "CPI y/y",
+   "bls_release": "Consumer Price Index",
+   "official_series": "CUUR0000SA0",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-core-cpi-mm",
+   "label_fr": "IPC sous-jacent (m/m)",
+   "currency": "USD",
+   "ff_title": "Core CPI m/m",
+   "bls_release": "Consumer Price Index",
+   "official_series": "CUSR0000SA0L1E",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-core-cpi-yy",
+   "label_fr": "IPC sous-jacent (sur un an)",
+   "currency": "USD",
+   "ff_title": "Core CPI y/y",
+   "bls_release": "Consumer Price Index",
+   "official_series": "CUUR0000SA0L1E",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-nfp",
+   "label_fr": "Créations d’emplois non agricoles",
+   "currency": "USD",
+   "ff_title": "Non-Farm Employment Change",
+   "bls_release": "Employment Situation",
+   "official_series": "CES0000000001",
+   "unit": "K",
+   "capture": true
+  },
+  {
+   "id": "us-unemployment",
+   "label_fr": "Taux de chômage",
+   "currency": "USD",
+   "ff_title": "Unemployment Rate",
+   "bls_release": "Employment Situation",
+   "official_series": "LNS14000000",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-ahe-mm",
+   "label_fr": "Salaire horaire moyen (m/m)",
+   "currency": "USD",
+   "ff_title": "Average Hourly Earnings m/m",
+   "bls_release": "Employment Situation",
+   "official_series": "CES0500000003",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-ppi-mm",
+   "label_fr": "Prix à la production (m/m)",
+   "currency": "USD",
+   "ff_title": "PPI m/m",
+   "bls_release": "Producer Price Index",
+   "official_series": "WPSFD4",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-core-ppi-mm",
+   "label_fr": "Prix à la production sous-jacents (m/m)",
+   "currency": "USD",
+   "ff_title": "Core PPI m/m",
+   "bls_release": "Producer Price Index",
+   "official_series": "WPSFD49104",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-prod-qq",
+   "label_fr": "Productivité non agricole (t/t)",
+   "currency": "USD",
+   "ff_title": "(?:Prelim |Revised )?Nonfarm Productivity q/q",
+   "bls_release": "Productivity and Costs",
+   "official_series": "PRS85006092",
+   "unit": "%",
+   "capture": true
+  },
+  {
+   "id": "us-ulc-qq",
+   "label_fr": "Coûts salariaux unitaires (t/t)",
+   "currency": "USD",
+   "ff_title": "(?:Prelim |Revised )?Unit Labor Costs q/q",
+   "bls_release": "Productivity and Costs",
+   "official_series": "PRS85006112",
+   "unit": "%",
+   "capture": true
+  }
+ ],
+ "parse_value": [
+  [
+   "0.4%",
+   "0.4",
+   "%"
+  ],
+  [
+   "198K",
+   "198",
+   "K"
+  ],
+  [
+   "-0.90T",
+   "-0.90",
+   "T"
+  ],
+  [
+   "4.18|2.6",
+   null,
+   null
+  ],
+  [
+   "<1.25%",
+   null,
+   null
+  ],
+  [
+   "",
+   null,
+   null
+  ],
+  [
+   "1.2M",
+   "1.2",
+   "M"
+  ],
+  [
+   "-12.5B",
+   "-12.5",
+   "B"
+  ],
+  [
+   "25bp",
+   "25",
+   "bp"
+  ],
+  [
+   "50.9",
+   "50.9",
+   ""
+  ],
+  [
+   "abc",
+   null,
+   null
+  ],
+  [
+   " 3.1% ",
+   "3.1",
+   "%"
+  ],
+  [
+   "0.0%",
+   "0.0",
+   "%"
+  ],
+  [
+   "-0.1%",
+   "-0.1",
+   "%"
+  ]
+ ],
+ "ff_events": [
+  {
+   "id": "852-nz-businessnz-services-index|NZD|2026-11-15|1",
+   "title": "BusinessNZ Services Index",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "NZD",
+   "impact": "Low",
+   "ny_date": "2026-11-15",
+   "time_ms": 1794778200000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1794778200000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": null,
+   "forecast": null,
+   "previous_raw": "50.9",
+   "previous": "50.9",
+   "unit": null,
+   "actual": null,
+   "series": "852-nz-businessnz-services-index",
+   "date_utc": "2026-11-15",
+   "time_raw": "9:30pm"
+  },
+  {
+   "id": "43-jn-prelim-gdp-price-index-yy|JPY|2026-11-15|1",
+   "title": "Prelim GDP Price Index y/y",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "JPY",
+   "impact": "Low",
+   "ny_date": "2026-11-15",
+   "time_ms": 1794786600000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1794786600000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "2.6%",
+   "forecast": "2.6",
+   "previous_raw": "2.6%",
+   "previous": "2.6",
+   "unit": "%",
+   "actual": null,
+   "series": "43-jn-prelim-gdp-price-index-yy",
+   "date_utc": "2026-11-15",
+   "time_raw": "11:50pm"
+  },
+  {
+   "id": "36-jn-prelim-gdp-qq|JPY|2026-11-15|1",
+   "title": "Prelim GDP q/q",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "JPY",
+   "impact": "Low",
+   "ny_date": "2026-11-15",
+   "time_ms": 1794786600000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1794786600000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "0.1%",
+   "forecast": "0.1",
+   "previous_raw": "0.3%",
+   "previous": "0.3",
+   "unit": "%",
+   "actual": null,
+   "series": "36-jn-prelim-gdp-qq",
+   "date_utc": "2026-11-15",
+   "time_raw": "11:50pm"
+  },
+  {
+   "id": "129-us-fed-chairman-warsh-speaks|USD|2026-11-16|1",
+   "title": "Fed Chairman Warsh Speaks",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "High",
+   "ny_date": "2026-11-16",
+   "time_ms": 1794848400000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1794848400000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": null,
+   "forecast": null,
+   "previous_raw": null,
+   "previous": null,
+   "unit": null,
+   "actual": null,
+   "series": "129-us-fed-chairman-warsh-speaks",
+   "date_utc": "2026-11-16",
+   "time_raw": "5:00pm"
+  },
+  {
+   "id": "112-us-core-retail-sales-mm|USD|2026-11-17|1",
+   "title": "Core Retail Sales m/m",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "High",
+   "ny_date": "2026-11-17",
+   "time_ms": 1794922200000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1794922200000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "0.4%",
+   "forecast": "0.4",
+   "previous_raw": "0.9%",
+   "previous": "0.9",
+   "unit": "%",
+   "actual": null,
+   "series": "112-us-core-retail-sales-mm",
+   "date_utc": "2026-11-17",
+   "time_raw": "1:30pm"
+  },
+  {
+   "id": "102-us-retail-sales-mm|USD|2026-11-17|1",
+   "title": "Retail Sales m/m",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "High",
+   "ny_date": "2026-11-17",
+   "time_ms": 1794922200000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1794922200000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "0.1%",
+   "forecast": "0.1",
+   "previous_raw": "0.8%",
+   "previous": "0.8",
+   "unit": "%",
+   "actual": null,
+   "series": "102-us-retail-sales-mm",
+   "date_utc": "2026-11-17",
+   "time_raw": "1:30pm"
+  },
+  {
+   "id": "304-us-fomc-meeting-minutes|USD|2026-11-18|1",
+   "title": "FOMC Meeting Minutes",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "High",
+   "ny_date": "2026-11-18",
+   "time_ms": 1795028400000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1795028400000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": null,
+   "forecast": null,
+   "previous_raw": null,
+   "previous": null,
+   "unit": null,
+   "actual": null,
+   "series": "304-us-fomc-meeting-minutes",
+   "date_utc": "2026-11-18",
+   "time_raw": "7:00pm"
+  },
+  {
+   "id": "325-us-philly-fed-manufacturing-index|USD|2026-11-19|1",
+   "title": "Philly Fed Manufacturing Index",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Medium",
+   "ny_date": "2026-11-19",
+   "time_ms": 1795095000000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1795095000000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "20.6",
+   "forecast": "20.6",
+   "previous_raw": "20.9",
+   "previous": "20.9",
+   "unit": "",
+   "actual": null,
+   "series": "325-us-philly-fed-manufacturing-index",
+   "date_utc": "2026-11-19",
+   "time_raw": "1:30pm"
+  },
+  {
+   "id": "11-us-unemployment-claims|USD|2026-11-19|1",
+   "title": "Unemployment Claims",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Medium",
+   "ny_date": "2026-11-19",
+   "time_ms": 1795095000000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1795095000000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "198K",
+   "forecast": "198",
+   "previous_raw": "200K",
+   "previous": "200",
+   "unit": "K",
+   "actual": null,
+   "series": "11-us-unemployment-claims",
+   "date_utc": "2026-11-19",
+   "time_raw": "1:30pm"
+  },
+  {
+   "id": "54-us-revised-uom-consumer-sentiment|USD|2026-11-20|1",
+   "title": "Revised UoM Consumer Sentiment",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Medium",
+   "ny_date": "2026-11-20",
+   "time_ms": 1795186800000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1795186800000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "51.7",
+   "forecast": "51.7",
+   "previous_raw": "51.0",
+   "previous": "51.0",
+   "unit": "",
+   "actual": null,
+   "series": "54-us-revised-uom-consumer-sentiment",
+   "date_utc": "2026-11-20",
+   "time_raw": "3:00pm"
+  },
+  {
+   "id": "238-us-revised-uom-inflation-expectations|USD|2026-11-20|1",
+   "title": "Revised UoM Inflation Expectations",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Medium",
+   "ny_date": "2026-11-20",
+   "time_ms": 1795186800000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1795186800000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": null,
+   "forecast": null,
+   "previous_raw": "4.3%",
+   "previous": "4.3",
+   "unit": null,
+   "actual": null,
+   "series": "238-us-revised-uom-inflation-expectations",
+   "date_utc": "2026-11-20",
+   "time_raw": "3:00pm"
+  },
+  {
+   "id": "78-us-cpi-mm|USD|2026-12-10|1",
+   "title": "CPI m/m",
+   "title_fr": "IPC (m/m)",
+   "indicator": "us-cpi-mm",
+   "capture": true,
+   "currency": "USD",
+   "impact": "High",
+   "ny_date": "2026-12-10",
+   "time_ms": 1796909400000,
+   "time_source": "BLS",
+   "time_kind": "officielle",
+   "ff_time_ms": 1796909400000,
+   "time_mismatch": false,
+   "official": {
+    "local_date": "2026-12-10",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "release": "Consumer Price Index"
+   },
+   "forecast_raw": "0.3%",
+   "forecast": "0.3",
+   "previous_raw": "0.4%",
+   "previous": "0.4",
+   "unit": "%",
+   "actual": null,
+   "series": "78-us-cpi-mm",
+   "date_utc": "2026-12-10",
+   "time_raw": "1:30pm"
+  },
+  {
+   "id": "88-us-core-ppi-mm|USD|2026-12-15|1",
+   "title": "Core PPI m/m",
+   "title_fr": "Prix à la production sous-jacents (m/m)",
+   "indicator": "us-core-ppi-mm",
+   "capture": true,
+   "currency": "USD",
+   "impact": "Medium",
+   "ny_date": "2026-12-15",
+   "time_ms": 1797341400000,
+   "time_source": "BLS",
+   "time_kind": "officielle",
+   "ff_time_ms": 1797339600000,
+   "time_mismatch": true,
+   "official": {
+    "local_date": "2026-12-15",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "release": "Producer Price Index"
+   },
+   "forecast_raw": "0.2%",
+   "forecast": "0.2",
+   "previous_raw": null,
+   "previous": null,
+   "unit": "%",
+   "actual": null,
+   "series": "88-us-core-ppi-mm",
+   "date_utc": "2026-12-15",
+   "time_raw": "1:00pm"
+  },
+  {
+   "id": "1-us-sp-global-services-pmi|USD|2026-12-15|1",
+   "title": "S&P Global Services PMI",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Medium",
+   "ny_date": "2026-12-15",
+   "time_ms": 1797345900000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1797345900000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": "54.1",
+   "forecast": "54.1",
+   "previous_raw": "54.8",
+   "previous": "54.8",
+   "unit": "",
+   "actual": null,
+   "series": "1-us-sp-global-services-pmi",
+   "date_utc": "2026-12-15",
+   "time_raw": "2:45pm"
+  },
+  {
+   "id": "9-us-fomc-member-speaks|USD|2026-12-15|1",
+   "title": "FOMC Member Speaks",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Low",
+   "ny_date": "2026-12-15",
+   "time_ms": null,
+   "time_source": "ForexFactory",
+   "time_kind": "Tentative",
+   "ff_time_ms": null,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": null,
+   "forecast": null,
+   "previous_raw": null,
+   "previous": null,
+   "unit": null,
+   "actual": null,
+   "series": "9-us-fomc-member-speaks",
+   "date_utc": "2026-12-15",
+   "time_raw": "Tentative"
+  },
+  {
+   "id": "9-us-fomc-member-speaks|USD|2026-12-15|2",
+   "title": "FOMC Member Speaks",
+   "title_fr": null,
+   "indicator": null,
+   "capture": false,
+   "currency": "USD",
+   "impact": "Low",
+   "ny_date": "2026-12-15",
+   "time_ms": 1797357600000,
+   "time_source": "ForexFactory",
+   "time_kind": "indicative",
+   "ff_time_ms": 1797357600000,
+   "time_mismatch": false,
+   "official": null,
+   "forecast_raw": null,
+   "forecast": null,
+   "previous_raw": null,
+   "previous": null,
+   "unit": null,
+   "actual": null,
+   "series": "9-us-fomc-member-speaks",
+   "date_utc": "2026-12-15",
+   "time_raw": "6:00pm"
+  }
+ ],
+ "ics": {
+  "releases": [
+   {
+    "title": "Employment Situation",
+    "local_date": "2026-10-02",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1790944200000
+   },
+   {
+    "title": "Real Earnings",
+    "local_date": "2026-10-14",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1791981000000
+   },
+   {
+    "title": "Consumer Price Index",
+    "local_date": "2026-10-14",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1791981000000
+   },
+   {
+    "title": "Producer Price Index",
+    "local_date": "2026-10-15",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1792067400000
+   },
+   {
+    "title": "U.S. Import and Export Price Indexes",
+    "local_date": "2026-10-16",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1792153800000
+   },
+   {
+    "title": "State Employment and Unemployment (Monthly)",
+    "local_date": "2026-10-20",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1792504800000
+   },
+   {
+    "title": "Usual Weekly Earnings of Wage and Salary Workers",
+    "local_date": "2026-10-21",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1792591200000
+   },
+   {
+    "title": "Quarterly Data Series on Business Employment Dynamics",
+    "local_date": "2026-10-28",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1793196000000
+   },
+   {
+    "title": "Metropolitan Area Employment and Unemployment (Monthly)",
+    "local_date": "2026-10-28",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1793196000000
+   },
+   {
+    "title": "Consumer Expenditures",
+    "local_date": "2026-10-29",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1793282400000
+   },
+   {
+    "title": "Employment Cost Index",
+    "local_date": "2026-10-30",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1793363400000
+   },
+   {
+    "title": "Job Openings and Labor Turnover Survey",
+    "local_date": "2026-11-03",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1793718000000
+   },
+   {
+    "title": "Productivity and Costs",
+    "local_date": "2026-11-05",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1793885400000
+   },
+   {
+    "title": "Employment Situation",
+    "local_date": "2026-11-06",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1793971800000
+   },
+   {
+    "title": "Real Earnings",
+    "local_date": "2026-11-10",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1794317400000
+   },
+   {
+    "title": "Consumer Price Index",
+    "local_date": "2026-11-10",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1794317400000
+   },
+   {
+    "title": "Producer Price Index",
+    "local_date": "2026-11-13",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1794576600000
+   },
+   {
+    "title": "U.S. Import and Export Price Indexes",
+    "local_date": "2026-11-17",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1794922200000
+   },
+   {
+    "title": "Employer-Reported Workplace Injuries and Illnesses (Annual)",
+    "local_date": "2026-11-18",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1795014000000
+   },
+   {
+    "title": "State Employment and Unemployment (Monthly)",
+    "local_date": "2026-11-20",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1795186800000
+   },
+   {
+    "title": "Job Openings and Labor Turnover Survey",
+    "local_date": "2026-12-01",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1796137200000
+   },
+   {
+    "title": "Metropolitan Area Employment and Unemployment (Monthly)",
+    "local_date": "2026-12-02",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1796223600000
+   },
+   {
+    "title": "County Employment and Wages",
+    "local_date": "2026-12-02",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1796223600000
+   },
+   {
+    "title": "Employment Situation",
+    "local_date": "2026-12-04",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1796391000000
+   },
+   {
+    "title": "Productivity and Costs",
+    "local_date": "2026-12-08",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1796736600000
+   },
+   {
+    "title": "Consumer Price Index",
+    "local_date": "2026-12-10",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1796909400000
+   },
+   {
+    "title": "Real Earnings",
+    "local_date": "2026-12-10",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1796909400000
+   },
+   {
+    "title": "Producer Price Index",
+    "local_date": "2026-12-15",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1797341400000
+   },
+   {
+    "title": "Census of Fatal Occupational Injuries",
+    "local_date": "2026-12-16",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1797433200000
+   },
+   {
+    "title": "Employer Costs for Employee Compensation",
+    "local_date": "2026-12-16",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1797433200000
+   },
+   {
+    "title": "U.S. Import and Export Price Indexes",
+    "local_date": "2026-12-17",
+    "local_time": "08:30",
+    "tz": "America/New_York",
+    "utc_ms": 1797514200000
+   },
+   {
+    "title": "Work Experience of the Population (Annual)",
+    "local_date": "2026-12-18",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1797606000000
+   },
+   {
+    "title": "State Employment and Unemployment (Monthly)",
+    "local_date": "2026-12-18",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1797606000000
+   },
+   {
+    "title": "Metropolitan Area Employment and Unemployment (Monthly)",
+    "local_date": "2026-12-30",
+    "local_time": "10:00",
+    "tz": "America/New_York",
+    "utc_ms": 1798642800000
+   }
+  ],
+  "problems": []
+ },
+ "weeks": [
+  [
+   "2026-11-15",
+   "2026-W47",
+   "2026-11-15",
+   "2026-11-21"
+  ],
+  [
+   "2026-11-16",
+   "2026-W47",
+   "2026-11-15",
+   "2026-11-21"
+  ],
+  [
+   "2026-11-21",
+   "2026-W47",
+   "2026-11-15",
+   "2026-11-21"
+  ],
+  [
+   "2026-11-22",
+   "2026-W48",
+   "2026-11-22",
+   "2026-11-28"
+  ],
+  [
+   "2026-12-31",
+   "2026-W53",
+   "2026-12-27",
+   "2027-01-02"
+  ],
+  [
+   "2027-01-03",
+   "2027-W01",
+   "2027-01-03",
+   "2027-01-09"
+  ],
+  [
+   "2026-03-08",
+   "2026-W11",
+   "2026-03-08",
+   "2026-03-14"
+  ],
+  [
+   "2026-10-25",
+   "2026-W44",
+   "2026-10-25",
+   "2026-10-31"
+  ]
+ ]
+}
