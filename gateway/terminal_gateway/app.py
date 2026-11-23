@@ -4,10 +4,16 @@ Protocole /ws (JSON) :
 
   client -> {"op": "subscribe", "topics": ["ticker:", "trade:", ...]}   préfixes de clés
   client -> {"op": "ping", "id": 7, "t0": <ms navigateur>}
+  client -> {"op": "displayed", "key": "release:…", "t_gateway_ms": ms}   chiffre affiché
   serveur -> {"type": "hello", "app": ..., "version": ..., "ts_sent": ms}
   serveur -> {"type": "snapshot", "items": [[clé, valeur], ...], "ts_sent": ms}
   serveur -> {"type": "delta", "items": [[clé, valeur], ...], "ts_sent": ms}
   serveur -> {"type": "pong", "id": 7, "t0": ..., "ts": <ms passerelle>}
+
+Alertes (E4) : GET /api/alerts ; POST /api/alerts/rules, PATCH et DELETE
+/api/alerts/rules/{id}, POST /api/alerts/ack, POST /api/alerts/test-telegram.
+Les écritures exigent un corps JSON et une origine autorisée (ou aucune : outil
+local) : une page tierce ne peut ni créer une règle ni faire envoyer un message.
 
 Le pong permet au navigateur d'estimer l'écart entre son horloge et celle de
 la passerelle, donc de mesurer la latence de bout en bout.
@@ -26,10 +32,11 @@ import logging
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from . import APP_NAME, VERSION
+from .alert_rules import RuleError
 from .bus import Bus
 from .config import Settings
 from .okx_service import OkxService
@@ -99,7 +106,7 @@ def create_app(settings: Settings, service: OkxService | None = None,
     app.state.services = services
     app.state.storage = storage
     app.add_middleware(CORSMiddleware, allow_origins=list(settings.allowed_origins),
-                       allow_methods=["GET"], allow_headers=["*"])
+                       allow_methods=["GET", "POST", "PATCH", "DELETE"], allow_headers=["*"])
 
     @app.get("/api/health")
     async def health() -> dict:
@@ -133,6 +140,92 @@ def create_app(settings: Settings, service: OkxService | None = None,
         except ValueError as exc:
             raise HTTPException(400, str(exc)) from exc
 
+    def release_service():
+        return next((s for s in services if getattr(s, "name", None) == "release"), None)
+
+    @app.get("/api/releases")
+    async def releases(indicator: str | None = None, limit: int = 60) -> dict:
+        """Publications enregistrées (premières publications), les plus récentes d'abord."""
+        if storage is None or release_service() is None:
+            raise HTTPException(503, "service release non activé (GATEWAY_SERVICES)")
+        limit = max(1, min(limit, 500))
+        where, params = (("where indicator_id = ?", (indicator, limit)) if indicator
+                         else ("", (limit,)))
+        rows = await storage.query(
+            f"select * from releases {where} order by scheduled_ms desc limit ?", params)
+        return {"releases": rows}
+
+    # --- alertes (E4) -------------------------------------------------------------------
+
+    def alert_service():
+        svc = next((s for s in services if getattr(s, "name", None) == "alert"), None)
+        if svc is None:
+            raise HTTPException(503, "service alert non activé (GATEWAY_SERVICES)")
+        return svc
+
+    async def write_body(request: Request) -> dict:
+        origin = request.headers.get("origin")
+        if origin is not None and origin not in settings.allowed_origins:
+            raise HTTPException(403, f"origine refusée : {origin}")
+        if not request.headers.get("content-type", "").startswith("application/json"):
+            raise HTTPException(415, "corps JSON attendu (application/json)")
+        try:
+            body = await request.json()
+        except ValueError as exc:
+            raise HTTPException(400, "JSON illisible") from exc
+        if not isinstance(body, dict):
+            raise HTTPException(400, "objet JSON attendu")
+        return body
+
+    @app.get("/api/alerts")
+    async def alerts(limit: int = 100) -> dict:
+        return await alert_service().state(limit)
+
+    @app.post("/api/alerts/rules")
+    async def alert_create(request: Request) -> dict:
+        svc, body = alert_service(), await write_body(request)
+        try:
+            return await svc.create_rule(str(body.get("kind")), body.get("params") or {},
+                                         body.get("channels") or [])
+        except RuleError as exc:
+            raise HTTPException(400, str(exc)) from exc
+
+    @app.patch("/api/alerts/rules/{rid}")
+    async def alert_update(rid: int, request: Request) -> dict:
+        svc, body = alert_service(), await write_body(request)
+        try:
+            return await svc.update_rule(rid, body.get("state"), body.get("channels"),
+                                         body.get("params"))
+        except KeyError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        except RuleError as exc:
+            raise HTTPException(400, str(exc)) from exc
+
+    @app.delete("/api/alerts/rules/{rid}")
+    async def alert_delete(rid: int, request: Request) -> dict:
+        origin = request.headers.get("origin")
+        if origin is not None and origin not in settings.allowed_origins:
+            raise HTTPException(403, f"origine refusée : {origin}")
+        try:
+            await alert_service().delete_rule(rid)
+        except KeyError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        return {"ok": True}
+
+    @app.post("/api/alerts/ack")
+    async def alert_ack(request: Request) -> dict:
+        svc, body = alert_service(), await write_body(request)
+        ids = body.get("ids")
+        if ids is not None and not (isinstance(ids, list) and all(isinstance(i, str) for i in ids)):
+            raise HTTPException(400, "ids : liste d'identifiants")
+        return {"acked": await svc.ack(ids)}
+
+    @app.post("/api/alerts/test-telegram")
+    async def alert_test(request: Request) -> dict:
+        svc = alert_service()
+        await write_body(request)
+        return await svc.test_telegram()
+
     @app.websocket("/ws")
     async def ws_endpoint(ws: WebSocket) -> None:
         origin = ws.headers.get("origin")
@@ -165,6 +258,12 @@ def create_app(settings: Settings, service: OkxService | None = None,
                 if op == "ping":
                     await send({"type": "pong", "id": msg.get("id"), "t0": msg.get("t0"),
                                 "ts": now_ms()})
+                elif op == "displayed":
+                    # Heure d'affichage d'un chiffre capté, dans l'horloge de la passerelle
+                    # (le navigateur la corrige par ping/pong) : mesure de la porte P1.
+                    svc = release_service()
+                    if svc is not None:
+                        await svc.record_display(str(msg.get("key", "")), msg.get("t_gateway_ms"))
                 elif op == "subscribe":
                     topics = [str(t) for t in msg.get("topics", [])][:50]
                     if sub is not None:

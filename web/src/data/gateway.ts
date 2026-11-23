@@ -17,6 +17,9 @@ export interface FetchOptions {
   /** Base explicite (adresse en cours de saisie) ; par défaut, celle du mode actif. */
   base?: string | null;
   timeoutMs?: number;
+  /** Écriture (alertes, E4) : méthode et corps JSON. Par défaut, GET sans corps. */
+  method?: 'GET' | 'POST' | 'PATCH' | 'DELETE';
+  json?: unknown;
 }
 
 /** Raison lisible d'un échec réseau, pour « Injoignable : … ». */
@@ -43,7 +46,13 @@ export async function fetchJson<T>(path: string, opts: FetchOptions = {}): Promi
   try {
     let r: Response;
     try {
-      r = await fetch(`${base}${path}`, { signal: ctl.signal, headers: { accept: 'application/json' } });
+      r = await fetch(`${base}${path}`, {
+        signal: ctl.signal,
+        method: opts.method ?? 'GET',
+        headers: opts.json === undefined ? { accept: 'application/json' }
+          : { accept: 'application/json', 'content-type': 'application/json' },
+        body: opts.json === undefined ? undefined : JSON.stringify(opts.json),
+      });
     } catch (e) {
       throw new Error(describeFetchError(e, timedOut));
     }

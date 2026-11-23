@@ -61,3 +61,12 @@
 .next-events__row:hover { background: var(--bg-panel-2); }
 .next-events__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .next-events__title { overflow: hidden; color: var(--text-1); text-overflow: ellipsis; white-space: nowrap; }
+/* Alertes actives (E4) : lignes de la maquette Main (cloche, règle, catégorie, état). */
+.alert-rows { margin: 0; padding: 0; list-style: none; }
+.alert-rows li + li { border-top: 1px solid var(--line); }
+.alert-rows__row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  min-height: 56px; padding: 8px 14px; color: inherit; text-decoration: none; }
+.alert-rows__row:hover { background: var(--bg-panel-2); }
+.alert-rows__row > svg { color: var(--text-3); }
+.alert-rows__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.alert-rows__title { color: var(--text-1); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

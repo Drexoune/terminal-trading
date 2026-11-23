@@ -64,7 +64,7 @@ rm -f "$STOP_FILE"
 launchctl enable "$(service)" || true
 launchctl bootstrap "$(domain)" "$PLIST_DEST" || die "launchctl bootstrap $(domain) a échoué.
 Lancer ce script depuis le Terminal de la session ouverte (pas en SSH), puis voir : launchctl print $(service)"
-info "Agent chargé : $(service). Attente de la passerelle sur $GW_URL…"
+info "Agent chargé : $(service). Attente de la passerelle sur ${GW_URL}…"
 
 if ! wait_health; then
   show_logs

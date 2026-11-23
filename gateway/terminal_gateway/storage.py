@@ -92,6 +92,154 @@ MIGRATIONS: list[list[str]] = [
            )""",
         "create index official_releases_time on official_releases (utc_ms)",
     ],
+    # 3 — capture à l'heure H (E3) : première publication de chaque chiffre (jamais
+    # écrasée : `unique` + insertion sans remplacement), délais mesurés, journal des
+    # requêtes envoyées au BLS.
+    [
+        """create table releases (
+             id integer primary key,
+             indicator_id text not null references indicators (id),
+             release text not null,               -- « cpi », « empsit », « ppi », « prod2 »
+             period text not null,                -- « 2026-11 », « 2026-Q3 »
+             edition text not null default '',    -- « Preliminary », « Revised » (productivité)
+             ny_date text not null,               -- jour de publication à New York
+             value text,                          -- texte décimal tel que publié ; null si non lu
+             reason text,                         -- raison quand value est null
+             part text,                           -- « tableau A », « texte »
+             excerpt text,                        -- passage lu (citation de la source)
+             flags text not null default '[]',    -- JSON : « texte concordant », « hors bornes »…
+             timing text not null,                -- « attendue », « en avance », « en retard »
+             nature text not null default 'officielle',
+             scheduled_ms integer not null,
+             embargo_ms integer,
+             first_byte_ms integer,               -- premier octet de la page avec le chiffre
+             received_ms integer not null,        -- fin de lecture
+             url text not null,
+             machine text not null,
+             forecast text,                       -- prévision retenue (texte décimal)
+             forecast_raw text,
+             forecast_seen_ms integer,            -- dernière fois vue avant T
+             surprise text,                       -- réel - prévision (texte décimal)
+             z text,
+             z_n integer,
+             z_reason text,
+             regular integer not null default 1,  -- 0 : publication irrégulière, exclue de sigma
+             unique (indicator_id, period, edition)
+           )""",
+        "create index releases_indicator on releases (indicator_id, scheduled_ms)",
+        """create table release_timings (
+             id integer primary key,
+             release text not null,
+             period text not null,
+             edition text not null default '',
+             scheduled_ms integer not null,
+             last_without_ms integer,             -- envoi de la dernière requête sans le chiffre
+             first_send_ms integer,               -- envoi de la requête qui l'a rapporté
+             first_byte_ms integer,
+             parsed_ms integer,
+             bus_ms integer,
+             display_ms integer,                  -- heure d'affichage renvoyée par le front
+             okx_offset_ms real,                  -- horloge OKX - horloge locale
+             date_header text,                    -- en-tête Date de la réponse du BLS
+             unique (release, period, edition)
+           )""",
+        """create table release_polls (
+             id integer primary key,
+             release text not null,
+             scheduled_ms integer not null,
+             label text not null,                 -- « T-10min », « T-60s », « rafale », « fin »
+             url text not null,
+             send_ms integer not null,
+             first_byte_ms integer,
+             done_ms integer,
+             status integer,
+             size integer,
+             null_bytes integer,
+             period text,
+             embargo_date text,
+             verdict text,                        -- « référence », « inchangée », « attendue »…
+             error text
+           )""",
+        "create index release_polls_sched on release_polls (release, scheduled_ms)",
+    ],
+    # 4 — suites de la capture (E3) : révisions lues par l'API v1 (une ligne par valeur
+    # nouvelle, la première publication reste intacte) et réaction du BTC de T-5 à T+30 min.
+    [
+        """create table release_revisions (
+             id integer primary key,
+             indicator_id text not null references indicators (id),
+             period text not null,
+             edition text not null default '',    -- édition de la publication révisée
+             kind text not null,                  -- « révision », ou « écart » le jour même
+             previous text not null,              -- dernière valeur connue (texte décimal)
+             value text not null,                 -- nouvelle valeur
+             source text not null,                -- « BLS API v1 »
+             series text,                         -- « CUSR0000SA0 »
+             excerpt text,                        -- niveaux utilisés, calcul
+             seen_ms integer not null,            -- vue pour la première fois
+             poll_id integer references release_polls (id)
+           )""",
+        "create index release_revisions_ind on release_revisions (indicator_id, period, seen_ms)",
+        """create table release_reactions (
+             id integer primary key,
+             release text not null,               -- « cpi »
+             ny_date text not null,
+             scheduled_ms integer not null,
+             inst text not null,                  -- « BTC-USDT-SWAP »
+             source text not null,                -- « OKX EEA REST »
+             candles text not null,               -- JSON : bougies 1 min de T-5 à T+30 min
+             ref_price text,
+             end_price text,
+             change_pct text,
+             missing text not null default '[]',  -- JSON : minutes absentes
+             reason text,
+             received_ms integer not null,
+             unique (release, ny_date)
+           )""",
+    ],
+    # 5 — alertes (E4, plan P1 § 11) : règles et déclenchements. Deux règles par défaut,
+    # armées : publication d'un chiffre capté, et T-5 min avant une publication captée.
+    [
+        """create table alert_rules (
+             id integer primary key,
+             kind text not null,                  -- price, funding, event_soon, release,
+                                                  -- surprise, keyword
+             params text not null,                -- JSON validé par alert_rules.validate
+             channels text not null,              -- JSON : ["écran", "telegram", "voix"]
+             state text not null default 'armée', -- armée, déclenchée, désactivée
+             created_ms integer not null,
+             updated_ms integer not null,
+             last_fired_ms integer
+           )""",
+        """create table alert_events (
+             id text primary key,                 -- identifiant court, publié sur le bus
+             rule_id integer not null references alert_rules (id) on delete cascade,
+             dedupe text not null,                -- un déclenchement par règle et par objet
+             fired_ms integer not null,
+             title text not null,
+             body text,
+             source text,                         -- « OKX EEA · trade », « BLS »…
+             source_ms integer,                   -- heure de la donnée qui a déclenché
+             data text not null default '{}',     -- JSON
+             telegram text,                       -- null : non demandé ; envoyé, échec, en attente
+             telegram_ms integer,
+             telegram_error text,
+             acked_ms integer,
+             unique (rule_id, dedupe)
+           )""",
+        "create index alert_events_fired on alert_events (fired_ms)",
+        """insert into alert_rules (kind, params, channels, created_ms, updated_ms) values
+             ('release', '{"releases": []}', '["écran", "telegram", "voix"]', 0, 0),
+             ('event_soon',
+              '{"minutes": 5, "captured_only": true, "impacts": [], "currencies": []}',
+              '["écran", "telegram"]', 0, 0)""",
+    ],
+    # 6 — chiffre absent de la page à l'heure H, complété ensuite par l'API v1 (PPI
+    # sous-jacent) : heure du complément. La valeur passe de null à la valeur recalculée,
+    # une seule fois ; une valeur publiée n'est jamais remplacée.
+    [
+        "alter table releases add column filled_ms integer",
+    ],
 ]
 
 

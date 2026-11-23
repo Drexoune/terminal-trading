@@ -58,7 +58,7 @@ describe('états', () => {
 
   it('raison d’un réel absent', () => {
     expect(actualReason(ev(), t - 1)).toBe('pas encore publié');
-    expect(actualReason(ev(), t + 1)).toMatch(/E3/);
+    expect(actualReason(ev(), t + 1)).toMatch(/service release inactif/);
     expect(actualReason(ev({ capture: false }), t + 1)).toMatch(/ForexFactory ne publie pas le réel/);
   });
 

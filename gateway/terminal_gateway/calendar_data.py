@@ -36,7 +36,8 @@ class Indicator:
     capture: bool = True
 
 
-# Indicateurs captés à la source (§ 1). Séries officielles : rattrapage par l'API en E3.
+# Indicateurs captés à la source (§ 1). Séries officielles : révisions par l'API v1
+# (bls_api.DERIVATIONS, vérifiées le 23/11/2026). PPI sous-jacent : WPSFD49104, par l'API seule.
 INDICATORS: tuple[Indicator, ...] = (
     Indicator(
         "us-cpi-mm", "IPC (m/m)", "USD", r"CPI m/m", "Consumer Price Index", "CUSR0000SA0", "%"
@@ -101,7 +102,7 @@ INDICATORS: tuple[Indicator, ...] = (
         "USD",
         r"PPI m/m",
         "Producer Price Index",
-        None,
+        "WPSFD4",
         "%",
     ),
     Indicator(
@@ -110,7 +111,7 @@ INDICATORS: tuple[Indicator, ...] = (
         "USD",
         r"Core PPI m/m",
         "Producer Price Index",
-        None,
+        "WPSFD49104",
         "%",
     ),
     Indicator(

@@ -150,7 +150,7 @@ export function daysUntil(day: string, now: number): string {
 /** Raison d'un réel absent (jamais une valeur inventée). */
 export function actualReason(ev: CalendarEvent, now: number): string {
   if (ev.time_ms !== null && ev.time_ms > now) return 'pas encore publié';
-  return ev.capture ? 'chiffre réel : capture à la source à partir de l’étape E3'
+  return ev.capture ? 'chiffre réel non capté : passerelle du Mac arrêtée, service release inactif ou BLS_CONTACT_EMAIL absente'
     : 'chiffre réel non capté : ForexFactory ne publie pas le réel';
 }
 

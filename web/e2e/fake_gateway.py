@@ -21,8 +21,11 @@ from pathlib import Path
 
 import terminal_gateway.app as gw_app
 import uvicorn
+from terminal_gateway.alert_service import AlertService
 from terminal_gateway.bus import Bus
 from terminal_gateway.config import Settings
+from terminal_gateway.storage import Storage
+from terminal_gateway.telegram import SendResult
 
 FIX = json.loads((Path(__file__).parent / "fixtures" / "main-demo.json").read_text())
 CAL = json.loads((Path(__file__).parent / "fixtures" / "calendar-demo.json").read_text())
@@ -153,6 +156,138 @@ class DemoService:
         return {"demo": True, "feeds": []}
 
 
+class DemoRelease:
+    """Service « release » de démonstration (E3) : publie un chiffre capté quand le test
+    le demande (POST /test/release) et garde l'heure d'affichage renvoyée par le front."""
+
+    name = "release"
+
+    def __init__(self, bus: Bus) -> None:
+        self.bus = bus
+        self.displays: dict[str, int] = {}
+        self.bus_ms: int | None = None
+        self._task: asyncio.Task | None = None
+
+    async def start(self) -> None: ...
+
+    async def stop(self) -> None:
+        if self._task:
+            self._task.cancel()
+
+    def health(self) -> dict:
+        return {"demo": True}
+
+    def schedule(self, delay_ms: int) -> int:
+        t = now_ms() + delay_ms
+        self._task = asyncio.create_task(self._publish_at(t))
+        return t
+
+    async def _publish_at(self, t: int) -> None:
+        await asyncio.sleep(max(0, t - now_ms()) / 1000)
+        self.bus_ms = now_ms()
+        fig = {"indicator": "us-prod-qq", "label_fr": "Productivité non agricole (t/t)",
+               "unit": "%", "release": "prod2", "period": "2026-Q3", "edition": "Revised",
+               "ny_date": "2026-10-20",
+               "value": "4.1", "reason": None, "part": "texte",
+               "excerpt": "Nonfarm business sector labor productivity increased 4.1 percent",
+               "flags": [], "timing": "attendue", "nature": "officielle", "source": "BLS",
+               "url": "https://www.bls.gov/news.release/prod2.nr0.htm", "machine": "démo",
+               "scheduled_ms": t, "embargo_ms": t, "first_byte_ms": t + 900,
+               "received_ms": t + 950, "capture_delay_ms": 903, "clock_corrected": True,
+               "bus_ms": self.bus_ms, "forecast": "4.0", "forecast_raw": "4.0%",
+               "forecast_age_ms": 2_700_000, "surprise": "0.1", "z": None, "z_n": 0,
+               "z_provisional": False, "z_reason": "historique insuffisant (0/8)",
+               "regular": True, "display_ms": None}
+        key = "release:us-prod-qq:2026-Q3:Revised"
+        self.bus.publish(key, fig)
+        self.bus.publish("release:last", {
+            "release": "prod2", "title": "Productivity and Costs", "period": "2026-Q3",
+            "edition": "Revised", "ny_date": "2026-10-20", "keys": [key], "timing": "attendue",
+            "scheduled_ms": t, "bus_ms": self.bus_ms})
+
+    async def record_display(self, key: str, display_ms: object) -> bool:
+        if isinstance(display_ms, (int, float)) and key not in self.displays:
+            self.displays[key] = int(display_ms)
+            return True
+        return False
+
+    def clear(self) -> None:
+        for k in self.bus.keys("release:"):
+            self.bus.delete(k)
+        self.displays.clear()
+        self.bus_ms = None
+
+
+def demo_reaction(bus: Bus) -> None:
+    """Réaction du BTC de démonstration (E3) : l'événement « Chicago Fed » du 19/10 devient
+    une publication suivie, avec un chiffre révisé et une baisse du BTC dans les 30 minutes.
+    Données fictives, routes de test seulement ; DELETE /test/reaction rétablit la semaine."""
+    week = json.loads(json.dumps(CAL["week"]))
+    ev = next(e for e in week["events"] if e["id"].startswith("demo-2|"))
+    ev.update(indicator="us-cpi-yy", capture=True, title_fr="IPC (sur un an)")
+    t = ev["time_ms"]
+    bus.publish(f"calendar:week:{week['week']}", {**week, "forexfactory": {
+        "source_ts_ms": now_ms() - 600_000, "received_ms": now_ms() - 120_000}})
+    bus.publish("release:us-cpi-yy:2026-09", {
+        "indicator": "us-cpi-yy", "label_fr": "IPC (sur un an)", "unit": "%", "release": "cpi",
+        "period": "2026-09", "edition": "", "ny_date": ev["ny_date"], "value": "3.7",
+        "reason": None, "part": "tableau A", "excerpt": "All items … 3.7", "flags": [],
+        "timing": "attendue", "nature": "officielle", "source": "BLS",
+        "url": "https://www.bls.gov/news.release/cpi.nr0.htm", "machine": "démo",
+        "scheduled_ms": t, "embargo_ms": t, "first_byte_ms": t + 900, "received_ms": t + 950,
+        "capture_delay_ms": 903, "clock_corrected": True, "bus_ms": t + 960, "forecast": "3.6",
+        "forecast_raw": "3.6%", "forecast_age_ms": 2_700_000, "surprise": "0.1", "z": None,
+        "z_n": 0, "z_provisional": False, "z_reason": "historique insuffisant (0/8)",
+        "regular": True, "display_ms": None,
+        "revisions": [{"kind": "révision", "previous": "3.7", "value": "3.8",
+                       "source": "BLS API v1", "series": "CUUR0000SA0", "excerpt": None,
+                       "seen_ms": t + 3_600_000}]})
+    price = [67_420, 67_431, 67_409, 67_415, 67_428, 67_402, 66_980, 66_870, 66_905, 66_940,
+             66_910, 66_885, 66_860, 66_880, 66_850, 66_830, 66_845, 66_820, 66_800, 66_815,
+             66_790, 66_805, 66_780, 66_770, 66_790, 66_760, 66_775, 66_750, 66_765, 66_740,
+             66_755, 66_730, 66_745, 66_720, 66_800]
+    candles = [{"t": t - 300_000 + i * 60_000, "o": p, "h": p + 8, "l": p - 8, "c": p}
+               for i, p in enumerate(price)]
+    bus.publish(f"reaction:cpi:{ev['ny_date']}", {
+        "release": "cpi", "title": "Consumer Price Index", "indicators": ["us-cpi-yy"],
+        "ny_date": ev["ny_date"], "scheduled_ms": t, "inst": "BTC-USDT-SWAP",
+        "source": "OKX DÉMO", "candles": candles, "ref_price": "67428",
+        "end_price": "66800", "change_pct": "-0.93", "missing": [], "reason": None,
+        "received_ms": t + 31 * 60_000})
+
+
+def clear_reaction(bus: Bus) -> None:
+    for k in bus.keys("reaction:"):
+        bus.delete(k)
+    bus.delete("release:us-cpi-yy:2026-09")
+    week = CAL["week"]
+    bus.publish(f"calendar:week:{week['week']}", {**week, "forexfactory": {
+        "source_ts_ms": now_ms() - 600_000, "received_ms": now_ms() - 120_000}})
+
+
+class DemoNotifier:
+    """Telegram de démonstration (E4) : rien ne part, les messages sont gardés pour le test."""
+
+    name, configured = "telegram", True
+
+    def __init__(self) -> None:
+        self.sent: list[str] = []
+        self.last: SendResult | None = None
+
+    async def send(self, text: str, silent: bool = False) -> SendResult:
+        self.sent.append(text)
+        self.last = SendResult(True, now_ms())
+        return self.last
+
+    def health(self) -> dict:
+        r = self.last
+        return {"configured": True, "last_ok": r.ok if r else None,
+                "last_ms": r.sent_ms if r else None, "last_error": None}
+
+    async def aclose(self) -> None:
+        pass
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=8790)
@@ -162,7 +297,54 @@ def main() -> None:
                         log_dir=Path(tempfile.gettempdir()),
                         stop_file=Path(tempfile.gettempdir()) / "fake-gateway.stop")
     bus = Bus()
-    app = gw_app.create_app(settings, service=DemoService(bus), bus=bus)
+    release = DemoRelease(bus)
+    # Alertes (E4) : le vrai moteur, sur une base jetable, à l'heure de la maquette.
+    db_path = Path(tempfile.gettempdir()) / f"fake-gateway-alerts-{a.port}.sqlite3"
+    for suffix in ("", "-wal", "-shm"):
+        Path(f"{db_path}{suffix}").unlink(missing_ok=True)
+    storage = Storage(db_path)
+    notifier = DemoNotifier()
+    alerts = AlertService(bus, storage, settings, notifier=notifier, clock=now_ms)
+    app = gw_app.create_app(settings, services=[DemoService(bus), release, alerts], bus=bus,
+                            storage=storage)
+
+    # Routes de test seulement (E3) : publier un chiffre, lire l'heure d'affichage, effacer.
+    @app.post("/test/release")
+    async def test_publish(delay_ms: int = 1000) -> dict:
+        return {"at_ms": release.schedule(delay_ms)}
+
+    @app.get("/test/release")
+    async def test_state() -> dict:
+        return {"bus_ms": release.bus_ms, "displays": release.displays}
+
+    @app.delete("/test/release")
+    async def test_clear() -> dict:
+        release.clear()
+        return {"ok": True}
+
+    @app.post("/test/trade")
+    async def test_trade(px: float) -> dict:
+        """Un trade BTC au prix donné (franchissement d'une règle de prix)."""
+        bus.publish("trade:BTC-USDT-SWAP", {
+            "kind": "trade", "inst": "BTC-USDT-SWAP", "trade_id": int(px * 10), "count": 1,
+            "px": px, "sz": 1.0, "side": "buy", "ts_source": now_ms(), "ts_recv": now_ms()})
+        await alerts.drain()
+        return {"ok": True}
+
+    @app.get("/test/telegram")
+    async def test_telegram_sent() -> dict:
+        return {"sent": notifier.sent}
+
+    @app.post("/test/reaction")
+    async def test_reaction() -> dict:
+        demo_reaction(bus)
+        return {"ok": True}
+
+    @app.delete("/test/reaction")
+    async def test_reaction_clear() -> dict:
+        clear_reaction(bus)
+        return {"ok": True}
+
     uvicorn.run(app, host="127.0.0.1", port=a.port, log_level="warning")
 
 
