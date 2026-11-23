@@ -7,6 +7,7 @@
 //                                   et réactions du BTC des 40 derniers jours, état de la capture,
 //                                   titres du fil d'actus des 48 dernières heures (O6)
 //   GET /api/p1/calendar?week=…     une semaine de l'archive (« AAAA-Wnn »)
+//   GET /api/p1/watch               Markets Watch : watchlist hors crypto (T-051, T-052)
 //   POST /api/p1/highlights         mots surlignés du fil d'actus (T-050), derrière le mot de passe
 //   POST /api/p1/displayed          heure d'affichage d'un chiffre capté (porte P1), la première
 //                                   seulement, dans la minute qui suit sa publication
@@ -16,6 +17,7 @@ import type { Context } from './routes.js';
 import { rest, supabaseConfig, type SupabaseConfig } from './supabase.js';
 import type { FetchFn } from './okx.js';
 import { sameOriginJson } from './bourse/auth.js';
+import { watchState } from './watch.js';
 import { sessionProblem } from './bourse/routes.js';
 
 /** Mots surlignés du fil d'actus (T-050) : 1 à 200 mots ou expressions, 40 caractères au plus. */
@@ -167,12 +169,17 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
       if (!cfg.ok) return json({ configured: false, reason: cfg.reason, items: [], computed_ms: ctx.deps.now() }, NO_STORE);
       return json(await p1State(cfg.config, ctx.deps.fetch, ctx.deps.now()), NO_STORE);
     }
+    if (path === 'watch') {
+      if (q.has('week')) throw new HttpError(400, 'paramètre inconnu : week (cette route n’en prend aucun)');
+      if (!cfg.ok) return json({ configured: false, reason: cfg.reason, assets: [], computed_ms: ctx.deps.now() }, NO_STORE);
+      return json(await watchState(cfg.config, ctx.deps.fetch, ctx.deps.now()), NO_STORE);
+    }
     if (path === 'calendar') {
       const week = q.get('week');
       if (!week || !WEEK.test(week)) throw new HttpError(400, 'paramètre week attendu sous la forme AAAA-Wnn');
       if (!cfg.ok) throw new HttpError(503, `agenda en ligne non configuré : ${cfg.reason}`);
       return json(await p1Week(cfg.config, ctx.deps.fetch, week), NO_STORE);
     }
-    throw new HttpError(404, 'route inconnue (attendues : /api/p1/state, /api/p1/calendar?week=)');
+    throw new HttpError(404, 'route inconnue (attendues : /api/p1/state, /api/p1/watch, /api/p1/calendar?week=)');
   });
 }

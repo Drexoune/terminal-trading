@@ -70,3 +70,6 @@
 .alert-rows__row > svg { color: var(--text-3); }
 .alert-rows__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .alert-rows__title { color: var(--text-1); font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Markets Watch (T-051) : valeur en retard sur le seuil de sa source. */
+.wl__late { color: var(--gold-mid); }

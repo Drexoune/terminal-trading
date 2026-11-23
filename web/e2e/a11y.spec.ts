@@ -22,8 +22,9 @@ test('menu : entrée active marquée, bascules de période avec aria-pressed', a
 });
 
 test('une valeur absente affiche « — » et sa raison, jamais un chiffre de maquette', async ({ page }) => {
-  await page.goto('/');
-  const row = page.getByRole('row', { name: /^NASDAQ 100 Future/ });
-  await expect(row.locator('.missing').first()).toHaveAttribute('title', /source à choisir/);
-  await expect(row).not.toContainText('27 612');
+  // DXY : aucune source utilisable (T-052) ; la maquette affichait 99,84.
+  await page.goto('/markets-watch');
+  const row = page.getByRole('row', { name: /^DXY/ });
+  await expect(row.locator('.missing').first()).toHaveAttribute('title', /indice propriétaire de l’ICE/);
+  await expect(row).not.toContainText('99,84');
 });

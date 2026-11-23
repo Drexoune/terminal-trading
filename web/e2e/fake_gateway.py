@@ -37,6 +37,39 @@ DELTA = START - time.time_ns() // 1_000_000
 DEMO_NEWS = json.loads((Path(__file__).parent / "fixtures" / "news_demo.json").read_text("utf-8"))
 
 
+# Markets Watch : actif, dernier, référence, source, série quotidienne.
+DEMO_WATCH = [
+    ("qqq", 612.4, 614.98, "tiingo-iex", False), ("spy", 659.42, 660.81, "tiingo-iex", False),
+    ("usd-broad", 121.84, 121.62, "fred", True), ("us10y", 4.31, 4.278, "fred", True),
+    ("xauusd", 3980.0, 3954.7, "tiingo-fx", False), ("eurusd", 1.1642, 1.1656, "tiingo-fx", False),
+    ("usdjpy", 151.28, 150.75, "tiingo-fx", False), ("pust", 51.62, 51.78, "alphavantage", True),
+    ("ese", 38.27, 38.30, "alphavantage", True),
+]
+
+
+def demo_watch(now: int) -> dict:
+    assets = []
+    for asset, last, ref, source, daily in DEMO_WATCH:
+        step = 86_400_000 if daily else 180_000
+        n = 30 if daily else 40
+        series = [{"t": now - (n - i) * step,
+                   "price": round(ref + (last - ref) * i / (n - 1)
+                                  + (last - ref) * 0.3 * math.sin(i / 3), 6)}
+                  for i in range(n)]
+        ts = now - (86_400_000 if daily else 60_000)
+        kind = "veille" if daily or source == "tiingo-iex" else "24h"
+        assets.append({
+            "asset": asset, "source": source,
+            "currency": "EUR" if asset in ("pust", "ese") else None,
+            "last": {"price": last, "bid": None, "ask": None, "ts_source": ts,
+                     "ts_recv": ts + 2000},
+            "ref": {"price": ref, "ts": ts - 86_400_000, "kind": kind},
+            "series": series})
+    feed = {"name": "watch", "status": "connected", "last_error": None}
+    return {"configured": True, "feed": feed,
+            "assets": assets, "computed_ms": now}
+
+
 def now_ms() -> int:
     return time.time_ns() // 1_000_000 + DELTA
 
@@ -122,6 +155,8 @@ class DemoService:
                 "bank": None, "summary": None, "rule": None, "figure": None, **item,
                 "id": 9000 + i, "url": None, "rules_version": "r1-demo", "published_ms": t,
                 "published_raw": "démo", "received_ms": t + 4000, "backfill": False, "lang": "en"})
+        # Markets Watch de démonstration (chiffres fictifs de la maquette Main, tests seulement).
+        self.bus.publish("watch:state", demo_watch(now))
         ok = {"status": "ok", "last_ok_ms": now, "last_error": None, "items": 1, "noise": 0}
         self.bus.publish("news:feeds", {f: ok for f in ("fed-monetary", "boj-whatsnew",
                                                         "financialjuice")})

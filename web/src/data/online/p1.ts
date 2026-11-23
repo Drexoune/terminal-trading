@@ -15,6 +15,7 @@ import { nextEvents, type CalendarWeek } from '../../calendar/calendar';
 import { fetchJson } from '../gateway';
 import { keysWithPrefix, setValue } from '../store';
 import { startAlertsOnline } from './alerts';
+import { startWatchOnline } from './watch';
 import { connectRealtime, realtimeConfig, type RealtimeStatus, type StateMessage } from './realtime';
 
 export const P1_STATUS_KEY = '$p1-online';
@@ -80,6 +81,8 @@ export interface OnlineDeps {
   clearTimer?: (id: unknown) => void;
   /** Alertes en ligne (O4), relues derrière le mot de passe ; remplaçable en test. */
   startAlerts?: () => () => void;
+  /** Markets Watch (T-051), relu toutes les 60 s ; remplaçable en test. */
+  startWatch?: () => () => void;
 }
 
 /** Démarre Realtime et la relecture ; renvoie de quoi tout arrêter (changement de mode). */
@@ -107,9 +110,11 @@ export function startP1Online(deps: OnlineDeps = {}): () => void {
   });
   const next = setInterval(() => refreshNext(Date.now()), NEXT_EVERY_MS);
   const stopAlerts = (deps.startAlerts ?? startAlertsOnline)();
+  const stopWatch = (deps.startWatch ?? startWatchOnline)();
   return () => {
     stopped = true;
     stopAlerts();
+    stopWatch();
     if (timer !== null) clearTimer(timer);
     clearInterval(next);
     disconnect();

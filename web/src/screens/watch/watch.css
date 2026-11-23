@@ -1,0 +1,32 @@
+/* Markets Watch (P1, T-051) : pas de maquette, construit avec le design system (T-033). Tokens seuls. */
+.mw-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--gap); align-items: start; }
+.mw-grid > * { min-width: 0; }
+.mw-table { width: 100%; border-collapse: collapse; }
+.mw-table th { height: 34px; padding: 0 8px; text-align: left; font-weight: 500; white-space: nowrap; }
+.mw-table td { height: 58px; padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: middle; }
+.mw-table th:first-child, .mw-table td:first-child { padding-left: 14px; }
+.mw-table th:last-child, .mw-table td:last-child { padding-right: 14px; }
+.mw-table .r { text-align: right; }
+.mw-asset { display: flex; flex-direction: column; gap: 3px; }
+.mw-asset b { color: var(--text-1); font-weight: 500; white-space: nowrap; }
+.mw-asset .lbl { max-width: 260px; }
+.mw-last { color: var(--text-1); font-size: 15px; }
+.mw-late { color: var(--gold-mid); }
+.mw-sub { display: block; margin-top: 3px; }
+.mw-range { color: var(--text-2); font-size: 12px; white-space: nowrap; }
+.mw-off td { color: var(--text-3); }
+.mw-notes { margin: 0; padding: 0; list-style: none; }
+.mw-notes li { padding: 12px 14px; border-top: 1px solid var(--line); line-height: 1.55; }
+.mw-notes li:first-child { border-top: 0; }
+@media (max-width: 1180px) { .mw-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) {
+  .mw-table .hide-s { display: none; }
+  .mw-table td, .mw-table th { padding-left: 6px; padding-right: 6px; }
+  .mw-asset .lbl { display: none; }
+}
+@media (max-width: 480px) {
+  .mw-table .hide-xs { display: none; }
+  .mw-sub { white-space: normal; }
+  .mw-last { font-size: 14px; }
+}
+

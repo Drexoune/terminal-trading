@@ -55,6 +55,8 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-048 | 23/11/2026 | Réel de l'agenda | Chiffre structuré de FinancialJuice rattaché strictement à l'événement, marqué « FJ » ; jamais à la place du BLS |
 | T-049 | 23/11/2026 | P2 avant la porte P1 | Plan puis code de P2 sans attendre le 10/12, sans jamais toucher la capture de P1 ; P1 reste prioritaire |
 | T-050 | 23/11/2026 | Suivi de comptes X | Abandonné : aucune source gratuite et fiable ; le fil d'actus reste sur les banques centrales et FinancialJuice ; surlignage de mots-clés réglable sur ce fil |
+| T-051 | 23/11/2026 | Source de la watchlist hors crypto | Tiingo gratuit toutes les 3 min (change, or, DXY recalculé, QQQ et SPY) ; FRED et clôtures de Bourse au quotidien ; remplace T-005 |
+| T-052 | 23/11/2026 | Indice dollar de la watchlist | Pas de DXY recalculé (formule propriété de l'ICE) : indice large du dollar de la Fed (FRED), quotidien ; ligne DXY « — » ; remplace ce point de T-051 |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -516,4 +518,32 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - Aspiration depuis Supabase : impossible sans compte connecté (adresses de centres de données bloquées), contraire aux conditions de X, risque de fermeture du compte.
 
 **Décision de Clément.** Pas de suivi de comptes X. Le fil d'actus garde les sources établies (8 banques centrales, FinancialJuice). Le surlignage des mots du domaine, avec une liste par défaut modifiable depuis le site, s'applique à ce fil.
+
+## T-051 — Source de la watchlist hors crypto · 23/11/2026
+
+**Remplace T-005**, qui reportait ce choix à P1 « après un script d'exploration ». Exploration faite depuis Supabase le 23/11/2026 : `docs/exploration-watch.md`.
+
+**Décision de Clément.** Offre gratuite de Tiingo, plus des clôtures quotidiennes.
+
+- **Toutes les 3 minutes** (40 des 50 requêtes par heure de l'offre gratuite ; usage personnel, licence de Tiingo) :
+  - EUR/USD, USD/JPY et l'or (XAU/USD) en direct (Tiingo FX) ;
+  - le DXY recalculé avec la formule publiée par l'ICE à partir de six paires de la même requête, affiché « recalculé », jamais présenté comme le DXY coté ;
+  - QQQ et SPY (prix de référence IEX de Tiingo) comme substituts du Nasdaq 100 et du S&P 500 pendant la séance américaine, nommés comme tels.
+- **Au quotidien**, chaque valeur avec sa date :
+  - rendement US 10 ans (FRED, `DGS10`) ;
+  - ETF du PEA (clôtures déjà collectées par le module Bourse, sans nouvelle requête).
+- **Futures Nasdaq 100 et S&P 500** : « — » avec la raison (aucune source gratuite).
+
+**Écartés.** Stooq (hors service depuis Supabase), Massive (l'abonnement ne couvre ni indices ni changes), Alpha Vantage en intraday (25 requêtes par jour, clôtures seulement), Yahoo et Finnhub (exclus depuis le début).
+
+## T-052 — Indice dollar de la watchlist · 23/11/2026
+
+**Remplace le point « DXY recalculé » de T-051.**
+
+**Fait vérifié le 23/11/2026.** Fiche officielle du contrat US Dollar Index de l'ICE (`ice.com/api/productguide/spec/194/pdf`) : la formule, les pondérations et les méthodes de calcul appartiennent à ICE Data Indices, et toute utilisation sans accord écrit est interdite. La FAQ qui publiait la formule n'est plus en ligne (HTTP 404).
+
+**Décision de Clément.**
+
+- La watchlist affiche l'indice large du dollar de la Réserve fédérale (FRED, `DTWEXBGS`), public et gratuit. Il est quotidien, publié avec environ une semaine de retard, daté et nommé comme tel, jamais comme le DXY.
+- La ligne DXY affiche « — » avec la raison (indice propriétaire de l'ICE, aucune source gratuite).
 

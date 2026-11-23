@@ -24,6 +24,7 @@ export class MemRest implements Rest {
     if (cond === 'not.is.null') return v !== null && v !== undefined;
     switch (op) {
       case 'eq': return v === num(raw);
+      case 'neq': return v !== num(raw);
       case 'lte': return v !== null && v <= num(raw);
       case 'like': return typeof v === 'string' && new RegExp(`^${raw.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`).test(v);
       case 'gt': return v !== null && v > num(raw);
