@@ -79,3 +79,54 @@ describe('/api/p1', () => {
     expect((await handleP1(req('/api/p1?path=state&x=1'), ctx)).status).toBe(400);
   });
 });
+
+describe('/api/p1/displayed (porte P1 en ligne)', () => {
+  const KEY = 'release:us-cpi-mm:2026-11';
+  function fakeWrites(value: Record<string, unknown> | null) {
+    const calls: { method: string; table: string; params: Record<string, string>; body: unknown }[] = [];
+    const fetch = async (url: string, init?: RequestInit) => {
+      const u = new URL(url);
+      const call = { method: init?.method ?? 'GET', table: u.pathname.replace('/rest/v1/', ''), params: Object.fromEntries(u.searchParams),
+        body: init?.body ? JSON.parse(String(init.body)) : null };
+      calls.push(call);
+      if (call.method === 'GET') return new Response(JSON.stringify(value ? [{ value }] : []), { status: 200 });
+      return new Response(JSON.stringify([{}]), { status: 200 });
+    };
+    return { fetch, calls };
+  }
+  const post = (body: unknown, type = 'application/json') => new Request('https://terminal.example/api/p1?path=displayed',
+    { method: 'POST', headers: { 'content-type': type }, body: JSON.stringify(body) });
+  const CAPTURED = { release: 'cpi', period: '2026-11', edition: '', scheduled_ms: NOW - 1500, first_byte_ms: NOW - 900, bus_ms: NOW - 400, value: '0.3' };
+
+  it('première heure d’affichage : délai depuis 08:30, écrite dans l’état et dans release_timings', async () => {
+    const sb = fakeWrites(CAPTURED);
+    const { ctx } = testContext({ nowMs: NOW, env: ENV, fetch: sb.fetch as never });
+    const r = await handleP1(post({ key: KEY, display_ms: NOW - 100 }), ctx);
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ ok: true, display_delay_ms: 1400, display_after_capture_ms: 800 });
+    const [, state, timings] = sb.calls;
+    expect(state).toMatchObject({ method: 'PATCH', table: 'p1_state', params: { key: `eq.${KEY}`, 'value->>display_ms': 'is.null' } });
+    expect((state.body as { value: Record<string, unknown> }).value).toMatchObject({ value: '0.3', display_ms: NOW - 100, display_delay_ms: 1400 });
+    expect(timings).toMatchObject({ method: 'PATCH', table: 'release_timings', params: { release: 'eq.cpi', period: 'eq.2026-11', edition: 'eq.', display_ms: 'is.null' }, body: { display_ms: NOW - 100 } });
+  });
+
+  it('déjà affiché, ou plus d’une minute après la publication : rien n’est écrit', async () => {
+    for (const value of [{ ...CAPTURED, display_ms: NOW - 50 }, { ...CAPTURED, bus_ms: NOW - 120_000 }]) {
+      const sb = fakeWrites(value);
+      const { ctx } = testContext({ nowMs: NOW, env: ENV, fetch: sb.fetch as never });
+      const body = await (await handleP1(post({ key: KEY, display_ms: NOW }), ctx)).json() as { ok: boolean };
+      expect(body.ok).toBe(false);
+      expect(sb.calls.filter((c) => c.method === 'PATCH')).toHaveLength(0);
+    }
+  });
+
+  it('refus : clé invalide, horloge absurde, corps non JSON, GET, chiffre inconnu', async () => {
+    const sb = fakeWrites(null);
+    const { ctx } = testContext({ nowMs: NOW, env: ENV, fetch: sb.fetch as never });
+    expect((await handleP1(post({ key: 'calendar:official', display_ms: NOW }), ctx)).status).toBe(400);
+    expect((await handleP1(post({ key: KEY, display_ms: NOW + 3_600_000 }), ctx)).status).toBe(400);
+    expect((await handleP1(post({ key: KEY, display_ms: NOW }, 'text/plain'), ctx)).status).toBe(415);
+    expect((await handleP1(req('/api/p1?path=displayed'), ctx)).status).toBe(405);
+    expect((await handleP1(post({ key: KEY, display_ms: NOW }), ctx)).status).toBe(404);
+  });
+});

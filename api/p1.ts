@@ -6,3 +6,7 @@ import { defaultContext } from './_lib/routes.js';
 export function GET(request: Request): Promise<Response> {
   return handleP1(request, defaultContext());
 }
+
+export function POST(request: Request): Promise<Response> {
+  return handleP1(request, defaultContext());
+}

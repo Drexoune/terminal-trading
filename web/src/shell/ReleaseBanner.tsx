@@ -1,7 +1,8 @@
 // Bandeau de publication (étape E3, docs/plan-p1.md § 7.7) : la dernière publication
 // captée sur bls.gov, sur tous les écrans, pendant 15 minutes. Une fois le chiffre
-// peint, l'heure d'affichage (horloge de la passerelle) repart vers la passerelle
-// (op « displayed ») : c'est la mesure de la porte P1.
+// peint, l'heure d'affichage (horloge de la passerelle, ou horloge OKX en Mode Online)
+// repart vers la passerelle (op « displayed ») ou vers /api/p1/displayed en Mode Online :
+// c'est la mesure de la porte P1.
 
 import { useEffect } from 'react';
 import { Missing } from '../components/ui';
@@ -9,6 +10,8 @@ import {
   bannerVisible, figures, fmtDelay, fmtFigure, surpriseText, type ReleaseFigure, type ReleaseLast,
 } from '../calendar/releases';
 import { fmtValue } from '../calendar/calendar';
+import { getSettings } from '../config/settings';
+import { reportDisplayed } from '../data/online/p1';
 import { gatewayNow, sendToGateway, useKeys, useValue } from '../data/store';
 import { useNow } from './useNow';
 
@@ -25,7 +28,8 @@ function ackDisplayed(keys: string[], busMs: number): void {
     if (t - busMs > ACK_WINDOW_MS) return;
     for (const key of todo) {
       acked.add(key);
-      sendToGateway({ op: 'displayed', key, t_gateway_ms: t });
+      if (getSettings().mode === 'online') void reportDisplayed(key, t);
+      else sendToGateway({ op: 'displayed', key, t_gateway_ms: t });
     }
   }));
 }

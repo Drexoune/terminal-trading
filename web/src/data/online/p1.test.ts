@@ -30,7 +30,7 @@ describe('Mode Online : état de P1', () => {
     expect(vi.mocked(fetchJson).mock.calls[0][0]).toBe('/api/p1/state');
     expect(getValue('calendar:week:2026-W48')).toEqual(WEEK);
     expect(getValue<{ events: { id: string }[] }>('calendar:next')!.events[0].id).toBe('a');
-    expect(getValue(P1_STATUS_KEY)).toEqual({ configured: true, reason: null, received_ms: NOW });
+    expect(getValue(P1_STATUS_KEY)).toMatchObject({ configured: true, reason: null, received_ms: NOW });
     refreshNext(NOW + 15);
     expect(getValue<{ events: { id: string }[] }>('calendar:next')!.events[0].id).toBe('b');
   });
@@ -43,5 +43,36 @@ describe('Mode Online : état de P1', () => {
     await loadState(() => NOW);
     expect(getValue(P1_STATUS_KEY)).toMatchObject({ configured: null, reason: 'agenda en ligne injoignable : HTTP 502' });
     expect(getValue('calendar:next')).toBeUndefined();
+  });
+});
+
+describe('Mode Online : Realtime et relecture', () => {
+  it('message poussé = valeur du store ; 15 s sans Realtime, 5 min avec ; relecture à la reconnexion', async () => {
+    const { startP1Online, STATE_EVERY_MS, STATE_EVERY_DEGRADED_MS, applyPush } = await import('./p1');
+    const timers: number[] = [];
+    let loads = 0;
+    let onStatus: (s: 'connexion' | 'connecté' | 'coupé' | 'non configuré', why?: string) => void = () => {};
+    let onMessage: (m: { key: string; value: unknown; updated_ms: number }) => void = () => {};
+    const stop = startP1Online({
+      load: async () => { loads++; },
+      setTimer: (_fn, ms) => { timers.push(ms); return timers.length; },
+      clearTimer: () => {},
+      connect: (_c, m, s) => { onMessage = m; onStatus = s; return () => {}; },
+    });
+    await Promise.resolve(); await Promise.resolve();
+    expect(loads).toBe(1);
+    expect(timers.at(-1)).toBe(STATE_EVERY_DEGRADED_MS);
+    onStatus('connecté');
+    expect(loads).toBe(2);                         // relecture complète à la connexion
+    expect(timers.at(-1)).toBe(STATE_EVERY_MS);
+    onMessage({ key: 'release:us-cpi-mm:2026-11', value: { value: '0.3' }, updated_ms: NOW });
+    expect(getValue('release:us-cpi-mm:2026-11')).toEqual({ value: '0.3' });
+    expect(getValue(P1_STATUS_KEY)).toMatchObject({ realtime: 'connecté' });
+    onStatus('coupé', 'CLOSED');
+    expect(timers.at(-1)).toBe(STATE_EVERY_DEGRADED_MS);
+    expect(getValue(P1_STATUS_KEY)).toMatchObject({ realtime: 'coupé', realtime_reason: 'CLOSED' });
+    applyPush({ key: 'calendar:week:2026-W48', value: WEEK, updated_ms: NOW }, NOW);
+    expect(getValue<{ events: { id: string }[] }>('calendar:next')!.events[0].id).toBe('a');
+    stop();
   });
 });
