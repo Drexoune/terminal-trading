@@ -19,3 +19,9 @@ verify_jwt = false
 # alertes de P1, appelés par pg_cron. Sans JWT : l'en-tête x-jobs-secret est vérifié
 # par la fonction (P1_JOBS_SECRET).
 verify_jwt = false
+
+[functions.p2-jobs]
+# Plan P2 (écran Taux, T-049) : sonde R0 (?job=explore), puis collecte des probabilités de
+# taux, appelée par pg_cron. Fonction distincte de p1-jobs : la capture de P1 n'est jamais
+# redéployée pour P2. Sans JWT : l'en-tête x-jobs-secret est vérifié (P1_JOBS_SECRET, même secret).
+verify_jwt = false

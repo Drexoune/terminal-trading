@@ -53,6 +53,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-046 | 23/11/2026 | Flux continus en ligne | Alertes de prix à la minute (haut et bas de chaque bougie) ; Tree of Alpha abandonné en ligne |
 | T-047 | 23/11/2026 | Écritures des alertes en ligne | Vercel vérifie la session et relaie à l'Edge Function p1-jobs ; P1_JOBS_SECRET aussi dans Vercel ; le Mac n'envoie plus d'alertes |
 | T-048 | 23/11/2026 | Réel de l'agenda | Chiffre structuré de FinancialJuice rattaché strictement à l'événement, marqué « FJ » ; jamais à la place du BLS |
+| T-049 | 23/11/2026 | P2 avant la porte P1 | Plan puis code de P2 sans attendre le 10/12, sans jamais toucher la capture de P1 ; P1 reste prioritaire |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -490,4 +491,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **Décision.** Le chiffre structuré publié par FinancialJuice (« … Actual 0.7% (Forecast 0%, Previous -0.4%) ») est rattaché à l'événement par la tâche `news` et affiché comme réel, marqué « FJ », avec en infobulle le titre d'origine et son délai. Il ne remplace jamais un chiffre capté au BLS (T-022) ; aucune surprise n'est calculée dessus.
 - **Rattachement strict** (un réel faux est pire qu'un « — ») : même pays (code de l'identifiant ForexFactory), mêmes mots hors pays, éditeurs et mots d'édition, titre lu entre T−2 min et T+30 min ; s'il reste plusieurs candidats, le consensus identique départage, sinon rien. Premier chiffre gardé, jamais remplacé.
 - **Limite.** Le flux de FinancialJuice ne garde que ses 100 derniers titres (quelques heures) : un chiffre publié pendant une coupure de la tâche est perdu et reste « — » avec sa raison. Les réels du matin du 23/11 (avant la mise en service du fil, 17:56 Paris) ne sont pas récupérables.
+
+## T-049 — P2 en parallèle de la porte P1 · 23/11/2026
+
+**Contexte.** P1 est construite et en service ; sa porte (IPC capté et affiché en moins d'une seconde) ne peut se passer que le 10/12, jour de l'IPC. La règle de `CLAUDE.md` § 6 interdit de commencer la phase suivante avant la porte.
+
+**Décision de Clément.** Exception à cette règle pour P2 : plan, puis code, sans attendre le 10/12.
+
+**Conditions.**
+
+- Rien de P2 ne modifie la capture de P1 (`supabase/functions/p1-jobs/capture.ts` et ce qu'elle appelle, cron `p1-capture`, bandeau, `/api/p1/displayed`) ; P2 a ses propres tables, tâches et écran.
+- Tout problème de P1 (rapport emploi du 04/12, répétition du 08/12, IPC du 10/12) passe avant P2.
+- P2 commence en mode plan et attend l'accord de Clément avant d'écrire du code (`CLAUDE.md` § 7).
 
