@@ -83,10 +83,12 @@ describe('délais et bandeau', () => {
   });
 
   it('bandeau visible 15 minutes après la publication sur le bus', () => {
-    const last = { bus_ms: T } as ReleaseLast;
+    const last = { bus_ms: T, scheduled_ms: T - 2000 } as ReleaseLast;
     expect(bannerVisible(last, T + 1000)).toBe(true);
     expect(bannerVisible(last, T + BANNER_MS)).toBe(false);
     expect(bannerVisible(undefined, T)).toBe(false);
+    // Rattrapage d'une publication d'il y a 10 jours, relue au démarrage : pas de bandeau.
+    expect(bannerVisible({ ...last, scheduled_ms: T - 10 * 86_400_000 }, T + 1000)).toBe(false);
   });
 });
 
@@ -107,6 +109,8 @@ describe('rattrapage et révisions', () => {
     expect(captureLabel(fig())).toBe(`capté 2,12${NBSP}s`);
     expect(captureLabel(fig({ nature: 'rattrapage', capture_delay_ms: null }))).toMatch(/^rattrapé : communiqué relu/);
     expect(captureLabel(fig({ nature: 'rattrapage API' }))).toMatch(/recalculé depuis l’API v1/);
+    // PPI sous-jacent : vide à l'heure H, complété par l'API (08/12/2026 13:45 UTC = 14:45 Paris).
+    expect(captureLabel(fig({ value: '0.3', filled_ms: T + 15 * 60_000 }))).toBe('complété par l’API v1 du BLS à 14:45 (recalculé, absent du communiqué résumé)');
   });
 
   it('la dernière révision est affichée avec sa source, la première publication reste', () => {

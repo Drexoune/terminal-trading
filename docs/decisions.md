@@ -45,6 +45,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-038 | 20/11/2026 | Plan B1 | Courtier XTB ; PEA et CTO ; performances depuis le 28/09/2026 ; benchmarks MSCI World et S&P 500 ; ventilation des ETF affichée |
 | T-039 | 20/11/2026 | Réalisation de B1 | Valorisation à la demande, import Baggr validé côté serveur, TRI non annualisé sous un an, rattrapage US par Tiingo |
 | T-040 | 23/11/2026 | Rattrapage d'une capture manquée | Relecture du communiqué (`.nr0`, page complète, copie archivée à la date) par le même parseur ; l'API v1 seulement si la page reste illisible, chiffre marqué « recalculé » ; révisions par l'API v1 |
+| T-041 | 23/11/2026 | PPI sous-jacent | Complété par l'API v1 (série WPSFD49104) dès sa mise à jour après la publication ; marqué « recalculé » |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -441,3 +442,14 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - les **révisions** se lisent dans l'API v1 : à T+15 min et T+60 min après chaque publication suivie, et chaque jour ouvré à 12:00 New York, une relecture au plus par passage, 20 requêtes par jour au plus sur les 25 permises (réserve pour les scripts d'exploration). Une valeur différente de la dernière connue devient une ligne de `release_revisions` ; la première publication n'est jamais modifiée. Sur une publication de moins de 7 jours, une valeur égale à une valeur antérieure est un retard de l'API (ignoré) ; une autre valeur est un « écart » à vérifier, signalé dans le journal.
 
 **Conséquences.** Migration 4 (`release_revisions`, `release_reactions`). Série du PPI renseignée (`WPSFD4`) ; le PPI sous-jacent reste sans série (question ouverte avant le 15/12). Code : `bls_api.py`, `reaction.py`, `release_service.py` ; tests sur la réponse réelle (`gateway/tests/fixtures/bls/api_v1_2026-11-23.json.gz`).
+
+## T-041 — PPI sous-jacent par l'API v1 · 23/11/2026
+
+**Contexte.** L'indice « final demand less foods and energy » (consensus ForexFactory « Core PPI m/m ») n'est pas sur la page résumé lue à l'heure H : il n'est publié qu'au tableau 1 du communiqué complet. En E3, il restait « — ».
+
+**Vérification.** La série de l'API v1 `WPSFD49104` porte les mêmes niveaux que le tableau 1 (156.740 en octobre 2026), et la variation recalculée redonne les cinq variations publiées de juin à octobre 2026 (0,4 ; 0,3 ; 0,2 ; 0,8 ; 0,3).
+
+**Décision de Clément.** Le PPI sous-jacent est complété par l'API v1.
+
+**Conséquences.** À la capture, la ligne est enregistrée vide, avec sa raison. Aux relectures de l'API (T+15 min, T+60 min, 12:00 New York), dès que la période apparaît, la valeur est complétée une seule fois : marque « recalculé », série et niveaux cités, heure du complément (`filled_ms`, migration 6), surprise et z calculés comme à la capture. Ce chiffre ne compte pas pour la porte (délai de l'API) et ne déclenche ni bandeau ni annonce vocale. Le délai réel de mise à jour de l'API sera mesuré au PPI du 15/12.
+

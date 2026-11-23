@@ -48,7 +48,14 @@ def test_real_response_shape():
     assert len(DATA.series) == 12
 
 
-@pytest.mark.parametrize("indicator", sorted(bls_api.DERIVATIONS))
+# PPI sous-jacent : absent du résumé, publié au tableau 1 du communiqué complet d'octobre 2026
+# (www.bls.gov/news.release/ppi.htm relevé le 20/11/2026, ligne « Final demand less foods and
+# energy, FD 49104 », variations corrigées des variations saisonnières de juin à octobre).
+CORE_PPI_TABLE1 = {"2026-06": "0.4", "2026-07": "0.3", "2026-08": "0.2", "2026-09": "0.8",
+                   "2026-10": "0.3"}
+
+
+@pytest.mark.parametrize("indicator", sorted(set(bls_api.DERIVATIONS) - {"us-core-ppi-mm"}))
 def test_latest_period_reproduces_the_first_release_exactly(indicator):
     sid, _ = bls_api.DERIVATIONS[indicator]
     period = DATA.latest[sid]
@@ -59,6 +66,12 @@ def test_latest_period_reproduces_the_first_release_exactly(indicator):
     d = bls_api.derive(indicator, period, DATA)
     assert d is not None and d.value == published, (period, d)
     assert sid in d.excerpt and "API v1 du BLS" in d.excerpt
+
+
+def test_core_ppi_matches_table_1_of_the_full_release():
+    got = {p: bls_api.derive("us-core-ppi-mm", p, DATA).value for p in CORE_PPI_TABLE1}
+    assert got == CORE_PPI_TABLE1
+    assert DATA.series["WPSFD49104"]["2026-10"] == "156.740"  # niveau du tableau 1 aussi
 
 
 def test_older_differences_are_real_revisions():
@@ -74,7 +87,7 @@ def test_formats_match_the_published_text():
     assert bls_api.derive("us-cpi-mm", "2024-06", DATA).value == "0.0"  # jamais « -0.0 »
     assert bls_api.derive("us-unemployment", "2026-10", DATA).value == "4.1"
     assert bls_api.derive("us-ulc-qq", "2026-Q3", DATA).value == "-0.7"
-    assert bls_api.derive("us-core-ppi-mm", "2026-10", DATA) is None  # série à choisir
+    assert bls_api.derive("us-core-ppi-mm", "2026-10", DATA).value == "0.3"
     assert bls_api.derive("us-cpi-mm", "2030-01", DATA) is None
 
 

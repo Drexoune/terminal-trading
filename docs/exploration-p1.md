@@ -115,6 +115,24 @@ La page ne fait aucune requête réseau.
 
 **Conséquences pour E6** : le flux gratuit suffit pour les titres crypto (pas d'abonnement à 500 $/mois à ce stade, T-021) ; le collecteur doit se reconnecter en continu sans alerter à chaque fermeture (une coupure par minute est normale), et marquer « +5 s » les actualités retardées. Ces conclusions sont à confirmer sur les 72 h complètes.
 
+### 23/11/2026 : écoute Tree of Alpha complète (58,6 h sur 72)
+
+L'écoute s'est arrêtée le 23/11 à 02:35, sans trace de fermeture (Mac redémarré) : 58,6 h au lieu de 72, du vendredi 16:01 au lundi 02:35. Assez pour conclure, sans relancer : un vendredi de séance américaine et un week-end complet.
+
+- **Volume** : 168 messages, 2,9 par heure, très inégal : 116 le vendredi, 33 le samedi, 19 le dimanche. Écart médian entre deux messages : 2,3 min.
+- **Silences** : jusqu'à **17 h sans aucun message** (samedi 21/11 19:01 → dimanche 22/11 12:00), alors que la connexion était ouverte 922 min sur 1 019. Autres silences : 9 h 43 la nuit de vendredi à samedi, 2 h 36 le samedi après-midi. Le « plus long silence : 17 min » du relevé provisoire désignait en fait la plus longue coupure de connexion.
+- **Contenu** : 86 « direct » (comptes X), 59 « Blogs », 12 « usGov », 10 « Proposals », 1 Telegram. Aucun chiffre macro, aucune banque centrale en direct.
+- **Délais** : messages « direct » et « Proposals » sans délai (médiane −20 ms et −44 ms : écart d'horloge), quelques tweets jusqu'à 12,8 s ; « Blogs » et « usGov » portent `delay: 5000` et arrivent 5 s après leur heure source (médiane 4 983 ms, maximum 15,5 s).
+- **Connexion** : 294 ouvertures, durée médiane 70 s, maximum 250 min. Fermetures : 189 sans trame de fermeture, 104 « keepalive ping timeout » (1011), 3 délais d'ouverture. Coupures de plus de 15 min : 7, de 15 à 17 min chacune, la nuit ; la reconnexion immédiate a toujours suffi.
+
+**Conclusions pour E6** (relevé provisoire confirmé, un point corrigé) :
+
+1. Le flux gratuit suffit pour les titres crypto : pas d'abonnement (T-021 maintenue).
+2. Reconnexion continue et silencieuse : une fermeture par minute est normale, seule une coupure longue (plus de 5 min sans connexion) se journalise comme trou et passe la source en « périmé ».
+3. **Fraîcheur jugée sur la connexion, pas sur le dernier message** : un flux ouvert mais muet 17 h est normal le week-end. Écran : « connecté · dernier titre il y a 17 h » plutôt que « périmé ».
+4. Les actualités « Blogs » et « usGov » s'affichent avec « +5 s » (champ `delay`).
+5. Tree of Alpha ne remplace ni la capture du BLS ni les flux RSS des banques centrales.
+
 ### 22/11/2026 : corpus du parseur BLS (étape E3)
 
 Les 120 communiqués archivés et les 4 pages résumé de la sonde ont été lus par le parseur d'E3 (`gateway/terminal_gateway/bls_release.py`). Constats qui ont guidé son écriture :
@@ -134,6 +152,6 @@ Les 120 communiqués archivés et les 4 pages résumé de la sonde ont été lus
 - **Documentation relue** (bls.gov/developers : api_signature.htm, api_faqs.htm) : sans clé, 25 requêtes par jour, 25 séries et 10 ans par requête, 50 requêtes par 10 s ; POST JSON `{"seriesid": [...], "startyear", "endyear"}` ; aucune variation calculée en v1 ; dépassement : HTTP 429. La page dit qu'une requête compte par appel, sans préciser ; nous comptons chaque appel.
 - **Une requête réelle** (12 séries, 2023-2026), réponse en 3,9 s, `no-cache, no-store`. Niveaux d'indice en texte décimal, « - » pour un mois non publié (IPC d'octobre 2025), note « P » sur les chiffres provisoires, drapeau `latest`. Fichier de référence : `gateway/tests/fixtures/bls/api_v1_2026-11-23.json.gz`.
 - **Recalcul contre le corpus** : sur la dernière période de chaque indicateur, le chiffre recalculé égale la première publication pour les 10 indicateurs lisibles (IPC et sous-jacent sur un mois et sur un an, emploi, chômage, salaire horaire, PPI, productivité, coûts salariaux unitaires). IPC sur un mois : 2026-01 à 2026-10 tous égaux ; les écarts de 2024-2025 viennent de la révision des coefficients saisonniers de février 2026.
-- **PPI sous-jacent** : la série `WPSFD49104` (demande finale hors alimentation et énergie) existe dans l'API (156.740 en octobre 2026). Elle pourrait combler le « — » d'E3 une fois l'API à jour après la publication, ce qui reste à mesurer (relectures de T+15 et T+60 min). Décision à prendre avant le 15/12.
+- **PPI sous-jacent** : la série `WPSFD49104` (demande finale hors alimentation et énergie) a les mêmes niveaux que le tableau 1 du communiqué complet (`ppi.htm`, ligne FD 49104 : 156.740 en octobre 2026), et le recalcul redonne ses cinq variations publiées (juin à octobre 2026 : 0,4 ; 0,3 ; 0,2 ; 0,8 ; 0,3). Retenue pour compléter le « — » d'E3 (T-041) ; délai de mise à jour de l'API à mesurer le 15/12.
 - **Essai de bout en bout** depuis le Mac, avec le client de la passerelle : révision de l'emploi de septembre 2026 détectée (29 k → 60 k) ; réaction du BTC calculée sur 35 bougies réelles d'OKX EEA, sans trou.
 

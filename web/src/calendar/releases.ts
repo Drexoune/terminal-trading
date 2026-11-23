@@ -43,6 +43,7 @@ export interface ReleaseFigure {
   display_ms: number | null;
   display_delay_ms?: number | null;
   revisions?: Revision[];
+  filled_ms?: number | null;     // chiffre absent de la page à l'heure H, complété par l'API v1
 }
 
 /** Valeur nouvelle lue par l'API v1 ; la première publication n'est jamais modifiée. */
@@ -134,13 +135,15 @@ export function fmtDelay(ms: number | null | undefined): string {
 /** Bandeau : la dernière publication captée reste affichée 15 minutes. */
 export const BANNER_MS = 15 * 60_000;
 export function bannerVisible(last: ReleaseLast | undefined, now: number): boolean {
-  return !!last && now - last.bus_ms < BANNER_MS;
+  // Un rattrapage d'arriéré (publication de plus de 2 h) n'est pas une nouvelle : pas de bandeau.
+  return !!last && now - last.bus_ms < BANNER_MS && now - last.scheduled_ms < 2 * 3_600_000;
 }
 
 // --- nature, révisions ------------------------------------------------------------------
 
 /** « capté 1,23 s » ; un rattrapage ne mesure aucun délai et le dit. */
 export function captureLabel(f: ReleaseFigure): string {
+  if (f.filled_ms) return `complété par l’API v1 du BLS à ${HM.format(f.filled_ms)} (recalculé, absent du communiqué résumé)`;
   if (f.nature === 'rattrapage') return 'rattrapé : communiqué relu après la fenêtre de capture';
   if (f.nature === 'rattrapage API') return 'rattrapé : recalculé depuis l’API v1 du BLS (page illisible)';
   if (f.nature !== 'officielle') return f.nature;
@@ -211,3 +214,8 @@ const DAY = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', day: '2
 const HM = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
 function fmtDayParis(ms: number): string { return DAY.format(ms); }
 function fmtHmParis(ms: number): string { return HM.format(ms); }
+
+/** Le passage cité vient-il de la page du BLS (entre guillemets) ou d'un recalcul (API) ? */
+export function isRecalculated(f: ReleaseFigure): boolean {
+  return f.nature === 'rattrapage API' || !!f.filled_ms;
+}

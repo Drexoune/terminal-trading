@@ -289,6 +289,28 @@ def test_release_alerts_only_for_fresh_captures(tmp_path):
     assert len(notif.sent) == 2
 
 
+def test_catch_up_of_an_old_release_does_not_alert(tmp_path):
+    async def go():
+        svc, db, bus, clock = await make(tmp_path)
+        clock.t = T0 + 5_000
+        old = T0 - 10 * 86_400_000  # publication d'il y a 10 jours, relue au démarrage
+        bus.publish("release:us-cpi-mm:2026-10", {**fig(clock.t), "scheduled_ms": old})
+        bus.publish("release:last", {"release": "cpi", "period": "2026-10",
+                                     "keys": ["release:us-cpi-mm:2026-10"], "scheduled_ms": old,
+                                     "bus_ms": clock.t, "nature": "rattrapage"})
+        recent = T0 - 30 * 60_000  # Mac sorti de veille à T+30 min : alerte utile
+        bus.publish("release:last", {"release": "ppi", "period": "2026-11", "keys": [],
+                                     "scheduled_ms": recent, "bus_ms": clock.t,
+                                     "nature": "rattrapage"})
+        await svc.drain()
+        rows = await db.query("select title from alert_events")
+        await svc.stop()
+        await db.close()
+        return rows
+
+    assert run(go()) == [{"title": "ppi · 2026-11"}]
+
+
 def test_event_soon_fires_once_per_event(tmp_path):
     async def go():
         svc, db, bus, clock = await make(tmp_path)

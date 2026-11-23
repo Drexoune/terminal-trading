@@ -234,6 +234,12 @@ MIGRATIONS: list[list[str]] = [
               '{"minutes": 5, "captured_only": true, "impacts": [], "currencies": []}',
               '["écran", "telegram"]', 0, 0)""",
     ],
+    # 6 — chiffre absent de la page à l'heure H, complété ensuite par l'API v1 (PPI
+    # sous-jacent) : heure du complément. La valeur passe de null à la valeur recalculée,
+    # une seule fois ; une valeur publiée n'est jamais remplacée.
+    [
+        "alter table releases add column filled_ms integer",
+    ],
 ]
 
 

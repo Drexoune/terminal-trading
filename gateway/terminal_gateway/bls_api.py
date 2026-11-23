@@ -14,7 +14,8 @@ Faits vérifiés le 23/11/2026 :
 - La variation recalculée depuis les indices publiés à trois décimales, arrondie
   au dixième (demi vers le haut), redonne exactement le chiffre de la première
   publication pour la dernière période des 10 indicateurs lisibles (corpus de
-  124 communiqués). Les écarts sur les périodes plus anciennes sont de vraies
+  124 communiqués), et les cinq variations du PPI sous-jacent publiées au tableau 1
+  du communiqué complet d'octobre 2026. Les écarts sur les périodes plus anciennes sont de vraies
   révisions (emploi révisé deux mois, PPI quatre mois, coefficients saisonniers
   de l'IPC chaque février).
 
@@ -45,6 +46,9 @@ DERIVATIONS: dict[str, tuple[str, str]] = {
     "us-unemployment": ("LNS14000000", "level"),
     "us-ahe-mm": ("CES0500000003", "m/m"),
     "us-ppi-mm": ("WPSFD4", "m/m"),
+    # PPI sous-jacent : absent du résumé, publié au tableau 1 du communiqué complet
+    # (FD 49104) ; l'API le donne seule. Recalcul égal au tableau pour 2026-06 à 2026-10.
+    "us-core-ppi-mm": ("WPSFD49104", "m/m"),
     "us-prod-qq": ("PRS85006092", "level"),
     "us-ulc-qq": ("PRS85006112", "level"),
 }

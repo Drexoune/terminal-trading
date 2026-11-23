@@ -939,7 +939,7 @@
   "page": "ok",
   "period": "2023-12",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -952,7 +952,7 @@
   "page": "ok",
   "period": "2024-12",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -965,7 +965,7 @@
   "page": "ok",
   "period": "2025-11",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -978,7 +978,7 @@
   "page": "ok",
   "period": "2025-12",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -991,7 +991,7 @@
   "page": "ok",
   "period": "2025-01",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1004,7 +1004,7 @@
   "page": "ok",
   "period": "2024-01",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1017,7 +1017,7 @@
   "page": "ok",
   "period": "2026-01",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1030,7 +1030,7 @@
   "page": "ok",
   "period": "2025-02",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1043,7 +1043,7 @@
   "page": "ok",
   "period": "2024-02",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1056,7 +1056,7 @@
   "page": "ok",
   "period": "2026-02",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1069,7 +1069,7 @@
   "page": "ok",
   "period": "2024-03",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1082,7 +1082,7 @@
   "page": "ok",
   "period": "2025-03",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1095,7 +1095,7 @@
   "page": "ok",
   "period": "2026-03",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1108,7 +1108,7 @@
   "page": "ok",
   "period": "2026-04",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1121,7 +1121,7 @@
   "page": "ok",
   "period": "2024-04",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1134,7 +1134,7 @@
   "page": "ok",
   "period": "2025-04",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1147,7 +1147,7 @@
   "page": "ok",
   "period": "2026-05",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1160,7 +1160,7 @@
   "page": "ok",
   "period": "2025-05",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1173,7 +1173,7 @@
   "page": "ok",
   "period": "2024-05",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1186,7 +1186,7 @@
   "page": "ok",
   "period": "2024-06",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1199,7 +1199,7 @@
   "page": "ok",
   "period": "2026-06",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1212,7 +1212,7 @@
   "page": "ok",
   "period": "2025-06",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1225,7 +1225,7 @@
   "page": "ok",
   "period": "2024-07",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1238,7 +1238,7 @@
   "page": "ok",
   "period": "2026-07",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1251,7 +1251,7 @@
   "page": "ok",
   "period": "2025-07",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1264,7 +1264,7 @@
   "page": "ok",
   "period": "2025-08",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1277,7 +1277,7 @@
   "page": "ok",
   "period": "2026-08",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1290,7 +1290,7 @@
   "page": "ok",
   "period": "2024-08",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1303,7 +1303,7 @@
   "page": "ok",
   "period": "2024-09",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1316,7 +1316,7 @@
   "page": "ok",
   "period": "2026-09",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1329,7 +1329,7 @@
   "page": "ok",
   "period": "2026-10",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1342,7 +1342,7 @@
   "page": "ok",
   "period": "2024-10",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1355,7 +1355,7 @@
   "page": "ok",
   "period": "2023-10",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1368,7 +1368,7 @@
   "page": "ok",
   "period": "2025-09",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1381,7 +1381,7 @@
   "page": "ok",
   "period": "2024-11",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1394,7 +1394,7 @@
   "page": "ok",
   "period": "2023-11",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,
@@ -1407,7 +1407,7 @@
   "page": "ok",
   "period": "2026-10",
   "reasons": {
-   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS (tableau 1 du communiqué complet, non lu en E3)"
+   "us-core-ppi-mm": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour"
   },
   "values": {
    "us-core-ppi-mm": null,

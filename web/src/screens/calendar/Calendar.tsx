@@ -17,7 +17,7 @@ import {
 } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
 import {
-  captureLabel, figureFor, figureIndex, figures, fmtDelay, fmtFigure, reactions, revisionText, surpriseText,
+  captureLabel, figureFor, isRecalculated, figureIndex, figures, fmtDelay, fmtFigure, reactions, revisionText, surpriseText,
   type ReleaseFigure,
 } from '../../calendar/releases';
 import { useSettings } from '../../config/settings';
@@ -224,7 +224,7 @@ function IndicatorCard({ ev, now, fig }: { ev: CalendarEvent | null; now: number
               {fig.timing !== 'attendue' ? ` · publié ${fig.timing}` : ''}
               {fig.forecast_age_ms !== null ? ` · prévision vue ${Math.round(fig.forecast_age_ms / 60_000)} min avant` : ''}
               {revisionText(fig) && <span className="cal-card__rev" data-testid="cal-card-revision">{revisionText(fig)}</span>}
-              {fig.excerpt && <span className="cal-card__quote">{fig.nature === 'rattrapage API' ? fig.excerpt : `« ${fig.excerpt} »`}</span>}
+              {fig.excerpt && <span className="cal-card__quote">{isRecalculated(fig) ? fig.excerpt : `« ${fig.excerpt} »`}</span>}
             </p>
           )}
           <div className="placeholder cal-card__hist">

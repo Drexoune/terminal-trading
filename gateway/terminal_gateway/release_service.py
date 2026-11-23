@@ -520,7 +520,7 @@ class ReleaseService:
             "surprise": row["surprise"], "z": row["z"], "z_n": row["z_n"],
             "z_provisional": provisional, "z_reason": row["z_reason"],
             "regular": bool(row["regular"]), "display_ms": row.get("display_ms"),
-            "revisions": revisions or [],
+            "revisions": revisions or [], "filled_ms": row.get("filled_ms"),
         }
 
     async def _publish_recent(self) -> None:
@@ -787,12 +787,18 @@ class ReleaseService:
                 return
 
     async def check_revisions(self, label: str = "révisions", scheduled_ms: int = 0) -> int:
-        """Compare l'API v1 aux valeurs connues ; une valeur nouvelle devient une révision."""
-        rows = [r for r in await self.db.query(
-            "select indicator_id, period, edition, value, scheduled_ms from releases"
-            " where value is not null order by scheduled_ms, id")
+        """Compare l'API v1 aux valeurs connues ; une valeur nouvelle devient une révision.
+
+        Même relecture : un chiffre resté vide à l'heure H parce qu'il manque à la page
+        (PPI sous-jacent) est complété par la valeur recalculée, une seule fois.
+        Renvoie le nombre de révisions, écarts et compléments."""
+        every = [r for r in await self.db.query(
+            "select id, indicator_id, period, edition, value, regular, scheduled_ms, forecast"
+            " from releases order by scheduled_ms, id")
             if r["indicator_id"] in bls_api.DERIVATIONS]
-        if not rows:
+        rows = [r for r in every if r["value"] is not None]
+        empty = [r for r in every if r["value"] is None and r["regular"]]
+        if not every or not (rows or empty):
             return 0
         latest: dict[tuple[str, str], dict] = {}
         history: dict[tuple[str, str], list[str]] = {}
@@ -803,12 +809,21 @@ class ReleaseService:
         for r in await self.db.query(
                 "select indicator_id, period, value from release_revisions order by seen_ms, id"):
             history.setdefault((r["indicator_id"], r["period"]), []).append(r["value"])
-        series = sorted({bls_api.DERIVATIONS[i][0] for i, _ in latest})
-        start = min(int(p[:4]) for _, p in latest) - 1
+        wanted = list(latest) + [(r["indicator_id"], r["period"]) for r in empty]
+        series = sorted({bls_api.DERIVATIONS[i][0] for i, _ in wanted})
+        start = min(int(p[:4]) for _, p in wanted) - 1
         data, _, poll_id = await self._api_call(series, label, scheduled_ms, start)
         if data is None:
             return 0
         now, changed = self.clock(), set()
+        filled = 0
+        for r in empty:
+            d = bls_api.derive(r["indicator_id"], r["period"], data)
+            if d is None:
+                continue  # API pas encore à jour pour cette période : relecture suivante
+            await self._fill(r, d, now)
+            changed.add((r["indicator_id"], r["period"], r["edition"]))
+            filled += 1
         for (ind, period), row in latest.items():
             d = bls_api.derive(ind, period, data)
             known = history[(ind, period)]
@@ -830,10 +845,24 @@ class ReleaseService:
             changed.add((ind, period, row["edition"]))
         await self.db.execute(
             "update release_polls set verdict = coalesce(verdict, '') || ? where id = ?",
-            (f" ; {len(changed)} révision(s) ou écart(s)", poll_id))
+            (f" ; {len(changed) - filled} révision(s) ou écart(s), {filled} complément(s)",
+             poll_id))
         if changed:
             await self._republish(changed)
         return len(changed)
+
+    async def _fill(self, row: dict, d: bls_api.Derived, now: int) -> None:
+        """Complète un chiffre vide par la valeur recalculée : surprise et z comme à la capture."""
+        surprise = raw_surprise(d.value, row["forecast"])
+        history = await self._history(row["indicator_id"], row["scheduled_ms"])
+        z = z_score(surprise, history, d.value)
+        flags = json.dumps(["recalculé", "complété par l'API v1"], ensure_ascii=False)
+        await self.db.execute(
+            "update releases set value = ?, reason = null, part = 'API v1 (recalculé)',"
+            " excerpt = ?, flags = ?, surprise = ?, z = ?, z_n = ?, z_reason = ?, filled_ms = ?"
+            " where id = ? and value is null",
+            (d.value, d.excerpt, flags, surprise, z.z, z.n, z.reason, now, row["id"]))
+        log.info("API v1 : %s %s complété à %s", row["indicator_id"], row["period"], d.value)
 
     # --- affichage ------------------------------------------------------------------------
 

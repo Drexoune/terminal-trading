@@ -406,8 +406,10 @@ _PPI_LEAD = re.compile(
 
 
 def _read_ppi(body: str, text: str, period: str) -> dict[str, Figure]:
-    core_why = ("indice « final demand less foods and energy » absent du résumé du BLS "
-                "(tableau 1 du communiqué complet, non lu en E3)")
+    # Publié dans le tableau 1 du communiqué complet seulement ; la valeur arrive par l'API v1
+    # (release_service.check_revisions, série WPSFD49104, vérifiée le 23/11/2026).
+    core_why = ("indice « final demand less foods and energy » absent du résumé du BLS : "
+                "complété par l'API v1 (série WPSFD49104) dès sa mise à jour")
     out = {"us-core-ppi-mm": Figure("us-core-ppi-mm", None, core_why)}
     table = read_table(body, "ppi_nrtablea")
     lead = _PPI_LEAD.search(text)

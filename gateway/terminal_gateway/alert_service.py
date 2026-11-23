@@ -36,6 +36,9 @@ log = logging.getLogger(__name__)
 PARIS = ZoneInfo("Europe/Paris")
 TIMER_S = 10
 FRESH_MS = 120_000  # un chiffre plus ancien n'alerte plus (republication, révision)
+# Une publication de plus de 2 h n'alerte pas, même tout juste relue : le rattrapage d'un
+# arriéré (premier démarrage, Mac éteint plusieurs jours) n'est pas une nouvelle.
+PUBLICATION_ALERT_MS = 2 * 3_600_000
 KEEP_EVENTS = 200
 SEEN_DAYS_MS = 3 * 86_400_000
 UNACKED_WINDOW_MS = 86_400_000
@@ -306,6 +309,9 @@ class AlertService:
 
     def _on_release(self, key: str, msg: dict | None) -> None:
         if not msg or not self._fresh(msg):
+            return
+        sched = msg.get("scheduled_ms")
+        if isinstance(sched, int) and self.clock() - sched > PUBLICATION_ALERT_MS:
             return
         if key == "release:last":
             figs = [f for f in (self.bus.get(k) for k in msg.get("keys") or []) if f]

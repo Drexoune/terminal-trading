@@ -10,6 +10,8 @@ import { squawk } from './engine';
 import { alertPhrase, releasePhrase } from './speech';
 
 export const FRESH_MS = 60_000;
+/** Publication de plus de 2 h (rattrapage d'un arriéré) : ni son ni voix, comme la passerelle. */
+export const PUBLICATION_MAX_AGE_MS = 2 * 3_600_000;
 
 export function useAnnouncements(): void {
   useEffect(() => {
@@ -37,7 +39,7 @@ export function useAnnouncements(): void {
       const id = `${last.release}|${last.ny_date}|${last.period}|${last.edition ?? ''}`;
       if (seen.has(id)) return;
       seen.add(id);
-      if (!fresh(last.bus_ms)) return;
+      if (!fresh(last.bus_ms) || gatewayNow() - last.scheduled_ms > PUBLICATION_MAX_AGE_MS) return;
       const figs = last.keys.map((k) => getValue<ReleaseFigure>(k)).filter((f): f is ReleaseFigure => !!f);
       squawk.beep('chiffre');
       if (squawk.get().prefs.figures && figs.length) {

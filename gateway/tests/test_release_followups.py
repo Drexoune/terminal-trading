@@ -329,6 +329,34 @@ def test_revision_of_an_old_first_release_is_a_separate_line(tmp_path):
     assert p["value"] == "29" and p["revisions"][0]["value"] == "60"
 
 
+def test_core_ppi_left_empty_at_h_is_filled_once_from_the_api(tmp_path):
+    async def go():
+        world = World(T + 15 * MIN)
+        api = Api(world, [API_REAL])
+        svc, db, bus = await service(tmp_path, world, api=api, okx=Okx(fail=True))
+        await db.execute(
+            "insert into releases (indicator_id, release, period, edition, ny_date, value, reason,"
+            " timing, scheduled_ms, received_ms, url, machine, forecast)"
+            " values ('us-core-ppi-mm', 'ppi', '2026-10', '', '2026-11-13', null,"
+            " 'absent du résumé', 'attendue', ?, ?, 'u', 'mac-test', '0.2')", (T, T + 2000))
+        n = await svc.check_revisions("révisions T+15min", T)
+        again = await svc.check_revisions("révisions T+60min", T)
+        row = (await db.query("select * from releases"))[0]
+        revs = await db.query("select * from release_revisions")
+        poll = await db.query("select verdict from release_polls order by id limit 1")
+        await db.close()
+        return n, again, row, revs, poll, bus
+
+    n, again, row, revs, poll, bus = run(go())
+    assert (n, again, revs) == (1, 0, [])  # complété, pas révisé
+    assert (row["value"], row["surprise"], row["part"], row["reason"]) == (
+        "0.3", "0.1", "API v1 (recalculé)", None)
+    assert row["filled_ms"] is not None and "WPSFD49104" in row["excerpt"]
+    assert "1 complément(s)" in poll[0]["verdict"]
+    p = bus.get("release:us-core-ppi-mm:2026-10")
+    assert p["value"] == "0.3" and p["filled_ms"] == row["filled_ms"]
+
+
 def test_api_lag_after_a_revised_release_is_not_a_revision(tmp_path):
     lag = api_body({"PRS85006092": {"2026-Q3": "3.6"}, "PRS85006112": {"2026-Q3": "-0.7"}})
     odd = api_body({"PRS85006092": {"2026-Q3": "4.3"}, "PRS85006112": {"2026-Q3": "-0.7"}})
