@@ -215,6 +215,53 @@ class DemoRelease:
         self.bus_ms = None
 
 
+def demo_reaction(bus: Bus) -> None:
+    """Réaction du BTC de démonstration (E3) : l'événement « Chicago Fed » du 19/10 devient
+    une publication suivie, avec un chiffre révisé et une baisse du BTC dans les 30 minutes.
+    Données fictives, routes de test seulement ; DELETE /test/reaction rétablit la semaine."""
+    week = json.loads(json.dumps(CAL["week"]))
+    ev = next(e for e in week["events"] if e["id"].startswith("demo-2|"))
+    ev.update(indicator="us-cpi-yy", capture=True, title_fr="IPC (sur un an)")
+    t = ev["time_ms"]
+    bus.publish(f"calendar:week:{week['week']}", {**week, "forexfactory": {
+        "source_ts_ms": now_ms() - 600_000, "received_ms": now_ms() - 120_000}})
+    bus.publish("release:us-cpi-yy:2026-09", {
+        "indicator": "us-cpi-yy", "label_fr": "IPC (sur un an)", "unit": "%", "release": "cpi",
+        "period": "2026-09", "edition": "", "ny_date": ev["ny_date"], "value": "3.7",
+        "reason": None, "part": "tableau A", "excerpt": "All items … 3.7", "flags": [],
+        "timing": "attendue", "nature": "officielle", "source": "BLS",
+        "url": "https://www.bls.gov/news.release/cpi.nr0.htm", "machine": "démo",
+        "scheduled_ms": t, "embargo_ms": t, "first_byte_ms": t + 900, "received_ms": t + 950,
+        "capture_delay_ms": 903, "clock_corrected": True, "bus_ms": t + 960, "forecast": "3.6",
+        "forecast_raw": "3.6%", "forecast_age_ms": 2_700_000, "surprise": "0.1", "z": None,
+        "z_n": 0, "z_provisional": False, "z_reason": "historique insuffisant (0/8)",
+        "regular": True, "display_ms": None,
+        "revisions": [{"kind": "révision", "previous": "3.7", "value": "3.8",
+                       "source": "BLS API v1", "series": "CUUR0000SA0", "excerpt": None,
+                       "seen_ms": t + 3_600_000}]})
+    price = [67_420, 67_431, 67_409, 67_415, 67_428, 67_402, 66_980, 66_870, 66_905, 66_940,
+             66_910, 66_885, 66_860, 66_880, 66_850, 66_830, 66_845, 66_820, 66_800, 66_815,
+             66_790, 66_805, 66_780, 66_770, 66_790, 66_760, 66_775, 66_750, 66_765, 66_740,
+             66_755, 66_730, 66_745, 66_720, 66_800]
+    candles = [{"t": t - 300_000 + i * 60_000, "o": p, "h": p + 8, "l": p - 8, "c": p}
+               for i, p in enumerate(price)]
+    bus.publish(f"reaction:cpi:{ev['ny_date']}", {
+        "release": "cpi", "title": "Consumer Price Index", "indicators": ["us-cpi-yy"],
+        "ny_date": ev["ny_date"], "scheduled_ms": t, "inst": "BTC-USDT-SWAP",
+        "source": "OKX DÉMO", "candles": candles, "ref_price": "67428",
+        "end_price": "66800", "change_pct": "-0.93", "missing": [], "reason": None,
+        "received_ms": t + 31 * 60_000})
+
+
+def clear_reaction(bus: Bus) -> None:
+    for k in bus.keys("reaction:"):
+        bus.delete(k)
+    bus.delete("release:us-cpi-yy:2026-09")
+    week = CAL["week"]
+    bus.publish(f"calendar:week:{week['week']}", {**week, "forexfactory": {
+        "source_ts_ms": now_ms() - 600_000, "received_ms": now_ms() - 120_000}})
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=8790)
@@ -239,6 +286,16 @@ def main() -> None:
     @app.delete("/test/release")
     async def test_clear() -> dict:
         release.clear()
+        return {"ok": True}
+
+    @app.post("/test/reaction")
+    async def test_reaction() -> dict:
+        demo_reaction(bus)
+        return {"ok": True}
+
+    @app.delete("/test/reaction")
+    async def test_reaction_clear() -> dict:
+        clear_reaction(bus)
         return {"ok": True}
 
     uvicorn.run(app, host="127.0.0.1", port=a.port, log_level="warning")

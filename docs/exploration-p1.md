@@ -128,3 +128,12 @@ Les 120 communiqués archivés et les 4 pages résumé de la sonde ont été lus
 - **Résultat** : sur 36 publications, IPC 35 (la 36e est l'irrégulière), emploi 35 sur 35 pour l'emploi salarié et le chômage, 33 pour le salaire horaire (2 communiqués ne donnent la variation qu'en cents), PPI 36, productivité 12 sur 12. Chaque valeur manquante a sa raison.
 - **PPI sous-jacent** : l'indice « final demand less foods and energy » n'est pas dans la page résumé (le tableau A ne donne que l'indice hors alimentation, énergie et commerce). Il reste « — » avec sa raison en E3 ; à décider avant le PPI du 15/12.
 - La page `empsit_12042026.htm` (publication à venir, déjà liée dans l'index) répond 404 : le parseur la reconnaît comme page d'erreur.
+
+### 23/11/2026 : API v1 du BLS (révisions et rattrapage, T-040)
+
+- **Documentation relue** (bls.gov/developers : api_signature.htm, api_faqs.htm) : sans clé, 25 requêtes par jour, 25 séries et 10 ans par requête, 50 requêtes par 10 s ; POST JSON `{"seriesid": [...], "startyear", "endyear"}` ; aucune variation calculée en v1 ; dépassement : HTTP 429. La page dit qu'une requête compte par appel, sans préciser ; nous comptons chaque appel.
+- **Une requête réelle** (12 séries, 2023-2026), réponse en 3,9 s, `no-cache, no-store`. Niveaux d'indice en texte décimal, « - » pour un mois non publié (IPC d'octobre 2025), note « P » sur les chiffres provisoires, drapeau `latest`. Fichier de référence : `gateway/tests/fixtures/bls/api_v1_2026-11-23.json.gz`.
+- **Recalcul contre le corpus** : sur la dernière période de chaque indicateur, le chiffre recalculé égale la première publication pour les 10 indicateurs lisibles (IPC et sous-jacent sur un mois et sur un an, emploi, chômage, salaire horaire, PPI, productivité, coûts salariaux unitaires). IPC sur un mois : 2026-01 à 2026-10 tous égaux ; les écarts de 2024-2025 viennent de la révision des coefficients saisonniers de février 2026.
+- **PPI sous-jacent** : la série `WPSFD49104` (demande finale hors alimentation et énergie) existe dans l'API (156.740 en octobre 2026). Elle pourrait combler le « — » d'E3 une fois l'API à jour après la publication, ce qui reste à mesurer (relectures de T+15 et T+60 min). Décision à prendre avant le 15/12.
+- **Essai de bout en bout** depuis le Mac, avec le client de la passerelle : révision de l'emploi de septembre 2026 détectée (29 k → 60 k) ; réaction du BTC calculée sur 35 bougies réelles d'OKX EEA, sans trou.
+

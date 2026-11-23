@@ -3,7 +3,8 @@
 // « calendar » de la passerelle ; semaines passées : /api/calendar?week= (archive
 // du Mac). Heures à Paris, calculées depuis l'UTC ; titres en VO (T-019).
 // Réel et surprise : chiffres captés sur bls.gov par le service « release » (E3),
-// clés release:… ; historique et réaction BTC suivent. Sinon « — » et la raison,
+// clés release:… ; révisions lues par l'API v1 ; réaction du BTC, clés reaction:… (Reaction.tsx).
+// Historique sur 5 ans : à venir. Sinon « — » et la raison,
 // jamais une valeur de maquette.
 
 import './calendar.css';
@@ -16,7 +17,8 @@ import {
 } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
 import {
-  figureFor, figureIndex, figures, fmtDelay, fmtFigure, surpriseText, type ReleaseFigure,
+  captureLabel, figureFor, figureIndex, figures, fmtDelay, fmtFigure, reactions, revisionText, surpriseText,
+  type ReleaseFigure,
 } from '../../calendar/releases';
 import { useSettings } from '../../config/settings';
 import { fetchJson } from '../../data/gateway';
@@ -24,6 +26,7 @@ import { useKeys } from '../../data/store';
 import { fmtHm } from '../../lib/time';
 import { SubHeader } from '../../shell/SubHeader';
 import { useNow } from '../../shell/useNow';
+import { ReactionPanel } from './Reaction';
 
 export function ImpactBars({ impact }: { impact: string }) {
   const n = impactLevel(impact);
@@ -63,6 +66,8 @@ export function CalendarScreen() {
   const data = week && week !== live?.week ? (other.state === 'ok' ? other.data : null) : live;
   const releaseEntries = useKeys<unknown>('release:');
   const index = useMemo(() => figureIndex(figures(releaseEntries)), [releaseEntries]);
+  const reactionEntries = useKeys<unknown>('reaction:');
+  const btc = useMemo(() => reactions(reactionEntries), [reactionEntries]);
   const events = useMemo(() => applyFilters(data?.events ?? [], { currencies, impacts, query })
     .map((e) => { const f = figureFor(e, index); return f ? { ...e, actual: f.value } : e; }),
   [data, currencies, impacts, query, index]);
@@ -129,12 +134,7 @@ export function CalendarScreen() {
           </Panel>
           <div className="cal-side">
             <IndicatorCard ev={sel} now={now} fig={sel ? figureFor(sel, index) : null} />
-            <Panel title="Réaction BTC · 30 min" label="Réaction du BTC" controls="none" testId="cal-btc">
-              <div className="placeholder cal-btc">
-                <span className="placeholder__dash" aria-hidden="true">—</span>
-                <span>Prix BTC de −5 à +30 min autour de la dernière publication captée : avec la capture à la source (E3).</span>
-              </div>
-            </Panel>
+            <ReactionPanel ev={sel} all={btc} />
           </div>
         </div>
       </div>
@@ -178,7 +178,7 @@ function WeekTable({ groups, now, selected, onSelect, archive, index }: {
                   {e.time_mismatch && <span className="lbl lbl--s cal-warn" title="l’heure ForexFactory diffère du calendrier officiel">heure ForexFactory différente</span>}
                 </td>
                 <td className="r num" data-testid="cal-actual">
-                  {fig ? (fig.value !== null ? <span className="cal-actual" title={`BLS · ${fig.part ?? ''} · capté ${fmtDelay(fig.capture_delay_ms)} après l’heure prévue`}>{fmtFigure(fig)}</span>
+                  {fig ? (fig.value !== null ? <span className="cal-actual" title={`BLS · ${fig.part ?? ''} · ${fig.nature === 'officielle' ? `capté ${fmtDelay(fig.capture_delay_ms)} après l’heure prévue` : captureLabel(fig)}${fig.revisions?.length ? ` · ${revisionText(fig)}` : ''}`}>{fmtFigure(fig)}</span>
                     : <Missing reason={fig.reason ?? 'chiffre non lu'} />) : <Missing reason={actualReason(e, now)} />}
                 </td>
                 <td className="r num">{e.forecast_raw ? fmtValue(e.forecast, e.unit, e.forecast_raw) : <Missing reason="aucun consensus publié par ForexFactory" />}</td>
@@ -219,11 +219,12 @@ function IndicatorCard({ ev, now, fig }: { ev: CalendarEvent | null; now: number
           </p>
           {fig && (
             <p className="lbl lbl--s cal-card__meta" data-testid="cal-card-capture">
-              {`BLS · ${fig.period}${fig.edition === 'Revised' ? ' révisé' : ''} · ${fig.part ?? ''} · capté ${fmtDelay(fig.capture_delay_ms)}`}
+              {`BLS · ${fig.period}${fig.edition === 'Revised' ? ' révisé' : ''} · ${fig.part ?? ''} · ${captureLabel(fig)}`}
               {typeof fig.display_delay_ms === 'number' ? ` · affiché ${fmtDelay(fig.display_delay_ms)}` : ''}
               {fig.timing !== 'attendue' ? ` · publié ${fig.timing}` : ''}
               {fig.forecast_age_ms !== null ? ` · prévision vue ${Math.round(fig.forecast_age_ms / 60_000)} min avant` : ''}
-              {fig.excerpt && <span className="cal-card__quote">« {fig.excerpt} »</span>}
+              {revisionText(fig) && <span className="cal-card__rev" data-testid="cal-card-revision">{revisionText(fig)}</span>}
+              {fig.excerpt && <span className="cal-card__quote">{fig.nature === 'rattrapage API' ? fig.excerpt : `« ${fig.excerpt} »`}</span>}
             </p>
           )}
           <div className="placeholder cal-card__hist">

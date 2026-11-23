@@ -1,6 +1,7 @@
 // Chiffres captés à la source (étape E3) : clés release:<indicateur>:<période>[:<édition>]
 // publiées par le service « release » de la passerelle
-// (gateway/terminal_gateway/release_service.py). Logique pure, testée par Vitest.
+// (gateway/terminal_gateway/release_service.py), révisions lues par l'API v1 du BLS, et
+// réaction du BTC (clés reaction:<publication>:<jour à New York>). Logique pure, testée par Vitest.
 
 import { DASH, MINUS, NBSP } from '../lib/format';
 import { fmtValue, type CalendarEvent } from './calendar';
@@ -41,6 +42,36 @@ export interface ReleaseFigure {
   regular: boolean;
   display_ms: number | null;
   display_delay_ms?: number | null;
+  revisions?: Revision[];
+}
+
+/** Valeur nouvelle lue par l'API v1 ; la première publication n'est jamais modifiée. */
+export interface Revision {
+  kind: 'révision' | 'écart' | string;   // « écart » : publication de moins de 7 jours
+  previous: string;
+  value: string;
+  source: string;                        // « BLS API v1 »
+  series: string | null;
+  excerpt: string | null;
+  seen_ms: number;
+}
+
+/** Bougies 1 min du perpétuel BTC-USDT d'OKX de T−5 à T+30 min (passerelle, reaction.py). */
+export interface Reaction {
+  release: string;
+  title: string;
+  indicators: string[];
+  ny_date: string;
+  scheduled_ms: number;
+  inst: string;
+  source: string;                        // « OKX EEA REST »
+  candles: { t: number; o: number; h: number; l: number; c: number }[];
+  ref_price: string | null;
+  end_price: string | null;
+  change_pct: string | null;             // texte décimal, deux décimales
+  missing: number[];
+  reason: string | null;
+  received_ms: number;
 }
 
 export interface ReleaseLast {
@@ -105,3 +136,78 @@ export const BANNER_MS = 15 * 60_000;
 export function bannerVisible(last: ReleaseLast | undefined, now: number): boolean {
   return !!last && now - last.bus_ms < BANNER_MS;
 }
+
+// --- nature, révisions ------------------------------------------------------------------
+
+/** « capté 1,23 s » ; un rattrapage ne mesure aucun délai et le dit. */
+export function captureLabel(f: ReleaseFigure): string {
+  if (f.nature === 'rattrapage') return 'rattrapé : communiqué relu après la fenêtre de capture';
+  if (f.nature === 'rattrapage API') return 'rattrapé : recalculé depuis l’API v1 du BLS (page illisible)';
+  if (f.nature !== 'officielle') return f.nature;
+  return `capté ${fmtDelay(f.capture_delay_ms)}`;
+}
+
+/** Dernière valeur connue après révisions, avec sa provenance ; null sans révision. */
+export function revisionText(f: ReleaseFigure): string | null {
+  const r = f.revisions?.at(-1);
+  if (!r) return null;
+  const v = fmtValue(r.value, f.unit, null);
+  const day = fmtDayParis(r.seen_ms);
+  return r.kind === 'écart'
+    ? `écart à vérifier : l’API v1 du BLS donne ${v} (lu le ${day})`
+    : `révisé à ${v} (API v1 du BLS, lu le ${day})${(f.revisions?.length ?? 0) > 1 ? ` · ${f.revisions!.length} révisions` : ''}`;
+}
+
+// --- réaction du BTC ----------------------------------------------------------------------
+
+/** Les clés reaction:… du store. */
+export function reactions(entries: [string, unknown][]): Reaction[] {
+  return entries.filter(([k, v]) => k.startsWith('reaction:') && typeof v === 'object' && v !== null && 'candles' in v)
+    .map(([, v]) => v as Reaction);
+}
+
+/**
+ * Réaction à montrer pour l'événement choisi : celle de sa publication (même indicateur, même
+ * jour à New York), sinon la dernière publication de l'indicateur avant ce jour.
+ */
+export function pickReaction(ev: CalendarEvent | null, all: Reaction[]): { reaction: Reaction | null; reason: string } {
+  if (!ev) return { reaction: null, reason: 'Sélectionner un événement.' };
+  if (!ev.capture || !ev.indicator) {
+    return { reaction: null, reason: 'Réaction du BTC : seulement pour les publications suivies à la source (BLS).' };
+  }
+  const mine = all.filter((r) => r.indicators.includes(ev.indicator!) && r.ny_date <= ev.ny_date)
+    .sort((a, b) => b.scheduled_ms - a.scheduled_ms);
+  if (mine.length) return { reaction: mine[0], reason: '' };
+  return {
+    reaction: null,
+    reason: 'Réaction du BTC : enregistrée 31 min après la publication, par la passerelle du Mac. Aucune encore pour cet indicateur.',
+  };
+}
+
+/** « −0,92 % », « +1,05 % ». */
+export function fmtChangePct(v: string | null): string {
+  return v === null ? DASH : `${fmtSignedText(v)}${NBSP}%`;
+}
+
+export function changeTone(v: string | null): 'up' | 'down' | null {
+  if (v === null || Number(v) === 0) return null;
+  return Number(v) > 0 ? 'up' : 'down';
+}
+
+/** « BTC-USDT perp OKX, du 15/10/2026 14:25 au 14:55 (heure de Paris) ». */
+export function reactionCaption(r: Reaction): string {
+  const inst = r.inst === 'BTC-USDT-SWAP' ? 'BTC-USDT perp' : r.inst;
+  const from = r.scheduled_ms - 5 * 60_000;
+  const to = r.scheduled_ms + 30 * 60_000;
+  return `${inst} ${r.source}, du ${fmtDayParis(from)} ${fmtHmParis(from)} au ${fmtHmParis(to)} (heure de Paris)`;
+}
+
+/** Points du graphique : clôture de chaque bougie à sa fin, en minutes depuis T. */
+export function reactionPoints(r: Reaction): { x: number; y: number }[] {
+  return r.candles.map((c) => ({ x: (c.t + 60_000 - r.scheduled_ms) / 60_000, y: c.c }));
+}
+
+const DAY = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', day: '2-digit', month: '2-digit', year: 'numeric' });
+const HM = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+function fmtDayParis(ms: number): string { return DAY.format(ms); }
+function fmtHmParis(ms: number): string { return HM.format(ms); }

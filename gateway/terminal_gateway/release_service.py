@@ -21,7 +21,21 @@ calendrier officiel relevé par le service « calendar » (table official_releas
 délais ; il est publié sur le bus (`release:<indicateur>:<période>[:<édition>]`,
 `release:last`). Le front renvoie l'heure d'affichage (op « displayed »).
 
-Sans BLS_CONTACT_EMAIL (T-023), le service reste arrêté avec sa raison.
+Suites, vérifiées chaque minute (`followups`) :
+
+- Réaction du BTC : à T+31 min, bougies 1 min OKX de T-5 à T+30 min, gardées
+  (OKX n'en sert que 24 h) ; au démarrage, rattrapée tant que T a moins de 23 h.
+- Rattrapage d'une capture manquée (Mac en veille, passerelle arrêtée, page en
+  ligne après T+5 min), décision T-040 : relecture du communiqué (`.nr0`, page
+  complète, puis copie archivée à la date) par le même parseur ; l'API v1 ne sert
+  que si la page reste illisible, chiffre marqué « recalculé ».
+- Révisions : l'API v1 relue à T+15 min et T+60 min après chaque publication
+  suivie, et chaque jour ouvré à 12:00 à New York (au plus 20 requêtes par jour sur
+  25). Une valeur différente de la dernière connue devient une ligne de
+  `release_revisions` ; la première publication n'est jamais modifiée.
+
+Sans BLS_CONTACT_EMAIL (T-023), la capture et l'API restent arrêtées avec leur
+raison ; la réaction du BTC, qui ne lit qu'OKX, continue.
 """
 
 from __future__ import annotations
@@ -35,12 +49,16 @@ import sys
 import time
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass, field
+from datetime import UTC, datetime
+from zoneinfo import ZoneInfo
 
-from .bls_release import BY_TITLE, Parsed, Release, classify, parse_page
+from . import bls_api
+from .bls_release import BLS, BY_TITLE, RELEASES, Figure, Parsed, Release, classify, parse_page
 from .bus import Bus
 from .calendar_data import INDICATORS
 from .calendar_service import Feed
 from .config import Settings
+from .reaction import BEFORE_MS, DUE_AFTER_MS, INST, OKX_KEEPS_MS, btc_reaction
 from .storage import Storage
 from .surprise import ZScore, raw_surprise, z_score
 
@@ -51,6 +69,17 @@ RECHECK_MS = 10 * 60_000  # relecture du calendrier pendant l'attente
 LATE_SLACK_MS = 500  # une requête plus en retard que ça est sautée
 RECENT_MS = 40 * 86_400_000  # publications republiées au démarrage
 LABELS = {i.id: i for i in INDICATORS}
+NEW_YORK = ZoneInfo("America/New_York")
+FOLLOWUP_EVERY_S = 60
+CATCHUP_FROM_MS = 10 * 60_000  # après la fin de la rafale (T+5 min)
+CATCHUP_WINDOW_MS = 35 * 86_400_000
+CATCHUP_SPACING_S = 1.0
+API_FALLBACK_AFTER_MS = 60 * 60_000  # l'API n'est pas à jour à 08:30
+API_CHECKS = ((15 * 60_000, "révisions T+15min"), (60 * 60_000, "révisions T+60min"))
+API_DAILY_AT = (12, 0)  # New York, jours ouvrés
+REVISION_GRACE_MS = 7 * 86_400_000  # écart sur une publication de moins de 7 jours : « écart »
+REACTION_RETRY_MS = 5 * 60_000
+REACTION_FINAL_MS = 45 * 60_000  # au-delà, une bougie absente est enregistrée comme telle
 
 FEED = {
     "name": "bls-release",
@@ -77,6 +106,8 @@ class Fetched:
 
 
 Fetch = Callable[[str], Awaitable[Fetched]]
+ApiPost = Callable[[str, dict], Awaitable[Fetched]]
+Candles = Callable[[str, int], Awaitable[list[dict]]]  # (instrument, depuis) -> bougies 1 min
 KeepAwake = Callable[[], Callable[[], None]]
 
 
@@ -112,8 +143,9 @@ def caffeinate() -> Callable[[], None]:
     return proc.terminate
 
 
-def make_fetch(user_agent: str) -> tuple[Fetch, Callable[[], Awaitable[None]]]:
-    """Client httpx unique (connexion gardée ouverte entre deux requêtes), en flux."""
+def make_fetch(user_agent: str) -> tuple[Fetch, ApiPost, Callable[[], Awaitable[None]]]:
+    """Client httpx unique (connexion gardée ouverte entre deux requêtes), en flux ;
+    GET des pages du BLS, POST JSON de l'API v1."""
     import httpx
 
     client = httpx.AsyncClient(
@@ -121,10 +153,11 @@ def make_fetch(user_agent: str) -> tuple[Fetch, Callable[[], Awaitable[None]]]:
         headers={"User-Agent": user_agent, "Accept-Encoding": "gzip"},
         limits=httpx.Limits(max_connections=2, max_keepalive_connections=2, keepalive_expiry=900))
 
-    async def fetch(url: str) -> Fetched:
+    async def fetch(url: str, json_body: dict | None = None) -> Fetched:
         out = Fetched(None, {}, b"", now_ms())
+        method = "GET" if json_body is None else "POST"
         try:
-            async with client.stream("GET", url) as r:
+            async with client.stream(method, url, json=json_body) as r:
                 chunks: list[bytes] = []
                 async for chunk in r.aiter_bytes():
                     if out.first_byte_ms is None:
@@ -137,7 +170,38 @@ def make_fetch(user_agent: str) -> tuple[Fetch, Callable[[], Awaitable[None]]]:
         out.done_ms = now_ms()
         return out
 
-    return fetch, client.aclose
+    async def post(url: str, body: dict) -> Fetched:
+        return await fetch(url, body)
+
+    return fetch, post, client.aclose
+
+
+def make_candles(region: str) -> tuple[Candles, Callable[[], Awaitable[None]]]:
+    """Bougies 1 min du REST public d'OKX (même domaine que le collecteur)."""
+    from terminal_collectors.okx.endpoints import endpoints
+    from terminal_collectors.okx.rest import OkxRest
+
+    rest = OkxRest(endpoints(region).rest)
+
+    async def candles(inst: str, since_ms: int) -> list[dict]:
+        return await rest.candles(inst, "1m", since_ms=since_ms)
+
+    return candles, rest.aclose
+
+
+def utc_day_start(ms: int) -> int:
+    d = datetime.fromtimestamp(ms / 1000, UTC)
+    return int(datetime(d.year, d.month, d.day, tzinfo=UTC).timestamp() * 1000)
+
+
+def ny_date(ms: int) -> str:
+    return datetime.fromtimestamp(ms / 1000, NEW_YORK).date().isoformat()
+
+
+def archive_url(rel: Release, local_date: str) -> str:
+    """Copie archivée d'un communiqué : « news.release/archives/cpi_12102026.htm »."""
+    y, m, d = local_date.split("-")
+    return f"{BLS}/news.release/archives/{rel.key}_{m}{d}{y}.htm"
 
 
 @dataclass
@@ -161,46 +225,61 @@ class ReleaseService:
     def __init__(self, bus: Bus, storage: Storage, settings: Settings,
                  fetch: Fetch | None = None, clock: Callable[[], int] = now_ms,
                  sleep: Callable[[float], Awaitable[None]] = asyncio.sleep,
-                 keep_awake: KeepAwake = caffeinate) -> None:
+                 keep_awake: KeepAwake = caffeinate, api_post: ApiPost | None = None,
+                 candles: Candles | None = None) -> None:
         self.bus, self.db, self.settings = bus, storage, settings
         self.clock, self.sleep, self.keep_awake = clock, sleep, keep_awake
-        self._fetch, self._close = fetch, None
+        self._fetch, self._api_post, self._candles = fetch, api_post, candles
+        self._closers: list[Callable[[], Awaitable[None]]] = []
         self.feed = Feed(FEED)
         self.capture: Capture | None = None
         self._done: set[tuple[str, int]] = set()
-        self._task: asyncio.Task | None = None
+        self._tasks: list[asyncio.Task] = []
+        # Suites : prochain essai de rattrapage, raisons, essais de réaction, API.
+        self._catchup_next: dict[tuple[str, int], int] = {}
+        self.catchup_notes: dict[str, str] = {}
+        self._reaction_tried: dict[tuple[str, int], int] = {}
+        self._api_blocked_until = 0
+        self.api_note: str | None = None
         self.bus.set_retention("release:", 120)
+        self.bus.set_retention("reaction:", 40)
 
     # --- cycle de vie --------------------------------------------------------------
 
     async def start(self) -> None:
         await self._publish_recent()
+        if self._candles is None:
+            self._candles, close = make_candles(self.settings.okx_region)
+            self._closers.append(close)
         email = self.settings.bls_contact_email
         if not email:
             self.feed.stop("BLS_CONTACT_EMAIL absente : capture à la source arrêtée (T-023)")
             self._publish_state()
-            return
-        if self._fetch is None:
-            self._fetch, self._close = make_fetch(f"terminal-trading/0.1 ({email})")
-        self.feed.ok(self.clock())
-        self._task = asyncio.create_task(self._loop(), name="release-loop")
+        else:
+            if self._fetch is None:
+                self._fetch, post, close = make_fetch(f"terminal-trading/0.1 ({email})")
+                self._api_post = self._api_post or post
+                self._closers.append(close)
+            self.feed.ok(self.clock())
+            self._tasks.append(asyncio.create_task(self._loop(), name="release-loop"))
+        self._tasks.append(asyncio.create_task(self._followups_loop(), name="release-followups"))
 
     async def stop(self) -> None:
-        if self._task:
-            self._task.cancel()
-            try:
-                await self._task
-            except (asyncio.CancelledError, Exception):
-                pass
-            self._task = None
-        if self._close:
-            await self._close()
+        for t in self._tasks:
+            t.cancel()
+        await asyncio.gather(*self._tasks, return_exceptions=True)
+        self._tasks = []
+        for close in self._closers:
+            await close()
+        self._closers = []
 
     def health(self) -> dict:
         c = self.capture
         return {"bls": self.feed.snapshot(),
                 "next": c.scheduled.release.key if c else None,
-                "phase": c.phase if c else None}
+                "phase": c.phase if c else None,
+                "catch_up": dict(self.catchup_notes),
+                "api": {"note": self.api_note, "blocked_until_ms": self._api_blocked_until or None}}
 
     # --- planification ---------------------------------------------------------------
 
@@ -220,6 +299,19 @@ class ReleaseService:
                 continue
             return s
         return None
+
+    async def past_scheduled(self, since_ms: int, until_ms: int) -> list[Scheduled]:
+        """Publications suivies passées, annoncées par le dernier calendrier relevé."""
+        titles = list(BY_TITLE)
+        rows = await self.db.query(
+            "select title, local_date, local_time, utc_ms from official_releases"
+            " where source = 'BLS' and utc_ms between ? and ? and title in"
+            f" ({', '.join('?' * len(titles))})"
+            " and last_seen_ms = (select max(last_seen_ms) from official_releases"
+            " where source = 'BLS') order by utc_ms",
+            (since_ms, until_ms, *titles))
+        return [Scheduled(BY_TITLE[r["title"]], r["local_date"], r["local_time"], r["utc_ms"])
+                for r in rows]
 
     async def _already_captured(self, s: Scheduled) -> bool:
         rows = await self.db.query(
@@ -344,7 +436,7 @@ class ReleaseService:
         return [r["surprise"] for r in rows]
 
     async def _record(self, cap: Capture, parsed: Parsed, got: Fetched, verdict: str,
-                      url: str) -> None:
+                      url: str, nature: str = "officielle") -> None:
         s = cap.scheduled
         parsed_ms = self.clock()
         clock = self.bus.get("clock:okx") or {}
@@ -369,19 +461,21 @@ class ReleaseService:
                 "url": url, "machine": machine, "forecast": fc.get("forecast"),
                 "forecast_raw": fc.get("forecast_raw"), "forecast_seen_ms": fc.get("seen_ms"),
                 "surprise": surprise, "z": z.z, "z_n": z.n, "z_reason": z.reason,
-                "regular": 0 if irregular or verdict != "attendue" else 1,
+                "regular": 0 if irregular or verdict != "attendue" else 1, "nature": nature,
             }
             cols = ", ".join(row)
             await self.db.execute(
                 f"insert into releases ({cols}) values ({', '.join('?' * len(row))})"
                 " on conflict (indicator_id, period, edition) do nothing", tuple(row.values()))
             payloads[ind] = self._payload(row, z.provisional, offset)
-        await self.db.execute(
-            "insert into release_timings (release, period, edition, scheduled_ms, last_without_ms,"
-            " first_send_ms, first_byte_ms, parsed_ms, okx_offset_ms, date_header)"
-            " values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on conflict do nothing",
-            (s.release.key, parsed.period, parsed.edition or "", s.utc_ms, cap.last_without_ms,
-             got.send_ms, got.first_byte_ms, parsed_ms, offset, date_header))
+        if nature == "officielle":  # les délais d'un rattrapage ne mesurent rien
+            await self.db.execute(
+                "insert into release_timings (release, period, edition, scheduled_ms,"
+                " last_without_ms, first_send_ms, first_byte_ms, parsed_ms, okx_offset_ms,"
+                " date_header) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) on conflict do nothing",
+                (s.release.key, parsed.period, parsed.edition or "", s.utc_ms,
+                 cap.last_without_ms, got.send_ms, got.first_byte_ms, parsed_ms, offset,
+                 date_header))
         bus_ms = self.clock()
         keys = []
         for p in payloads.values():
@@ -393,16 +487,19 @@ class ReleaseService:
         self.bus.publish("release:last", {
             "release": s.release.key, "title": s.release.title, "period": parsed.period,
             "edition": parsed.edition, "ny_date": s.local_date, "keys": keys, "timing": verdict,
-            "scheduled_ms": s.utc_ms, "bus_ms": bus_ms})
+            "scheduled_ms": s.utc_ms, "bus_ms": bus_ms, "nature": nature})
         await self.db.execute(
             "update release_timings set bus_ms = ? where release = ? and period = ?"
             " and edition = ?", (bus_ms, s.release.key, parsed.period, parsed.edition or ""))
-        log.info("BLS %s %s capté : %s", s.release.key, parsed.period,
+        log.info("BLS %s %s %s : %s", s.release.key, parsed.period,
+                 "capté" if nature == "officielle" else nature,
                  {k: v.value for k, v in parsed.figures.items()})
 
-    def _payload(self, row: dict, provisional: bool, offset: float | None) -> dict:
+    def _payload(self, row: dict, provisional: bool, offset: float | None,
+                 revisions: list[dict] | None = None) -> dict:
         ind = LABELS.get(row["indicator_id"])
-        fb = row["first_byte_ms"]
+        nature = row.get("nature") or "officielle"
+        fb = row["first_byte_ms"] if nature == "officielle" else None
         corr = offset or 0
         return {
             "indicator": row["indicator_id"], "label_fr": ind.label_fr if ind else None,
@@ -410,7 +507,7 @@ class ReleaseService:
             "period": row["period"], "edition": row["edition"], "ny_date": row["ny_date"],
             "value": row["value"], "reason": row["reason"], "part": row["part"],
             "excerpt": row["excerpt"], "flags": json.loads(row["flags"]),
-            "timing": row["timing"], "nature": row.get("nature", "officielle"),
+            "timing": row["timing"], "nature": nature,
             "source": "BLS", "url": row["url"], "machine": row["machine"],
             "scheduled_ms": row["scheduled_ms"], "embargo_ms": row["embargo_ms"],
             "first_byte_ms": fb, "received_ms": row["received_ms"],
@@ -423,6 +520,7 @@ class ReleaseService:
             "surprise": row["surprise"], "z": row["z"], "z_n": row["z_n"],
             "z_provisional": provisional, "z_reason": row["z_reason"],
             "regular": bool(row["regular"]), "display_ms": row.get("display_ms"),
+            "revisions": revisions or [],
         }
 
     async def _publish_recent(self) -> None:
@@ -433,13 +531,309 @@ class ReleaseService:
             " and t.period = r.period and t.edition = r.edition"
             " where r.scheduled_ms > ? order by r.scheduled_ms",
             (self.clock() - RECENT_MS,))
+        revs = await self._revisions()
         for r in rows:
-            p = self._payload(r, (r["z_n"] or 0) < 24, r["okx_offset_ms"])
+            p = self._payload(r, (r["z_n"] or 0) < 24, r["okx_offset_ms"],
+                              revs.get((r["indicator_id"], r["period"], r["edition"])))
             p.update(bus_ms=r["bus_ms"], parsed_ms=r["parsed_ms"],
                      last_without_ms=r["last_without_ms"])
             if r["display_ms"]:
                 p["display_delay_ms"] = r["display_ms"] - r["scheduled_ms"]
             self.bus.publish(release_key(r["indicator_id"], r["period"], r["edition"]), p)
+        for r in await self.db.query("select * from release_reactions where scheduled_ms > ?",
+                                     (self.clock() - RECENT_MS,)):
+            self._publish_reaction(r)
+
+    async def _revisions(self) -> dict[tuple[str, str, str], list[dict]]:
+        out: dict[tuple[str, str, str], list[dict]] = {}
+        for r in await self.db.query(
+                "select indicator_id, period, edition, kind, previous, value, source, series,"
+                " excerpt, seen_ms from release_revisions order by seen_ms, id"):
+            key = (r.pop("indicator_id"), r.pop("period"), r.pop("edition"))
+            out.setdefault(key, []).append(r)
+        return out
+
+    async def _republish(self, triples: set[tuple[str, str, str]]) -> None:
+        revs = await self._revisions()
+        for ind, period, edition in triples:
+            for r in await self.db.query(
+                    "select r.*, t.display_ms, t.bus_ms, t.parsed_ms, t.last_without_ms,"
+                    " t.okx_offset_ms from releases r left join release_timings t on"
+                    " t.release = r.release and t.period = r.period and t.edition = r.edition"
+                    " where r.indicator_id = ? and r.period = ? and r.edition = ?",
+                    (ind, period, edition)):
+                p = self._payload(r, (r["z_n"] or 0) < 24, r["okx_offset_ms"],
+                                  revs.get((ind, period, edition)))
+                p.update(bus_ms=r["bus_ms"], parsed_ms=r["parsed_ms"],
+                         last_without_ms=r["last_without_ms"])
+                if r["display_ms"]:
+                    p["display_delay_ms"] = r["display_ms"] - r["scheduled_ms"]
+                self.bus.publish(release_key(ind, period, edition), p)
+
+    # --- suites : réaction du BTC, rattrapage, révisions -------------------------------
+
+    async def _followups_loop(self) -> None:
+        while True:
+            try:
+                await self.followups()
+            except Exception:
+                log.exception("suites de la capture BLS en erreur")
+            await self.sleep(FOLLOWUP_EVERY_S)
+
+    async def followups(self) -> None:
+        now = self.clock()
+        for s in await self.past_scheduled(now - OKX_KEEPS_MS, now - DUE_AFTER_MS):
+            await self.record_reaction(s)
+        if self._fetch is None:
+            return  # sans adresse de contact, ni page ni API du BLS
+        busy = self.capture.scheduled.ident if self.capture and self.capture.phase == "rafale" \
+            else None
+        for s in await self.past_scheduled(now - CATCHUP_WINDOW_MS, now - CATCHUP_FROM_MS):
+            if s.ident == busy or now < self._catchup_next.get(s.ident, 0):
+                continue
+            if not await self._already_captured(s):
+                await self.catch_up(s)
+        await self._api_checks(now)
+
+    # Réaction du BTC
+
+    async def record_reaction(self, s: Scheduled) -> dict | None:
+        if await self.db.query("select 1 from release_reactions where release = ? and ny_date = ?",
+                               (s.release.key, s.local_date)):
+            return None
+        now = self.clock()
+        if now - self._reaction_tried.get(s.ident, now - REACTION_RETRY_MS) < REACTION_RETRY_MS:
+            return None
+        self._reaction_tried[s.ident] = now
+        try:
+            candles = await self._candles(INST, s.utc_ms - BEFORE_MS)
+        except Exception as exc:
+            log.warning("réaction du BTC (%s %s) : bougies OKX illisibles : %s",
+                        s.release.key, s.local_date, exc)
+            return None
+        r = btc_reaction(candles, s.utc_ms)
+        if r["reason"] and now < s.utc_ms + REACTION_FINAL_MS:
+            return None  # bougie pas encore clôturée : nouvel essai dans 5 min
+        row = {"release": s.release.key, "ny_date": s.local_date, "scheduled_ms": s.utc_ms,
+               "inst": r["inst"], "source": f"OKX {self.settings.okx_region.upper()} REST",
+               "candles": json.dumps(r["candles"]), "ref_price": r["ref_price"],
+               "end_price": r["end_price"], "change_pct": r["change_pct"],
+               "missing": json.dumps(r["missing"]), "reason": r["reason"], "received_ms": now}
+        await self.db.execute(
+            f"insert into release_reactions ({', '.join(row)}) values"
+            f" ({', '.join('?' * len(row))}) on conflict do nothing", tuple(row.values()))
+        self._publish_reaction(row)
+        log.info("réaction du BTC à %s %s : %s %%", s.release.key, s.local_date,
+                 r["change_pct"] or r["reason"])
+        return row
+
+    def _publish_reaction(self, row: dict) -> None:
+        rel = RELEASES.get(row["release"])
+        self.bus.publish(f"reaction:{row['release']}:{row['ny_date']}", {
+            "release": row["release"], "title": rel.title if rel else row["release"],
+            "indicators": list(rel.indicators) if rel else [],
+            "ny_date": row["ny_date"], "scheduled_ms": row["scheduled_ms"], "inst": row["inst"],
+            "source": row["source"], "candles": json.loads(row["candles"]),
+            "ref_price": row["ref_price"], "end_price": row["end_price"],
+            "change_pct": row["change_pct"], "missing": json.loads(row["missing"]),
+            "reason": row["reason"], "received_ms": row["received_ms"]})
+
+    # Rattrapage d'une capture manquée (T-040)
+
+    async def catch_up(self, s: Scheduled) -> str | None:
+        """Relit le communiqué d'une publication passée restée sans chiffre."""
+        rel, now = s.release, self.clock()
+        self._catchup_next[s.ident] = now + (30 * 60_000 if now - s.utc_ms < 86_400_000
+                                             else 6 * 3_600_000)
+        cap = Capture(s, phase="rattrapage")
+        unreadable = True
+        urls = [rel.url, rel.fallback, archive_url(rel, s.local_date)]
+        i = 0
+        while i < len(urls):
+            url = urls[i]
+            await self.sleep(CATCHUP_SPACING_S)  # jamais plus d'une requête par seconde au BLS
+            got = await self._fetch(url)
+            if got.status in (403, 429):
+                await self._log_poll(s, "rattrapage", url, got, None, None)
+                self.catchup_notes[rel.key] = f"HTTP {got.status} du BLS : rattrapage suspendu 6 h"
+                self._catchup_next[s.ident] = now + 6 * 3_600_000
+                return None
+            parsed = parse_page(rel.key, got.body) if got.status == 200 else None
+            verdict = classify(parsed, s.local_date, None) if parsed else None
+            await self._log_poll(s, "rattrapage", url, got, parsed, verdict)
+            if verdict == "attendue" and parsed is not None:
+                await self._record(cap, parsed, got, verdict, url, nature="rattrapage")
+                self.catchup_notes.pop(rel.key, None)
+                return verdict
+            if parsed is not None and parsed.page == "ok" and parsed.embargo_date:
+                unreadable = False
+                if parsed.embargo_date < s.local_date:
+                    self.catchup_notes[rel.key] = (f"communiqué du {s.local_date} pas encore en "
+                                                   "ligne : nouvel essai plus tard")
+                    return None
+                i = 2  # page plus récente : la copie archivée à la date
+                if url == urls[2]:
+                    break
+                continue
+            i += 1
+        if unreadable and now - s.utc_ms >= API_FALLBACK_AFTER_MS:
+            return await self._catch_up_api(s, cap)
+        self.catchup_notes[rel.key] = (
+            f"communiqué du {s.local_date} illisible : API v1 à partir de T+1 h" if unreadable
+            else f"copie archivée du {s.local_date} introuvable")
+        return None
+
+    async def _expected_period(self, rel: Release) -> tuple[str | None, str, str | None]:
+        rows = await self.db.query(
+            "select period, edition from releases where release = ?"
+            " order by scheduled_ms desc limit 1", (rel.key,))
+        if not rows:
+            return None, "", "période attendue inconnue : aucune publication enregistrée avant"
+        period, edition = rows[0]["period"], rows[0]["edition"]
+        if rel.quarterly:
+            if edition == "Preliminary":
+                return None, "", ("communiqué révisé : l'API ne dit pas si la valeur publiée "
+                                  "est déjà la révisée")
+            return bls_api.shift(period, 1), "Preliminary", None
+        return bls_api.shift(period, 1), "", None
+
+    async def _catch_up_api(self, s: Scheduled, cap: Capture) -> str | None:
+        rel = s.release
+        period, edition, why = await self._expected_period(rel)
+        if period is None:
+            self.catchup_notes[rel.key] = f"page illisible ; API v1 écartée : {why}"
+            return None
+        series = sorted({bls_api.DERIVATIONS[i][0] for i in rel.indicators
+                         if i in bls_api.DERIVATIONS})
+        data, got, _ = await self._api_call(series, "rattrapage API", s.utc_ms,
+                                            int(period[:4]) - 1)
+        if data is None or got is None:
+            self.catchup_notes[rel.key] = f"page illisible ; API v1 : {self.api_note}"
+            return None
+        latest = {data.latest.get(sid) for sid in series}
+        if latest != {period}:
+            self.catchup_notes[rel.key] = (f"page illisible ; API v1 pas à jour (dernière période"
+                                           f" {', '.join(sorted(p or '—' for p in latest))},"
+                                           f" attendue {period})")
+            return None
+        figures = {}
+        for ind in rel.indicators:
+            d = bls_api.derive(ind, period, data)
+            figures[ind] = Figure(
+                ind, d.value if d else None,
+                None if d else "aucune série de l'API v1 retenue pour cet indicateur",
+                part="API v1 (recalculé)" if d else None, excerpt=d.excerpt if d else None,
+                flags=("recalculé",) if d else ())
+        parsed = Parsed(rel.key, "ok", period=period, edition=edition or None, figures=figures)
+        await self._record(cap, parsed, got, "inconnue", bls_api.API_V1, nature="rattrapage API")
+        self.catchup_notes.pop(rel.key, None)
+        return "inconnue"
+
+    # API v1 : quota, révisions
+
+    async def _api_call(self, series: list[str], label: str, scheduled_ms: int,
+                        start_year: int) -> tuple[bls_api.ApiData | None, Fetched | None, int]:
+        now = self.clock()
+        if self._api_post is None or not series:
+            return None, None, 0
+        if now < self._api_blocked_until:
+            return None, None, 0
+        used = (await self.db.query(
+            "select count(*) as n from release_polls where url = ? and send_ms >= ?",
+            (bls_api.API_V1, utc_day_start(now))))[0]["n"]
+        if used >= bls_api.DAILY_MAX:
+            self.api_note = f"quota du jour atteint ({used}/{bls_api.DAILY_MAX} requêtes)"
+            return None, None, 0
+        body = bls_api.request_body(series, start_year, int(ny_date(now)[:4]))
+        got = await self._api_post(bls_api.API_V1, body)
+        data, verdict = None, None
+        if got.status == 429:
+            self._api_blocked_until = utc_day_start(now) + 86_400_000
+            self.api_note = "HTTP 429 : quota de l'API v1 épuisé, reprise demain (UTC)"
+        elif got.status == 200:
+            try:
+                data = bls_api.parse_response(got.body)
+                self.api_note = None
+                verdict = "périodes : " + ", ".join(
+                    f"{sid} {p}" for sid, p in sorted(data.latest.items()))
+            except bls_api.ApiError as exc:
+                self.api_note = f"API v1 : {exc}"[:200]
+        else:
+            self.api_note = f"API v1 : HTTP {got.status} {got.error or ''}".strip()
+        poll_id = await self.db.execute(
+            "insert into release_polls (release, scheduled_ms, label, url, send_ms, first_byte_ms,"
+            " done_ms, status, size, null_bytes, verdict, error) values"
+            " ('api-v1', ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, ?)",
+            (scheduled_ms, label, bls_api.API_V1, got.send_ms, got.first_byte_ms, got.done_ms,
+             got.status, len(got.body), verdict, got.error or (None if data else self.api_note)))
+        return data, got, poll_id
+
+    async def _api_checks(self, now: int) -> None:
+        """Une relecture de l'API au plus par passage : T+15 min, T+60 min, 12:00 New York."""
+        due: list[tuple[int, str]] = []
+        for s in await self.past_scheduled(now - 5 * 3_600_000, now):
+            due += [(s.utc_ms + after, label) for after, label in API_CHECKS
+                    if now >= s.utc_ms + after]
+        d = datetime.fromtimestamp(now / 1000, NEW_YORK)
+        noon = d.replace(hour=API_DAILY_AT[0], minute=API_DAILY_AT[1], second=0, microsecond=0)
+        if d.weekday() < 5 and d >= noon:
+            due.append((int(noon.timestamp() * 1000), "révisions quotidiennes"))
+        for due_ms, label in sorted(due):
+            done = await self.db.query(
+                "select 1 from release_polls where release = 'api-v1' and label like 'révisions%'"
+                " and send_ms >= ? limit 1", (due_ms,))
+            if not done:
+                await self.check_revisions(label, due_ms)
+                return
+
+    async def check_revisions(self, label: str = "révisions", scheduled_ms: int = 0) -> int:
+        """Compare l'API v1 aux valeurs connues ; une valeur nouvelle devient une révision."""
+        rows = [r for r in await self.db.query(
+            "select indicator_id, period, edition, value, scheduled_ms from releases"
+            " where value is not null order by scheduled_ms, id")
+            if r["indicator_id"] in bls_api.DERIVATIONS]
+        if not rows:
+            return 0
+        latest: dict[tuple[str, str], dict] = {}
+        history: dict[tuple[str, str], list[str]] = {}
+        for r in rows:
+            key = (r["indicator_id"], r["period"])
+            latest[key] = r
+            history.setdefault(key, []).append(r["value"])
+        for r in await self.db.query(
+                "select indicator_id, period, value from release_revisions order by seen_ms, id"):
+            history.setdefault((r["indicator_id"], r["period"]), []).append(r["value"])
+        series = sorted({bls_api.DERIVATIONS[i][0] for i, _ in latest})
+        start = min(int(p[:4]) for _, p in latest) - 1
+        data, _, poll_id = await self._api_call(series, label, scheduled_ms, start)
+        if data is None:
+            return 0
+        now, changed = self.clock(), set()
+        for (ind, period), row in latest.items():
+            d = bls_api.derive(ind, period, data)
+            known = history[(ind, period)]
+            if d is None or bls_api.same_value(d.value, known[-1]):
+                continue
+            recent = now - row["scheduled_ms"] < REVISION_GRACE_MS
+            if recent and any(bls_api.same_value(d.value, v) for v in known[:-1]):
+                continue  # l'API n'a pas encore repris la dernière publication
+            kind = "écart" if recent else "révision"
+            if kind == "écart":
+                log.warning("API v1 : %s %s = %s, publié %s (écart à vérifier)", ind, period,
+                            d.value, known[-1])
+            await self.db.execute(
+                "insert into release_revisions (indicator_id, period, edition, kind, previous,"
+                " value, source, series, excerpt, seen_ms, poll_id) values"
+                " (?, ?, ?, ?, ?, ?, 'BLS API v1', ?, ?, ?, ?)",
+                (ind, period, row["edition"], kind, known[-1], d.value, d.series, d.excerpt, now,
+                 poll_id))
+            changed.add((ind, period, row["edition"]))
+        await self.db.execute(
+            "update release_polls set verdict = coalesce(verdict, '') || ? where id = ?",
+            (f" ; {len(changed)} révision(s) ou écart(s)", poll_id))
+        if changed:
+            await self._republish(changed)
+        return len(changed)
 
     # --- affichage ------------------------------------------------------------------------
 

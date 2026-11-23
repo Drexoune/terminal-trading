@@ -44,6 +44,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-037 | 19/11/2026 | Plan B0 | Validé : exploration en ligne, session de 30 jours, porte sur les lignes du portefeuille ; menu Bourse repliable |
 | T-038 | 20/11/2026 | Plan B1 | Courtier XTB ; PEA et CTO ; performances depuis le 28/09/2026 ; benchmarks MSCI World et S&P 500 ; ventilation des ETF affichée |
 | T-039 | 20/11/2026 | Réalisation de B1 | Valorisation à la demande, import Baggr validé côté serveur, TRI non annualisé sous un an, rattrapage US par Tiingo |
+| T-040 | 23/11/2026 | Rattrapage d'une capture manquée | Relecture du communiqué (`.nr0`, page complète, copie archivée à la date) par le même parseur ; l'API v1 seulement si la page reste illisible, chiffre marqué « recalculé » ; révisions par l'API v1 |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -427,3 +428,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 
 **Conséquences.** Les performances suivent les clôtures relevées chaque nuit sans tâche supplémentaire. Un cours manquant rend la valeur totale « — » avec sa raison, et la valeur partielle reste affichée.
 
+## T-040 — Rattrapage d'une capture manquée et révisions · 23/11/2026
+
+**Contexte.** Le plan P1 (§ 3) prévoyait le rattrapage « par l'API v1 ». Vérifié le 23/11/2026 sur une réponse réelle de l'API (12 séries, 2023-2026) et le corpus de 124 communiqués : pour la dernière période de chacun des 10 indicateurs lisibles, la variation recalculée depuis les indices publiés (trois décimales, arrondi au dixième) redonne exactement la première publication. Les écarts sur les périodes plus anciennes sont de vraies révisions (emploi de septembre 2026 : 29 k publié, 60 k aujourd'hui ; coefficients saisonniers de l'IPC révisés en février). L'API ne donne cependant ni texte à citer ni date de publication.
+
+**Question posée à Clément.** Source du rattrapage : la page, l'API, ou la page puis l'API.
+
+**Décision de Clément.** La page, puis l'API :
+
+- une publication suivie restée sans chiffre (Mac en veille, passerelle arrêtée, page en ligne après T+5 min) est rattrapée à partir de T+10 min en relisant le communiqué : `.nr0`, puis la page complète si elle est vide ou corrompue, puis la copie archivée à la date (`news.release/archives/<clé>_<MMJJAAAA>.htm`) si une publication plus récente est déjà en ligne. Même parseur, même citation ; nature « rattrapage », aucun délai affiché ;
+- l'API v1 ne sert que si la page reste illisible, à partir de T+1 h, et seulement si la période attendue se déduit de la dernière publication enregistrée et que l'API la marque comme la plus récente. Le chiffre porte la série, les niveaux utilisés et la mention « recalculé » ; nature « rattrapage API », exclu du calcul de σ. Refusé pour le communiqué révisé de la productivité : l'API ne dit pas si la valeur est déjà la révisée ;
+- les **révisions** se lisent dans l'API v1 : à T+15 min et T+60 min après chaque publication suivie, et chaque jour ouvré à 12:00 New York, une relecture au plus par passage, 20 requêtes par jour au plus sur les 25 permises (réserve pour les scripts d'exploration). Une valeur différente de la dernière connue devient une ligne de `release_revisions` ; la première publication n'est jamais modifiée. Sur une publication de moins de 7 jours, une valeur égale à une valeur antérieure est un retard de l'API (ignoré) ; une autre valeur est un « écart » à vérifier, signalé dans le journal.
+
+**Conséquences.** Migration 4 (`release_revisions`, `release_reactions`). Série du PPI renseignée (`WPSFD4`) ; le PPI sous-jacent reste sans série (question ouverte avant le 15/12). Code : `bls_api.py`, `reaction.py`, `release_service.py` ; tests sur la réponse réelle (`gateway/tests/fixtures/bls/api_v1_2026-11-23.json.gz`).

@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest';
 import { NBSP } from '../lib/format';
 import type { CalendarEvent } from './calendar';
 import {
-  bannerVisible, BANNER_MS, figureFor, figureIndex, figures, fmtDelay, fmtFigure, fmtSignedText, surpriseText,
-  type ReleaseFigure, type ReleaseLast,
+  bannerVisible, BANNER_MS, captureLabel, changeTone, figureFor, figureIndex, figures, fmtChangePct, fmtDelay, fmtFigure,
+  fmtSignedText, pickReaction, reactionCaption, reactionPoints, reactions, revisionText, surpriseText,
+  type Reaction, type ReleaseFigure, type ReleaseLast,
 } from './releases';
 
 const T = Date.UTC(2026, 11, 8, 13, 30);
@@ -86,5 +87,61 @@ describe('délais et bandeau', () => {
     expect(bannerVisible(last, T + 1000)).toBe(true);
     expect(bannerVisible(last, T + BANNER_MS)).toBe(false);
     expect(bannerVisible(undefined, T)).toBe(false);
+  });
+});
+
+// --- E3 : rattrapage, révisions, réaction du BTC --------------------------------------
+
+function reaction(over: Partial<Reaction> = {}): Reaction {
+  return {
+    release: 'prod2', title: 'Productivity and Costs', indicators: ['us-prod-qq', 'us-ulc-qq'],
+    ny_date: '2026-12-08', scheduled_ms: T, inst: 'BTC-USDT-SWAP', source: 'OKX EEA REST',
+    candles: [{ t: T - 60_000, o: 1, h: 1, l: 1, c: 100 }, { t: T, o: 1, h: 1, l: 1, c: 99 }],
+    ref_price: '100', end_price: '99.08', change_pct: '-0.92', missing: [], reason: null,
+    received_ms: T + 31 * 60_000, ...over,
+  };
+}
+
+describe('rattrapage et révisions', () => {
+  it('un rattrapage ne prétend mesurer aucun délai', () => {
+    expect(captureLabel(fig())).toBe(`capté 2,12${NBSP}s`);
+    expect(captureLabel(fig({ nature: 'rattrapage', capture_delay_ms: null }))).toMatch(/^rattrapé : communiqué relu/);
+    expect(captureLabel(fig({ nature: 'rattrapage API' }))).toMatch(/recalculé depuis l’API v1/);
+  });
+
+  it('la dernière révision est affichée avec sa source, la première publication reste', () => {
+    expect(revisionText(fig())).toBeNull();
+    const seen = Date.UTC(2027, 1, 4, 14, 30);
+    const r = { kind: 'révision', previous: '4.1', value: '4.4', source: 'BLS API v1', series: 'PRS85006092', excerpt: null, seen_ms: seen };
+    expect(revisionText(fig({ revisions: [r] }))).toBe(`révisé à 4,4${NBSP}% (API v1 du BLS, lu le 04/02/2027)`);
+    expect(revisionText(fig({ revisions: [r, { ...r, value: '-0.2' }] }))).toContain(`révisé à −0,2${NBSP}%`);
+    expect(revisionText(fig({ revisions: [{ ...r, kind: 'écart' }] }))).toMatch(/^écart à vérifier/);
+  });
+});
+
+describe('réaction du BTC', () => {
+  it('choisit la publication du jour, sinon la dernière de l’indicateur', () => {
+    const old = reaction({ ny_date: '2026-11-05', scheduled_ms: T - 33 * 86_400_000, change_pct: '0.10' });
+    const all = reactions([['reaction:prod2:2026-11-05', old], ['reaction:prod2:2026-12-08', reaction()], ['release:x', {}]]);
+    expect(all).toHaveLength(2);
+    expect(pickReaction(ev(), all).reaction?.ny_date).toBe('2026-12-08');
+    expect(pickReaction(ev({ ny_date: '2026-11-20' }), all).reaction?.ny_date).toBe('2026-11-05');
+    expect(pickReaction(ev({ indicator: 'us-ulc-qq' }), all).reaction?.ny_date).toBe('2026-12-08');
+    expect(pickReaction(ev({ ny_date: '2026-10-01' }), all).reaction).toBeNull();
+    expect(pickReaction(ev({ capture: false, indicator: null }), all).reason).toMatch(/seulement pour les publications suivies/);
+    expect(pickReaction(null, all).reason).toBe('Sélectionner un événement.');
+  });
+
+  it('variation signée à la française, couleur selon le sens', () => {
+    expect(fmtChangePct('-0.92')).toBe(`−0,92${NBSP}%`);
+    expect(fmtChangePct('1.05')).toBe(`+1,05${NBSP}%`);
+    expect(fmtChangePct(null)).toBe('—');
+    expect([changeTone('-0.92'), changeTone('0.00'), changeTone('0.4'), changeTone(null)]).toEqual(['down', null, 'up', null]);
+  });
+
+  it('légende à l’heure de Paris, points à la clôture de chaque bougie', () => {
+    // 08/12/2026 13:30 UTC = 14:30 Paris (heure d'hiver) : de 14:25 à 15:00.
+    expect(reactionCaption(reaction())).toBe('BTC-USDT perp OKX EEA REST, du 08/12/2026 14:25 au 15:00 (heure de Paris)');
+    expect(reactionPoints(reaction())).toEqual([{ x: 0, y: 100 }, { x: 1, y: 99 }]);
   });
 });

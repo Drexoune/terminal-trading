@@ -162,6 +162,41 @@ MIGRATIONS: list[list[str]] = [
            )""",
         "create index release_polls_sched on release_polls (release, scheduled_ms)",
     ],
+    # 4 — suites de la capture (E3) : révisions lues par l'API v1 (une ligne par valeur
+    # nouvelle, la première publication reste intacte) et réaction du BTC de T-5 à T+30 min.
+    [
+        """create table release_revisions (
+             id integer primary key,
+             indicator_id text not null references indicators (id),
+             period text not null,
+             edition text not null default '',    -- édition de la publication révisée
+             kind text not null,                  -- « révision », ou « écart » le jour même
+             previous text not null,              -- dernière valeur connue (texte décimal)
+             value text not null,                 -- nouvelle valeur
+             source text not null,                -- « BLS API v1 »
+             series text,                         -- « CUSR0000SA0 »
+             excerpt text,                        -- niveaux utilisés, calcul
+             seen_ms integer not null,            -- vue pour la première fois
+             poll_id integer references release_polls (id)
+           )""",
+        "create index release_revisions_ind on release_revisions (indicator_id, period, seen_ms)",
+        """create table release_reactions (
+             id integer primary key,
+             release text not null,               -- « cpi »
+             ny_date text not null,
+             scheduled_ms integer not null,
+             inst text not null,                  -- « BTC-USDT-SWAP »
+             source text not null,                -- « OKX EEA REST »
+             candles text not null,               -- JSON : bougies 1 min de T-5 à T+30 min
+             ref_price text,
+             end_price text,
+             change_pct text,
+             missing text not null default '[]',  -- JSON : minutes absentes
+             reason text,
+             received_ms integer not null,
+             unique (release, ny_date)
+           )""",
+    ],
 ]
 
 

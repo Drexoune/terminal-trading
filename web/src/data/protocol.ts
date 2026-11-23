@@ -112,7 +112,7 @@ export const WATCHED_TOPICS = [
   'ticker:', 'trade:', 'funding:', 'oi:', 'candle:1m:', 'feed:', 'clock:', 'instrument:', 'gaps:',
   'gateway:',
   // P1 : agenda, publications, fil d'actus, alertes (docs/plan-p1.md § 5).
-  'calendar:', 'release:', 'news:', 'alert:',
+  'calendar:', 'release:', 'reaction:', 'news:', 'alert:',
 ];
 
 // --- Sources du worker (sources/gatewaySource.ts, sources/okxSource.ts) ----------
