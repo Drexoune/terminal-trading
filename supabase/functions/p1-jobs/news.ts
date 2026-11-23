@@ -13,7 +13,7 @@
 // - Chaque titre gardé va dans news_items et dans p1_state (news:item:<id>), diffusé au front par
 //   Realtime : un titre urgent arrive à l'écran dans les 2 s qui suivent sa lecture.
 
-import { fireNewsAlerts, type AlertDeps } from './alerts.ts';
+import { fireEventWatch, fireNewsAlerts, type AlertDeps } from './alerts.ts';
 import { actualFor, matchFigure, type FigureItem } from './calendar_actuals.ts';
 import { feedFail, feedOk, type FeedState } from './calendar_job.ts';
 import {
@@ -190,7 +190,10 @@ class NewsRun {
     await putState(rest, entries, t);
     if (fresh.some((i) => i.figure)) {
       try {
-        this.actuals.push(...await linkActuals(rest, t));
+        const linked = await linkActuals(rest, t);
+        this.actuals.push(...linked);
+        // Cloche du calendrier : le réel tiré du fil part tout de suite.
+        if (linked.length) await fireEventWatch(this.deps as unknown as AlertDeps);
       } catch (e) {
         this.problems.push(`réels : ${(e as Error).message}`.slice(0, 200));
       }

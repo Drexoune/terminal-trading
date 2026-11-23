@@ -41,6 +41,14 @@ RULES = [
     ("keyword", {"words": [" Powell ", "ETF", ""]}, []),
     ("keyword", {"words": []}, []),
     ("liquidation", {}, []),
+    ("event_watch", {"event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1", "title": " Flash Manufacturing PMI ",
+                     "time_ms": 1795409100000}, ["telegram"]),
+    ("event_watch", {"event_id": "pas-un-id", "title": "x"}, []),
+    ("event_watch", {"event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1", "title": ""}, []),
+    ("event_watch", {"event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1", "title": "x", "time_ms": True}, []),
+    ("news_category", {"category": "crypto", "urgent_only": True}, ["telegram"]),
+    ("news_category", {"category": "general"}, []),
+    ("news_category", {"category": "sport"}, []),
 ]
 NUMS = [["-1234.5", None, False], ["0.0312", 4, True], ["-0.00", 2, False], ["110000", None, False],
         ["0.3", None, True], ["abc", None, False], ["1e3", None, False]]
@@ -53,6 +61,10 @@ EVENTS = [{"capture": True, "impact": "High", "currency": "USD", "title": "CPI m
           {"capture": False, "impact": "Low", "currency": "EUR", "title": "Flash PMI", "title_fr": None, "forecast_raw": None}]
 FIG = {"indicator": "us-cpi-mm", "label_fr": "IPC (m/m)", "unit": "%", "value": "0.6", "forecast": "0.3",
        "surprise": "0.3", "z": "2.1"}
+
+
+EW = {"event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1", "title": "Flash Manufacturing PMI",
+      "currency": "USD", "time_ms": 1795409100000}
 
 
 def build() -> dict:
@@ -76,6 +88,11 @@ def build() -> dict:
         "surprise_hit": [[p, f, ar.surprise_hit(p, f)] for p, f in (({"indicator": None, "z_min": "1.5", "raw_min": None}, FIG),
                                                                      ({"indicator": "us-nfp", "z_min": "1.5", "raw_min": None}, FIG),
                                                                      ({"indicator": None, "z_min": None, "raw_min": "0.4"}, FIG))],
+        "news_category_hit": [[p, i, ar.news_category_hit(p, i)] for p, i in (
+            ({"category": "crypto", "urgent_only": True}, {"category": "crypto", "urgent": False}),
+            ({"category": "crypto", "urgent_only": True}, {"category": "crypto", "urgent": True}),
+            ({"category": "macro", "urgent_only": False}, {"category": "macro", "urgent": False}),
+            ({"category": "macro", "urgent_only": False}, {"category": "crypto", "urgent": True}))],
         "messages": {
             "price": list(ar.price_message({"inst": "BTC-USDT-SWAP", "level": "110000"}, 109999.5, 110000.5)),
             "funding": list(ar.funding_message({"inst": "BTC-USDT-SWAP", "threshold_pct": "0.02", "side": "au-dessus"}, 0.000312)),
@@ -86,6 +103,16 @@ def build() -> dict:
             "release_catchup": list(ar.release_message({"title": "Productivity and Costs", "period": "2026-Q3", "edition": "Revised", "nature": "rattrapage"}, [])),
             "surprise": list(ar.surprise_message(FIG)),
             "keyword": list(ar.keyword_message("Powell", {"title": "Powell speaks", "source": "Fed"})),
+            "event_watch": list(ar.event_watch_message(EW, {"title": "Flash Manufacturing PMI", "title_fr": None,
+                                                            "forecast_raw": "54.5", "previous_raw": "54.9"},
+                                                       "54,5", "FinancialJuice (fil d\u2019actus)")),
+            "event_watch_fr": list(ar.event_watch_message(EW, {"title": "CPI m/m", "title_fr": "IPC (m/m)",
+                                                               "forecast_raw": None, "previous_raw": "0.3%"},
+                                                          "0,6\u00a0%", "BLS")),
+            "event_missing": list(ar.event_missing_message(EW, {"title": "Flash Manufacturing PMI"}, "15:45")),
+            "news_category": list(ar.news_category_message({"category": "crypto", "urgent_only": False},
+                                                           {"title": "Spot bitcoin ETFs", "source": "FinancialJuice",
+                                                            "urgent": True})),
         },
     }
 

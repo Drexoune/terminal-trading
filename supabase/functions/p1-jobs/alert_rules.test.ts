@@ -32,6 +32,7 @@ group('règles d’alerte en ligne : portage de alert_rules.py', () => {
     for (const [p, e, want] of G.event_matches) expect(ar.eventMatches(p, e)).toBe(want);
     for (const [w, t, want] of G.keyword_hit) expect(ar.keywordHit({ words: w }, t)).toBe(want);
     for (const [p, f, want] of G.surprise_hit) expect(ar.surpriseHit(p, f)).toBe(want);
+    for (const [p, i, want] of G.news_category_hit) expect(ar.newsCategoryHit(p, i)).toBe(want);
   });
 
   it('messages, au caractère près', () => {
@@ -47,5 +48,11 @@ group('règles d’alerte en ligne : portage de alert_rules.py', () => {
     expect(ar.releaseMessage({ title: 'Productivity and Costs', period: '2026-Q3', edition: 'Revised', nature: 'rattrapage' }, [])).toEqual(m.release_catchup);
     expect(ar.surpriseMessage(FIG)).toEqual(m.surprise);
     expect(ar.keywordMessage('Powell', { title: 'Powell speaks', source: 'Fed' })).toEqual(m.keyword);
+    const EW = { event_id: '552-us-flash-manufacturing-pmi|USD|2026-11-23|1', title: 'Flash Manufacturing PMI', currency: 'USD', time_ms: 1795409100000 };
+    expect(ar.eventWatchMessage(EW, { title: 'Flash Manufacturing PMI', title_fr: null, forecast_raw: '54.5', previous_raw: '54.9' },
+      '54,5', 'FinancialJuice (fil d’actus)')).toEqual(m.event_watch);
+    expect(ar.eventWatchMessage(EW, { title: 'CPI m/m', title_fr: 'IPC (m/m)', forecast_raw: null, previous_raw: '0.3%' }, '0,6\u00a0%', 'BLS')).toEqual(m.event_watch_fr);
+    expect(ar.eventMissingMessage(EW, { title: 'Flash Manufacturing PMI' }, '15:45')).toEqual(m.event_missing);
+    expect(ar.newsCategoryMessage({ category: 'crypto', urgent_only: false }, { title: 'Spot bitcoin ETFs', source: 'FinancialJuice', urgent: true })).toEqual(m.news_category);
   });
 });

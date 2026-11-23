@@ -135,7 +135,8 @@ class Probe:
         self.log.write(json.dumps(entry, ensure_ascii=False) + "\n")
         self.log.flush()
         print(
-            f"  {name} : HTTP {r.status_code}, {len(body)} octets, {entry['t_recv_ms'] - entry['t_send_ms']} ms",
+            f"  {name} : HTTP {r.status_code}, {len(body)} octets, "
+            f"{entry['t_recv_ms'] - entry['t_send_ms']} ms",
             flush=True,
         )
         return r

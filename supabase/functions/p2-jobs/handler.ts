@@ -7,9 +7,11 @@
 
 import { MIN_SECRET_LENGTH, secretMatches } from '../okx-collector/handler.ts';
 import { explore, type ExploreDeps } from './explore.ts';
+import { exploreWatch } from './explore_watch.ts';
 
-// explore : sonde R0 des sources (Polymarket, Kalshi, BIS, pages officielles), sans écriture.
-export const JOBS = ['explore'] as const;
+// explore : sonde R0 des sources (Polymarket, Kalshi, BIS, pages officielles), sans écriture ;
+// explore-watch : sonde des sources de la watchlist hors crypto (T-005), sans écriture.
+export const JOBS = ['explore', 'explore-watch'] as const;
 export type Job = (typeof JOBS)[number];
 
 export interface HandlerDeps extends Omit<ExploreDeps, 'env'> {
@@ -23,7 +25,7 @@ function json(status: number, body: unknown, extra: Record<string, string> = {})
 }
 
 export function createHandler(env: (name: string) => string | undefined, deps: HandlerDeps): (req: Request) => Promise<Response> {
-  const run = deps.run ?? ((_job: Job, d: ExploreDeps) => explore(d));
+  const run = deps.run ?? ((job: Job, d: ExploreDeps) => (job === 'explore-watch' ? exploreWatch(d) : explore(d)));
   return async (req) => {
     if (req.method !== 'POST') return json(405, { ok: false, error: 'méthode non autorisée : POST attendu' }, { Allow: 'POST' });
     const expected = env('P1_JOBS_SECRET') ?? '';

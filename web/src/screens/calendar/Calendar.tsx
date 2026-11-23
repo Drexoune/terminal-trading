@@ -17,6 +17,7 @@ import {
   actualSourceText, rowState, shiftWeek, timeLabel, todayParis, weekRangeLabel, type CalendarActual, type CalendarEvent, type CalendarWeek,
 } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
+import { EventBell, useRules } from '../../alerts/AlertToggles';
 import {
   captureLabel, figureFor, isRecalculated, figureIndex, figures, fmtDelay, fmtFigure, reactions, revisionText, surpriseText,
   type ReleaseFigure,
@@ -54,6 +55,7 @@ export function CalendarScreen() {
   const [impacts, setImpacts] = useState<Set<string>>(() => new Set(['High', 'Medium', 'Low']));
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
+  const [bellError, setBellError] = useState<string | null>(null);
 
   const target = week ?? live?.week ?? null;
   useEffect(() => {
@@ -134,6 +136,7 @@ export function CalendarScreen() {
           <span className="sr">Rechercher un indicateur</span>
           <input type="search" placeholder="Rechercher un indicateur…" value={query} onChange={(e) => setQuery(e.target.value)} />
         </label>
+        {bellError && <p className="lbl lbl--s cal-warn" role="status">{bellError}</p>}
         <div className="cal-grid">
           <Panel title="Publications de la semaine" testId="cal-week"
             chips={<Chip>{`${events.length} événement${events.length > 1 ? 's' : ''}`}</Chip>}>
@@ -141,7 +144,7 @@ export function CalendarScreen() {
               <div className="placeholder"><span className="placeholder__dash" aria-hidden="true">—</span><span>{unavailable}</span></div>
             ) : other.state === 'loading' ? <div className="placeholder"><span>Chargement de l’archive…</span></div>
               : other.state === 'error' ? <div className="placeholder"><Missing reason={other.reason} /><span>{other.reason}</span></div>
-                : <WeekTable groups={groups} now={now} selected={sel?.id ?? null} onSelect={setSelected} archive={!!data?.archive} index={index} fj={fj} />}
+                : <WeekTable groups={groups} now={now} selected={sel?.id ?? null} onSelect={setSelected} archive={!!data?.archive} index={index} fj={fj} onBellError={setBellError} />}
           </Panel>
           <div className="cal-side">
             <IndicatorCard ev={sel} now={now} fig={sel ? figureFor(sel, index) : null} fj={sel ? fj.get(sel.id) ?? null : null} />
@@ -162,10 +165,11 @@ function FjActual({ a, ev, big }: { a: CalendarActual; ev: CalendarEvent; big?: 
   );
 }
 
-function WeekTable({ groups, now, selected, onSelect, archive, index, fj }: {
+function WeekTable({ groups, now, selected, onSelect, archive, index, fj, onBellError }: {
   groups: { day: string; events: CalendarEvent[] }[]; now: number; selected: string | null; onSelect: (id: string) => void; archive: boolean;
-  index: Map<string, ReleaseFigure>; fj: Map<string, CalendarActual>;
+  index: Map<string, ReleaseFigure>; fj: Map<string, CalendarActual>; onBellError: (msg: string | null) => void;
 }) {
+  const rules = useRules();
   const today = todayParis(now);
   if (!groups.length) return <div className="placeholder"><span className="placeholder__dash">—</span><span>Aucun événement pour ces filtres.</span></div>;
   return (
@@ -192,6 +196,7 @@ function WeekTable({ groups, now, selected, onSelect, archive, index, fj }: {
                 <td><ImpactBars impact={e.impact} /></td>
                 <td className="cal-title">
                   <button type="button" className="cal-title__btn" onClick={() => onSelect(e.id)}>{e.title_fr ?? e.title}</button>
+                  <EventBell ev={e} rules={rules} onError={onBellError} done={e.actual !== null} />
                   {e.title_fr && <span className="lbl lbl--s cal-vo">VO · {e.title}</span>}
                   {st.kind === 'pending' && <span className="chip chip--s chip--pending cal-pending">En attente · {countdown(st.remainingMs)}</span>}
                   {st.kind === 'new' && <span className="chip chip--s chip--new">Nouveau</span>}

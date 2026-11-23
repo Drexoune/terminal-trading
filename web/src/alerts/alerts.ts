@@ -7,7 +7,7 @@ import { fetchJson } from '../data/gateway';
 import { refreshAlertsAfterWrite } from '../data/online/alerts';
 import { fmtHm } from '../lib/time';
 
-export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword';
+export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category';
 export type AlertState = 'armée' | 'déclenchée' | 'désactivée';
 export type Channel = 'écran' | 'telegram' | 'voix';
 
@@ -57,6 +57,7 @@ export interface AlertSummary {
 export const KIND_LABEL: Record<AlertKind, string> = {
   price: 'Prix OKX', funding: 'Funding OKX', event_soon: 'Avant une publication',
   release: 'Chiffre publié', surprise: 'Surprise', keyword: 'Mot-clé (fil d’actus)',
+  event_watch: 'Réel d’un événement (cloche du calendrier)', news_category: 'Catégorie du fil d’actus',
 };
 
 /** Une règle récurrente (agenda, chiffres, mots-clés) reste armée : on montre son dernier déclenchement récent. */
@@ -163,8 +164,13 @@ export function draftToBody(d: RuleDraft): { body: { kind: AlertKind; params: Re
       if (!words.length) return { error: 'Mots-clés : au moins un, séparés par des virgules.' };
       return wrap({ words });
     }
+    default:
+      return { error: 'Cette alerte se crée depuis son écran : cloche du Calendrier, ou « Alertes Telegram » du fil d’actus.' };
   }
 }
+
+/** Sortes proposées dans le formulaire de /alertes (les autres se posent depuis leur écran). */
+export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword'];
 
 // --- écritures ------------------------------------------------------------------------------
 

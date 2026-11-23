@@ -2,7 +2,7 @@
 // Moteur d'alertes en ligne (O4) : base simulée, Telegram simulé, horloge fixe.
 import { describe, expect, it } from 'vitest';
 import { MemRest } from './_memrest.ts';
-import { fireReleaseAlerts, runAlertCommand, runAlerts, type AlertDeps } from './alerts.ts';
+import { fireEventWatch, fireNewsAlerts, fireReleaseAlerts, runAlertCommand, runAlerts, type AlertDeps } from './alerts.ts';
 
 const T0 = Date.UTC(2026, 11, 10, 13, 30);   // 10/12/2026 14:30 Paris, IPC
 
@@ -123,3 +123,62 @@ describe('alertes en ligne : déclenchements', () => {
     expect(s.value.unacked).toBe(0);
   });
 });
+
+describe('cloche du calendrier et catégories du fil', () => {
+  const T = Date.UTC(2026, 10, 23, 14, 45);
+  const EV = { id: '552-us-flash-manufacturing-pmi|USD|2026-11-23|1', title: 'Flash Manufacturing PMI', title_fr: null, currency: 'USD',
+    time_ms: T, forecast_raw: '54.5', previous_raw: '54.9', capture: false, indicator: null, ny_date: '2026-11-23' };
+  const CPI = { id: '1-us-cpi-mm|USD|2026-12-10|1', title: 'CPI m/m', title_fr: 'IPC (m/m)', currency: 'USD', time_ms: T0,
+    forecast_raw: '0.3%', previous_raw: '0.4%', capture: true, indicator: 'us-cpi-mm', ny_date: '2026-12-10' };
+  async function seed(rest: MemRest) {
+    await rest.upsert('p1_state', [{ key: 'calendar:week:2026-W50', updated_ms: 0, value: { events: [EV, CPI] } }], 'key');
+  }
+  const bell = (ev: typeof EV | typeof CPI) => ({ op: 'create', kind: 'event_watch', params: { event_id: ev.id, title: ev.title, time_ms: ev.time_ms }, channels: ['telegram'] });
+
+  it('réel tiré de FinancialJuice : un seul message, cloche éteinte ensuite', async () => {
+    const { rest, deps, sent, at } = setup();
+    await seed(rest);
+    await cmd(deps, bell(EV));
+    at(T + 10_000);
+    expect(await fireEventWatch(deps)).toBe(0);                          // rien encore
+    await rest.upsert('p1_state', [{ key: `calendar:actual:${EV.id}`, updated_ms: T, value: { actual: '54.5', actual_raw: '54.5', news_title: 'x' } }], 'key');
+    expect(await fireEventWatch(deps)).toBe(1);
+    expect(sent.map((x) => String(x.body.text).split('\n')[0])).toEqual(['Flash Manufacturing PMI (USD) : 54.5']);
+    expect(rest.rows('alert_rules')[0].state).toBe('déclenchée');
+    expect(await fireEventWatch(deps)).toBe(0);
+  });
+
+  it('chiffre capté au BLS : valeur à la française, source BLS', async () => {
+    const { rest, deps, sent, at } = setup();
+    await seed(rest);
+    await cmd(deps, bell(CPI));
+    await rest.upsert('p1_state', [{ key: 'release:us-cpi-mm:2026-11', updated_ms: T0, value: { indicator: 'us-cpi-mm', ny_date: '2026-12-10', value: '0.6', unit: '%' } }], 'key');
+    at(T0 + 900);
+    expect(await fireEventWatch(deps)).toBe(1);
+    expect(String(sent[0].body.text)).toContain('IPC (m/m) (USD) : 0,6\u00a0%\nConsensus 0.3% · précédent 0.4% · source : BLS (capté à la source)');
+  });
+
+  it('rien après 30 min : « réel non capté » une fois ; après 24 h, cloche éteinte sans message', async () => {
+    const { rest, deps, at } = setup({});
+    await seed(rest);
+    await cmd(deps, bell(EV));
+    at(T + 31 * 60_000);
+    expect((await runAlerts(deps)).fired).toEqual([{ rule: 1, title: 'Flash Manufacturing PMI (USD) : réel non capté', telegram: 'non configuré' }]);
+    at(T + 40 * 60_000);
+    expect((await runAlerts(deps)).fired).toEqual([]);
+    expect(rest.rows('alert_rules')[0].state).toBe('armée');
+    at(T + 25 * 3_600_000);
+    await runAlerts(deps);
+    expect(rest.rows('alert_rules')[0].state).toBe('déclenchée');
+  });
+
+  it('catégorie du fil : fort impact seulement, un message par titre', async () => {
+    const { deps, sent } = setup();
+    await cmd(deps, { op: 'create', kind: 'news_category', params: { category: 'crypto', urgent_only: true }, channels: ['telegram'] });
+    const item = (id: number, urgent: boolean, category = 'crypto') => ({ id, title: `Titre ${id}`, source: 'FinancialJuice', published_ms: T0, received_ms: T0, category, urgent });
+    expect(await fireNewsAlerts(deps, [item(1, false), item(2, true), item(3, true, 'macro')])).toBe(1);
+    expect(await fireNewsAlerts(deps, [item(2, true)])).toBe(0);
+    expect(String(sent[0].body.text).split('\n').slice(0, 2)).toEqual(['Crypto : Titre 2', 'FinancialJuice · fort impact · VO']);
+  });
+});
+

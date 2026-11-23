@@ -193,9 +193,21 @@
    "Dans 5 min : IPC (m/m) (USD)",
    "14:30 Paris · consensus 0.3% · capté à la source"
   ],
+  "event_missing": [
+   "Flash Manufacturing PMI (USD) : réel non capté",
+   "Publication prévue à 15:45 (Paris). ForexFactory ne publie pas le réel et aucun titre FinancialJuice n’a été rattaché dans les 30 min."
+  ],
   "event_no_fc": [
    "Dans 5 min : Flash PMI (EUR)",
    "10:00 Paris · aucun consensus publié"
+  ],
+  "event_watch": [
+   "Flash Manufacturing PMI (USD) : 54,5",
+   "Consensus 54.5 · précédent 54.9 · source : FinancialJuice (fil d’actus)"
+  ],
+  "event_watch_fr": [
+   "IPC (m/m) (USD) : 0,6 %",
+   "Consensus — · précédent 0.3% · source : BLS"
   ],
   "funding": [
    "Funding BTC-USDT perp à +0,0312 %",
@@ -204,6 +216,10 @@
   "keyword": [
    "« Powell » : Powell speaks",
    "Fed · VO"
+  ],
+  "news_category": [
+   "Crypto : Spot bitcoin ETFs",
+   "FinancialJuice · fort impact · VO"
   ],
   "price": [
    "BTC-USDT perp franchit 110 000 à la hausse",
@@ -222,6 +238,52 @@
    "IPC (m/m) : 0,6 % (prév. 0,3 %, surprise +0,3, z +2,1) · BLS"
   ]
  },
+ "news_category_hit": [
+  [
+   {
+    "category": "crypto",
+    "urgent_only": true
+   },
+   {
+    "category": "crypto",
+    "urgent": false
+   },
+   false
+  ],
+  [
+   {
+    "category": "crypto",
+    "urgent_only": true
+   },
+   {
+    "category": "crypto",
+    "urgent": true
+   },
+   true
+  ],
+  [
+   {
+    "category": "macro",
+    "urgent_only": false
+   },
+   {
+    "category": "macro",
+    "urgent": false
+   },
+   true
+  ],
+  [
+   {
+    "category": "macro",
+    "urgent_only": false
+   },
+   {
+    "category": "crypto",
+    "urgent": true
+   },
+   false
+  ]
+ ],
  "price_crossed": [
   [
    {
@@ -633,6 +695,121 @@
    [],
    {
     "error": "sorte de règle inconnue : 'liquidation'"
+   }
+  ],
+  [
+   "event_watch",
+   {
+    "event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1",
+    "time_ms": 1795409100000,
+    "title": " Flash Manufacturing PMI "
+   },
+   [
+    "telegram"
+   ],
+   {
+    "channels": [
+     "écran",
+     "telegram"
+    ],
+    "describe": [
+     "Réel publié : Flash Manufacturing PMI (USD)",
+     "Calendrier · événement"
+    ],
+    "params": {
+     "currency": "USD",
+     "event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1",
+     "time_ms": 1795409100000,
+     "title": "Flash Manufacturing PMI"
+    }
+   }
+  ],
+  [
+   "event_watch",
+   {
+    "event_id": "pas-un-id",
+    "title": "x"
+   },
+   [],
+   {
+    "error": "event_id : identifiant d'événement de l'agenda attendu"
+   }
+  ],
+  [
+   "event_watch",
+   {
+    "event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1",
+    "title": ""
+   },
+   [],
+   {
+    "error": "title : 1 à 120 caractères"
+   }
+  ],
+  [
+   "event_watch",
+   {
+    "event_id": "552-us-flash-manufacturing-pmi|USD|2026-11-23|1",
+    "time_ms": true,
+    "title": "x"
+   },
+   [],
+   {
+    "error": "time_ms : entier positif ou absent"
+   }
+  ],
+  [
+   "news_category",
+   {
+    "category": "crypto",
+    "urgent_only": true
+   },
+   [
+    "telegram"
+   ],
+   {
+    "channels": [
+     "écran",
+     "telegram"
+    ],
+    "describe": [
+     "Fil d’actus : Crypto · fort impact",
+     "Fil d’actus · catégorie"
+    ],
+    "params": {
+     "category": "crypto",
+     "urgent_only": true
+    }
+   }
+  ],
+  [
+   "news_category",
+   {
+    "category": "general"
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Fil d’actus : Général",
+     "Fil d’actus · catégorie"
+    ],
+    "params": {
+     "category": "general",
+     "urgent_only": false
+    }
+   }
+  ],
+  [
+   "news_category",
+   {
+    "category": "sport"
+   },
+   [],
+   {
+    "error": "catégorie inconnue : 'sport'"
    }
   ]
  ],

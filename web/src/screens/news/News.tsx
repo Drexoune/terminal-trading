@@ -13,6 +13,7 @@ import {
   CATEGORIES, CATEGORY_LABEL, filterNews, fmtDateParis, itemTime, KIND_LABEL, readDelay, sortNews, todayCount,
   type FeedStatus, type NewsCategory, type NewsItem,
 } from '../../news/news';
+import { NewsCategoryAlerts } from '../../alerts/AlertToggles';
 import { Highlighted } from '../../news/Highlighted';
 import { DEFAULT_HIGHLIGHTS, saveHighlights, useHighlights } from '../../news/highlight';
 import { SubHeader } from '../../shell/SubHeader';
@@ -72,6 +73,7 @@ export function NewsScreen() {
                 ))}
               </div>
               <HighlightEditor words={hl.words} custom={hl.custom} online={mode === 'online'} />
+              <NewsCategoryAlerts categories={[...CATEGORIES.filter((c) => c.value !== 'tout'), { value: 'general', label: 'Général' }]} />
               <label className="news-search">
                 <span className="sr">Filtrer les titres</span>
                 <input type="search" placeholder="Filtrer les titres…" value={text} onChange={(e) => setText(e.target.value)} />

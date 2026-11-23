@@ -13,6 +13,10 @@
 .news-hl-list button:hover { color: var(--gold); }
 .news-hl-add { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
 .news-hl-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 8px; }
+.news-tg { margin: 0 0 6px; padding: 0; list-style: none; }
+.news-tg li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; padding: 5px 0; color: var(--text-1); font-size: 12px; }
+.news-tg__seg { display: flex; }
+.news-tg__seg .seg { height: 24px; padding: 0 7px; font-size: 10px; }
 .news-search input { width: 100%; height: var(--control-h); padding: 0 12px; border: 1px solid var(--line-strong);
   border-radius: var(--radius-control); background: var(--bg-panel); color: var(--text-1); font: inherit; }
 .news-list { margin: 0; padding: 0; list-style: none; max-height: 980px; overflow-y: auto; }

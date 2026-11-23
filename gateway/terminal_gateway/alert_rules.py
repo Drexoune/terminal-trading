@@ -26,7 +26,13 @@ from decimal import Decimal, InvalidOperation
 from .bls_release import RELEASES
 from .calendar_data import INDICATORS
 
-KINDS = ("price", "funding", "event_soon", "release", "surprise", "keyword")
+KINDS = ("price", "funding", "event_soon", "release", "surprise", "keyword",
+         "event_watch", "news_category")
+# Fil d'actus (E6/O6) : catégories des titres, comme news_rules.ts de Supabase.
+NEWS_CATEGORIES = {"banque-centrale": "Banque centrale", "macro": "Macro", "crypto": "Crypto",
+                   "matieres-premieres": "Matières premières", "general": "Général"}
+# Identifiant d'un événement de l'agenda : « 552-us-flash-manufacturing-pmi|USD|2026-11-23|1 ».
+EVENT_ID = re.compile(r"\d+-[a-z]{2}-[a-z0-9-]+\|[A-Z]{3}\|\d{4}-\d{2}-\d{2}\|\d+")
 CHANNELS = ("écran", "telegram", "voix")
 STATES = ("armée", "déclenchée", "désactivée")
 IMPACTS = ("High", "Medium", "Low")
@@ -141,6 +147,24 @@ def validate(kind: str, params: dict, channels: list[str],
         if z_min is None and raw_min is None:
             raise RuleError("seuil manquant : z_min ou raw_min")
         out = {"indicator": ind, "z_min": z_min, "raw_min": raw_min}
+    elif kind == "event_watch":
+        # Cloche d'un événement du calendrier : le réel part dès qu'il est connu
+        # (BLS ou fil d'actus).
+        eid = str(params.get("event_id") or "")
+        if not EVENT_ID.fullmatch(eid):
+            raise RuleError("event_id : identifiant d'événement de l'agenda attendu")
+        title = str(params.get("title") or "").strip()
+        if not 1 <= len(title) <= 120:
+            raise RuleError("title : 1 à 120 caractères")
+        t = params.get("time_ms")
+        if t is not None and (not isinstance(t, int) or isinstance(t, bool) or t <= 0):
+            raise RuleError("time_ms : entier positif ou absent")
+        out = {"event_id": eid, "title": title, "currency": eid.split("|")[1], "time_ms": t}
+    elif kind == "news_category":
+        cat = params.get("category")
+        if cat not in NEWS_CATEGORIES:
+            raise RuleError(f"catégorie inconnue : {cat!r}")
+        out = {"category": cat, "urgent_only": bool(params.get("urgent_only", False))}
     else:  # keyword
         words = [str(w).strip() for w in params.get("words") or [] if str(w).strip()]
         if not 1 <= len(words) <= 20 or any(len(w) > 60 for w in words):
@@ -182,6 +206,11 @@ def describe(kind: str, p: dict) -> tuple[str, str]:
         if p["raw_min"]:
             seuils.append(f"|surprise| ≥ {fr_num(p['raw_min'])}")
         return f"Surprise {ind} : {' ou '.join(seuils)}", "Calendrier · surprise"
+    if kind == "event_watch":
+        return f"Réel publié : {p['title']} ({p['currency']})", "Calendrier · événement"
+    if kind == "news_category":
+        return (f"Fil d\u2019actus : {NEWS_CATEGORIES[p['category']]}"
+                + (" · fort impact" if p["urgent_only"] else ""), "Fil d\u2019actus · catégorie")
     return f"Mot-clé : {', '.join(p['words'])}", "Fil d\u2019actus"
 
 
@@ -221,6 +250,11 @@ def surprise_hit(p: dict, fig: dict) -> bool:
     z, raw = dec(fig.get("z")), dec(fig.get("surprise"))
     return bool((p["z_min"] and z is not None and abs(z) >= Decimal(p["z_min"]))
                 or (p["raw_min"] and raw is not None and abs(raw) >= Decimal(p["raw_min"])))
+
+
+def news_category_hit(p: dict, item: dict) -> bool:
+    return (item.get("category") == p["category"]
+            and (not p["urgent_only"] or bool(item.get("urgent"))))
 
 
 def fold(text: str) -> str:
@@ -292,3 +326,26 @@ def surprise_message(fig: dict) -> tuple[str, str]:
 def keyword_message(word: str, item: dict) -> tuple[str, str]:
     source = item.get("source") or NEWS_FR
     return f"« {word} » : {item.get('title') or ''}"[:200], f"{source} · VO"
+
+
+def event_watch_message(p: dict, ev: dict, actual: str, source: str) -> tuple[str, str]:
+    """Réel d'un événement suivi par sa cloche : valeur, consensus, précédent, source."""
+    title = ev.get("title_fr") or ev.get("title") or p["title"]
+    return (f"{title} ({p['currency']}) : {actual}",
+            f"Consensus {ev.get('forecast_raw') or '—'} · précédent "
+            f"{ev.get('previous_raw') or '—'} · source : {source}")
+
+
+def event_missing_message(p: dict, ev: dict, hm_paris: str) -> tuple[str, str]:
+    """Aucun réel 30 min après l'heure prévue : on le dit, sans valeur inventée."""
+    title = ev.get("title_fr") or ev.get("title") or p["title"]
+    return (f"{title} ({p['currency']}) : réel non capté",
+            f"Publication prévue à {hm_paris} (Paris). ForexFactory ne publie pas le réel "
+            "et aucun titre FinancialJuice n\u2019a été rattaché dans les 30 min.")
+
+
+def news_category_message(p: dict, item: dict) -> tuple[str, str]:
+    label = NEWS_CATEGORIES[p["category"]]
+    return (f"{label} : {item.get('title') or ''}"[:200],
+            f"{item.get('source') or NEWS_FR}{' · fort impact' if item.get('urgent') else ''} · VO")
+

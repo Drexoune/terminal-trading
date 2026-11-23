@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { Panel } from '../../components/Panel';
 import { Button, Chip, Missing } from '../../components/ui';
 import {
-  ackAlerts, createRule, deleteRule, draftToBody, EMPTY_DRAFT, KIND_LABEL, ruleChip, setRuleChannels, setRuleState,
+  ackAlerts, createRule, deleteRule, draftToBody, EMPTY_DRAFT, FORM_KINDS, KIND_LABEL, ruleChip, setRuleChannels, setRuleState,
   sortEvents, sortRules, telegramText, testTelegram, unacked,
   type AlertEvent, type AlertKind, type AlertRule, type AlertSummary, type Channel, type RuleDraft,
 } from '../../alerts/alerts';
@@ -178,7 +178,7 @@ function NewRulePanel() {
       <form className="rule-form" onSubmit={submit}>
         <label className="field"><span className="lbl lbl--s">Sorte</span>
           <select className="input" value={d.kind} onChange={(e) => set('kind', e.target.value as AlertKind)}>
-            {(Object.keys(KIND_LABEL) as AlertKind[]).map((k) => <option key={k} value={k}>{KIND_LABEL[k]}</option>)}
+            {FORM_KINDS.map((k) => <option key={k} value={k}>{KIND_LABEL[k]}</option>)}
           </select>
         </label>
         {(d.kind === 'price' || d.kind === 'funding') && (

@@ -270,18 +270,78 @@ async function releaseFigures(rest: Rest, last: Record<string, unknown>): Promis
   return (await Promise.all(keys.map((k) => getState<Record<string, unknown>>(rest, k)))).filter((f): f is Record<string, unknown> => !!f);
 }
 
+// --- cloche d'un événement du calendrier (event_watch) et catégories du fil (news_category) ------
+
+const EVENT_MISSING_MS = 30 * MIN;
+const EVENT_EXPIRE_MS = DAY;
+
+interface CalEvent { id: string; title: string; title_fr?: string | null; indicator?: string | null; capture?: boolean;
+  ny_date?: string; time_ms?: number | null; forecast_raw?: string | null; previous_raw?: string | null; unit?: string | null }
+
+/**
+ * Réel d'un événement suivi par sa cloche : chiffre capté au BLS (indicateur et date de New York,
+ * comme l'écran), sinon chiffre structuré de FinancialJuice rattaché (calendar:actual:<id>, T-048).
+ * Une seule fois ; « réel non capté » 30 min après l'heure prévue s'il n'y a rien ; abandon après 24 h.
+ */
+export async function checkEventWatch(e: Engine): Promise<void> {
+  const rules = e.armed('event_watch');
+  if (!rules.length) return;
+  const { rest } = e.deps;
+  const now = e.deps.now();
+  const weeks = await rest.select<{ value: { events?: CalEvent[] } }>('p1_state', {
+    select: 'value', key: 'like.calendar:week:*', order: 'key.desc', limit: '2' });
+  const byId = new Map(weeks.flatMap((w) => w.value.events ?? []).map((ev) => [ev.id, ev]));
+  for (const r of rules) {
+    const ev = byId.get(String(r.params.event_id)) ?? null;
+    const t = (ev?.time_ms ?? r.params.time_ms ?? null) as number | null;
+    let actual: [string, string] | null = null;
+    if (ev?.indicator && ev.capture) {
+      const figs = await rest.select<{ value: Record<string, unknown> }>('p1_state', {
+        select: 'value', key: `like.release:${ev.indicator}:*`, order: 'updated_ms.desc', limit: '6' });
+      const f = figs.map((x) => x.value).find((v) => v.ny_date === ev.ny_date && v.value !== null && v.value !== undefined);
+      if (f) actual = [ar.valueFr(f.value as string, f.unit as string | null), 'BLS (capté à la source)'];
+    }
+    if (!actual) {
+      const fj = await getState<{ actual: string | null; actual_raw: string; news_title: string }>(rest, `calendar:actual:${r.params.event_id}`);
+      if (fj) actual = [fj.actual_raw, 'FinancialJuice (fil d’actus)'];
+    }
+    if (actual) {
+      const [title, body] = ar.eventWatchMessage(r.params, (ev ?? {}) as Record<string, unknown>, actual[0], actual[1]);
+      e.fire(r, 'actual', title, body, actual[1], t, { event_id: r.params.event_id, actual: actual[0] }, 'déclenchée');
+    } else if (t !== null && now >= t + EVENT_EXPIRE_MS) {
+      r.state = 'déclenchée';            // plus rien à attendre : la cloche s'éteint sans message
+      e.changed.add(r.id);
+    } else if (t !== null && now >= t + EVENT_MISSING_MS) {
+      const [title, body] = ar.eventMissingMessage(r.params, (ev ?? {}) as Record<string, unknown>, hm(t));
+      e.fire(r, 'missing', title, body, 'Calendrier', t, { event_id: r.params.event_id });
+    }
+  }
+}
+
+/** Appelé quand un réel vient d'être rattaché ou capté : la cloche part sans attendre la minute. */
+export async function fireEventWatch(deps: AlertDeps): Promise<number> {
+  const e = new Engine(deps);
+  await e.load();
+  await checkEventWatch(e);
+  if (!e.fired.length && !e.changed.size) return 0;
+  await e.flush();
+  return e.fired.length;
+}
+
 /** Appelé par la capture juste après l'enregistrement d'une publication. */
 export async function fireReleaseAlerts(deps: AlertDeps, last: Record<string, unknown>, figs: Record<string, unknown>[]): Promise<number> {
   const e = new Engine(deps);
   await e.load();
   checkRelease(e, last, figs);
+  await checkEventWatch(e);
   if (!e.fired.length) return 0;
   await e.flush();
   return e.fired.length;
 }
 
-/** Appelé par la tâche « news » pour les titres nouveaux (jamais un arriéré) : règles « mot-clé ». */
-export async function fireNewsAlerts(deps: AlertDeps, items: { id: number; title: string; source: string; published_ms: number | null; received_ms: number }[]): Promise<number> {
+/** Appelé par la tâche « news » pour les titres nouveaux (jamais un arriéré) : mots-clés et catégories. */
+export async function fireNewsAlerts(deps: AlertDeps, items: { id: number; title: string; source: string; published_ms: number | null;
+  received_ms: number; category?: string; urgent?: boolean }[]): Promise<number> {
   const e = new Engine(deps);
   await e.load();
   for (const r of e.armed('keyword')) {
@@ -290,6 +350,13 @@ export async function fireNewsAlerts(deps: AlertDeps, items: { id: number; title
       if (!word) continue;
       const [title, body] = ar.keywordMessage(word, { title: it.title, source: it.source });
       e.fire(r, `news:${it.id}`, title, body, it.source, it.published_ms ?? it.received_ms, { news_id: it.id, word });
+    }
+  }
+  for (const r of e.armed('news_category')) {
+    for (const it of items) {
+      if (!ar.newsCategoryHit(r.params, it as unknown as Record<string, unknown>)) continue;
+      const [title, body] = ar.newsCategoryMessage(r.params, it as unknown as Record<string, unknown>);
+      e.fire(r, `news:${it.id}`, title, body, it.source, it.published_ms ?? it.received_ms, { news_id: it.id, category: it.category });
     }
   }
   if (!e.fired.length) return 0;
@@ -303,7 +370,7 @@ export async function runAlerts(deps: AlertDeps): Promise<Record<string, unknown
   const e = new Engine(deps);
   await e.load();
   const problems: string[] = [];
-  for (const [name, step] of [['prix', checkPrices], ['funding', checkFunding], ['agenda', checkCalendar]] as const) {
+  for (const [name, step] of [['prix', checkPrices], ['funding', checkFunding], ['agenda', checkCalendar], ['cloches', checkEventWatch]] as const) {
     try { await step(e); } catch (err) { problems.push(`${name} : ${(err as Error).message}`.slice(0, 200)); }
   }
   const last = await getState<Record<string, unknown>>(rest, 'release:last');

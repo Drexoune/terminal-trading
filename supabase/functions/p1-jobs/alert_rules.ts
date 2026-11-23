@@ -5,7 +5,13 @@
 
 import { INDICATORS } from './calendar.ts';
 
-export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword'] as const;
+export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category'] as const;
+/** Catégories du fil d'actus (news_rules.ts). */
+export const NEWS_CATEGORIES: Record<string, string> = {
+  'banque-centrale': 'Banque centrale', macro: 'Macro', crypto: 'Crypto', 'matieres-premieres': 'Matières premières', general: 'Général',
+};
+/** Identifiant d'un événement de l'agenda : « 552-us-flash-manufacturing-pmi|USD|2026-11-23|1 ». */
+export const EVENT_ID = /^\d+-[a-z]{2}-[a-z0-9-]+\|[A-Z]{3}\|\d{4}-\d{2}-\d{2}\|\d+$/;
 export const CHANNELS = ['écran', 'telegram', 'voix'] as const;
 const IMPACTS = ['High', 'Medium', 'Low'];
 const LABELS = new Map(INDICATORS.map((i) => [i.id, i]));
@@ -164,6 +170,19 @@ export function validate(kind: string, params: unknown, channels: unknown, instr
     const rawMin = decimalParam(p, 'raw_min', true, false);
     if (zMin === null && rawMin === null) throw new RuleError('seuil manquant : z_min ou raw_min');
     out = { indicator: ind, z_min: zMin, raw_min: rawMin };
+  } else if (kind === 'event_watch') {
+    // Cloche d'un événement du calendrier : le réel part dès qu'il est connu (BLS ou fil d'actus).
+    const eid = String(p.event_id ?? '');
+    if (!EVENT_ID.test(eid)) throw new RuleError('event_id : identifiant d\'événement de l\'agenda attendu');
+    const title = String(p.title ?? '').trim();
+    if (title.length < 1 || title.length > 120) throw new RuleError('title : 1 à 120 caractères');
+    const t = p.time_ms ?? null;
+    if (t !== null && (typeof t !== 'number' || !Number.isInteger(t) || t <= 0)) throw new RuleError('time_ms : entier positif ou absent');
+    out = { event_id: eid, title, currency: eid.split('|')[1], time_ms: t };
+  } else if (kind === 'news_category') {
+    const cat = p.category;
+    if (typeof cat !== 'string' || !(cat in NEWS_CATEGORIES)) throw new RuleError(`catégorie inconnue : ${pyRepr(cat)}`);
+    out = { category: cat, urgent_only: !!p.urgent_only };
   } else {
     const words = (Array.isArray(p.words) ? p.words : []).map((w) => String(w).trim()).filter(Boolean);
     if (words.length < 1 || words.length > 20 || words.some((w) => w.length > 60)) throw new RuleError('mots-clés : de 1 à 20, 60 caractères au plus');
@@ -201,6 +220,10 @@ export function describe(kind: string, p: Params): [string, string] {
     if (p.raw_min) s.push(`|surprise| ≥ ${frNum(p.raw_min)}`);
     return [`Surprise ${ind} : ${s.join(' ou ')}`, 'Calendrier · surprise'];
   }
+  if (kind === 'event_watch') return [`Réel publié : ${p.title} (${p.currency})`, 'Calendrier · événement'];
+  if (kind === 'news_category') {
+    return [`Fil d’actus : ${NEWS_CATEGORIES[p.category as string]}${p.urgent_only ? ' · fort impact' : ''}`, 'Fil d’actus · catégorie'];
+  }
   return [`Mot-clé : ${(p.words as string[]).join(', ')}`, 'Fil d’actus'];
 }
 
@@ -236,6 +259,10 @@ export function surpriseHit(p: Params, fig: Record<string, unknown>): boolean {
   const z = dec(fig.z);
   const raw = dec(fig.surprise);
   return !!((p.z_min && z !== null && cmp(abs(z), dec(p.z_min)!) >= 0) || (p.raw_min && raw !== null && cmp(abs(raw), dec(p.raw_min)!) >= 0));
+}
+
+export function newsCategoryHit(p: Params, item: Record<string, unknown>): boolean {
+  return item.category === p.category && (!p.urgent_only || !!item.urgent);
 }
 
 export function fold(text: string): string {
@@ -299,3 +326,21 @@ export function surpriseMessage(fig: Record<string, unknown>): [string, string] 
 export function keywordMessage(word: string, item: Record<string, unknown>): [string, string] {
   return [`« ${word} » : ${item.title || ''}`.slice(0, 200), `${item.source || NEWS_FR} · VO`];
 }
+
+export function eventWatchMessage(p: Params, ev: Record<string, unknown>, actual: string, source: string): [string, string] {
+  const title = (ev.title_fr || ev.title || p.title) as string;
+  return [`${title} (${p.currency}) : ${actual}`,
+    `Consensus ${ev.forecast_raw || '—'} · précédent ${ev.previous_raw || '—'} · source : ${source}`];
+}
+
+export function eventMissingMessage(p: Params, ev: Record<string, unknown>, hmParis: string): [string, string] {
+  const title = (ev.title_fr || ev.title || p.title) as string;
+  return [`${title} (${p.currency}) : réel non capté`,
+    `Publication prévue à ${hmParis} (Paris). ForexFactory ne publie pas le réel et aucun titre FinancialJuice n’a été rattaché dans les 30 min.`];
+}
+
+export function newsCategoryMessage(p: Params, item: Record<string, unknown>): [string, string] {
+  const label = NEWS_CATEGORIES[p.category as string];
+  return [`${label} : ${item.title || ''}`.slice(0, 200), `${item.source || NEWS_FR}${item.urgent ? ' · fort impact' : ''} · VO`];
+}
+
