@@ -44,7 +44,11 @@ export async function p1State(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
   const news = await rest(cfg, fetchFn, 'GET', 'p1_state', {
     select: 'key,value,updated_ms', key: 'like.news:item:*', updated_ms: `gte.${now - NEWS_MS}`, order: 'updated_ms.desc',
     limit: String(NEWS_MAX) }, false);
-  const items = [...(week ? [week] : []), ...(rows as StateRow[]), ...(recent.rows as StateRow[]), ...(news.rows as StateRow[])]
+  // Réels de l'agenda tirés du fil d'actus (T-048) : deux semaines.
+  const actuals = await rest(cfg, fetchFn, 'GET', 'p1_state', {
+    select: 'key,value,updated_ms', key: 'like.calendar:actual:*', updated_ms: `gte.${now - 14 * 86_400_000}`, limit: '1000' }, false);
+  const items = [...(week ? [week] : []), ...(rows as StateRow[]), ...(recent.rows as StateRow[]), ...(news.rows as StateRow[]),
+    ...(actuals.rows as StateRow[])]
     .map((r) => [r.key, r.value] as [string, unknown]);
   return { configured: true, items, computed_ms: now };
 }

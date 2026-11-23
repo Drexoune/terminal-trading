@@ -14,7 +14,7 @@ import { Panel } from '../../components/Panel';
 import { Chip, Missing } from '../../components/ui';
 import {
   actualReason, applyFilters, countdown, CURRENCIES, dayLabel, fmtValue, groupByDay, IMPACTS, impactLevel, parisOffsetLabel,
-  rowState, shiftWeek, timeLabel, todayParis, weekRangeLabel, type CalendarEvent, type CalendarWeek,
+  actualSourceText, rowState, shiftWeek, timeLabel, todayParis, weekRangeLabel, type CalendarActual, type CalendarEvent, type CalendarWeek,
 } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
 import {
@@ -72,9 +72,16 @@ export function CalendarScreen() {
   const index = useMemo(() => figureIndex(figures(releaseEntries)), [releaseEntries]);
   const reactionEntries = useKeys<unknown>('reaction:');
   const btc = useMemo(() => reactions(reactionEntries), [reactionEntries]);
+  const actualEntries = useKeys<CalendarActual>('calendar:actual:');
+  const fj = useMemo(() => new Map(actualEntries.map(([, a]) => [a.event_id, a])), [actualEntries]);
   const events = useMemo(() => applyFilters(data?.events ?? [], { currencies, impacts, query })
-    .map((e) => { const f = figureFor(e, index); return f ? { ...e, actual: f.value } : e; }),
-  [data, currencies, impacts, query, index]);
+    .map((e) => {
+      const f = figureFor(e, index);
+      if (f) return { ...e, actual: f.value };
+      const a = fj.get(e.id);
+      return a ? { ...e, actual: a.actual ?? a.actual_raw } : e;
+    }),
+  [data, currencies, impacts, query, index, fj]);
   const groups = useMemo(() => groupByDay(events), [events]);
   const sel = events.find((e) => e.id === selected)
     ?? events.find((e) => e.capture && (e.time_ms ?? 0) > now)
@@ -134,10 +141,10 @@ export function CalendarScreen() {
               <div className="placeholder"><span className="placeholder__dash" aria-hidden="true">—</span><span>{unavailable}</span></div>
             ) : other.state === 'loading' ? <div className="placeholder"><span>Chargement de l’archive…</span></div>
               : other.state === 'error' ? <div className="placeholder"><Missing reason={other.reason} /><span>{other.reason}</span></div>
-                : <WeekTable groups={groups} now={now} selected={sel?.id ?? null} onSelect={setSelected} archive={!!data?.archive} index={index} />}
+                : <WeekTable groups={groups} now={now} selected={sel?.id ?? null} onSelect={setSelected} archive={!!data?.archive} index={index} fj={fj} />}
           </Panel>
           <div className="cal-side">
-            <IndicatorCard ev={sel} now={now} fig={sel ? figureFor(sel, index) : null} />
+            <IndicatorCard ev={sel} now={now} fig={sel ? figureFor(sel, index) : null} fj={sel ? fj.get(sel.id) ?? null : null} />
             <ReactionPanel ev={sel} all={btc} />
           </div>
         </div>
@@ -146,9 +153,18 @@ export function CalendarScreen() {
   );
 }
 
-function WeekTable({ groups, now, selected, onSelect, archive, index }: {
+/** Réel tiré du fil d'actus, marqué « FJ » : jamais confondu avec un chiffre capté au BLS. */
+function FjActual({ a, ev, big }: { a: CalendarActual; ev: CalendarEvent; big?: boolean }) {
+  return (
+    <span className={big ? undefined : 'cal-actual'} title={actualSourceText(a)} data-testid="cal-actual-fj">
+      {fmtValue(a.actual, a.unit ?? ev.unit, a.actual_raw)}<span className="lbl lbl--s cal-fj"> FJ</span>
+    </span>
+  );
+}
+
+function WeekTable({ groups, now, selected, onSelect, archive, index, fj }: {
   groups: { day: string; events: CalendarEvent[] }[]; now: number; selected: string | null; onSelect: (id: string) => void; archive: boolean;
-  index: Map<string, ReleaseFigure>;
+  index: Map<string, ReleaseFigure>; fj: Map<string, CalendarActual>;
 }) {
   const today = todayParis(now);
   if (!groups.length) return <div className="placeholder"><span className="placeholder__dash">—</span><span>Aucun événement pour ces filtres.</span></div>;
@@ -183,7 +199,7 @@ function WeekTable({ groups, now, selected, onSelect, archive, index }: {
                 </td>
                 <td className="r num" data-testid="cal-actual">
                   {fig ? (fig.value !== null ? <span className="cal-actual" title={`BLS · ${fig.part ?? ''} · ${fig.nature === 'officielle' ? `capté ${fmtDelay(fig.capture_delay_ms)} après l’heure prévue` : captureLabel(fig)}${fig.revisions?.length ? ` · ${revisionText(fig)}` : ''}`}>{fmtFigure(fig)}</span>
-                    : <Missing reason={fig.reason ?? 'chiffre non lu'} />) : <Missing reason={actualReason(e, now)} />}
+                    : <Missing reason={fig.reason ?? 'chiffre non lu'} />) : fj.get(e.id) ? <FjActual a={fj.get(e.id)!} ev={e} /> : <Missing reason={actualReason(e, now)} />}
                 </td>
                 <td className="r num">{e.forecast_raw ? fmtValue(e.forecast, e.unit, e.forecast_raw) : <Missing reason="aucun consensus publié par ForexFactory" />}</td>
                 <td className="r num">{e.previous_raw ? fmtValue(e.previous, e.unit, e.previous_raw) : <Missing reason="aucune valeur précédente publiée" />}</td>
@@ -204,14 +220,14 @@ function Surprise({ fig }: { fig: ReleaseFigure }) {
   return <span className={s.tone ? `tone-${s.tone}` : undefined} title={s.reason ?? undefined}>{s.text}</span>;
 }
 
-function IndicatorCard({ ev, now, fig }: { ev: CalendarEvent | null; now: number; fig: ReleaseFigure | null }) {
+function IndicatorCard({ ev, now, fig, fj }: { ev: CalendarEvent | null; now: number; fig: ReleaseFigure | null; fj: CalendarActual | null }) {
   return (
     <Panel title={ev ? `Fiche · ${ev.title_fr ?? ev.title}` : 'Fiche'} label={`Fiche indicateur ${ev?.title_fr ?? ev?.title ?? ''}`.trim()} controls="none" testId="cal-card"
       chips={ev ? <Flag currency={ev.currency} /> : undefined}>
       {!ev ? <div className="placeholder"><span className="placeholder__dash">—</span><span>Sélectionner un événement.</span></div> : (
         <div className="cal-card">
           <div className="cal-card__kpis">
-            <div><span className="lbl lbl--s">Réel</span><span className="num cal-card__big">{fig && fig.value !== null ? fmtFigure(fig) : <Missing reason={fig?.reason ?? actualReason(ev, now)} />}</span></div>
+            <div><span className="lbl lbl--s">Réel</span><span className="num cal-card__big">{fig && fig.value !== null ? fmtFigure(fig) : fj ? <FjActual a={fj} ev={ev} big /> : <Missing reason={fig?.reason ?? actualReason(ev, now)} />}</span></div>
             <div><span className="lbl lbl--s">Consensus</span><span className="num">{fmtValue(ev.forecast, ev.unit, ev.forecast_raw)}</span></div>
             <div><span className="lbl lbl--s">Précédent</span><span className="num">{fmtValue(ev.previous, ev.unit, ev.previous_raw)}</span></div>
             <div><span className="lbl lbl--s">Surprise</span><span className="num">{fig ? <Surprise fig={fig} /> : <Missing reason="surprise : après la publication captée" />}</span></div>

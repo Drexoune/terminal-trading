@@ -14,6 +14,7 @@
 //   Realtime : un titre urgent arrive à l'écran dans les 2 s qui suivent sa lecture.
 
 import { fireNewsAlerts, type AlertDeps } from './alerts.ts';
+import { actualFor, matchFigure, type FigureItem } from './calendar_actuals.ts';
 import { feedFail, feedOk, type FeedState } from './calendar_job.ts';
 import {
   canonicalUrl, classify, cleanTitle, FEEDS, FJ_NOISE, nearDuplicate, normTitle, numbersOf, parseFeed, parseFeedDate,
@@ -82,6 +83,7 @@ class NewsRun {
   status: Record<string, FeedStatus> = {};
   added: NewsItem[] = [];
   published = 0;              // titres de added déjà écrits dans p1_state
+  actuals: string[] = [];     // réels de l'agenda rattachés pendant ce passage (T-048)
   problems: string[] = [];
   constructor(readonly deps: NewsDeps) {}
 
@@ -186,6 +188,13 @@ class NewsRun {
       : feedFail(NEWS_FEED as Parameters<typeof feedFail>[0], prev, errors.join(' ; ') || 'aucun flux lu')]);
     entries.push(['news:feeds', this.status]);
     await putState(rest, entries, t);
+    if (fresh.some((i) => i.figure)) {
+      try {
+        this.actuals.push(...await linkActuals(rest, t));
+      } catch (e) {
+        this.problems.push(`réels : ${(e as Error).message}`.slice(0, 200));
+      }
+    }
     const live = fresh.filter((i) => !i.backfill);
     if (!live.length) return;
     try {
@@ -194,6 +203,32 @@ class NewsRun {
       this.problems.push(`alertes : ${(e as Error).message}`.slice(0, 200));
     }
   }
+}
+
+/**
+ * Réel des événements de l'agenda (T-048) : chiffres structurés de FinancialJuice des 36
+ * dernières heures rattachés aux deux dernières semaines publiées. Idempotent : une clé
+ * calendar:actual:<événement> déjà écrite n'est jamais remplacée (première lecture gardée).
+ */
+export async function linkActuals(rest: Rest, now: number): Promise<string[]> {
+  const figs = await rest.select<FigureItem>('news_items', {
+    select: 'id,title,published_ms,received_ms,figure', feed: 'eq.financialjuice', figure: 'not.is.null',
+    received_ms: `gte.${now - 36 * 3_600_000}`, order: 'received_ms.asc', limit: '1000' });
+  if (!figs.length) return [];
+  const weeks = await rest.select<{ value: { events?: { id: string; title: string; currency: string; time_ms: number | null; forecast_raw: string | null }[] } }>(
+    'p1_state', { select: 'value', key: 'like.calendar:week:*', order: 'key.desc', limit: '2' });
+  const events = weeks.flatMap((w) => w.value.events ?? []);
+  const rows: Row[] = [];
+  const seen = new Set<string>();
+  for (const f of figs) {
+    const ev = matchFigure(f, events);
+    if (!ev || seen.has(ev.id)) continue;
+    seen.add(ev.id);
+    rows.push({ key: `calendar:actual:${ev.id}`, value: actualFor(f, ev) as unknown as Json, updated_ms: now });
+  }
+  if (!rows.length) return [];
+  const made = await rest.insertIgnore<{ key: string }>('p1_state', rows, 'key', 'key');
+  return made.map((m) => m.key);
 }
 
 /** Tâche « news », chaque minute. */
@@ -222,10 +257,17 @@ export async function runNews(deps: NewsDeps): Promise<Record<string, unknown>> 
     }
   }
   await run.flush();
+  // Filet : rattachement relancé à chaque passage (agenda republié entre-temps, chiffre déjà lu).
+  try {
+    run.actuals.push(...await linkActuals(rest, now()));
+  } catch (e) {
+    run.problems.push(`réels : ${(e as Error).message}`.slice(0, 200));
+  }
   // Ménage : titres de plus de 3 jours retirés de l'état publié (la table les garde).
   await rest.remove('p1_state', { key: 'like.news:item:*', updated_ms: `lt.${now() - 3 * 86_400_000}` });
   await rest.remove('p1_state', { key: 'like.lock:news-fast:*', updated_ms: `lt.${now() - 3_600_000}` });
   return { job: 'news', ok: FEEDS.some((f) => run.status[f.id].status === 'ok'), added: run.added.length, problems: run.problems,
+    actuals: run.actuals,
     urgent: run.added.filter((i) => i.urgent && !i.backfill).map((i) => i.title), fast: [...banks], fast_polls: fastPolls,
     feeds: Object.fromEntries(FEEDS.map((f) => [f.id, run.status[f.id].status === 'ok' ? 'ok' : run.status[f.id].last_error])) };
 }

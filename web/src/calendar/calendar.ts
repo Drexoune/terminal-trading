@@ -31,6 +31,30 @@ export interface CalendarEvent {
   series: string | null;
 }
 
+/**
+ * Réel tiré du fil d'actus (T-048) : chiffre structuré de FinancialJuice rattaché à l'événement
+ * par la tâche « news » (clé calendar:actual:<id>). Jamais à la place d'un chiffre capté au BLS.
+ */
+export interface CalendarActual {
+  event_id: string;
+  actual: string | null;
+  actual_raw: string;
+  unit: string | null;
+  source: 'FinancialJuice';
+  nature: string;
+  news_id: number;
+  news_title: string;
+  published_ms: number;
+  event_time_ms: number;
+  delay_ms: number;
+}
+
+/** Infobulle du réel tiré du fil d'actus : source, délai, titre d'origine. */
+export function actualSourceText(a: CalendarActual): string {
+  const s = Math.round(a.delay_ms / 1000);
+  return `Fil d’actus · ${a.source} · titre lu ${s >= 0 ? `${s}\u00a0s après` : `${-s}\u00a0s avant`} l’heure prévue · « ${a.news_title} »`;
+}
+
 export interface SourceStamp { source_ts_ms: number | null; received_ms: number | null }
 
 export interface CalendarWeek {
@@ -159,7 +183,7 @@ export function daysUntil(day: string, now: number): string {
 export function actualReason(ev: CalendarEvent, now: number): string {
   if (ev.time_ms !== null && ev.time_ms > now) return 'pas encore publié';
   return ev.capture ? 'chiffre réel non capté : passerelle du Mac arrêtée, service release inactif ou BLS_CONTACT_EMAIL absente'
-    : 'chiffre réel non capté : ForexFactory ne publie pas le réel';
+    : 'chiffre réel non capté : ForexFactory ne publie pas le réel, et aucun titre FinancialJuice rattaché';
 }
 
 // --- valeurs ------------------------------------------------------------------------------

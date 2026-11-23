@@ -71,6 +71,21 @@ describe('tâche news', () => {
     expect(rest.rows('alert_events')).toEqual([expect.objectContaining({ title: '« Powell » : Powell: Rates on hold for now', dedupe: `news:${added[0].id}` })]);
   });
 
+  it('réel de l’agenda : chiffre FinancialJuice rattaché une fois, jamais remplacé', async () => {
+    const T = Date.UTC(2026, 10, 20, 14, 55);
+    const title = 'FinancialJuice: US Existing Home Sales Actual 4.10M (Forecast 4.05M, Previous 4.06M)';
+    const fj = body('financialjuice').toString('utf8').replace('<item>',
+      `<item><title>${title}</title><link>https://www.financialjuice.com/News/2/X.aspx?xy=rss</link><guid>2</guid><pubDate>Fri, 20 Nov 2026 14:55:04 GMT</pubDate></item><item>`);
+    const { rest, deps } = setup({ financialjuice: () => ({ status: 200, body: fj }) });
+    await rest.upsert('p1_state', [{ key: 'calendar:week:2026-W47', updated_ms: 0, value: { events: [
+      { id: '12-us-existing-home-sales|USD|2026-11-20|1', title: 'Existing Home Sales', currency: 'USD', time_ms: T, forecast_raw: '4.05M' }] } }], 'key');
+    const r = await runNews(deps);
+    expect(r.actuals).toEqual(['calendar:actual:12-us-existing-home-sales|USD|2026-11-20|1']);
+    const v = rest.rows('p1_state').find((x) => x.key === (r.actuals as string[])[0])!.value;
+    expect(v).toMatchObject({ actual: '4.10', unit: 'M', source: 'FinancialJuice', delay_ms: 4000 });
+    expect((await runNews(deps)).actuals).toEqual([]);
+  });
+
   it('403 : flux en pause une heure, les autres continuent', async () => {
     const { rest, deps, hits, at } = setup({ 'rbnz-news': () => ({ status: 403 }) });
     await runNews(deps);

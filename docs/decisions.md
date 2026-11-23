@@ -51,6 +51,8 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-044 | 23/11/2026 | Offre Supabase | Offre gratuite d'abord ; passage à Pro (environ 25 $/mois) si le projet est mis en pause |
 | T-045 | 23/11/2026 | Porte P1 en ligne | Capture en ligne visée pour le CPI du 10/12 ; le Mac capte en parallèle les 04/12, 08/12 et 10/12, en secours |
 | T-046 | 23/11/2026 | Flux continus en ligne | Alertes de prix à la minute (haut et bas de chaque bougie) ; Tree of Alpha abandonné en ligne |
+| T-047 | 23/11/2026 | Écritures des alertes en ligne | Vercel vérifie la session et relaie à l'Edge Function p1-jobs ; P1_JOBS_SECRET aussi dans Vercel ; le Mac n'envoie plus d'alertes |
+| T-048 | 23/11/2026 | Réel de l'agenda | Chiffre structuré de FinancialJuice rattaché strictement à l'événement, marqué « FJ » ; jamais à la place du BLS |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -473,4 +475,19 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **T-046** : en ligne, les alertes de prix se jugent à la minute, sur le haut et le bas de chaque bougie 1 min (aucun franchissement manqué, jusqu'à une minute de retard). Tree of Alpha n'est pas repris en ligne ; les flux RSS couvrent les banques centrales et la macro.
 
 **Risques acceptés.** Deux mises en œuvre à tenir (Python et TypeScript), vérifiées contre le même corpus ; adresses IP de Supabase peut-être refusées par le BLS ou ForexFactory (sonde O0 avant tout) ; calendrier serré jusqu'au 10/12.
+
+## T-047 et T-048 — Alertes en ligne et réel de l'agenda · 23/11/2026
+
+**T-047 — Écritures des alertes en Mode Online.** Proposé avec O4, approuvé par Clément le 23/11/2026.
+
+- L'écran `/alertes` écrit par `/api/alerts/*` (Vercel). La fonction vérifie la session du mot de passe d'application (T-031) et la même origine, puis relaie la commande à la tâche `alerts-cmd` de l'Edge Function `p1-jobs`, avec l'en-tête `x-jobs-secret`. Validation des règles, base et Telegram restent dans Supabase ; le jeton Telegram n'est jamais dans Vercel.
+- Conséquence : `P1_JOBS_SECRET` est aussi une variable de Vercel (même valeur que dans Supabase et le `.env` du Mac).
+- Le service `alert` de la passerelle du Mac est retiré de `GATEWAY_SERVICES` : un seul moteur d'alertes (Supabase), aucun message Telegram en double les jours où le Mac capte aussi (T-045).
+
+**T-048 — Réel des événements de l'agenda.** Demande de Clément le 23/11/2026 : les réels des publications du matin n'apparaissaient pas.
+
+- **Constat.** Le fichier hebdomadaire de ForexFactory ne porte pas le réel ; seuls les chiffres captés au BLS en avaient un.
+- **Décision.** Le chiffre structuré publié par FinancialJuice (« … Actual 0.7% (Forecast 0%, Previous -0.4%) ») est rattaché à l'événement par la tâche `news` et affiché comme réel, marqué « FJ », avec en infobulle le titre d'origine et son délai. Il ne remplace jamais un chiffre capté au BLS (T-022) ; aucune surprise n'est calculée dessus.
+- **Rattachement strict** (un réel faux est pire qu'un « — ») : même pays (code de l'identifiant ForexFactory), mêmes mots hors pays, éditeurs et mots d'édition, titre lu entre T−2 min et T+30 min ; s'il reste plusieurs candidats, le consensus identique départage, sinon rien. Premier chiffre gardé, jamais remplacé.
+- **Limite.** Le flux de FinancialJuice ne garde que ses 100 derniers titres (quelques heures) : un chiffre publié pendant une coupure de la tâche est perdu et reste « — » avec sa raison. Les réels du matin du 23/11 (avant la mise en service du fil, 17:56 Paris) ne sont pas récupérables.
 

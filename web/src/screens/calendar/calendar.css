@@ -45,6 +45,7 @@
 .cal-card__meta { margin: 0; line-height: 1.5; }
 .cal-card__quote { display: block; margin-top: 4px; color: var(--text-2); text-transform: none; letter-spacing: 0; }
 .cal-actual { color: var(--gold-hi); }
+.cal-fj { margin-left: 4px; color: var(--text-3); }
 .cal-card__hist { min-height: 463px; }
 .cal-btc { min-height: 185px; }
 .cal-card__rev { display: block; margin-top: 4px; color: var(--gold); text-transform: none; letter-spacing: 0; }

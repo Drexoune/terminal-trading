@@ -99,3 +99,12 @@ describe('valeurs, filtres, semaines', () => {
     expect(weekRangeLabel('2026-11-29', '2026-12-05')).toBe('29 nov. – 5 déc. 2026');
   });
 });
+
+describe('réel tiré du fil d’actus (T-048)', () => {
+  it('infobulle : source, délai, titre d’origine', async () => {
+    const { actualSourceText } = await import('./calendar');
+    expect(actualSourceText({ event_id: 'x', actual: '54.5', actual_raw: '54.5', unit: null, source: 'FinancialJuice', nature: 'fil d’actus',
+      news_id: 1, news_title: 'US S&P Manufacturing PMI Flash Actual 54.5 (Forecast 54.5, Previous 54.9)', published_ms: 12_000,
+      event_time_ms: 0, delay_ms: 12_000 })).toBe('Fil d’actus · FinancialJuice · titre lu 12 s après l’heure prévue · « US S&P Manufacturing PMI Flash Actual 54.5 (Forecast 54.5, Previous 54.9) »');
+  });
+});
