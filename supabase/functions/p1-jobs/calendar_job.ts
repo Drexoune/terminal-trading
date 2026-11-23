@@ -54,7 +54,7 @@ export interface CalendarResult {
 
 // --- état publié -------------------------------------------------------------------------
 
-interface FeedState {
+export interface FeedState {
   name: string; label: string; late_after_ms: number; stale_after_ms: number; status: string;
   connected_since_ms: number | null; last_message_ms: number | null; reconnects: number;
   outages: unknown[]; last_error: string | null;
@@ -69,13 +69,13 @@ async function putState(rest: Rest, entries: [string, unknown][], now: number): 
   await rest.upsert('p1_state', entries.map(([key, value]) => ({ key, value: value as Json, updated_ms: now })), 'key');
 }
 
-function feedOk(base: typeof FF_FEED, prev: FeedState | null, t: number): FeedState {
+export function feedOk(base: typeof FF_FEED, prev: FeedState | null, t: number): FeedState {
   const wasOk = prev?.status === 'connected';
   return { ...base, status: 'connected', connected_since_ms: wasOk ? prev!.connected_since_ms : t, last_message_ms: t,
     reconnects: prev?.reconnects ?? 0, outages: [], last_error: null };
 }
 
-function feedFail(base: typeof FF_FEED, prev: FeedState | null, why: string, stop = false): FeedState {
+export function feedFail(base: typeof FF_FEED, prev: FeedState | null, why: string, stop = false): FeedState {
   return { ...base, status: stop ? 'stopped' : 'reconnecting', connected_since_ms: prev?.connected_since_ms ?? null,
     last_message_ms: prev?.last_message_ms ?? null, reconnects: (prev?.reconnects ?? 0) + (stop ? 0 : 1), outages: [],
     last_error: why.slice(0, 200) };

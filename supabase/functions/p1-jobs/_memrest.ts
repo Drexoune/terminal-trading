@@ -29,7 +29,7 @@ export class MemRest implements Rest {
       case 'gt': return v !== null && v > num(raw);
       case 'gte': return v !== null && v >= num(raw);
       case 'lt': return v !== null && v < num(raw);
-      case 'in': return raw.replace(/^\(|\)$/g, '').split(',').map(num).includes(v as never);
+      case 'in': return raw.replace(/^\(|\)$/g, '').split(',').map((x) => num(x.replace(/^"|"$/g, ''))).includes(v as never);
       default: throw new Error(`filtre non simulé : ${cond}`);
     }
   }
@@ -63,6 +63,18 @@ export class MemRest implements Rest {
       return row;
     });
     return returning ? structuredClone(made) as T[] : [];
+  }
+
+  async update(t: string, filters: Record<string, string>, patch: Row): Promise<void> {
+    this.calls.push(`update ${t}`);
+    if (!Object.keys(filters).length) throw new Error('update sans filtre refusé');
+    for (const r of this.rows(t)) if (Object.entries(filters).every(([k, c]) => this.match(r, k, c))) Object.assign(r, structuredClone(patch));
+  }
+
+  async remove(t: string, filters: Record<string, string>): Promise<void> {
+    this.calls.push(`remove ${t}`);
+    if (!Object.keys(filters).length) throw new Error('suppression sans filtre refusée');
+    this.tables.set(t, this.rows(t).filter((r) => !Object.entries(filters).every(([k, c]) => this.match(r, k, c))));
   }
 
   async upsert(t: string, rows: Row[], onConflict: string): Promise<void> {

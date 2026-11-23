@@ -33,6 +33,10 @@ START = int(datetime.fromisoformat(FIX["now"].replace("Z", "+00:00")).timestamp(
 DELTA = START - time.time_ns() // 1_000_000
 
 
+# Fil d'actus de démonstration (maquette Actus, données fictives, tests seulement).
+DEMO_NEWS = json.loads((Path(__file__).parent / "fixtures" / "news_demo.json").read_text("utf-8"))
+
+
 def now_ms() -> int:
     return time.time_ns() // 1_000_000 + DELTA
 
@@ -110,6 +114,17 @@ class DemoService:
             "connected_since_ms": now - 3_600_000, "last_message_ms": now - 120_000,
             "reconnects": 0, "outages": [], "last_error": None,
             "late_after_ms": 75 * 60_000, "stale_after_ms": 3 * 3_600_000})
+        # Fil d'actus de démonstration (maquette Actus, données fictives, tests seulement).
+        for i, n in enumerate(DEMO_NEWS):
+            t = now - n["min_ago"] * 60_000
+            item = {k: v for k, v in n.items() if k != "min_ago"}
+            self.bus.publish(f"news:item:{9000 + i}", {
+                "bank": None, "summary": None, "rule": None, "figure": None, **item,
+                "id": 9000 + i, "url": None, "rules_version": "r1-demo", "published_ms": t,
+                "published_raw": "démo", "received_ms": t + 4000, "backfill": False, "lang": "en"})
+        ok = {"status": "ok", "last_ok_ms": now, "last_error": None, "items": 1, "noise": 0}
+        self.bus.publish("news:feeds", {f: ok for f in ("fed-monetary", "boj-whatsnew",
+                                                        "financialjuice")})
         self._task = asyncio.create_task(self._tick())
 
     async def _tick(self) -> None:

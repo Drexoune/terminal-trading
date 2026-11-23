@@ -14,6 +14,7 @@ import {
 } from '../../alerts/alerts';
 import type { ReleaseFigure } from '../../calendar/releases';
 import { useSettings } from '../../config/settings';
+import { ALERTS_STATUS_KEY, type AlertsOnlineStatus } from '../../data/online/alerts';
 import { useKeys, useValue } from '../../data/store';
 import type { Ticker } from '../../data/protocol';
 import { fmtNumber } from '../../lib/format';
@@ -34,8 +35,9 @@ export function AlertsScreen() {
   const rules = sortRules(useKeys<AlertRule>('alert:rule:').map(([, r]) => r));
   const events = sortEvents(useKeys<AlertEvent>('alert:fired:').map(([, e]) => e));
   const open = unacked(events, now);
+  const online = useValue<AlertsOnlineStatus>(ALERTS_STATUS_KEY);
   const unavailable = mode === 'online'
-    ? 'Alertes en Mode Online : non prévues en P1. Passer en Mode Local (passerelle du Mac).'
+    ? (online && !online.ok ? `Alertes en ligne : ${online.reason}.` : summary === undefined ? 'Alertes en ligne : chargement…' : null)
     : summary === undefined ? 'Service alert non reçu : ajouter « alert » à GATEWAY_SERVICES dans le .env de la passerelle, puis la relancer.' : null;
   const tg = summary?.telegram;
 

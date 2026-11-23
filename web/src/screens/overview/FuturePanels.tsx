@@ -9,7 +9,12 @@ import { ruleChip, sortRules, type AlertRule } from '../../alerts/alerts';
 import { daysUntil, parisDay, shortDay, timeLabel, type CalendarNext } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
 import { useSettings } from '../../config/settings';
+import { ALERTS_STATUS_KEY, type AlertsOnlineStatus } from '../../data/online/alerts';
 import { useKeys, useValue } from '../../data/store';
+import { CATEGORY_LABEL, itemTime, urgentNews } from '../../news/news';
+import '../news/news.css';
+import { OFFLINE_REASON, useNews } from '../news/News';
+import { fmtHm } from '../../lib/time';
 import { useNow } from '../../shell/useNow';
 import { ImpactBars } from '../calendar/Calendar';
 
@@ -77,13 +82,15 @@ export function RiskPanel() {
  */
 export function AlertsPanel() {
   const { mode } = useSettings();
+  const online = useValue<AlertsOnlineStatus>(ALERTS_STATUS_KEY);
   const now = useNow();
   const rules = sortRules(useKeys<AlertRule>('alert:rule:').map(([, r]) => r).filter((r) => r.state !== 'désactivée'));
   return (
     <Panel title="Alertes actives" controls="compact" chips={<Link className="chip" to="/alertes" title="Gérer les règles">{rules.length}</Link>}>
       {rules.length === 0 ? (
         <Placeholder phase="P1" height={267}
-          text={mode === 'online' ? 'Alertes en Mode Online : non prévues en P1 (passerelle du Mac, Mode Local).'
+          text={mode === 'online'
+            ? (online && !online.ok ? `Alertes en ligne : ${online.reason}.` : 'Aucune règle active : en créer une dans /alertes.')
             : 'Aucune règle reçue : activer le service alert de la passerelle (GATEWAY_SERVICES), puis créer une règle dans /alertes.'} />
       ) : (
         <ul className="alert-rows" style={{ minHeight: 267 - 42 }}>
@@ -108,12 +115,33 @@ export function AlertsPanel() {
   );
 }
 
+/** Titres urgents (E6/O6) : quatre derniers titres à fort impact, arriérés exclus ; lien vers /actus. */
 export function HeadlinesPanel() {
+  const { mode } = useSettings();
+  const items = urgentNews(useNews());
   return (
     <Panel title="Titres urgents" controls="none"
       chips={<Link className="chip chip--hot" to="/actus">Fil d’actus</Link>}>
       {/* 421 px : hauteur de la capture de référence Main.png (et de la maquette HTML rendue sous Linux). */}
-      <Placeholder phase="P1" height={421} text="Titres à fort impact, traduits titre par titre : table news." />
+      {items.length === 0 ? (
+        <Placeholder phase="P1" height={421}
+          text={mode !== 'online' ? `— · ${OFFLINE_REASON}.` : 'Aucun titre urgent récent (décision de banque centrale, chiffre majeur).'} />
+      ) : (
+        <ul className="news-urgent" style={{ minHeight: 421 - 42 }}>
+          {items.map((i) => (
+            <li key={i.id}>
+              <Link to="/actus">
+                <span className="news-row__time">{fmtHm(itemTime(i), 'Europe/Paris')}</span>
+                <span className="news-row__body">
+                  <span className="news-row__chips"><span className="chip chip--s">{CATEGORY_LABEL[i.category]}</span></span>
+                  <span className="news-row__title" lang={i.lang}>{i.title}</span>
+                  <span className="lbl lbl--s" title="Langue d’origine (T-019)">{`${i.source} · VO`}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
     </Panel>
   );
 }

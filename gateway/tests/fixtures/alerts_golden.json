@@ -1,0 +1,692 @@
+{
+ "_comment": "Généré par scripts/make_alerts_golden.py ; ne pas modifier à la main.",
+ "event_matches": [
+  [
+   {
+    "captured_only": true,
+    "currencies": [],
+    "impacts": [],
+    "minutes": 5
+   },
+   {
+    "capture": true,
+    "currency": "USD",
+    "forecast_raw": "0.3%",
+    "impact": "High",
+    "title": "CPI m/m",
+    "title_fr": "IPC (m/m)"
+   },
+   true
+  ],
+  [
+   {
+    "captured_only": true,
+    "currencies": [],
+    "impacts": [],
+    "minutes": 5
+   },
+   {
+    "capture": false,
+    "currency": "EUR",
+    "forecast_raw": null,
+    "impact": "Low",
+    "title": "Flash PMI",
+    "title_fr": null
+   },
+   false
+  ],
+  [
+   {
+    "captured_only": false,
+    "currencies": [
+     "USD"
+    ],
+    "impacts": [
+     "High"
+    ],
+    "minutes": 5
+   },
+   {
+    "capture": true,
+    "currency": "USD",
+    "forecast_raw": "0.3%",
+    "impact": "High",
+    "title": "CPI m/m",
+    "title_fr": "IPC (m/m)"
+   },
+   true
+  ],
+  [
+   {
+    "captured_only": false,
+    "currencies": [
+     "USD"
+    ],
+    "impacts": [
+     "High"
+    ],
+    "minutes": 5
+   },
+   {
+    "capture": false,
+    "currency": "EUR",
+    "forecast_raw": null,
+    "impact": "Low",
+    "title": "Flash PMI",
+    "title_fr": null
+   },
+   false
+  ]
+ ],
+ "fr_num": [
+  [
+   "-1234.5",
+   null,
+   false,
+   "−1 234,5"
+  ],
+  [
+   "0.0312",
+   4,
+   true,
+   "+0,0312"
+  ],
+  [
+   "-0.00",
+   2,
+   false,
+   "0,00"
+  ],
+  [
+   "110000",
+   null,
+   false,
+   "110 000"
+  ],
+  [
+   "0.3",
+   null,
+   true,
+   "+0,3"
+  ],
+  [
+   "abc",
+   null,
+   false,
+   "—"
+  ],
+  [
+   "1e3",
+   null,
+   false,
+   "1 000"
+  ]
+ ],
+ "funding_hit": [
+  [
+   {
+    "side": "au-dessus",
+    "threshold_pct": "0.02"
+   },
+   0.0001,
+   false
+  ],
+  [
+   {
+    "side": "au-dessus",
+    "threshold_pct": "0.02"
+   },
+   0.0002,
+   true
+  ],
+  [
+   {
+    "side": "au-dessus",
+    "threshold_pct": "0.02"
+   },
+   0.00025,
+   true
+  ],
+  [
+   {
+    "side": "en dessous",
+    "threshold_pct": "-0.01"
+   },
+   -0.0002,
+   true
+  ],
+  [
+   {
+    "side": "en dessous",
+    "threshold_pct": "-0.01"
+   },
+   0.0001,
+   false
+  ]
+ ],
+ "keyword_hit": [
+  [
+   [
+    "Réserve fédérale",
+    "ETF"
+   ],
+   "La reserve FEDERALE maintient",
+   "Réserve fédérale"
+  ],
+  [
+   [
+    "ETF"
+   ],
+   "Spot ETF inflows",
+   "ETF"
+  ],
+  [
+   [
+    "ETF"
+   ],
+   "Netflix earnings",
+   null
+  ]
+ ],
+ "messages": {
+  "event": [
+   "Dans 5 min : IPC (m/m) (USD)",
+   "14:30 Paris · consensus 0.3% · capté à la source"
+  ],
+  "event_no_fc": [
+   "Dans 5 min : Flash PMI (EUR)",
+   "10:00 Paris · aucun consensus publié"
+  ],
+  "funding": [
+   "Funding BTC-USDT perp à +0,0312 %",
+   "Seuil au-dessus de 0,02 % · OKX"
+  ],
+  "keyword": [
+   "« Powell » : Powell speaks",
+   "Fed · VO"
+  ],
+  "price": [
+   "BTC-USDT perp franchit 110 000 à la hausse",
+   "Dernier 110 000,5 (précédent 109 999,5) · OKX"
+  ],
+  "release": [
+   "Consumer Price Index · 2026-11",
+   "IPC (m/m) : 0,6 % (prév. 0,3 %, surprise +0,3, z +2,1)\nIPC (sur un an) : — (non publié)\nBLS"
+  ],
+  "release_catchup": [
+   "Productivity and Costs · 2026-Q3 (révisé)",
+   "BLS · rattrapage"
+  ],
+  "surprise": [
+   "Surprise : IPC (m/m)",
+   "IPC (m/m) : 0,6 % (prév. 0,3 %, surprise +0,3, z +2,1) · BLS"
+  ]
+ },
+ "price_crossed": [
+  [
+   {
+    "direction": "hausse",
+    "level": "100"
+   },
+   null,
+   101,
+   false
+  ],
+  [
+   {
+    "direction": "hausse",
+    "level": "100"
+   },
+   99.5,
+   100,
+   true
+  ],
+  [
+   {
+    "direction": "hausse",
+    "level": "100"
+   },
+   100.5,
+   99,
+   false
+  ],
+  [
+   {
+    "direction": "les deux",
+    "level": "100"
+   },
+   100.5,
+   99,
+   true
+  ],
+  [
+   {
+    "direction": "les deux",
+    "level": "100"
+   },
+   99,
+   101,
+   true
+  ],
+  [
+   {
+    "direction": "les deux",
+    "level": "100"
+   },
+   101,
+   102,
+   false
+  ],
+  [
+   {
+    "direction": "baisse",
+    "level": "100"
+   },
+   101,
+   100,
+   true
+  ],
+  [
+   {
+    "direction": "baisse",
+    "level": "100"
+   },
+   99,
+   98,
+   false
+  ]
+ ],
+ "rules": [
+  [
+   "price",
+   {
+    "direction": "hausse",
+    "inst": "BTC-USDT-SWAP",
+    "level": "110000.0"
+   },
+   [
+    "telegram",
+    "x"
+   ],
+   {
+    "channels": [
+     "écran",
+     "telegram"
+    ],
+    "describe": [
+     "BTC franchit 110 000 à la hausse",
+     "Prix · OKX"
+    ],
+    "params": {
+     "direction": "hausse",
+     "inst": "BTC-USDT-SWAP",
+     "level": "110000"
+    }
+   }
+  ],
+  [
+   "price",
+   {
+    "inst": "BTC-USDT-SWAP",
+    "level": "99999.5"
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "BTC franchit 99 999,5",
+     "Prix · OKX"
+    ],
+    "params": {
+     "direction": "les deux",
+     "inst": "BTC-USDT-SWAP",
+     "level": "99999.5"
+    }
+   }
+  ],
+  [
+   "price",
+   {
+    "inst": "SOL-USDT-SWAP",
+    "level": "1"
+   },
+   [],
+   {
+    "error": "instrument non suivi : 'SOL-USDT-SWAP'"
+   }
+  ],
+  [
+   "price",
+   {
+    "inst": "BTC-USDT-SWAP",
+    "level": "-5"
+   },
+   [],
+   {
+    "error": "level invalide : '-5'"
+   }
+  ],
+  [
+   "funding",
+   {
+    "inst": "BTC-USDT-SWAP",
+    "threshold_pct": "0.02"
+   },
+   [
+    "voix"
+   ],
+   {
+    "channels": [
+     "écran",
+     "voix"
+    ],
+    "describe": [
+     "Funding OKX au-dessus de 0,02 %",
+     "Dérivés · BTC-USDT perp"
+    ],
+    "params": {
+     "inst": "BTC-USDT-SWAP",
+     "side": "au-dessus",
+     "threshold_pct": "0.02"
+    }
+   }
+  ],
+  [
+   "funding",
+   {
+    "inst": "BTC-USDT-SWAP",
+    "side": "en dessous",
+    "threshold_pct": "-0.01"
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Funding OKX en dessous de −0,01 %",
+     "Dérivés · BTC-USDT perp"
+    ],
+    "params": {
+     "inst": "BTC-USDT-SWAP",
+     "side": "en dessous",
+     "threshold_pct": "-0.01"
+    }
+   }
+  ],
+  [
+   "funding",
+   {
+    "inst": "BTC-USDT-SWAP",
+    "threshold_pct": "9"
+   },
+   [],
+   {
+    "error": "seuil de funding hors bornes (±5 %)"
+   }
+  ],
+  [
+   "event_soon",
+   {
+    "captured_only": true,
+    "minutes": 5
+   },
+   [
+    "telegram"
+   ],
+   {
+    "channels": [
+     "écran",
+     "telegram"
+    ],
+    "describe": [
+     "T−5 min avant une publication captée",
+     "Calendrier"
+    ],
+    "params": {
+     "captured_only": true,
+     "currencies": [],
+     "impacts": [],
+     "minutes": 5
+    }
+   }
+  ],
+  [
+   "event_soon",
+   {
+    "currencies": [
+     "usd",
+     "eur",
+     "x1"
+    ],
+    "impacts": [
+     "High",
+     "Bad"
+    ],
+    "minutes": 15
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "T−15 min avant un événement (impact fort · EUR, USD)",
+     "Calendrier"
+    ],
+    "params": {
+     "captured_only": false,
+     "currencies": [
+      "EUR",
+      "USD"
+     ],
+     "impacts": [
+      "High"
+     ],
+     "minutes": 15
+    }
+   }
+  ],
+  [
+   "event_soon",
+   {
+    "minutes": 0
+   },
+   [],
+   {
+    "error": "minutes : entier de 1 à 120"
+   }
+  ],
+  [
+   "release",
+   {
+    "releases": [
+     "cpi",
+     "nope"
+    ]
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Chiffre publié : IPC",
+     "Calendrier · BLS"
+    ],
+    "params": {
+     "releases": [
+      "cpi"
+     ]
+    }
+   }
+  ],
+  [
+   "release",
+   {},
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Chiffre publié : tous les indicateurs suivis",
+     "Calendrier · BLS"
+    ],
+    "params": {
+     "releases": []
+    }
+   }
+  ],
+  [
+   "surprise",
+   {
+    "z_min": "1.5"
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Surprise chiffre capté : |z| ≥ 1,5",
+     "Calendrier · surprise"
+    ],
+    "params": {
+     "indicator": null,
+     "raw_min": null,
+     "z_min": "1.5"
+    }
+   }
+  ],
+  [
+   "surprise",
+   {
+    "indicator": "us-nfp",
+    "raw_min": "50"
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Surprise Créations d’emplois non agricoles : |surprise| ≥ 50",
+     "Calendrier · surprise"
+    ],
+    "params": {
+     "indicator": "us-nfp",
+     "raw_min": "50",
+     "z_min": null
+    }
+   }
+  ],
+  [
+   "surprise",
+   {},
+   [],
+   {
+    "error": "seuil manquant : z_min ou raw_min"
+   }
+  ],
+  [
+   "keyword",
+   {
+    "words": [
+     " Powell ",
+     "ETF",
+     ""
+    ]
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Mot-clé : Powell, ETF",
+     "Fil d’actus"
+    ],
+    "params": {
+     "words": [
+      "Powell",
+      "ETF"
+     ]
+    }
+   }
+  ],
+  [
+   "keyword",
+   {
+    "words": []
+   },
+   [],
+   {
+    "error": "mots-clés : de 1 à 20, 60 caractères au plus"
+   }
+  ],
+  [
+   "liquidation",
+   {},
+   [],
+   {
+    "error": "sorte de règle inconnue : 'liquidation'"
+   }
+  ]
+ ],
+ "surprise_hit": [
+  [
+   {
+    "indicator": null,
+    "raw_min": null,
+    "z_min": "1.5"
+   },
+   {
+    "forecast": "0.3",
+    "indicator": "us-cpi-mm",
+    "label_fr": "IPC (m/m)",
+    "surprise": "0.3",
+    "unit": "%",
+    "value": "0.6",
+    "z": "2.1"
+   },
+   true
+  ],
+  [
+   {
+    "indicator": "us-nfp",
+    "raw_min": null,
+    "z_min": "1.5"
+   },
+   {
+    "forecast": "0.3",
+    "indicator": "us-cpi-mm",
+    "label_fr": "IPC (m/m)",
+    "surprise": "0.3",
+    "unit": "%",
+    "value": "0.6",
+    "z": "2.1"
+   },
+   false
+  ],
+  [
+   {
+    "indicator": null,
+    "raw_min": "0.4",
+    "z_min": null
+   },
+   {
+    "forecast": "0.3",
+    "indicator": "us-cpi-mm",
+    "label_fr": "IPC (m/m)",
+    "surprise": "0.3",
+    "unit": "%",
+    "value": "0.6",
+    "z": "2.1"
+   },
+   false
+  ]
+ ]
+}

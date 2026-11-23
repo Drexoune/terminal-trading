@@ -1,0 +1,94 @@
+[
+ {
+  "min_ago": 5,
+  "feed": "financialjuice",
+  "source": "FinancialJuice",
+  "kind": "agence",
+  "category": "crypto",
+  "urgent": false,
+  "title": "Spot bitcoin ETFs log a fourth straight session of net inflows"
+ },
+ {
+  "min_ago": 24,
+  "feed": "boj-whatsnew",
+  "source": "BoJ",
+  "kind": "officielle",
+  "bank": "BOJ",
+  "category": "banque-centrale",
+  "urgent": true,
+  "rule": "decision:BOJ",
+  "title": "Statement on Monetary Policy",
+  "summary": "At the Monetary Policy Meeting held today, the Policy Board of the Bank of Japan decided, by a 7-2 majority vote, to set the following guideline for money market operations for the intermeeting period."
+ },
+ {
+  "min_ago": 44,
+  "feed": "financialjuice",
+  "source": "FinancialJuice",
+  "kind": "agence",
+  "category": "crypto",
+  "urgent": false,
+  "title": "Liquidations: $62M of BTC longs wiped out in five minutes"
+ },
+ {
+  "min_ago": 66,
+  "feed": "financialjuice",
+  "source": "FinancialJuice",
+  "kind": "agence",
+  "category": "macro",
+  "urgent": true,
+  "rule": "figure:major",
+  "title": "US CPI MoM Actual 0.3% (Forecast 0.2%, Previous 0.4%)",
+  "figure": {
+   "name": "US CPI MoM",
+   "actual": "0.3%",
+   "forecast": "0.2%",
+   "previous": "0.4%",
+   "revised": null
+  }
+ },
+ {
+  "min_ago": 151,
+  "feed": "financialjuice",
+  "source": "FinancialJuice",
+  "kind": "agence",
+  "category": "matieres-premieres",
+  "urgent": false,
+  "title": "Gold nears $4,000 an ounce, highest in three weeks"
+ },
+ {
+  "min_ago": 236,
+  "feed": "fed-monetary",
+  "source": "Fed",
+  "kind": "officielle",
+  "bank": "FED",
+  "category": "banque-centrale",
+  "urgent": true,
+  "rule": "decision:FED",
+  "title": "Minutes of the Federal Open Market Committee, September 15-16, 2026"
+ },
+ {
+  "min_ago": 376,
+  "feed": "financialjuice",
+  "source": "FinancialJuice",
+  "kind": "agence",
+  "category": "macro",
+  "urgent": false,
+  "title": "UK House Prices MoM Actual -0.2% (Forecast 0.1%, Previous -0.1%)",
+  "figure": {
+   "name": "UK House Prices MoM",
+   "actual": "-0.2%",
+   "forecast": "0.1%",
+   "previous": "-0.1%",
+   "revised": null
+  }
+ },
+ {
+  "min_ago": 696,
+  "feed": "financialjuice",
+  "source": "FinancialJuice",
+  "kind": "agence",
+  "category": "general",
+  "urgent": false,
+  "title": "China Q3 GDP YoY Actual 4.7% (Forecast 4.8%, Previous 5.2%)"
+ }
+]

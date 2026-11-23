@@ -22,11 +22,14 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { join, resolve } from 'node:path';
 import { loadEnv, type Plugin } from 'vite';
 
-/** Nom de route accepté : pas de « _ » initial (api/_lib, api/_tests) ; un sous-chemin pour NESTED seulement. */
-const ROUTE = /^\/api\/([a-z0-9][a-z0-9-]*)(?:\/([a-z0-9][a-z0-9-]*))?\/?$/;
+/**
+ * Nom de route accepté : pas de « _ » initial (api/_lib, api/_tests) ; un sous-chemin pour
+ * NESTED seulement, suivi au besoin d'un identifiant numérique (/api/alerts/rules/12).
+ */
+const ROUTE = /^\/api\/([a-z0-9][a-z0-9-]*)(?:\/([a-z0-9][a-z0-9-]*)(?:\/\d{1,9})?)?\/?$/;
 /** Fonctions à routeur interne (api/<nom>.ts sert /api/<nom>/<route>). */
-const NESTED = new Set(['bourse', 'p1']);
-const BODY_METHODS = ['POST', 'DELETE'];
+const NESTED = new Set(['bourse', 'p1', 'alerts']);
+const BODY_METHODS = ['POST', 'DELETE', 'PATCH'];
 const MAX_BODY = 64 * 1024;
 
 type Handler = (request: Request) => Promise<Response> | Response;

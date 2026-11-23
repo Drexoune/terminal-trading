@@ -43,16 +43,9 @@ Les maquettes sont la référence visuelle. Leurs chiffres sont fictifs : ils se
 - **Stockage et bus** : voir les décisions 2 et 3 ci-dessous.
 - **Tests** : pytest côté Python, Vitest et Playwright côté front.
 
-## 5. Décisions à faire confirmer par Clément avant d'écrire P0
+## 5. Décisions
 
-Présenter chaque point avec la recommandation, attendre sa réponse, puis consigner la décision datée dans `docs/decisions.md`.
-
-1. **Système de la tour.** `drexbot/docs/deploiement.md` décrit du Python natif Windows, sans WSL ; le plan et d'autres documents parlent de WSL2. Recommandation : suivre drexbot (Windows natif) pour ne gérer qu'un seul environnement sur la tour.
-2. **Bus.** Le plan prévoit Redis Streams, qui n'a pas de version Windows officielle. Recommandation : en P0, diffusion en mémoire dans la passerelle (un seul process asyncio, dernier état en mémoire) ; un bus externe (NATS, natif sous Windows, ou Redis via WSL) seulement quand un deuxième consommateur l'exige.
-3. **Stockage.** Le plan prévoit QuestDB (ticks), Postgres (le reste) et Parquet (archive) ; drexbot a choisi DuckDB + Parquet sans base serveur. Recommandation : Parquet + DuckDB pour l'historique, SQLite pour les tables relationnelles (`releases`, `meetings`, `probabilities`, `alerts`, `news`…), et une base serveur seulement si un besoin mesuré apparaît.
-4. **Où tourne le front** : servi par la passerelle sur la tour (accessible depuis le Mac et le téléphone via Tailscale) ou lancé sur le Mac en développement. Recommandation : les deux, avec la même configuration.
-5. **Watchlist hors crypto et ETF du PEA** : source gratuite à retenir pour les indices, le DXY, les taux, l'or, les changes et les ETF cotés à Paris (XTB n'a plus d'API). Ne pas bloquer P0 dessus : la crypto d'abord.
-6. **Noms définitifs** du terminal et de l'assistant (provisoires : TERMINAL et « Assistant »).
+Toute décision se présente avec la recommandation, attend la réponse de Clément, puis se consigne datée dans `docs/decisions.md` (journal T-001 et suivants ; une décision ne se modifie pas après coup, une nouvelle entrée la remplace). Encore ouvertes : source gratuite de la watchlist hors crypto et des ETF du PEA (T-005) ; noms définitifs du terminal et de l'assistant (T-006, provisoires jusqu'à P6).
 
 ## 6. Ordre de construction
 
@@ -68,16 +61,6 @@ Une phase à la fois. Chaque phase est utilisable seule et se termine par une po
 | P5 — Microstructure BTC | carnet agrégé, carte de profondeur, CVD spot / perp, liquidations multi-plateformes, funding, OI | une séance entière suivie depuis le seul terminal |
 | P6 — Assistant et compte | questions sur les articles, récap de session, voix, journal, positions OKX en lecture, calculateur de risque | l'assistant ne cite que nos données, sources à l'appui |
 | P7 — Extras | recherche bancaire, saisonnalité, heatmap technique, options Deribit, probabilités via les futures | seulement si un vrai besoin apparaît |
-
-### Première tâche : P0
-
-1. **Dépôt** : `web/` (React + Vite + TS), `gateway/` (FastAPI), `collectors/` (Python), `docs/decisions.md` ; `.env.example`, README de lancement, une commande pour tout démarrer en local.
-2. **Design system en code** : `design/tokens.css` importé une fois, polices locales de `design/assets/fonts/`, composants de base (Panneau, Bouton, Puce, Bascule, Pastille, Cellule, Sparkline, Jauge), coque complète (barre du haut, menu latéral, sous-en-tête, barre de flux) fidèle à `design/maquettes/png/Main.png`.
-3. **Flux** : collecteur OKX BTC-USDT perpétuel (trades, ticker, funding, open interest) → passerelle → WebSocket → front, latence mesurée de bout en bout et affichée dans la barre du haut.
-4. **Écran Vue d'ensemble** : panneau BTC (prix, statistiques 24 h, graphique intraday avec bandes de session, PDH / PDL, VWAP), watchlist (crypto d'abord), horloges TOK / LON / PAR / NY calculées depuis l'UTC.
-5. **Palette de commandes** (Ctrl K) : au moins `BTC GP` et la navigation entre écrans.
-
-Porte P0 : BTC en direct, latence affichée, horloges justes au passage à l'heure d'hiver (25/10/2026 en Europe, 01/11/2026 aux États-Unis).
 
 ## 7. Méthode de travail
 

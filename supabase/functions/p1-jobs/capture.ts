@@ -18,6 +18,7 @@
 // État publié dans p1_state sous les clés du bus : release:<indicateur>:<période>[:<édition>],
 // release:last, release:state, reaction:<publication>:<jour>.
 
+import { fireReleaseAlerts, type AlertDeps } from './alerts.ts';
 import { API_V1, DAILY_MAX, DERIVATIONS, derive, parseResponse, requestBody, sameValue, shift, type ApiData, type Derived } from './bls_api.ts';
 import { BLS, BY_TITLE, classify, parsePage, RELEASES, type Figure, type Parsed, type Release } from './bls_release.ts';
 import { INDICATORS, NEW_YORK, civilDate, zonedToUtc } from './calendar.ts';
@@ -217,9 +218,17 @@ async function record(deps: CaptureDeps, s: Scheduled, parsed: Parsed, got: Got,
       bus_ms: busMs, okx_offset_ms: ctx.offset, date_header: got.headers.get('date'),
     }], 'release,period,edition', 'id');
   }
-  entries.push(['release:last', { release: s.release.key, title: s.release.title, period: parsed.period, edition: parsed.edition,
-    ny_date: s.local_date, keys, timing: verdict, scheduled_ms: s.utc_ms, bus_ms: busMs, nature }]);
+  const last = { release: s.release.key, title: s.release.title, period: parsed.period, edition: parsed.edition,
+    ny_date: s.local_date, keys, timing: verdict, scheduled_ms: s.utc_ms, bus_ms: busMs, nature };
+  entries.push(['release:last', last]);
   await putState(rest, entries, deps.now());
+  // Alertes « chiffre publié » et « surprise » (O4) : après la publication, jamais avant ; une
+  // panne ici n'arrête pas la capture (la tâche « alerts » de la minute suivante rattrape).
+  try {
+    await fireReleaseAlerts(deps as unknown as AlertDeps, last, entries.filter(([k]) => keys.includes(k)).map(([, v]) => v as Record<string, unknown>));
+  } catch (e) {
+    console.error(`alertes de ${s.release.key} : ${(e as Error).message}`);
+  }
   return keys;
 }
 

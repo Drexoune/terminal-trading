@@ -18,6 +18,10 @@
 --   capture       chaque minute (étape O3) : rafale à T-1 min (l'appel dure ~2 min, d'où un
 --                 délai de 150 s), suite jusqu'à T+5 min, rattrapage, révisions, réaction du BTC ;
 --                 un appel sans publication proche ne fait que quelques lectures en base
+--   alerts        chaque minute (étape O4) : prix, funding, T-n min, chiffre publié (filet) ;
+--                 ajout sans ressaisir le secret : supabase/cron-p1-alerts.sql
+--   news          chaque minute (étape O6) : fil d'actus ; toutes les 3 s dans la fenêtre d'une
+--                 décision de banque centrale ; ajout seul : supabase/cron-p1-news.sql
 
 do $$
 declare
@@ -46,7 +50,9 @@ begin
       ('p1-ff-calendar-2',  '55 * * * *', 'ff-calendar',  60000),
       ('p1-bls-calendar',   '10 6 * * *', 'bls-calendar', 60000),
       ('p1-bls-calendar-2', '40 6 * * *', 'bls-calendar', 60000),
-      ('p1-capture',        '* * * * *',  'capture',      150000)
+      ('p1-capture',        '* * * * *',  'capture',      150000),
+      ('p1-alerts',         '* * * * *',  'alerts',       60000),
+      ('p1-news',           '* * * * *',  'news',         70000)
     ) as t(name, schedule, job, timeout_ms)
   loop
     perform cron.schedule(v_job.name, v_job.schedule, format($job$

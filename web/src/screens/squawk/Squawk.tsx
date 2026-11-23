@@ -20,7 +20,7 @@ const SAMPLE: Record<Lang, string> = {
 const TOGGLES: { key: keyof SquawkPrefs; label: string }[] = [
   { key: 'figures', label: 'Chiffres captés à la source (BLS)' },
   { key: 'alerts', label: 'Alertes dont la règle demande la voix' },
-  { key: 'headlines', label: 'Titres urgents (fil d’actus, E6)' },
+  { key: 'headlines', label: 'Titres urgents du fil d’actus, en VO' },
   { key: 'sound', label: 'Bip des alertes et des chiffres' },
   { key: 'notifications', label: 'Notification du système quand l’onglet est caché' },
 ];

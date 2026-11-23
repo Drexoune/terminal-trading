@@ -14,6 +14,10 @@ export interface Rest {
   /** INSERT … ON CONFLICT DO NOTHING ; renvoie les lignes réellement créées (verrou, première publication). */
   insertIgnore<T = Row>(table: string, rows: Row[], onConflict: string, returning: string): Promise<T[]>;
   rpc<T = unknown>(fn: string, args: Row): Promise<T>;
+  /** PATCH des lignes qui passent les filtres (eq.…, is.null…) ; jamais sans filtre. */
+  update(table: string, filters: Record<string, string>, patch: Row): Promise<void>;
+  /** DELETE des lignes qui passent les filtres ; jamais sans filtre. */
+  remove(table: string, filters: Record<string, string>): Promise<void>;
 }
 
 const IDENT = /^[a-z_][a-z0-9_]*$/;
@@ -78,6 +82,16 @@ export function createRest(url: string, key: string, fetchFn: FetchLike, timeout
         method: 'POST', body: JSON.stringify(rows), prefer: 'resolution=ignore-duplicates,return=representation',
       });
       return JSON.parse(text) as T[];
+    },
+    async update(t: string, filters: Record<string, string>, patch: Row) {
+      if (!Object.keys(filters).length) throw new Error('update sans filtre refusé');
+      if (!Object.keys(filters).every((k) => IDENT.test(k))) throw new Error('filtre invalide');
+      await call(`${table(t)}?${new URLSearchParams(filters)}`, { method: 'PATCH', body: JSON.stringify(patch), prefer: 'return=minimal' });
+    },
+    async remove(t: string, filters: Record<string, string>) {
+      if (!Object.keys(filters).length) throw new Error('suppression sans filtre refusée');
+      if (!Object.keys(filters).every((k) => IDENT.test(k))) throw new Error('filtre invalide');
+      await call(`${table(t)}?${new URLSearchParams(filters)}`, { method: 'DELETE', prefer: 'return=minimal' });
     },
     async rpc<T>(fn: string, args: Row) {
       if (!IDENT.test(fn)) throw new Error(`fonction invalide : ${fn}`);

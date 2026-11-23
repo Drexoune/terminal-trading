@@ -93,7 +93,12 @@ export function FeedBar() {
         // L'âge avance entre deux interrogations : on ajoute le temps écoulé depuis la réponse.
         const c = collectorStatus(collector.health, collector.error, collector.at ? Date.now() - collector.at : 0);
         return ['Collecteur Supabase', c.state, c.label] as [string, Freshness, string];
-      })()]
+      })(),
+      // Sources de P1 publiées par Supabase (agenda, calendrier BLS, fil d'actus), avec leurs seuils.
+      ...others.map(([, f]): [string, Freshness, string] => {
+        const st = feedFreshness(f, now, true);
+        return [f.label ?? f.name, st, feedDetail(LABEL[st], f)];
+      })]
     : [['Passerelle', up ? freshness(conn?.lastMessage != null ? now - conn.lastMessage : null, true) : 'down',
         !up && conn?.reason ? `${LABEL.down} · ${conn.reason}` : undefined], ...okx,
       // Sources de P1 publiées par la passerelle (agenda, BLS, fil d'actus), avec leurs propres seuils.

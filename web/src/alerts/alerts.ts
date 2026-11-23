@@ -4,6 +4,7 @@
 // passent par fetchJson (adresse du mode actif).
 
 import { fetchJson } from '../data/gateway';
+import { refreshAlertsAfterWrite } from '../data/online/alerts';
 import { fmtHm } from '../lib/time';
 
 export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword';
@@ -168,11 +169,13 @@ export function draftToBody(d: RuleDraft): { body: { kind: AlertKind; params: Re
 // --- écritures ------------------------------------------------------------------------------
 
 const T = { timeoutMs: 8000 };
-export const createRule = (body: unknown) => fetchJson<AlertRule>('/api/alerts/rules', { ...T, method: 'POST', json: body });
+/** En Mode Online, l'état ne vient pas d'un bus : relu juste après chaque écriture. */
+const after = <R>(p: Promise<R>): Promise<R> => p.then((r) => { refreshAlertsAfterWrite(); return r; });
+export const createRule = (body: unknown) => after(fetchJson<AlertRule>('/api/alerts/rules', { ...T, method: 'POST', json: body }));
 export const setRuleState = (id: number, state: 'armée' | 'désactivée') =>
-  fetchJson<AlertRule>(`/api/alerts/rules/${id}`, { ...T, method: 'PATCH', json: { state } });
+  after(fetchJson<AlertRule>(`/api/alerts/rules/${id}`, { ...T, method: 'PATCH', json: { state } }));
 export const setRuleChannels = (id: number, channels: Channel[]) =>
-  fetchJson<AlertRule>(`/api/alerts/rules/${id}`, { ...T, method: 'PATCH', json: { channels } });
-export const deleteRule = (id: number) => fetchJson<{ ok: boolean }>(`/api/alerts/rules/${id}`, { ...T, method: 'DELETE' });
-export const ackAlerts = (ids?: string[]) => fetchJson<{ acked: number }>('/api/alerts/ack', { ...T, method: 'POST', json: ids ? { ids } : {} });
-export const testTelegram = () => fetchJson<{ ok: boolean; error: string | null }>('/api/alerts/test-telegram', { timeoutMs: 20_000, method: 'POST', json: {} });
+  after(fetchJson<AlertRule>(`/api/alerts/rules/${id}`, { ...T, method: 'PATCH', json: { channels } }));
+export const deleteRule = (id: number) => after(fetchJson<{ ok: boolean }>(`/api/alerts/rules/${id}`, { ...T, method: 'DELETE' }));
+export const ackAlerts = (ids?: string[]) => after(fetchJson<{ acked: number }>('/api/alerts/ack', { ...T, method: 'POST', json: ids ? { ids } : {} }));
+export const testTelegram = () => after(fetchJson<{ ok: boolean; error: string | null }>('/api/alerts/test-telegram', { timeoutMs: 30_000, method: 'POST', json: {} }));

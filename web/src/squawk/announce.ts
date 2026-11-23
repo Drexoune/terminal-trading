@@ -1,10 +1,11 @@
-// Annonces (E4) : chaque alerte et chaque chiffre capté qui ARRIVENT pendant que la page est
+// Annonces (E4, E6) : chaque alerte, chaque chiffre capté et chaque titre urgent qui ARRIVENT pendant que la page est
 // ouverte déclenchent son, notification et voix. Rien n'est rejoué au chargement : seul ce
 // qui a moins d'une minute (horloge de la passerelle) est annoncé, une fois.
 
 import { useEffect } from 'react';
 import type { AlertEvent } from '../alerts/alerts';
 import type { ReleaseFigure, ReleaseLast } from '../calendar/releases';
+import type { NewsItem } from '../news/news';
 import { gatewayNow, getValue, keysWithPrefix, subscribeKey, subscribePrefix } from '../data/store';
 import { squawk } from './engine';
 import { alertPhrase, releasePhrase } from './speech';
@@ -47,10 +48,25 @@ export function useAnnouncements(): void {
       }
     };
 
+    // Titres urgents (E6/O6) : dans leur langue d'origine, une seule fois, jamais un arriéré.
+    const onNews = () => {
+      for (const [, it] of keysWithPrefix<NewsItem>('news:item:')) {
+        if (!it || seen.has(`titre:${it.id}`)) continue;
+        seen.add(`titre:${it.id}`);
+        if (!it.urgent || it.backfill || !fresh(it.received_ms)) continue;
+        squawk.notify(it.title, `${it.source} · VO`, `titre-${it.id}`);
+        if (squawk.get().prefs.headlines) {
+          squawk.say({ id: `titre:${it.id}`, kind: 'titre', text: it.title, lang: it.lang === 'fr' ? 'fr' : 'en', created_ms: Date.now() });
+        }
+      }
+    };
+
     const offA = subscribePrefix('alert:fired:', onAlerts);
     const offR = subscribeKey('release:last', onRelease);
+    const offN = subscribePrefix('news:item:', onNews);
     onAlerts();
     onRelease();
-    return () => { offA(); offR(); };
+    onNews();
+    return () => { offA(); offR(); offN(); };
   }, []);
 }

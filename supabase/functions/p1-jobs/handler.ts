@@ -8,17 +8,24 @@
 
 import { MIN_SECRET_LENGTH, secretKeyFrom, secretMatches } from '../okx-collector/handler.ts';
 import type { FetchLike } from '../okx-collector/postgrest.ts';
+import { runAlertCommand, runAlerts, type AlertDeps } from './alerts.ts';
 import { runBlsCalendar, runFfCalendar, type HttpFetch } from './calendar_job.ts';
 import { runCapture, type CapFetch } from './capture.ts';
 import { explore, type ExploreDeps } from './explore.ts';
+import { runNews, type NewsDeps } from './news.ts';
 import { createRest, type Rest } from './rest.ts';
 
 // explore : sonde O0 ; ff-calendar (hh:45, hh:55) et bls-calendar (06:10, 06:40 UTC) : agenda O2 ;
-// capture (chaque minute) : chiffres du BLS à l'heure H, rattrapage, révisions, réaction (O3).
-export const JOBS = ['explore', 'ff-calendar', 'bls-calendar', 'capture'] as const;
+// capture (chaque minute) : chiffres du BLS à l'heure H, rattrapage, révisions, réaction (O3) ;
+// alerts (chaque minute) et alerts-cmd (écritures de /alertes relayées par Vercel) : O4 ;
+// news (chaque minute) : fil d'actus (E6/O6).
+export const JOBS = ['explore', 'ff-calendar', 'bls-calendar', 'capture', 'alerts', 'alerts-cmd', 'news'] as const;
 export type Job = (typeof JOBS)[number];
 
-export interface RunDeps extends ExploreDeps { rest: Rest | null; force: boolean }
+export interface RunDeps extends ExploreDeps { rest: Rest | null; force: boolean; body?: unknown }
+
+/** Réponse d'une tâche qui fixe elle-même son statut HTTP (alerts-cmd). */
+export interface Direct { status: number; body: unknown; direct: true }
 
 export interface HandlerDeps extends Omit<ExploreDeps, 'env'> {
   run?: (job: Job, deps: RunDeps) => Promise<unknown>;   // remplaçable en test
@@ -28,6 +35,15 @@ export interface HandlerDeps extends Omit<ExploreDeps, 'env'> {
 async function defaultRun(job: Job, d: RunDeps): Promise<unknown> {
   if (job === 'explore') return explore(d);
   if (!d.rest) throw new Error('SUPABASE_URL ou clé secrète Supabase absente');
+  if (job === 'alerts' || job === 'alerts-cmd') {
+    const deps: AlertDeps = { fetch: d.fetch as unknown as AlertDeps['fetch'], now: d.now, sleep: d.sleep, env: d.env, rest: d.rest };
+    if (job === 'alerts') return runAlerts(deps);
+    const r = await runAlertCommand(deps, d.body);
+    return { ...r, direct: true } satisfies Direct;
+  }
+  if (job === 'news') {
+    return runNews({ fetch: d.fetch as unknown as NewsDeps['fetch'], now: d.now, sleep: d.sleep, env: d.env, rest: d.rest });
+  }
   if (job === 'capture') {
     return runCapture({ fetch: d.fetch as unknown as CapFetch, now: d.now, sleep: d.sleep, env: d.env, rest: d.rest });
   }
@@ -65,7 +81,18 @@ export function createHandler(env: (name: string) => string | undefined, deps: H
     try {
       const rest = deps.rest ?? (url && key ? createRest(url, key, deps.fetch as unknown as FetchLike) : null);
       const force = new URL(req.url).searchParams.get('force') === '1';
-      const report = await run(job as Job, { ...deps, env, rest, force });
+      let body: unknown;
+      if (job === 'alerts-cmd') {
+        try {
+          body = await req.json();
+        } catch {
+          return json(400, { ok: false, error: 'JSON illisible' });
+        }
+      }
+      const report = await run(job as Job, { ...deps, env, rest, force, body });
+      if (typeof report === 'object' && report !== null && (report as Direct).direct === true) {
+        return json((report as Direct).status, (report as Direct).body);
+      }
       const failed = typeof report === 'object' && report !== null && (report as { ok?: boolean }).ok === false;
       return json(failed ? 502 : 200, { ok: !failed, report });
     } catch (e) {

@@ -94,6 +94,16 @@ async function sessionExp(request: Request, auth: Auth, now: number): Promise<nu
   return verifySession(readCookie(request.headers.get('cookie'), COOKIE_NAME), auth.secret, now);
 }
 
+/**
+ * Session du mot de passe d'application (T-031), partagée avec d'autres routes privées
+ * (/api/alerts, O4) : null si elle est valide, sinon le statut et la raison du refus.
+ */
+export async function sessionProblem(request: Request, env: Env, now: number): Promise<{ status: number; reason: string } | null> {
+  const auth = authConfig(env);
+  if (typeof auth === 'string') return { status: 503, reason: `mot de passe d’application non configuré : ${auth}` };
+  return (await sessionExp(request, auth, now)) === null ? { status: 401, reason: 'session requise' } : null;
+}
+
 // --- session -------------------------------------------------------------------------
 
 async function getSession(request: Request, query: Request, ctx: Context): Promise<Response> {

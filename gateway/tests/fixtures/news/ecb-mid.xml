@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+  <channel>
+    <title>ECB - European Central Bank</title>
+    <link>http://www.ecb.europa.eu</link>
+    <description>Latest releases on the ECB Market Information Dissemination channel</description>
+    <language>en</language>
+    <copyright>Copyright 2013, European Central Bank</copyright>
+    <webMaster></webMaster>
+    <lastBuildDate></lastBuildDate>
+    <pubDate>2026/11/20 11:25:22</pubDate>
+    <category domain="">Publications</category>
+    <generator>Automatic</generator>
+    <docs>http://blogs.law.harvard.edu/tech/rss/</docs>
+    <item>
+      <title>Liquidity Management Publication</title>
+      <link>https://mid.ecb.europa.eu/rel/afff4782e4cc11f1b746876e66a4f9d5.xml</link>
+      <pubDate>Fri, 20 Nov 2026 11:25:17 +0100</pubDate>
+    </item>
+    <item>
+      <title>Liquidity Management Publication</title>
+      <link>https://mid.ecb.europa.eu/rel/afda3351e4cc11f1b746876e66a4f9d5.xml</link>
+      <pubDate>Fri, 20 Nov 2026 11:25:14 +0100</pubDate>
+    </item>
+    <item>
+      <title>Compounded_EURO-SHORT-TERM-RATE_Indicators_MSG</title>
+      <link>https://mid.ecb.europa.eu/rel/7fb62716e4ba11f1bae8ddac179ad0c0.xml</link>
+      <pubDate>Fri, 20 Nov 2026 09:15:07 +0100</pubDate>
+    </item>
+    <item>
+      <title>EURO-SHORT-TERM-RATE PUBLICATION MESSAGE</title>
+      <link>https://mid.ecb.europa.eu/rel/06b94ce8e4b011f1bae8ddac179ad0c0.xml</link>
+      <pubDate>Fri, 20 Nov 2026 08:00:10 +0100</pubDate>
+    </item>
+    <item>
+      <title>Pontes Pilot is operating normally</title>
+      <link>https://mid.ecb.europa.eu/rel/bbf73a4edd0611f19e3d7b344b773b39.xml</link>
+      <pubDate>Fri, 20 Nov 2026 08:00:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>T2S is operating normally</title>
+      <link>https://mid.ecb.europa.eu/rel/b0033b71dd0611f1af883b1fced0a6a4.xml</link>
+      <pubDate>Fri, 20 Nov 2026 05:00:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>ECMS is operating normally</title>
+      <link>https://mid.ecb.europa.eu/rel/b91306acdd0611f1af883b1fced0a6a4.xml</link>
+      <pubDate>Fri, 20 Nov 2026 02:30:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>T2 is operating normally</title>
+      <link>https://mid.ecb.europa.eu/rel/afd7e5addd0611f1af883b1fced0a6a4.xml</link>
+      <pubDate>Fri, 20 Nov 2026 02:30:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>TIPS during T2 night-time operations</title>
+      <link>https://mid.ecb.europa.eu/rel/afe52b97dd0611f19e3d7b344b773b39.xml</link>
+      <pubDate>Fri, 20 Nov 2026 02:30:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>ECMS is closed</title>
+      <link>https://mid.ecb.europa.eu/rel/bc14382fdd0611f19e3d7b344b773b39.xml</link>
+      <pubDate>Fri, 20 Nov 2026 00:30:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>Pontes Pilot is closed</title>
+      <link>https://mid.ecb.europa.eu/rel/b8fe6caddd0611f19e3d7b344b773b39.xml</link>
+      <pubDate>Thu, 19 Nov 2026 18:00:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>List of eligible marketable assets</title>
+      <link>https://mid.ecb.europa.eu/rel/249f1f39e43a11f1bae8ddac179ad0c0.xml</link>
+      <pubDate>Thu, 19 Nov 2026 17:56:19 +0100</pubDate>
+    </item>
+    <item>
+      <title>List of monetary financial institutions (MFIs)</title>
+      <link>https://mid.ecb.europa.eu/rel/1594e333e43311f1bae8ddac179ad0c0.xml</link>
+      <pubDate>Thu, 19 Nov 2026 17:05:47 +0100</pubDate>
+    </item>
+    <item>
+      <title>Euro foreign exchange reference rates</title>
+      <link>https://mid.ecb.europa.eu/rel/3c03a57be42911f1bae8ddac179ad0c0.xml</link>
+      <pubDate>Thu, 19 Nov 2026 15:55:09 +0100</pubDate>
+    </item>
+    <item>
+      <title>Liquidity Management Publication</title>
+      <link>https://mid.ecb.europa.eu/rel/7f61b2d1e40311f1b746876e66a4f9d5.xml</link>
+      <pubDate>Thu, 19 Nov 2026 11:25:09 +0100</pubDate>
+    </item>
+    <item>
+      <title>Liquidity Management Publication</title>
+      <link>https://mid.ecb.europa.eu/rel/7f38f520e40311f1b746876e66a4f9d5.xml</link>
+      <pubDate>Thu, 19 Nov 2026 11:25:09 +0100</pubDate>
+    </item>
+    <item>
+      <title>Compounded_EURO-SHORT-TERM-RATE_Indicators_MSG</title>
+      <link>https://mid.ecb.europa.eu/rel/5318bee7e3f111f1b746876e66a4f9d5.xml</link>
+      <pubDate>Thu, 19 Nov 2026 09:15:04 +0100</pubDate>
+    </item>
+    <item>
+      <title>EURO-SHORT-TERM-RATE PUBLICATION MESSAGE</title>
+      <link>https://mid.ecb.europa.eu/rel/d9c0085fe3e611f1bae8ddac179ad0c0.xml</link>
+      <pubDate>Thu, 19 Nov 2026 08:00:04 +0100</pubDate>
+    </item>
+    <item>
+      <title>Pontes Pilot is operating normally</title>
+      <link>https://mid.ecb.europa.eu/rel/b5fb8cecdd0611f19e3d7b344b773b39.xml</link>
+      <pubDate>Thu, 19 Nov 2026 08:00:00 +0100</pubDate>
+    </item>
+    <item>
+      <title>T2S is operating normally</title>
+      <link>https://mid.ecb.europa.eu/rel/ac650607dd0611f1af883b1fced0a6a4.xml</link>
+      <pubDate>Thu, 19 Nov 2026 05:00:00 +0100</pubDate>
+    </item>
+  </channel>
+</rss>

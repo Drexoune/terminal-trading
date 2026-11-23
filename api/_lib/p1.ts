@@ -4,7 +4,8 @@
 // flux ; chiffres captés à l'étape O3), lues avec la clé secrète côté serveur.
 //
 //   GET /api/p1/state               semaine en cours, calendrier officiel, flux, chiffres captés
-//                                   et réactions du BTC des 40 derniers jours, état de la capture
+//                                   et réactions du BTC des 40 derniers jours, état de la capture,
+//                                   titres du fil d'actus des 48 dernières heures (O6)
 //   GET /api/p1/calendar?week=…     une semaine de l'archive (« AAAA-Wnn »)
 //   POST /api/p1/displayed          heure d'affichage d'un chiffre capté (porte P1), la première
 //                                   seulement, dans la minute qui suit sa publication
@@ -14,7 +15,10 @@ import type { Context } from './routes.js';
 import { rest, supabaseConfig, type SupabaseConfig } from './supabase.js';
 import type { FetchFn } from './okx.js';
 
-export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'release:state', 'release:last'] as const;
+export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'feed:news', 'news:feeds', 'release:state', 'release:last'] as const;
+/** Titres du fil d'actus (O6) relus au chargement : 48 dernières heures, 400 au plus. */
+export const NEWS_MS = 48 * 3_600_000;
+export const NEWS_MAX = 400;
 /** Chiffres captés et réactions du BTC des 40 derniers jours (même fenêtre que la passerelle). */
 export const RECENT_MS = 40 * 86_400_000;
 const WEEK = /^\d{4}-W\d{2}$/;
@@ -37,7 +41,10 @@ export async function p1State(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
   const recent = await rest(cfg, fetchFn, 'GET', 'p1_state', {
     select: 'key,value,updated_ms', or: '(key.like.release:us-*,key.like.reaction:*)', updated_ms: `gte.${now - RECENT_MS}`,
     order: 'key.asc', limit: '400' }, false);
-  const items = [...(week ? [week] : []), ...(rows as StateRow[]), ...(recent.rows as StateRow[])]
+  const news = await rest(cfg, fetchFn, 'GET', 'p1_state', {
+    select: 'key,value,updated_ms', key: 'like.news:item:*', updated_ms: `gte.${now - NEWS_MS}`, order: 'updated_ms.desc',
+    limit: String(NEWS_MAX) }, false);
+  const items = [...(week ? [week] : []), ...(rows as StateRow[]), ...(recent.rows as StateRow[]), ...(news.rows as StateRow[])]
     .map((r) => [r.key, r.value] as [string, unknown]);
   return { configured: true, items, computed_ms: now };
 }

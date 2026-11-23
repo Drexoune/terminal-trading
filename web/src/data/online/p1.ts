@@ -9,10 +9,12 @@
 //   toutes les 15 secondes quand Realtime est coupé ou non configuré.
 // - calendar:next (cinq prochains événements Fort ou Moyen) est recalculé toutes les 30 s.
 // - L'heure d'affichage d'un chiffre capté repart vers /api/p1/displayed (mesure de la porte).
+// - Les alertes (O4, données personnelles) sont relues à part : ./alerts.ts.
 
 import { nextEvents, type CalendarWeek } from '../../calendar/calendar';
 import { fetchJson } from '../gateway';
 import { keysWithPrefix, setValue } from '../store';
+import { startAlertsOnline } from './alerts';
 import { connectRealtime, realtimeConfig, type RealtimeStatus, type StateMessage } from './realtime';
 
 export const P1_STATUS_KEY = '$p1-online';
@@ -76,6 +78,8 @@ export interface OnlineDeps {
   load?: () => Promise<void>;
   setTimer?: (fn: () => void, ms: number) => unknown;
   clearTimer?: (id: unknown) => void;
+  /** Alertes en ligne (O4), relues derrière le mot de passe ; remplaçable en test. */
+  startAlerts?: () => () => void;
 }
 
 /** Démarre Realtime et la relecture ; renvoie de quoi tout arrêter (changement de mode). */
@@ -102,8 +106,10 @@ export function startP1Online(deps: OnlineDeps = {}): () => void {
     if (live !== wasLive) schedule();
   });
   const next = setInterval(() => refreshNext(Date.now()), NEXT_EVERY_MS);
+  const stopAlerts = (deps.startAlerts ?? startAlertsOnline)();
   return () => {
     stopped = true;
+    stopAlerts();
     if (timer !== null) clearTimer(timer);
     clearInterval(next);
     disconnect();
