@@ -1,0 +1,2450 @@
+{
+ "_comment": "Généré par scripts/make_p1_math_golden.py ; ne pas modifier à la main.",
+ "derive": {
+  "us-ahe-mm": {
+   "2023-01": null,
+   "2023-02": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2023-02 = 33.15, 2023-01 = 33.02 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-03": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2023-03 = 33.27, 2023-02 = 33.15 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-04": [
+    "0.5",
+    "API v1 du BLS · CES0500000003 : 2023-04 = 33.43, 2023-03 = 33.27 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-05": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2023-05 = 33.50, 2023-04 = 33.43 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-06": [
+    "0.6",
+    "API v1 du BLS · CES0500000003 : 2023-06 = 33.69, 2023-05 = 33.50 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-07": [
+    "0.5",
+    "API v1 du BLS · CES0500000003 : 2023-07 = 33.85, 2023-06 = 33.69 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-08": [
+    "0.1",
+    "API v1 du BLS · CES0500000003 : 2023-08 = 33.89, 2023-07 = 33.85 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-09": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2023-09 = 34.01, 2023-08 = 33.89 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-10": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2023-10 = 34.08, 2023-09 = 34.01 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-11": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2023-11 = 34.17, 2023-10 = 34.08 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-12": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2023-12 = 34.29, 2023-11 = 34.17 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-01": [
+    "0.5",
+    "API v1 du BLS · CES0500000003 : 2024-01 = 34.47, 2023-12 = 34.29 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "0.1",
+    "API v1 du BLS · CES0500000003 : 2024-02 = 34.52, 2024-01 = 34.47 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2024-03 = 34.65, 2024-02 = 34.52 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2024-04 = 34.76, 2024-03 = 34.65 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2024-05 = 34.89, 2024-04 = 34.76 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2024-06 = 35.01, 2024-05 = 34.89 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2024-07 = 35.08, 2024-06 = 35.01 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2024-08 = 35.22, 2024-07 = 35.08 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2024-09 = 35.34, 2024-08 = 35.22 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2024-10 = 35.46, 2024-09 = 35.34 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2024-11 = 35.60, 2024-10 = 35.46 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2024-12 = 35.69, 2024-11 = 35.60 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2025-01 = 35.84, 2024-12 = 35.69 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2025-02 = 35.94, 2025-01 = 35.84 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "0.5",
+    "API v1 du BLS · CES0500000003 : 2025-03 = 36.11, 2025-02 = 35.94 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "0.0",
+    "API v1 du BLS · CES0500000003 : 2025-04 = 36.12, 2025-03 = 36.11 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2025-05 = 36.28, 2025-04 = 36.12 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2025-06 = 36.36, 2025-05 = 36.28 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2025-07 = 36.47, 2025-06 = 36.36 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2025-08 = 36.62, 2025-07 = 36.47 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2025-09 = 36.70, 2025-08 = 36.62 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-10": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2025-10 = 36.85, 2025-09 = 36.70 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-11": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2025-11 = 37.00, 2025-10 = 36.85 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-12": [
+    "0.1",
+    "API v1 du BLS · CES0500000003 : 2025-12 = 37.02, 2025-11 = 37.00 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2026-01 = 37.15, 2025-12 = 37.02 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2026-02 = 37.27, 2026-01 = 37.15 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2026-03 = 37.35, 2026-02 = 37.27 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2026-04 = 37.41, 2026-03 = 37.35 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "0.2",
+    "API v1 du BLS · CES0500000003 : 2026-05 = 37.49, 2026-04 = 37.41 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2026-06 = 37.59, 2026-05 = 37.49 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "0.1",
+    "API v1 du BLS · CES0500000003 : 2026-07 = 37.64, 2026-06 = 37.59 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2026-08 = 37.76, 2026-07 = 37.64 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "0.3",
+    "API v1 du BLS · CES0500000003 : 2026-09 = 37.86, 2026-08 = 37.76 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-10": [
+    "0.4",
+    "API v1 du BLS · CES0500000003 : 2026-10 = 38.00, 2026-09 = 37.86 · variation sur un mois recalculée, arrondie au dixième"
+   ]
+  },
+  "us-core-cpi-mm": {
+   "2023-01": null,
+   "2023-02": [
+    "0.5",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-02 = 304.123, 2023-01 = 302.642 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-03": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-03 = 305.147, 2023-02 = 304.123 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-04": [
+    "0.5",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-04 = 306.534, 2023-03 = 305.147 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-05": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-05 = 307.652, 2023-04 = 306.534 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-06": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-06 = 308.322, 2023-05 = 307.652 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-07": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-07 = 308.960, 2023-06 = 308.322 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-08": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-08 = 309.580, 2023-07 = 308.960 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-09": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-09 = 310.539, 2023-08 = 309.580 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-10": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-10 = 311.457, 2023-09 = 310.539 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-11": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-11 = 312.392, 2023-10 = 311.457 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-12": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2023-12 = 313.195, 2023-11 = 312.392 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-01": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-01 = 314.319, 2023-12 = 313.195 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-02 = 315.564, 2024-01 = 314.319 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-03 = 316.792, 2024-02 = 315.564 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-04 = 317.649, 2024-03 = 316.792 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-05 = 318.095, 2024-04 = 317.649 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-06 = 318.390, 2024-05 = 318.095 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-07 = 318.940, 2024-06 = 318.390 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-08 = 319.750, 2024-07 = 318.940 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-09 = 320.732, 2024-08 = 319.750 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-10 = 321.731, 2024-09 = 320.732 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-11 = 322.657, 2024-10 = 321.731 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2024-12 = 323.259, 2024-11 = 322.657 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-01 = 324.638, 2024-12 = 323.259 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-02 = 325.465, 2025-01 = 324.638 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-03 = 325.690, 2025-02 = 325.465 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-04 = 326.467, 2025-03 = 325.690 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-05 = 326.893, 2025-04 = 326.467 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-06 = 327.658, 2025-05 = 326.893 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-07 = 328.682, 2025-06 = 327.658 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-08 = 329.700, 2025-07 = 328.682 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-09 = 330.418, 2025-08 = 329.700 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-10": null,
+   "2025-11": null,
+   "2025-12": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2025-12 = 331.814, 2025-11 = 331.043 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-01 = 332.793, 2025-12 = 331.814 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-02 = 333.512, 2026-01 = 332.793 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-03 = 334.165, 2026-02 = 333.512 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-04 = 335.423, 2026-03 = 334.165 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-05 = 336.121, 2026-04 = 335.423 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "0.0",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-06 = 336.065, 2026-05 = 336.121 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-07 = 336.789, 2026-06 = 336.065 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-08 = 337.765, 2026-07 = 336.789 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-09 = 338.896, 2026-08 = 337.765 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-10": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0L1E : 2026-10 = 339.900, 2026-09 = 338.896 · variation sur un mois recalculée, arrondie au dixième"
+   ]
+  },
+  "us-core-cpi-yy": {
+   "2023-01": null,
+   "2023-02": null,
+   "2023-03": null,
+   "2023-04": null,
+   "2023-05": null,
+   "2023-06": null,
+   "2023-07": null,
+   "2023-08": null,
+   "2023-09": null,
+   "2023-10": null,
+   "2023-11": null,
+   "2023-12": null,
+   "2024-01": [
+    "3.9",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-01 = 313.623, 2023-01 = 301.962 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "3.8",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-02 = 315.419, 2023-02 = 304.011 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "3.8",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-03 = 317.088, 2023-03 = 305.476 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "3.6",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-04 = 317.978, 2023-04 = 306.899 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "3.4",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-05 = 318.629, 2023-05 = 308.096 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-06 = 319.003, 2023-06 = 308.910 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "3.2",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-07 = 319.214, 2023-07 = 309.402 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "3.2",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-08 = 320.017, 2023-08 = 310.103 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-09 = 321.109, 2023-09 = 310.817 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-10 = 321.758, 2023-10 = 311.380 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-11 = 321.947, 2023-11 = 311.606 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "3.2",
+    "API v1 du BLS · CUUR0000SA0L1E : 2024-12 = 322.007, 2023-12 = 311.907 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-01 = 323.842, 2024-01 = 313.623 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "3.1",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-02 = 325.252, 2024-02 = 315.419 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "2.8",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-03 = 325.933, 2024-03 = 317.088 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "2.8",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-04 = 326.815, 2024-04 = 317.978 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "2.8",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-05 = 327.509, 2024-05 = 318.629 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "2.9",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-06 = 328.364, 2024-06 = 319.003 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "3.1",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-07 = 328.980, 2024-07 = 319.214 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "3.1",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-08 = 329.970, 2024-08 = 320.017 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "3.0",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-09 = 330.804, 2024-09 = 321.109 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-10": null,
+   "2025-11": [
+    "2.6",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-11 = 330.425, 2024-11 = 321.947 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-12": [
+    "2.6",
+    "API v1 du BLS · CUUR0000SA0L1E : 2025-12 = 330.506, 2024-12 = 322.007 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "2.5",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-01 = 331.950, 2025-01 = 323.842 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "2.5",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-02 = 333.242, 2025-02 = 325.252 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "2.6",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-03 = 334.391, 2025-03 = 325.933 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "2.8",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-04 = 335.803, 2025-04 = 326.815 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "2.9",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-05 = 336.846, 2025-05 = 327.509 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "2.6",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-06 = 336.882, 2025-06 = 328.364 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "2.5",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-07 = 337.133, 2025-07 = 328.980 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "2.4",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-08 = 338.041, 2025-08 = 329.970 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "2.6",
+    "API v1 du BLS · CUUR0000SA0L1E : 2026-09 = 339.287, 2025-09 = 330.804 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-10": null
+  },
+  "us-core-ppi-mm": {
+   "2023-01": null,
+   "2023-02": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2023-02 = 138.279, 2023-01 = 137.924 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-03": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2023-03 = 138.213, 2023-02 = 138.279 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-04": [
+    "0.2",
+    "API v1 du BLS · WPSFD49104 : 2023-04 = 138.508, 2023-03 = 138.213 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-05": [
+    "0.1",
+    "API v1 du BLS · WPSFD49104 : 2023-05 = 138.671, 2023-04 = 138.508 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-06": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2023-06 = 138.702, 2023-05 = 138.671 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-07": [
+    "0.6",
+    "API v1 du BLS · WPSFD49104 : 2023-07 = 139.562, 2023-06 = 138.702 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-08": [
+    "0.2",
+    "API v1 du BLS · WPSFD49104 : 2023-08 = 139.839, 2023-07 = 139.562 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-09": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2023-09 = 139.819, 2023-08 = 139.839 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-10": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2023-10 = 139.884, 2023-09 = 139.819 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-11": [
+    "0.2",
+    "API v1 du BLS · WPSFD49104 : 2023-11 = 140.182, 2023-10 = 139.884 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-12": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2023-12 = 140.138, 2023-11 = 140.182 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-01": [
+    "0.4",
+    "API v1 du BLS · WPSFD49104 : 2024-01 = 140.679, 2023-12 = 140.138 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "0.4",
+    "API v1 du BLS · WPSFD49104 : 2024-02 = 141.179, 2024-01 = 140.679 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "0.1",
+    "API v1 du BLS · WPSFD49104 : 2024-03 = 141.347, 2024-02 = 141.179 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "0.5",
+    "API v1 du BLS · WPSFD49104 : 2024-04 = 142.038, 2024-03 = 141.347 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2024-05 = 142.411, 2024-04 = 142.038 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "0.6",
+    "API v1 du BLS · WPSFD49104 : 2024-06 = 143.263, 2024-05 = 142.411 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "-0.1",
+    "API v1 du BLS · WPSFD49104 : 2024-07 = 143.186, 2024-06 = 143.263 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "0.4",
+    "API v1 du BLS · WPSFD49104 : 2024-08 = 143.810, 2024-07 = 143.186 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "0.4",
+    "API v1 du BLS · WPSFD49104 : 2024-09 = 144.442, 2024-08 = 143.810 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2024-10 = 144.913, 2024-09 = 144.442 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2024-11 = 144.908, 2024-10 = 144.913 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2024-12 = 145.369, 2024-11 = 144.908 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "0.6",
+    "API v1 du BLS · WPSFD49104 : 2025-01 = 146.179, 2024-12 = 145.369 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "0.2",
+    "API v1 du BLS · WPSFD49104 : 2025-02 = 146.429, 2025-01 = 146.179 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "0.2",
+    "API v1 du BLS · WPSFD49104 : 2025-03 = 146.691, 2025-02 = 146.429 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "-0.2",
+    "API v1 du BLS · WPSFD49104 : 2025-04 = 146.385, 2025-03 = 146.691 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "0.4",
+    "API v1 du BLS · WPSFD49104 : 2025-05 = 146.947, 2025-04 = 146.385 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "0.1",
+    "API v1 du BLS · WPSFD49104 : 2025-06 = 147.115, 2025-05 = 146.947 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "0.8",
+    "API v1 du BLS · WPSFD49104 : 2025-07 = 148.281, 2025-06 = 147.115 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "-0.2",
+    "API v1 du BLS · WPSFD49104 : 2025-08 = 148.001, 2025-07 = 148.281 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "0.5",
+    "API v1 du BLS · WPSFD49104 : 2025-09 = 148.767, 2025-08 = 148.001 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-10": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2025-10 = 149.219, 2025-09 = 148.767 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-11": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2025-11 = 149.594, 2025-10 = 149.219 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-12": [
+    "0.5",
+    "API v1 du BLS · WPSFD49104 : 2025-12 = 150.350, 2025-11 = 149.594 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "0.8",
+    "API v1 du BLS · WPSFD49104 : 2026-01 = 151.600, 2025-12 = 150.350 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2026-02 = 152.033, 2026-01 = 151.600 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2026-03 = 152.471, 2026-02 = 152.033 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "0.7",
+    "API v1 du BLS · WPSFD49104 : 2026-04 = 153.594, 2026-03 = 152.471 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "0.0",
+    "API v1 du BLS · WPSFD49104 : 2026-05 = 153.577, 2026-04 = 153.594 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "0.4",
+    "API v1 du BLS · WPSFD49104 : 2026-06 = 154.236, 2026-05 = 153.577 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2026-07 = 154.664, 2026-06 = 154.236 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "0.2",
+    "API v1 du BLS · WPSFD49104 : 2026-08 = 154.960, 2026-07 = 154.664 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "0.8",
+    "API v1 du BLS · WPSFD49104 : 2026-09 = 156.230, 2026-08 = 154.960 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-10": [
+    "0.3",
+    "API v1 du BLS · WPSFD49104 : 2026-10 = 156.740, 2026-09 = 156.230 · variation sur un mois recalculée, arrondie au dixième"
+   ]
+  },
+  "us-cpi-mm": {
+   "2023-01": null,
+   "2023-02": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2023-02 = 301.450, 2023-01 = 300.420 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-03": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0 : 2023-03 = 301.821, 2023-02 = 301.450 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-04": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2023-04 = 302.845, 2023-03 = 301.821 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-05": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2023-05 = 303.334, 2023-04 = 302.845 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-06": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2023-06 = 304.014, 2023-05 = 303.334 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-07": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2023-07 = 304.609, 2023-06 = 304.014 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-08": [
+    "0.5",
+    "API v1 du BLS · CUSR0000SA0 : 2023-08 = 306.082, 2023-07 = 304.609 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-09": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2023-09 = 307.276, 2023-08 = 306.082 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-10": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0 : 2023-10 = 307.696, 2023-09 = 307.276 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-11": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0 : 2023-11 = 308.148, 2023-10 = 307.696 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-12": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2023-12 = 308.741, 2023-11 = 308.148 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-01": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2024-01 = 309.698, 2023-12 = 308.741 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2024-02 = 310.967, 2024-01 = 309.698 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2024-03 = 312.345, 2024-02 = 310.967 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2024-04 = 313.023, 2024-03 = 312.345 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "0.0",
+    "API v1 du BLS · CUSR0000SA0 : 2024-05 = 313.175, 2024-04 = 313.023 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "0.0",
+    "API v1 du BLS · CUSR0000SA0 : 2024-06 = 313.044, 2024-05 = 313.175 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2024-07 = 313.569, 2024-06 = 313.044 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2024-08 = 314.062, 2024-07 = 313.569 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2024-09 = 314.732, 2024-08 = 314.062 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2024-10 = 315.631, 2024-09 = 314.732 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2024-11 = 316.528, 2024-10 = 315.631 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2024-12 = 317.604, 2024-11 = 316.528 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2025-01 = 318.961, 2024-12 = 317.604 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2025-02 = 319.679, 2025-01 = 318.961 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "0.0",
+    "API v1 du BLS · CUSR0000SA0 : 2025-03 = 319.785, 2025-02 = 319.679 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2025-04 = 320.302, 2025-03 = 319.785 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0 : 2025-05 = 320.620, 2025-04 = 320.302 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2025-06 = 321.435, 2025-05 = 320.620 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2025-07 = 322.169, 2025-06 = 321.435 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2025-08 = 323.291, 2025-07 = 322.169 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2025-09 = 324.245, 2025-08 = 323.291 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-10": null,
+   "2025-11": null,
+   "2025-12": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2025-12 = 326.031, 2025-11 = 325.063 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "0.2",
+    "API v1 du BLS · CUSR0000SA0 : 2026-01 = 326.588, 2025-12 = 326.031 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "0.3",
+    "API v1 du BLS · CUSR0000SA0 : 2026-02 = 327.460, 2026-01 = 326.588 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "0.9",
+    "API v1 du BLS · CUSR0000SA0 : 2026-03 = 330.293, 2026-02 = 327.460 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "0.6",
+    "API v1 du BLS · CUSR0000SA0 : 2026-04 = 332.407, 2026-03 = 330.293 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "0.5",
+    "API v1 du BLS · CUSR0000SA0 : 2026-05 = 333.979, 2026-04 = 332.407 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "-0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2026-06 = 332.568, 2026-05 = 333.979 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "0.1",
+    "API v1 du BLS · CUSR0000SA0 : 2026-07 = 332.813, 2026-06 = 332.568 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2026-08 = 334.131, 2026-07 = 332.813 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "0.6",
+    "API v1 du BLS · CUSR0000SA0 : 2026-09 = 336.298, 2026-08 = 334.131 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-10": [
+    "0.4",
+    "API v1 du BLS · CUSR0000SA0 : 2026-10 = 337.476, 2026-09 = 336.298 · variation sur un mois recalculée, arrondie au dixième"
+   ]
+  },
+  "us-cpi-yy": {
+   "2023-01": null,
+   "2023-02": null,
+   "2023-03": null,
+   "2023-04": null,
+   "2023-05": null,
+   "2023-06": null,
+   "2023-07": null,
+   "2023-08": null,
+   "2023-09": null,
+   "2023-10": null,
+   "2023-11": null,
+   "2023-12": null,
+   "2024-01": [
+    "3.1",
+    "API v1 du BLS · CUUR0000SA0 : 2024-01 = 308.417, 2023-01 = 299.170 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "3.2",
+    "API v1 du BLS · CUUR0000SA0 : 2024-02 = 310.326, 2023-02 = 300.840 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "3.5",
+    "API v1 du BLS · CUUR0000SA0 : 2024-03 = 312.332, 2023-03 = 301.836 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "3.4",
+    "API v1 du BLS · CUUR0000SA0 : 2024-04 = 313.548, 2023-04 = 303.363 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0 : 2024-05 = 314.069, 2023-05 = 304.127 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "3.0",
+    "API v1 du BLS · CUUR0000SA0 : 2024-06 = 314.175, 2023-06 = 305.109 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "2.9",
+    "API v1 du BLS · CUUR0000SA0 : 2024-07 = 314.540, 2023-07 = 305.691 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "2.5",
+    "API v1 du BLS · CUUR0000SA0 : 2024-08 = 314.796, 2023-08 = 307.026 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "2.4",
+    "API v1 du BLS · CUUR0000SA0 : 2024-09 = 315.301, 2023-09 = 307.789 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "2.6",
+    "API v1 du BLS · CUUR0000SA0 : 2024-10 = 315.664, 2023-10 = 307.671 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "2.7",
+    "API v1 du BLS · CUUR0000SA0 : 2024-11 = 315.493, 2023-11 = 307.051 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "2.9",
+    "API v1 du BLS · CUUR0000SA0 : 2024-12 = 315.605, 2023-12 = 306.746 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "3.0",
+    "API v1 du BLS · CUUR0000SA0 : 2025-01 = 317.671, 2024-01 = 308.417 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "2.8",
+    "API v1 du BLS · CUUR0000SA0 : 2025-02 = 319.082, 2024-02 = 310.326 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "2.4",
+    "API v1 du BLS · CUUR0000SA0 : 2025-03 = 319.799, 2024-03 = 312.332 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "2.3",
+    "API v1 du BLS · CUUR0000SA0 : 2025-04 = 320.795, 2024-04 = 313.548 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "2.4",
+    "API v1 du BLS · CUUR0000SA0 : 2025-05 = 321.465, 2024-05 = 314.069 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "2.7",
+    "API v1 du BLS · CUUR0000SA0 : 2025-06 = 322.561, 2024-06 = 314.175 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "2.7",
+    "API v1 du BLS · CUUR0000SA0 : 2025-07 = 323.048, 2024-07 = 314.540 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "2.9",
+    "API v1 du BLS · CUUR0000SA0 : 2025-08 = 323.976, 2024-08 = 314.796 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "3.0",
+    "API v1 du BLS · CUUR0000SA0 : 2025-09 = 324.800, 2024-09 = 315.301 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-10": null,
+   "2025-11": [
+    "2.7",
+    "API v1 du BLS · CUUR0000SA0 : 2025-11 = 324.122, 2024-11 = 315.493 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2025-12": [
+    "2.7",
+    "API v1 du BLS · CUUR0000SA0 : 2025-12 = 324.054, 2024-12 = 315.605 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "2.4",
+    "API v1 du BLS · CUUR0000SA0 : 2026-01 = 325.252, 2025-01 = 317.671 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "2.4",
+    "API v1 du BLS · CUUR0000SA0 : 2026-02 = 326.785, 2025-02 = 319.082 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "3.3",
+    "API v1 du BLS · CUUR0000SA0 : 2026-03 = 330.213, 2025-03 = 319.799 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "3.8",
+    "API v1 du BLS · CUUR0000SA0 : 2026-04 = 333.020, 2025-04 = 320.795 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "4.2",
+    "API v1 du BLS · CUUR0000SA0 : 2026-05 = 335.123, 2025-05 = 321.465 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "3.5",
+    "API v1 du BLS · CUUR0000SA0 : 2026-06 = 333.952, 2025-06 = 322.561 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "3.4",
+    "API v1 du BLS · CUUR0000SA0 : 2026-07 = 333.918, 2025-07 = 323.048 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "3.4",
+    "API v1 du BLS · CUUR0000SA0 : 2026-08 = 334.980, 2025-08 = 323.976 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "3.7",
+    "API v1 du BLS · CUUR0000SA0 : 2026-09 = 336.940, 2025-09 = 324.800 · variation sur un an recalculée, arrondie au dixième"
+   ],
+   "2026-10": null
+  },
+  "us-nfp": {
+   "2023-01": null,
+   "2023-02": [
+    "290",
+    "API v1 du BLS · CES0000000001 : 2023-02 = 155066, 2023-01 = 154776 · écart de niveau recalculé"
+   ],
+   "2023-03": [
+    "68",
+    "API v1 du BLS · CES0000000001 : 2023-03 = 155134, 2023-02 = 155066 · écart de niveau recalculé"
+   ],
+   "2023-04": [
+    "241",
+    "API v1 du BLS · CES0000000001 : 2023-04 = 155375, 2023-03 = 155134 · écart de niveau recalculé"
+   ],
+   "2023-05": [
+    "280",
+    "API v1 du BLS · CES0000000001 : 2023-05 = 155655, 2023-04 = 155375 · écart de niveau recalculé"
+   ],
+   "2023-06": [
+    "225",
+    "API v1 du BLS · CES0000000001 : 2023-06 = 155880, 2023-05 = 155655 · écart de niveau recalculé"
+   ],
+   "2023-07": [
+    "163",
+    "API v1 du BLS · CES0000000001 : 2023-07 = 156043, 2023-06 = 155880 · écart de niveau recalculé"
+   ],
+   "2023-08": [
+    "218",
+    "API v1 du BLS · CES0000000001 : 2023-08 = 156261, 2023-07 = 156043 · écart de niveau recalculé"
+   ],
+   "2023-09": [
+    "156",
+    "API v1 du BLS · CES0000000001 : 2023-09 = 156417, 2023-08 = 156261 · écart de niveau recalculé"
+   ],
+   "2023-10": [
+    "159",
+    "API v1 du BLS · CES0000000001 : 2023-10 = 156576, 2023-09 = 156417 · écart de niveau recalculé"
+   ],
+   "2023-11": [
+    "127",
+    "API v1 du BLS · CES0000000001 : 2023-11 = 156703, 2023-10 = 156576 · écart de niveau recalculé"
+   ],
+   "2023-12": [
+    "154",
+    "API v1 du BLS · CES0000000001 : 2023-12 = 156857, 2023-11 = 156703 · écart de niveau recalculé"
+   ],
+   "2024-01": [
+    "175",
+    "API v1 du BLS · CES0000000001 : 2024-01 = 157032, 2023-12 = 156857 · écart de niveau recalculé"
+   ],
+   "2024-02": [
+    "206",
+    "API v1 du BLS · CES0000000001 : 2024-02 = 157238, 2024-01 = 157032 · écart de niveau recalculé"
+   ],
+   "2024-03": [
+    "228",
+    "API v1 du BLS · CES0000000001 : 2024-03 = 157466, 2024-02 = 157238 · écart de niveau recalculé"
+   ],
+   "2024-04": [
+    "64",
+    "API v1 du BLS · CES0000000001 : 2024-04 = 157530, 2024-03 = 157466 · écart de niveau recalculé"
+   ],
+   "2024-05": [
+    "78",
+    "API v1 du BLS · CES0000000001 : 2024-05 = 157608, 2024-04 = 157530 · écart de niveau recalculé"
+   ],
+   "2024-06": [
+    "87",
+    "API v1 du BLS · CES0000000001 : 2024-06 = 157695, 2024-05 = 157608 · écart de niveau recalculé"
+   ],
+   "2024-07": [
+    "53",
+    "API v1 du BLS · CES0000000001 : 2024-07 = 157748, 2024-06 = 157695 · écart de niveau recalculé"
+   ],
+   "2024-08": [
+    "9",
+    "API v1 du BLS · CES0000000001 : 2024-08 = 157757, 2024-07 = 157748 · écart de niveau recalculé"
+   ],
+   "2024-09": [
+    "155",
+    "API v1 du BLS · CES0000000001 : 2024-09 = 157912, 2024-08 = 157757 · écart de niveau recalculé"
+   ],
+   "2024-10": [
+    "33",
+    "API v1 du BLS · CES0000000001 : 2024-10 = 157945, 2024-09 = 157912 · écart de niveau recalculé"
+   ],
+   "2024-11": [
+    "134",
+    "API v1 du BLS · CES0000000001 : 2024-11 = 158079, 2024-10 = 157945 · écart de niveau recalculé"
+   ],
+   "2024-12": [
+    "237",
+    "API v1 du BLS · CES0000000001 : 2024-12 = 158316, 2024-11 = 158079 · écart de niveau recalculé"
+   ],
+   "2025-01": [
+    "-48",
+    "API v1 du BLS · CES0000000001 : 2025-01 = 158268, 2024-12 = 158316 · écart de niveau recalculé"
+   ],
+   "2025-02": [
+    "42",
+    "API v1 du BLS · CES0000000001 : 2025-02 = 158310, 2025-01 = 158268 · écart de niveau recalculé"
+   ],
+   "2025-03": [
+    "67",
+    "API v1 du BLS · CES0000000001 : 2025-03 = 158377, 2025-02 = 158310 · écart de niveau recalculé"
+   ],
+   "2025-04": [
+    "108",
+    "API v1 du BLS · CES0000000001 : 2025-04 = 158485, 2025-03 = 158377 · écart de niveau recalculé"
+   ],
+   "2025-05": [
+    "13",
+    "API v1 du BLS · CES0000000001 : 2025-05 = 158498, 2025-04 = 158485 · écart de niveau recalculé"
+   ],
+   "2025-06": [
+    "-20",
+    "API v1 du BLS · CES0000000001 : 2025-06 = 158478, 2025-05 = 158498 · écart de niveau recalculé"
+   ],
+   "2025-07": [
+    "64",
+    "API v1 du BLS · CES0000000001 : 2025-07 = 158542, 2025-06 = 158478 · écart de niveau recalculé"
+   ],
+   "2025-08": [
+    "-70",
+    "API v1 du BLS · CES0000000001 : 2025-08 = 158472, 2025-07 = 158542 · écart de niveau recalculé"
+   ],
+   "2025-09": [
+    "76",
+    "API v1 du BLS · CES0000000001 : 2025-09 = 158548, 2025-08 = 158472 · écart de niveau recalculé"
+   ],
+   "2025-10": [
+    "-140",
+    "API v1 du BLS · CES0000000001 : 2025-10 = 158408, 2025-09 = 158548 · écart de niveau recalculé"
+   ],
+   "2025-11": [
+    "41",
+    "API v1 du BLS · CES0000000001 : 2025-11 = 158449, 2025-10 = 158408 · écart de niveau recalculé"
+   ],
+   "2025-12": [
+    "-17",
+    "API v1 du BLS · CES0000000001 : 2025-12 = 158432, 2025-11 = 158449 · écart de niveau recalculé"
+   ],
+   "2026-01": [
+    "160",
+    "API v1 du BLS · CES0000000001 : 2026-01 = 158592, 2025-12 = 158432 · écart de niveau recalculé"
+   ],
+   "2026-02": [
+    "-156",
+    "API v1 du BLS · CES0000000001 : 2026-02 = 158436, 2026-01 = 158592 · écart de niveau recalculé"
+   ],
+   "2026-03": [
+    "214",
+    "API v1 du BLS · CES0000000001 : 2026-03 = 158650, 2026-02 = 158436 · écart de niveau recalculé"
+   ],
+   "2026-04": [
+    "148",
+    "API v1 du BLS · CES0000000001 : 2026-04 = 158798, 2026-03 = 158650 · écart de niveau recalculé"
+   ],
+   "2026-05": [
+    "63",
+    "API v1 du BLS · CES0000000001 : 2026-05 = 158861, 2026-04 = 158798 · écart de niveau recalculé"
+   ],
+   "2026-06": [
+    "31",
+    "API v1 du BLS · CES0000000001 : 2026-06 = 158892, 2026-05 = 158861 · écart de niveau recalculé"
+   ],
+   "2026-07": [
+    "-10",
+    "API v1 du BLS · CES0000000001 : 2026-07 = 158882, 2026-06 = 158892 · écart de niveau recalculé"
+   ],
+   "2026-08": [
+    "186",
+    "API v1 du BLS · CES0000000001 : 2026-08 = 159068, 2026-07 = 158882 · écart de niveau recalculé"
+   ],
+   "2026-09": [
+    "60",
+    "API v1 du BLS · CES0000000001 : 2026-09 = 159128, 2026-08 = 159068 · écart de niveau recalculé"
+   ],
+   "2026-10": [
+    "165",
+    "API v1 du BLS · CES0000000001 : 2026-10 = 159293, 2026-09 = 159128 · écart de niveau recalculé"
+   ]
+  },
+  "us-ppi-mm": {
+   "2023-01": null,
+   "2023-02": [
+    "0.0",
+    "API v1 du BLS · WPSFD4 : 2023-02 = 141.135, 2023-01 = 141.203 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-03": [
+    "-0.3",
+    "API v1 du BLS · WPSFD4 : 2023-03 = 140.736, 2023-02 = 141.135 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-04": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2023-04 = 140.934, 2023-03 = 140.736 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-05": [
+    "-0.2",
+    "API v1 du BLS · WPSFD4 : 2023-05 = 140.614, 2023-04 = 140.934 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-06": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2023-06 = 140.698, 2023-05 = 140.614 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-07": [
+    "0.6",
+    "API v1 du BLS · WPSFD4 : 2023-07 = 141.485, 2023-06 = 140.698 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-08": [
+    "0.7",
+    "API v1 du BLS · WPSFD4 : 2023-08 = 142.409, 2023-07 = 141.485 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-09": [
+    "0.2",
+    "API v1 du BLS · WPSFD4 : 2023-09 = 142.744, 2023-08 = 142.409 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-10": [
+    "-0.3",
+    "API v1 du BLS · WPSFD4 : 2023-10 = 142.249, 2023-09 = 142.744 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-11": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2023-11 = 142.334, 2023-10 = 142.249 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2023-12": [
+    "-0.1",
+    "API v1 du BLS · WPSFD4 : 2023-12 = 142.165, 2023-11 = 142.334 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-01": [
+    "0.3",
+    "API v1 du BLS · WPSFD4 : 2024-01 = 142.576, 2023-12 = 142.165 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-02": [
+    "0.5",
+    "API v1 du BLS · WPSFD4 : 2024-02 = 143.356, 2024-01 = 142.576 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-03": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2024-03 = 143.521, 2024-02 = 143.356 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-04": [
+    "0.5",
+    "API v1 du BLS · WPSFD4 : 2024-04 = 144.197, 2024-03 = 143.521 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-05": [
+    "0.0",
+    "API v1 du BLS · WPSFD4 : 2024-05 = 144.224, 2024-04 = 144.197 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-06": [
+    "0.4",
+    "API v1 du BLS · WPSFD4 : 2024-06 = 144.869, 2024-05 = 144.224 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-07": [
+    "0.0",
+    "API v1 du BLS · WPSFD4 : 2024-07 = 144.922, 2024-06 = 144.869 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-08": [
+    "0.3",
+    "API v1 du BLS · WPSFD4 : 2024-08 = 145.409, 2024-07 = 144.922 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-09": [
+    "0.3",
+    "API v1 du BLS · WPSFD4 : 2024-09 = 145.803, 2024-08 = 145.409 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-10": [
+    "0.3",
+    "API v1 du BLS · WPSFD4 : 2024-10 = 146.294, 2024-09 = 145.803 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-11": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2024-11 = 146.447, 2024-10 = 146.294 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2024-12": [
+    "0.4",
+    "API v1 du BLS · WPSFD4 : 2024-12 = 147.052, 2024-11 = 146.447 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-01": [
+    "0.6",
+    "API v1 du BLS · WPSFD4 : 2025-01 = 147.975, 2024-12 = 147.052 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-02": [
+    "0.2",
+    "API v1 du BLS · WPSFD4 : 2025-02 = 148.233, 2025-01 = 147.975 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-03": [
+    "-0.1",
+    "API v1 du BLS · WPSFD4 : 2025-03 = 148.055, 2025-02 = 148.233 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-04": [
+    "-0.3",
+    "API v1 du BLS · WPSFD4 : 2025-04 = 147.655, 2025-03 = 148.055 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-05": [
+    "0.3",
+    "API v1 du BLS · WPSFD4 : 2025-05 = 148.153, 2025-04 = 147.655 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-06": [
+    "0.2",
+    "API v1 du BLS · WPSFD4 : 2025-06 = 148.393, 2025-05 = 148.153 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-07": [
+    "0.8",
+    "API v1 du BLS · WPSFD4 : 2025-07 = 149.597, 2025-06 = 148.393 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-08": [
+    "-0.2",
+    "API v1 du BLS · WPSFD4 : 2025-08 = 149.327, 2025-07 = 149.597 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-09": [
+    "0.6",
+    "API v1 du BLS · WPSFD4 : 2025-09 = 150.245, 2025-08 = 149.327 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-10": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2025-10 = 150.439, 2025-09 = 150.245 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-11": [
+    "0.4",
+    "API v1 du BLS · WPSFD4 : 2025-11 = 151.054, 2025-10 = 150.439 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2025-12": [
+    "0.4",
+    "API v1 du BLS · WPSFD4 : 2025-12 = 151.592, 2025-11 = 151.054 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-01": [
+    "0.6",
+    "API v1 du BLS · WPSFD4 : 2026-01 = 152.468, 2025-12 = 151.592 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-02": [
+    "0.5",
+    "API v1 du BLS · WPSFD4 : 2026-02 = 153.204, 2026-01 = 152.468 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-03": [
+    "0.8",
+    "API v1 du BLS · WPSFD4 : 2026-03 = 154.393, 2026-02 = 153.204 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-04": [
+    "1.1",
+    "API v1 du BLS · WPSFD4 : 2026-04 = 156.061, 2026-03 = 154.393 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-05": [
+    "0.5",
+    "API v1 du BLS · WPSFD4 : 2026-05 = 156.874, 2026-04 = 156.061 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-06": [
+    "-0.1",
+    "API v1 du BLS · WPSFD4 : 2026-06 = 156.675, 2026-05 = 156.874 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-07": [
+    "0.1",
+    "API v1 du BLS · WPSFD4 : 2026-07 = 156.834, 2026-06 = 156.675 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-08": [
+    "0.4",
+    "API v1 du BLS · WPSFD4 : 2026-08 = 157.482, 2026-07 = 156.834 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-09": [
+    "1.4",
+    "API v1 du BLS · WPSFD4 : 2026-09 = 159.699, 2026-08 = 157.482 · variation sur un mois recalculée, arrondie au dixième"
+   ],
+   "2026-10": [
+    "0.3",
+    "API v1 du BLS · WPSFD4 : 2026-10 = 160.254, 2026-09 = 159.699 · variation sur un mois recalculée, arrondie au dixième"
+   ]
+  },
+  "us-prod-qq": {
+   "2023-Q1": [
+    "1.4",
+    "API v1 du BLS · PRS85006092 : 2023-Q1 = 1.4 · valeur de la série"
+   ],
+   "2023-Q2": [
+    "3.5",
+    "API v1 du BLS · PRS85006092 : 2023-Q2 = 3.5 · valeur de la série"
+   ],
+   "2023-Q3": [
+    "4.8",
+    "API v1 du BLS · PRS85006092 : 2023-Q3 = 4.8 · valeur de la série"
+   ],
+   "2023-Q4": [
+    "4.2",
+    "API v1 du BLS · PRS85006092 : 2023-Q4 = 4.2 · valeur de la série"
+   ],
+   "2024-Q1": [
+    "1.2",
+    "API v1 du BLS · PRS85006092 : 2024-Q1 = 1.2 · valeur de la série"
+   ],
+   "2024-Q2": [
+    "3.6",
+    "API v1 du BLS · PRS85006092 : 2024-Q2 = 3.6 · valeur de la série"
+   ],
+   "2024-Q3": [
+    "3.4",
+    "API v1 du BLS · PRS85006092 : 2024-Q3 = 3.4 · valeur de la série"
+   ],
+   "2024-Q4": [
+    "2.1",
+    "API v1 du BLS · PRS85006092 : 2024-Q4 = 2.1 · valeur de la série"
+   ],
+   "2025-Q1": [
+    "-0.1",
+    "API v1 du BLS · PRS85006092 : 2025-Q1 = -0.1 · valeur de la série"
+   ],
+   "2025-Q2": [
+    "4.2",
+    "API v1 du BLS · PRS85006092 : 2025-Q2 = 4.2 · valeur de la série"
+   ],
+   "2025-Q3": [
+    "4.5",
+    "API v1 du BLS · PRS85006092 : 2025-Q3 = 4.5 · valeur de la série"
+   ],
+   "2025-Q4": [
+    "1.2",
+    "API v1 du BLS · PRS85006092 : 2025-Q4 = 1.2 · valeur de la série"
+   ],
+   "2026-Q1": [
+    "1.4",
+    "API v1 du BLS · PRS85006092 : 2026-Q1 = 1.4 · valeur de la série"
+   ],
+   "2026-Q2": [
+    "2.1",
+    "API v1 du BLS · PRS85006092 : 2026-Q2 = 2.1 · valeur de la série"
+   ],
+   "2026-Q3": [
+    "3.6",
+    "API v1 du BLS · PRS85006092 : 2026-Q3 = 3.6 · valeur de la série"
+   ]
+  },
+  "us-ulc-qq": {
+   "2023-Q1": [
+    "2.3",
+    "API v1 du BLS · PRS85006112 : 2023-Q1 = 2.3 · valeur de la série"
+   ],
+   "2023-Q2": [
+    "3.2",
+    "API v1 du BLS · PRS85006112 : 2023-Q2 = 3.2 · valeur de la série"
+   ],
+   "2023-Q3": [
+    "1.4",
+    "API v1 du BLS · PRS85006112 : 2023-Q3 = 1.4 · valeur de la série"
+   ],
+   "2023-Q4": [
+    "0.8",
+    "API v1 du BLS · PRS85006112 : 2023-Q4 = 0.8 · valeur de la série"
+   ],
+   "2024-Q1": [
+    "4.3",
+    "API v1 du BLS · PRS85006112 : 2024-Q1 = 4.3 · valeur de la série"
+   ],
+   "2024-Q2": [
+    "0.8",
+    "API v1 du BLS · PRS85006112 : 2024-Q2 = 0.8 · valeur de la série"
+   ],
+   "2024-Q3": [
+    "1.0",
+    "API v1 du BLS · PRS85006112 : 2024-Q3 = 1.0 · valeur de la série"
+   ],
+   "2024-Q4": [
+    "1.8",
+    "API v1 du BLS · PRS85006112 : 2024-Q4 = 1.8 · valeur de la série"
+   ],
+   "2025-Q1": [
+    "5.2",
+    "API v1 du BLS · PRS85006112 : 2025-Q1 = 5.2 · valeur de la série"
+   ],
+   "2025-Q2": [
+    "-1.1",
+    "API v1 du BLS · PRS85006112 : 2025-Q2 = -1.1 · valeur de la série"
+   ],
+   "2025-Q3": [
+    "0.1",
+    "API v1 du BLS · PRS85006112 : 2025-Q3 = 0.1 · valeur de la série"
+   ],
+   "2025-Q4": [
+    "4.7",
+    "API v1 du BLS · PRS85006112 : 2025-Q4 = 4.7 · valeur de la série"
+   ],
+   "2026-Q1": [
+    "3.7",
+    "API v1 du BLS · PRS85006112 : 2026-Q1 = 3.7 · valeur de la série"
+   ],
+   "2026-Q2": [
+    "1.9",
+    "API v1 du BLS · PRS85006112 : 2026-Q2 = 1.9 · valeur de la série"
+   ],
+   "2026-Q3": [
+    "-0.7",
+    "API v1 du BLS · PRS85006112 : 2026-Q3 = -0.7 · valeur de la série"
+   ]
+  },
+  "us-unemployment": {
+   "2023-01": [
+    "3.5",
+    "API v1 du BLS · LNS14000000 : 2023-01 = 3.5 · valeur de la série"
+   ],
+   "2023-02": [
+    "3.6",
+    "API v1 du BLS · LNS14000000 : 2023-02 = 3.6 · valeur de la série"
+   ],
+   "2023-03": [
+    "3.5",
+    "API v1 du BLS · LNS14000000 : 2023-03 = 3.5 · valeur de la série"
+   ],
+   "2023-04": [
+    "3.4",
+    "API v1 du BLS · LNS14000000 : 2023-04 = 3.4 · valeur de la série"
+   ],
+   "2023-05": [
+    "3.6",
+    "API v1 du BLS · LNS14000000 : 2023-05 = 3.6 · valeur de la série"
+   ],
+   "2023-06": [
+    "3.6",
+    "API v1 du BLS · LNS14000000 : 2023-06 = 3.6 · valeur de la série"
+   ],
+   "2023-07": [
+    "3.5",
+    "API v1 du BLS · LNS14000000 : 2023-07 = 3.5 · valeur de la série"
+   ],
+   "2023-08": [
+    "3.7",
+    "API v1 du BLS · LNS14000000 : 2023-08 = 3.7 · valeur de la série"
+   ],
+   "2023-09": [
+    "3.7",
+    "API v1 du BLS · LNS14000000 : 2023-09 = 3.7 · valeur de la série"
+   ],
+   "2023-10": [
+    "3.9",
+    "API v1 du BLS · LNS14000000 : 2023-10 = 3.9 · valeur de la série"
+   ],
+   "2023-11": [
+    "3.7",
+    "API v1 du BLS · LNS14000000 : 2023-11 = 3.7 · valeur de la série"
+   ],
+   "2023-12": [
+    "3.8",
+    "API v1 du BLS · LNS14000000 : 2023-12 = 3.8 · valeur de la série"
+   ],
+   "2024-01": [
+    "3.7",
+    "API v1 du BLS · LNS14000000 : 2024-01 = 3.7 · valeur de la série"
+   ],
+   "2024-02": [
+    "3.9",
+    "API v1 du BLS · LNS14000000 : 2024-02 = 3.9 · valeur de la série"
+   ],
+   "2024-03": [
+    "3.9",
+    "API v1 du BLS · LNS14000000 : 2024-03 = 3.9 · valeur de la série"
+   ],
+   "2024-04": [
+    "3.9",
+    "API v1 du BLS · LNS14000000 : 2024-04 = 3.9 · valeur de la série"
+   ],
+   "2024-05": [
+    "3.9",
+    "API v1 du BLS · LNS14000000 : 2024-05 = 3.9 · valeur de la série"
+   ],
+   "2024-06": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2024-06 = 4.1 · valeur de la série"
+   ],
+   "2024-07": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2024-07 = 4.2 · valeur de la série"
+   ],
+   "2024-08": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2024-08 = 4.2 · valeur de la série"
+   ],
+   "2024-09": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2024-09 = 4.1 · valeur de la série"
+   ],
+   "2024-10": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2024-10 = 4.1 · valeur de la série"
+   ],
+   "2024-11": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2024-11 = 4.2 · valeur de la série"
+   ],
+   "2024-12": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2024-12 = 4.1 · valeur de la série"
+   ],
+   "2025-01": [
+    "4.0",
+    "API v1 du BLS · LNS14000000 : 2025-01 = 4.0 · valeur de la série"
+   ],
+   "2025-02": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2025-02 = 4.2 · valeur de la série"
+   ],
+   "2025-03": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2025-03 = 4.2 · valeur de la série"
+   ],
+   "2025-04": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2025-04 = 4.2 · valeur de la série"
+   ],
+   "2025-05": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2025-05 = 4.3 · valeur de la série"
+   ],
+   "2025-06": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2025-06 = 4.1 · valeur de la série"
+   ],
+   "2025-07": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2025-07 = 4.3 · valeur de la série"
+   ],
+   "2025-08": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2025-08 = 4.3 · valeur de la série"
+   ],
+   "2025-09": [
+    "4.4",
+    "API v1 du BLS · LNS14000000 : 2025-09 = 4.4 · valeur de la série"
+   ],
+   "2025-10": null,
+   "2025-11": [
+    "4.5",
+    "API v1 du BLS · LNS14000000 : 2025-11 = 4.5 · valeur de la série"
+   ],
+   "2025-12": [
+    "4.4",
+    "API v1 du BLS · LNS14000000 : 2025-12 = 4.4 · valeur de la série"
+   ],
+   "2026-01": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2026-01 = 4.3 · valeur de la série"
+   ],
+   "2026-02": [
+    "4.4",
+    "API v1 du BLS · LNS14000000 : 2026-02 = 4.4 · valeur de la série"
+   ],
+   "2026-03": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2026-03 = 4.3 · valeur de la série"
+   ],
+   "2026-04": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2026-04 = 4.3 · valeur de la série"
+   ],
+   "2026-05": [
+    "4.3",
+    "API v1 du BLS · LNS14000000 : 2026-05 = 4.3 · valeur de la série"
+   ],
+   "2026-06": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2026-06 = 4.2 · valeur de la série"
+   ],
+   "2026-07": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2026-07 = 4.1 · valeur de la série"
+   ],
+   "2026-08": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2026-08 = 4.1 · valeur de la série"
+   ],
+   "2026-09": [
+    "4.2",
+    "API v1 du BLS · LNS14000000 : 2026-09 = 4.2 · valeur de la série"
+   ],
+   "2026-10": [
+    "4.1",
+    "API v1 du BLS · LNS14000000 : 2026-10 = 4.1 · valeur de la série"
+   ]
+  }
+ },
+ "latest": {
+  "CES0000000001": "2026-10",
+  "CES0500000003": "2026-10",
+  "CUSR0000SA0": "2026-10",
+  "CUSR0000SA0L1E": "2026-10",
+  "CUUR0000SA0": "2026-10",
+  "CUUR0000SA0L1E": "2026-10",
+  "LNS14000000": "2026-10",
+  "PRS85006092": "2026-Q3",
+  "PRS85006112": "2026-Q3",
+  "WPSFD4": "2026-10",
+  "WPSFD41": "2026-10",
+  "WPSFD49104": "2026-10"
+ },
+ "shift": [
+  [
+   "2026-01",
+   -1,
+   "2025-12"
+  ],
+  [
+   "2026-10",
+   -12,
+   "2025-10"
+  ],
+  [
+   "2026-Q1",
+   -1,
+   "2025-Q4"
+  ],
+  [
+   "2026-Q4",
+   1,
+   "2027-Q1"
+  ],
+  [
+   "2026-12",
+   1,
+   "2027-01"
+  ]
+ ],
+ "surprise": [
+  [
+   "0.4",
+   "0.3",
+   "0.1"
+  ],
+  [
+   "0.3",
+   "0.3",
+   "0.0"
+  ],
+  [
+   "-0.1",
+   "0.2",
+   "-0.3"
+  ],
+  [
+   "165",
+   "50",
+   "115"
+  ],
+  [
+   "4.1",
+   "4.25",
+   "-0.15"
+  ],
+  [
+   "-23",
+   "-50",
+   "27"
+  ],
+  [
+   "0.0",
+   "-0.0",
+   "0.0"
+  ],
+  [
+   "3.6",
+   "4.0",
+   "-0.4"
+  ],
+  [
+   "0.4",
+   null,
+   null
+  ],
+  [
+   null,
+   "0.3",
+   null
+  ],
+  [
+   "0.4",
+   "n/a",
+   null
+  ],
+  [
+   "0.10",
+   "0.1",
+   "0.00"
+  ],
+  [
+   "-0.15",
+   "-0.05",
+   "-0.10"
+  ]
+ ],
+ "z": [
+  [
+   "1.6",
+   [],
+   "0.4",
+   null,
+   0,
+   false,
+   "historique insuffisant (0/8)"
+  ],
+  [
+   "1.1",
+   [],
+   "0.4",
+   null,
+   0,
+   false,
+   "historique insuffisant (0/8)"
+  ],
+  [
+   "-1.0",
+   [],
+   "0.4",
+   null,
+   0,
+   false,
+   "historique insuffisant (0/8)"
+  ],
+  [
+   "0.4",
+   [
+    "-1.9",
+    "2.2",
+    "0.5",
+    "-2.5",
+    "0.4",
+    "2.4",
+    "-0.6"
+   ],
+   "0.4",
+   null,
+   7,
+   false,
+   "historique insuffisant (7/8)"
+  ],
+  [
+   "-0.3",
+   [
+    "1.7",
+    "-1.9",
+    "-2.9",
+    "1.1",
+    "-2.6",
+    "-2.4",
+    "-0.3"
+   ],
+   "0.4",
+   null,
+   7,
+   false,
+   "historique insuffisant (7/8)"
+  ],
+  [
+   "0.9",
+   [
+    "1.6",
+    "-2.3",
+    "1.3",
+    "2.1",
+    "-2.7",
+    "-1.2",
+    "-0.9"
+   ],
+   "0.4",
+   null,
+   7,
+   false,
+   "historique insuffisant (7/8)"
+  ],
+  [
+   "1.0",
+   [
+    "1.2",
+    "-1.0",
+    "-2.8",
+    "3.0",
+    "-2.7",
+    "1.8",
+    "-1.3",
+    "-2.7"
+   ],
+   "0.4",
+   "0.44",
+   8,
+   true,
+   null
+  ],
+  [
+   "1.0",
+   [
+    "2.2",
+    "2.5",
+    "1.8",
+    "0.6",
+    "-1.5",
+    "-1.8",
+    "2.3",
+    "2.7"
+   ],
+   "0.4",
+   "0.55",
+   8,
+   true,
+   null
+  ],
+  [
+   "1.3",
+   [
+    "0.7",
+    "-2.3",
+    "1.6",
+    "1.0",
+    "-1.0",
+    "2.1",
+    "-0.4",
+    "-0.5"
+   ],
+   "0.4",
+   "0.89",
+   8,
+   true,
+   null
+  ],
+  [
+   "1.4",
+   [
+    "-0.7",
+    "2.6",
+    "0.7",
+    "1.1",
+    "2.6",
+    "-0.4",
+    "-0.5",
+    "1.6",
+    "-2.7"
+   ],
+   "0.4",
+   "0.81",
+   9,
+   true,
+   null
+  ],
+  [
+   "0.1",
+   [
+    "0.2",
+    "2.3",
+    "1.0",
+    "0.3",
+    "-1.4",
+    "-1.1",
+    "-1.1",
+    "-2.2",
+    "-2.7"
+   ],
+   "0.4",
+   "0.06",
+   9,
+   true,
+   null
+  ],
+  [
+   "0.7",
+   [
+    "1.3",
+    "-0.5",
+    "0.1",
+    "1.3",
+    "2.0",
+    "1.5",
+    "-1.6",
+    "-1.3",
+    "-3.0"
+   ],
+   "0.4",
+   "0.41",
+   9,
+   true,
+   null
+  ],
+  [
+   "2.0",
+   [
+    "2.5",
+    "-0.1",
+    "1.0",
+    "2.9",
+    "0.2",
+    "1.8",
+    "0.4",
+    "1.2",
+    "-1.1",
+    "1.6",
+    "-1.9",
+    "-1.8"
+   ],
+   "0.4",
+   "1.27",
+   12,
+   true,
+   null
+  ],
+  [
+   "-1.8",
+   [
+    "1.4",
+    "2.8",
+    "0.0",
+    "-0.2",
+    "0.5",
+    "1.4",
+    "1.3",
+    "1.0",
+    "2.7",
+    "-2.0",
+    "2.2",
+    "-0.4"
+   ],
+   "0.4",
+   "-1.29",
+   12,
+   true,
+   null
+  ],
+  [
+   "2.0",
+   [
+    "-2.2",
+    "2.2",
+    "-1.4",
+    "1.3",
+    "-2.3",
+    "1.4",
+    "-0.3",
+    "0.3",
+    "-1.5",
+    "-0.9",
+    "-2.0",
+    "1.5"
+   ],
+   "0.4",
+   "1.24",
+   12,
+   true,
+   null
+  ],
+  [
+   "-1.6",
+   [
+    "-1.2",
+    "-1.4",
+    "2.8",
+    "2.5",
+    "0.3",
+    "-0.9",
+    "-0.5",
+    "-1.9",
+    "3.0",
+    "0.4",
+    "-0.3",
+    "-1.1",
+    "1.1",
+    "-1.7",
+    "1.3",
+    "0.9",
+    "-2.9",
+    "-0.5",
+    "-1.6",
+    "-2.8",
+    "2.7",
+    "2.3",
+    "0.1"
+   ],
+   "0.4",
+   "-0.89",
+   23,
+   true,
+   null
+  ],
+  [
+   "0.0",
+   [
+    "-1.6",
+    "-2.4",
+    "-2.7",
+    "-0.9",
+    "-2.9",
+    "-0.5",
+    "-0.1",
+    "-1.5",
+    "3.0",
+    "-1.8",
+    "0.1",
+    "-1.8",
+    "1.2",
+    "-1.5",
+    "2.7",
+    "-0.5",
+    "-0.9",
+    "-1.4",
+    "2.0",
+    "0.8",
+    "-1.1",
+    "-1.3",
+    "-2.9"
+   ],
+   "0.4",
+   "0.00",
+   23,
+   true,
+   null
+  ],
+  [
+   "-1.5",
+   [
+    "-0.9",
+    "2.1",
+    "-0.8",
+    "-1.7",
+    "2.1",
+    "-1.0",
+    "-0.1",
+    "0.8",
+    "-2.1",
+    "0.5",
+    "-0.7",
+    "-0.6",
+    "2.1",
+    "0.7",
+    "0.7",
+    "0.6",
+    "-2.8",
+    "-2.4",
+    "1.5",
+    "-0.4",
+    "1.0",
+    "0.2",
+    "1.4"
+   ],
+   "0.4",
+   "-1.05",
+   23,
+   true,
+   null
+  ],
+  [
+   "-1.5",
+   [
+    "-1.0",
+    "-2.2",
+    "-2.3",
+    "2.6",
+    "-0.9",
+    "-1.8",
+    "-1.0",
+    "0.2",
+    "0.8",
+    "0.2",
+    "0.6",
+    "-0.4",
+    "-1.0",
+    "1.8",
+    "-2.5",
+    "-1.5",
+    "1.5",
+    "-2.9",
+    "-1.8",
+    "1.3",
+    "-1.2",
+    "0.3",
+    "-2.7",
+    "1.3"
+   ],
+   "0.4",
+   "-0.96",
+   24,
+   false,
+   null
+  ],
+  [
+   "-1.9",
+   [
+    "-1.3",
+    "3.0",
+    "-1.7",
+    "-0.3",
+    "0.9",
+    "1.9",
+    "2.0",
+    "0.6",
+    "2.9",
+    "0.2",
+    "-2.3",
+    "2.7",
+    "1.2",
+    "-2.3",
+    "-0.6",
+    "2.7",
+    "2.2",
+    "-0.3",
+    "2.9",
+    "1.1",
+    "2.8",
+    "-1.7",
+    "0.7",
+    "-1.2"
+   ],
+   "0.4",
+   "-1.06",
+   24,
+   false,
+   null
+  ],
+  [
+   "-0.6",
+   [
+    "1.8",
+    "-1.2",
+    "1.9",
+    "-0.4",
+    "0.5",
+    "0.6",
+    "-2.2",
+    "-1.9",
+    "3.0",
+    "0.6",
+    "-1.3",
+    "-2.0",
+    "2.5",
+    "1.2",
+    "-0.2",
+    "0.4",
+    "2.5",
+    "2.5",
+    "-2.1",
+    "1.0",
+    "-1.4",
+    "-0.8",
+    "2.7",
+    "0.7"
+   ],
+   "0.4",
+   "-0.35",
+   24,
+   false,
+   null
+  ],
+  [
+   "-1.0",
+   [
+    "1.7",
+    "0.1",
+    "-1.4",
+    "-0.7",
+    "-1.1",
+    "-1.5",
+    "-1.0",
+    "1.1",
+    "-0.5",
+    "0.9",
+    "1.1",
+    "2.5",
+    "0.8",
+    "-0.5",
+    "1.5",
+    "-1.1",
+    "-1.5",
+    "-2.8",
+    "-1.4",
+    "-1.5",
+    "-0.6",
+    "2.1",
+    "0.9",
+    "-2.5",
+    "1.6",
+    "-1.9",
+    "2.5",
+    "2.8",
+    "-1.6",
+    "-2.3"
+   ],
+   "0.4",
+   "-0.61",
+   30,
+   false,
+   null
+  ],
+  [
+   "1.1",
+   [
+    "-2.1",
+    "1.9",
+    "1.3",
+    "1.4",
+    "2.6",
+    "-0.4",
+    "1.4",
+    "-2.5",
+    "-0.5",
+    "-2.4",
+    "1.6",
+    "1.0",
+    "1.7",
+    "-1.8",
+    "2.2",
+    "0.3",
+    "-1.7",
+    "-0.2",
+    "1.0",
+    "2.5",
+    "1.7",
+    "2.5",
+    "-0.7",
+    "-2.0",
+    "-2.3",
+    "1.5",
+    "1.0",
+    "-3.0",
+    "2.3",
+    "-2.9"
+   ],
+   "0.4",
+   "0.59",
+   30,
+   false,
+   null
+  ],
+  [
+   "0.4",
+   [
+    "0.1",
+    "0.3",
+    "-2.2",
+    "-0.2",
+    "-0.9",
+    "2.3",
+    "0.5",
+    "-1.1",
+    "-2.8",
+    "-2.7",
+    "0.8",
+    "-1.6",
+    "-0.2",
+    "-2.0",
+    "-2.8",
+    "1.9",
+    "1.4",
+    "1.6",
+    "-0.6",
+    "1.2",
+    "-0.3",
+    "-2.2",
+    "-0.4",
+    "1.9",
+    "-1.4",
+    "-1.6",
+    "-0.5",
+    "-0.4",
+    "2.1",
+    "-2.7"
+   ],
+   "0.4",
+   "0.25",
+   30,
+   false,
+   null
+  ],
+  [
+   "0.1",
+   [
+    "0.0",
+    "0.0",
+    "0.0",
+    "0.0",
+    "0.0",
+    "0.0",
+    "0.0",
+    "0.0"
+   ],
+   "0.4",
+   "2.00",
+   8,
+   true,
+   null
+  ],
+  [
+   "5",
+   [
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0"
+   ],
+   "165",
+   "10.00",
+   10,
+   true,
+   null
+  ],
+  [
+   null,
+   [
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1",
+    "0.1"
+   ],
+   "0.4",
+   null,
+   10,
+   false,
+   "pas de prévision avant la publication"
+  ],
+  [
+   "-0.001",
+   [
+    "0.1",
+    "-0.1",
+    "0.1",
+    "-0.1",
+    "0.1",
+    "-0.1",
+    "0.1",
+    "-0.1",
+    "0.1",
+    "-0.1"
+   ],
+   "0.4",
+   "-0.01",
+   10,
+   true,
+   null
+  ]
+ ]
+}

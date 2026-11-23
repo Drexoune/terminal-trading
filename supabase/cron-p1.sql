@@ -15,6 +15,9 @@
 --   ff-calendar   hh:45 (fichier ForexFactory régénéré vers hh:42), puis hh:55, sauté si
 --                 le relevé de hh:45 a réussi
 --   bls-calendar  06:10, puis 06:40, sauté si le relevé de 06:10 a réussi
+--   capture       chaque minute (étape O3) : rafale à T-1 min (l'appel dure ~2 min, d'où un
+--                 délai de 150 s), suite jusqu'à T+5 min, rattrapage, révisions, réaction du BTC ;
+--                 un appel sans publication proche ne fait que quelques lectures en base
 
 do $$
 declare
@@ -39,11 +42,12 @@ begin
 
   for v_job in
     select * from (values
-      ('p1-ff-calendar',    '45 * * * *', 'ff-calendar'),
-      ('p1-ff-calendar-2',  '55 * * * *', 'ff-calendar'),
-      ('p1-bls-calendar',   '10 6 * * *', 'bls-calendar'),
-      ('p1-bls-calendar-2', '40 6 * * *', 'bls-calendar')
-    ) as t(name, schedule, job)
+      ('p1-ff-calendar',    '45 * * * *', 'ff-calendar',  60000),
+      ('p1-ff-calendar-2',  '55 * * * *', 'ff-calendar',  60000),
+      ('p1-bls-calendar',   '10 6 * * *', 'bls-calendar', 60000),
+      ('p1-bls-calendar-2', '40 6 * * *', 'bls-calendar', 60000),
+      ('p1-capture',        '* * * * *',  'capture',      150000)
+    ) as t(name, schedule, job, timeout_ms)
   loop
     perform cron.schedule(v_job.name, v_job.schedule, format($job$
       select net.http_post(
@@ -54,13 +58,14 @@ begin
           'x-jobs-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'p1_jobs_secret')
         ),
         body := '{}'::jsonb,
-        timeout_milliseconds := 60000
+        timeout_milliseconds := %s
       ) as request_id;
-      $job$, v_job.job));
+      $job$, v_job.job, v_job.timeout_ms));
   end loop;
 end $$;
 
 -- Vérifier :
 --   select jobname, schedule, active from cron.job where jobname like 'p1-%';
+--   select value from public.p1_state where key = 'release:state';
 --   select key, updated_ms from public.p1_state order by key;
 --   select source, status, received_ms from public.calendar_snapshots order by id desc limit 10;

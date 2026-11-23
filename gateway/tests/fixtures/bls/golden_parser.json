@@ -1,0 +1,4405 @@
+{
+ "_comment": "Généré par scripts/make_bls_golden.py ; ne pas modifier à la main.",
+ "classify": [
+  [
+   "cpi_nr0_2026-11-20",
+   "2026-11-10",
+   null,
+   "attendue"
+  ],
+  [
+   "cpi_nr0_2026-11-20",
+   "2026-11-10",
+   [
+    "2026-10",
+    "2026-11-10"
+   ],
+   null
+  ],
+  [
+   "cpi_nr0_2026-11-20",
+   "2026-11-12",
+   [
+    "2026-09",
+    "2026-10-15"
+   ],
+   "en avance"
+  ],
+  [
+   "cpi_nr0_2026-11-20",
+   "2026-11-05",
+   [
+    "2026-09",
+    "2026-10-15"
+   ],
+   "en retard"
+  ],
+  [
+   "cpi_nr0_2026-11-20",
+   "2026-11-12",
+   null,
+   null
+  ]
+ ],
+ "pages": {
+  "cpi_01112024": {
+   "edition": null,
+   "embargo_date": "2024-01-11",
+   "embargo_ms": 1704979800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Thursday, January 11, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in December, the same monthly increase as in November. Indexes which increased in December include shelter, motor vehicle insurance, and medic",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.9 percent over the last 12 months, after rising 4.0 percent over the 12 months ending November. The energy index decreased 2.0 percent for the 12 months end",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.9"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent in December on a seasonally adjusted basis, after rising 0.1 percent in November, the U.S. Bureau of Labor Statistics rep",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.4 percent before seasonal adjustment. The index for shelter continued to rise in December, contributing over half of the monthly all items incr",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.4"
+    }
+   },
+   "page": "ok",
+   "period": "2023-12",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2023 M12 Results"
+  },
+  "cpi_01132026": {
+   "edition": null,
+   "embargo_date": "2026-01-13",
+   "embargo_ms": 1768311000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, January 13, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in December. Indexes that increased over the month include recreation, airline fares, medical care, apparel, personal care, and education. The",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.6 percent over the last 12 months. The energy index increased 2.3 percent for the 12 months ending December. The food index increased 3.1 percent over the l",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.6"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent on a seasonally adjusted basis in December, the U.S. Bureau of Labor Statistics reported today. Over the last 12 months, ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.7 percent before seasonal adjustment. The index for shelter rose 0.4 percent in December and was the largest factor in the all items monthly in",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.7"
+    }
+   },
+   "page": "ok",
+   "period": "2025-12",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M12 Results"
+  },
+  "cpi_01152025": {
+   "edition": null,
+   "embargo_date": "2025-01-15",
+   "embargo_ms": 1736947800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, January 15, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in December, after increasing 0.3 percent in each of the previous 4 months. Indexes that increased in December include shelter, airline fares,",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.2 percent over the last 12 months. The energy index decreased 0.5 percent for the 12 months ending December. The food index increased 2.5 percent over the l",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.2"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent on a seasonally adjusted basis in December, after rising 0.3 percent in November, the U.S. Bureau of Labor Statistics rep",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.9 percent before seasonal adjustment. The index for energy rose 2.6 percent in December, accounting for over forty percent of the monthly all i",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.9"
+    }
+   },
+   "page": "ok",
+   "period": "2024-12",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M12 Results"
+  },
+  "cpi_02122025": {
+   "edition": null,
+   "embargo_date": "2025-02-12",
+   "embargo_ms": 1739367000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, February 12, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.4 percent in January. Indexes that increased over the month include motor vehicle insurance, recreation, used cars and trucks, medical care, communicati",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.3 percent over the last 12 months. The energy index increased 1.0 percent for the 12 months ending January. The food index increased 2.5 percent over the la",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.5 percent on a seasonally adjusted basis in January, after rising 0.4 percent in December, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.5"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.0 percent before seasonal adjustment. The index for shelter rose 0.4 percent in January, accounting for nearly 30 percent of the monthly all it",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.0"
+    }
+   },
+   "page": "ok",
+   "period": "2025-01",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M01 Results"
+  },
+  "cpi_02132024": {
+   "edition": null,
+   "embargo_date": "2024-02-13",
+   "embargo_ms": 1707831000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, February 13, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.4 percent in January. Indexes which increased in January include shelter, motor vehicle insurance, and medical care. The index for used cars and trucks ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.9 percent over the last 12 months, the same increase as for the 12 months ending December. The energy index decreased 4.6 percent for the 12 months ending J",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.9"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent in January on a seasonally adjusted basis, after rising 0.2 percent in December, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.1 percent before seasonal adjustment. The index for shelter continued to rise in January, increasing 0.6 percent and contributing over two thir",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.1"
+    }
+   },
+   "page": "ok",
+   "period": "2024-01",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M01 Results"
+  },
+  "cpi_02132026": {
+   "edition": null,
+   "embargo_date": "2026-02-13",
+   "embargo_ms": 1770989400000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Friday, February 13, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in January. Indexes that increased over the month include airline fares, personal care, recreation, medical care, and communication. The index",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.5 percent over the last 12 months. The energy index decreased 0.1 percent for the 12 months ending January. The food index increased 2.9 percent over the la",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.5"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis in January, the U.S. Bureau of Labor Statistics reported today. Over the last 12 months, t",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.4 percent before seasonal adjustment. The index for shelter rose 0.2 percent in January and was the largest factor in the all items monthly inc",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-01",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M01 Results"
+  },
+  "cpi_03112026": {
+   "edition": null,
+   "embargo_date": "2026-03-11",
+   "embargo_ms": 1773232200000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, March 11, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in February. Indexes that increased over the month include medical care, apparel, household furnishings and operations, airline fares, and edu",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Feb. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.5"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent on a seasonally adjusted basis in February, after rising 0.2 percent in January, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.4 percent before seasonal adjustment. The index for shelter rose 0.2 percent in February and was the largest factor in the all items monthly in",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-02",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M02 Results"
+  },
+  "cpi_03122024": {
+   "edition": null,
+   "embargo_date": "2024-03-12",
+   "embargo_ms": 1710246600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, March 12, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.4 percent in February, as it did in January. Indexes which increased in February include shelter, airline fares, motor vehicle insurance, apparel, and r",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.8 percent over the last 12 months. The energy index decreased 1.9 percent for the 12 months ending February, while the food index increased 2.2 percent over",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.8"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent in February on a seasonally adjusted basis, after rising 0.3 percent in January, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.2 percent before seasonal adjustment. The index for shelter rose in February, as did the index for gasoline. Combined, these two indexes contri",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-02",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M02 Results"
+  },
+  "cpi_03122025": {
+   "edition": null,
+   "embargo_date": "2025-03-12",
+   "embargo_ms": 1741782600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, March 12, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in February, following a 0.4-percent increase in January. Indexes that increased over the month include medical care, used cars and trucks, ho",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.1 percent over the last 12 months. The energy index decreased 0.2 percent for the 12 months ending February. The food index increased 2.6 percent over the l",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.1"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis in February, after rising 0.5 percent in January, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.8 percent before seasonal adjustment. The index for shelter rose 0.3 percent in February, accounting for nearly half of the monthly all items i",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.8"
+    }
+   },
+   "page": "ok",
+   "period": "2025-02",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M02 Results"
+  },
+  "cpi_04102024": {
+   "edition": null,
+   "embargo_date": "2024-04-10",
+   "embargo_ms": 1712752200000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, April 10, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.4 percent in March, as it did in each of the 2 preceding months. Indexes which increased in March include shelter, motor vehicle insurance, medical care",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.8 percent over the last 12 months. The energy index increased 2.1 percent for the 12 months ending March, the first 12-month increase in that index since th",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.8"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent in March on a seasonally adjusted basis, the same increase as in February, the U.S. Bureau of Labor Statistics reported t",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.5 percent before seasonal adjustment. The index for shelter rose in March, as did the index for gasoline. Combined, these two indexes contribut",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.5"
+    }
+   },
+   "page": "ok",
+   "period": "2024-03",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M03 Results"
+  },
+  "cpi_04102025": {
+   "edition": null,
+   "embargo_date": "2025-04-10",
+   "embargo_ms": 1744288200000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Thursday, April 10, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.1 percent in March, following a 0.2-percent increase in February. Indexes that increased over the month include personal care, medical care, education, ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.8 percent over the last 12 months, the smallest 12-month increase since March 2021. The energy index decreased 3.3 percent for the 12 months ending March. T",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.8"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) decreased 0.1 percent on a seasonally adjusted basis in March, after rising 0.2 percent in February, the U.S. Bureau of Labor Statistics report",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.1"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.4 percent before seasonal adjustment. The index for energy fell 2.4 percent in March, as a 6.3-percent decline in the index for gasoline more t",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-03",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M03 Results"
+  },
+  "cpi_04102026": {
+   "edition": null,
+   "embargo_date": "2026-04-10",
+   "embargo_ms": 1775824200000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Friday, April 10, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in March. Indexes that increased over the month include airline fares, apparel, household furnishings and operations, education, and new vehic",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Mar. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.6"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.9 percent on a seasonally adjusted basis in March, after rising 0.3 percent in February, the U.S. Bureau of Labor Statistics report",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.9"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.3 percent before seasonal adjustment. The index for energy rose 10.9 percent in March, led by a 21.2-percent increase in the index for gasoline",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-03",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M03 Results"
+  },
+  "cpi_05122026": {
+   "edition": null,
+   "embargo_date": "2026-05-12",
+   "embargo_ms": 1778589000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, May 12, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.4 percent in April. Indexes that increased over the month include household furnishings and operations, airline fares, personal care, apparel, and educa",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Apr. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.8"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.6 percent on a seasonally adjusted basis in April, after rising 0.9 percent in March, the U.S. Bureau of Labor Statistics reported ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.6"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.8 percent before seasonal adjustment. The index for energy rose 3.8 percent in April, accounting for over forty percent of the monthly all item",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.8"
+    }
+   },
+   "page": "ok",
+   "period": "2026-04",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M04 Results"
+  },
+  "cpi_05132025": {
+   "edition": null,
+   "embargo_date": "2025-05-13",
+   "embargo_ms": 1747139400000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, May 13, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in April, following a 0.1-percent increase in March. Indexes that increased over the month include household furnishings and operations, medic",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.8 percent over the last 12 months. The energy index decreased 3.7 percent for the 12 months ending April. The food index increased 2.8 percent over the last",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.8"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis in April, after falling 0.1 percent in March, the U.S. Bureau of Labor Statistics reported",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.3 percent before seasonal adjustment. The index for shelter rose 0.3 percent in April, accounting for more than half of the all items monthly i",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.3"
+    }
+   },
+   "page": "ok",
+   "period": "2025-04",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M04 Results"
+  },
+  "cpi_05152024": {
+   "edition": null,
+   "embargo_date": "2024-05-15",
+   "embargo_ms": 1715776200000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, May 15, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in April, after rising 0.4 percent in each of the 3 preceding months. Indexes which increased in April include shelter, motor vehicle insuranc",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.6 percent over the last 12 months. The energy index increased 2.6 percent for the 12 months ending April. The food index increased 2.2 percent over the last",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.6"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent in April on a seasonally adjusted basis, after rising 0.4 percent in March, the U.S. Bureau of Labor Statistics reported ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.4 percent before seasonal adjustment. The index for shelter rose in April, as did the index for gasoline. Combined, these two indexes contribut",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.4"
+    }
+   },
+   "page": "ok",
+   "period": "2024-04",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M04 Results"
+  },
+  "cpi_06102026": {
+   "edition": null,
+   "embargo_date": "2026-06-10",
+   "embargo_ms": 1781094600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, June 10, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in May. Indexes that increased over the month include communication, airline fares, medical care, personal care, and recreation. Conversely, t",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended May 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.9"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.5 percent on a seasonally adjusted basis in May, after rising 0.6 percent in April, the U.S. Bureau of Labor Statistics reported to",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.5"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 4.2 percent before seasonal adjustment. The index for energy rose 3.9 percent in May, after rising 3.8 percent in April and 10.9 percent in March",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2026-05",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M05 Results"
+  },
+  "cpi_06112025": {
+   "edition": null,
+   "embargo_date": "2025-06-11",
+   "embargo_ms": 1749645000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, June 11, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.1 percent in May, following a 0.2-percent increase in April. Indexes that increased over the month include medical care, motor vehicle insurance, househ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.8 percent over the last 12 months. The energy index decreased 3.5 percent for the 12 months ending May. The food index increased 2.9 percent over the last y",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.8"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.1 percent on a seasonally adjusted basis in May, after rising 0.2 percent in April, the U.S. Bureau of Labor Statistics reported to",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.4 percent before seasonal adjustment. The index for shelter rose 0.3 percent in May and was the primary factor in the all items monthly increas",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-05",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M05 Results"
+  },
+  "cpi_06122024": {
+   "edition": null,
+   "embargo_date": "2024-06-12",
+   "embargo_ms": 1718195400000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, June 12, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in May, after rising 0.3 percent the preceding month. Indexes which increased in May include shelter, medical care, used cars and trucks, and ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.4 percent over the last 12 months. The energy index increased 3.7 percent for the 12 months ending May. The food index increased 2.1 percent over the last y",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.4"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) was unchanged in May on a seasonally adjusted basis, after rising 0.3 percent in April, the U.S. Bureau of Labor Statistics reported today. Ove",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.3 percent before seasonal adjustment. More than offsetting a decline in gasoline, the index for shelter rose in May, up 0.4 percent for the fou",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    }
+   },
+   "page": "ok",
+   "period": "2024-05",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M05 Results"
+  },
+  "cpi_07112024": {
+   "edition": null,
+   "embargo_date": "2024-07-11",
+   "embargo_ms": 1720701000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Thursday, July 11, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.1 percent in June, after rising 0.2 percent the preceding month. Indexes which increased in June include shelter, motor vehicle insurance, household fur",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.3 percent over the last 12 months and was the smallest 12-month increase in that index since April 2021. The energy index increased 1.0 percent for the 12 m",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) declined 0.1 percent on a seasonally adjusted basis, after being unchanged in May, the U.S. Bureau of Labor Statistics reported today. Over the",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.1"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.0 percent before seasonal adjustment. The index for gasoline fell 3.8 percent in June, after declining 3.6 percent in May, more than offsetting",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.0"
+    }
+   },
+   "page": "ok",
+   "period": "2024-06",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M06 Results"
+  },
+  "cpi_07142026": {
+   "edition": null,
+   "embargo_date": "2026-07-14",
+   "embargo_ms": 1784032200000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, July 14, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy was unchanged in June. Indexes that decreased over the month include motor vehicle insurance, communication, apparel, medical care, and used cars and trucks. C",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Jun. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.6"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) decreased 0.4 percent on a seasonally adjusted basis in June after rising 0.5 percent in May, the U.S. Bureau of Labor Statistics reported toda",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.5 percent before seasonal adjustment. The index for energy fell 5.7 percent in June after rising 3.9 percent in May, 3.8 percent in April, and ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.5"
+    }
+   },
+   "page": "ok",
+   "period": "2026-06",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M06 Results"
+  },
+  "cpi_07152025": {
+   "edition": null,
+   "embargo_date": "2025-07-15",
+   "embargo_ms": 1752582600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, July 15, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in June, following a 0.1-percent increase in May. Indexes that increased over the month include household furnishings and operations, medical ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.9 percent over the last 12 months. The energy index decreased 0.8 percent for the 12 months ending June. The food index increased 3.0 percent over the last ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.9"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent on a seasonally adjusted basis in June, after rising 0.1 percent in May, the U.S. Bureau of Labor Statistics reported tod",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.7 percent before seasonal adjustment. The index for shelter rose 0.2 percent in June and was the primary factor in the all items monthly increa",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.7"
+    }
+   },
+   "page": "ok",
+   "period": "2025-06",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M06 Results"
+  },
+  "cpi_08122025": {
+   "edition": null,
+   "embargo_date": "2025-08-12",
+   "embargo_ms": 1755001800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, August 12, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in July, following a 0.2-percent increase in June. Indexes that increased over the month include medical care, airline fares, recreation, hous",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.1 percent over the last 12 months. The energy index decreased 1.6 percent for the 12 months ending July. The food index increased 2.9 percent over the last ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.1"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis in July, after rising 0.3 percent in June, the U.S. Bureau of Labor Statistics reported to",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.7 percent before seasonal adjustment. The index for shelter rose 0.2 percent in July and was the primary factor in the all items monthly increa",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.7"
+    }
+   },
+   "page": "ok",
+   "period": "2025-07",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M07 Results"
+  },
+  "cpi_08122026": {
+   "edition": null,
+   "embargo_date": "2026-08-12",
+   "embargo_ms": 1786537800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, August 12, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent after being unchanged in June. Indexes that increased over the month include medical care, airline fares, communication, education, and recrea",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Jul. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.5"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.1 percent on a seasonally adjusted basis in July after falling 0.4 percent in June, the U.S. Bureau of Labor Statistics reported to",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.4 percent before seasonal adjustment. The index for shelter rose 0.1 percent in July, accounting for roughly two-thirds of the monthly all item",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-07",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M07 Results"
+  },
+  "cpi_08142024": {
+   "edition": null,
+   "embargo_date": "2024-08-14",
+   "embargo_ms": 1723638600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, August 14, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in July, after rising 0.1 percent the preceding month. Indexes which increased in July include shelter, motor vehicle insurance, household fur",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.2 percent over the last 12 months and was the smallest 12-month increase in that index since April 2021. The energy index increased 1.1 percent for the 12 m",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.2"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis, after declining 0.1 percent in June, the U.S. Bureau of Labor Statistics reported today. ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.9 percent before seasonal adjustment. The index for shelter rose 0.4 percent in July, accounting for nearly 90 percent of the monthly increase ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.9"
+    }
+   },
+   "page": "ok",
+   "period": "2024-07",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M07 Results"
+  },
+  "cpi_09112024": {
+   "edition": null,
+   "embargo_date": "2024-09-11",
+   "embargo_ms": 1726057800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, September 11, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in August, after rising 0.2 percent the preceding month. Indexes which increased in August include shelter, airline fares, motor vehicle insur",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.2 percent over the last 12 months. The energy index decreased 4.0 percent for the 12 months ending August. The food index increased 2.1 percent over the las",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.2"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis, the same increase as in July, the U.S. Bureau of Labor Statistics reported today. Over th",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.5 percent before seasonal adjustment. The index for shelter rose 0.5 percent in August and was the main factor in the all items increase. The f",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.5"
+    }
+   },
+   "page": "ok",
+   "period": "2024-08",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M08 Results"
+  },
+  "cpi_09112025": {
+   "edition": null,
+   "embargo_date": "2025-09-11",
+   "embargo_ms": 1757593800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Thursday, September 11, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in August, as it did in July. Indexes that increased over the month include airline fares, used cars and trucks, apparel, and new vehicles. Th",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.1 percent over the last 12 months. The energy index increased 0.2 percent for the 12 months ending August. The food index increased 3.2 percent over the las",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.1"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent on a seasonally adjusted basis in August, after rising 0.2 percent in July, the U.S. Bureau of Labor Statistics reported ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.9 percent before seasonal adjustment. The index for shelter rose 0.4 percent in August and was the largest factor in the all items monthly incr",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.9"
+    }
+   },
+   "page": "ok",
+   "period": "2025-08",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M08 Results"
+  },
+  "cpi_09112026": {
+   "edition": null,
+   "embargo_date": "2026-09-11",
+   "embargo_ms": 1789129800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Friday, September 11, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent after increasing 0.2 percent in July. Indexes that increased over the month include communication, lodging away from home, airline fares, educ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Aug. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.4"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent on a seasonally adjusted basis in August after rising 0.1 percent in July, the U.S. Bureau of Labor Statistics reported t",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.4 percent before seasonal adjustment. The index for gasoline rose 3.9 percent in August, accounting for over one third of the monthly all items",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-08",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M08 Results"
+  },
+  "cpi_10102024": {
+   "edition": null,
+   "embargo_date": "2024-10-10",
+   "embargo_ms": 1728563400000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Thursday, October 10, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in September, as it did the preceding month. Indexes which increased in September include shelter, motor vehicle insurance, medical care, appa",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.3 percent over the last 12 months. The energy index decreased 6.8 percent for the 12 months ending September. The food index increased 2.3 percent over the ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis, the same increase as in August and July, the U.S. Bureau of Labor Statistics reported tod",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.4 percent before seasonal adjustment. The index for shelter rose 0.2 percent in September, and the index for food increased 0.4 percent. Togeth",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.4"
+    }
+   },
+   "page": "ok",
+   "period": "2024-09",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M09 Results"
+  },
+  "cpi_10142026": {
+   "edition": null,
+   "embargo_date": "2026-10-14",
+   "embargo_ms": 1791981000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, October 14, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in September, as it did in August. Indexes that increased over the month include recreation, used cars and trucks, education, airline fares, m",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Sep. 2026",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.6"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.6 percent on a seasonally adjusted basis in September after rising 0.4 percent in August, the U.S. Bureau of Labor Statistics repor",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.6"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.7 percent before seasonal adjustment. The index for gasoline rose 9.1 percent in September, accounting for over half of the monthly all items i",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.7"
+    }
+   },
+   "page": "ok",
+   "period": "2026-09",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M09 Results"
+  },
+  "cpi_10242025": {
+   "edition": null,
+   "embargo_date": "2025-10-24",
+   "embargo_ms": 1761309000000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Friday, October 24, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in September, after rising 0.3 percent in each of the 2 preceding months. Indexes that increased over the month include shelter, airline fares",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "Table A · all items less food and energy · Un- adjusted 12-mos. ended Sep. 2025",
+     "flags": [
+      "texte non trouvé"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.0"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent on a seasonally adjusted basis in September, after rising 0.4 percent in August, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.0 percent before seasonal adjustment. Note that September CPI data collection was completed before the lapse in appropriations. The index for g",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.0"
+    }
+   },
+   "page": "ok",
+   "period": "2025-09",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M09 Results"
+  },
+  "cpi_11102026": {
+   "edition": null,
+   "embargo_date": "2026-11-10",
+   "embargo_ms": 1794317400000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, November 10, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in October, as it did in September and August. Indexes that increased over the month include recreation, medical care, motor vehicle insurance",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": null,
+     "flags": [],
+     "part": "tableau A",
+     "reason": "non publié par le BLS (« - »)",
+     "value": null
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent on a seasonally adjusted basis in October after rising 0.6 percent in September, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": null,
+     "flags": [],
+     "part": "tableau A",
+     "reason": "non publié par le BLS (« - »)",
+     "value": null
+    }
+   },
+   "page": "ok",
+   "period": "2026-10",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2026 M10 Results"
+  },
+  "cpi_11132024": {
+   "edition": null,
+   "embargo_date": "2024-11-13",
+   "embargo_ms": 1731504600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, November 13, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in October, as it did in August and September. Indexes that increased in October include shelter, used cars and trucks, airline fares, medical",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.3 percent over the last 12 months. The energy index decreased 4.9 percent for the 12 months ending October. The food index increased 2.1 percent over the la",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis in October, the same increase as in each of the previous 3 months, the U.S. Bureau of Labo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.6 percent before seasonal adjustment. The index for shelter rose 0.4 percent in October, accounting for over half of the monthly all items incr",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.6"
+    }
+   },
+   "page": "ok",
+   "period": "2024-10",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M10 Results"
+  },
+  "cpi_11142023": {
+   "edition": null,
+   "embargo_date": "2023-11-14",
+   "embargo_ms": 1699968600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, November 14, 2023",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.2 percent in October, after rising 0.3 percent in September. Indexes which increased in October include rent, owners' equivalent rent, motor vehicle ins",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 4.0 percent over the last 12 months, its smallest 12-month change since the period ending in September 2021. The energy index decreased 4.5 percent for the 12",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "4.0"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) was unchanged in October on a seasonally adjusted basis, after increasing 0.4 percent in September, the U.S. Bureau of Labor Statistics reporte",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.2 percent before seasonal adjustment. The index for shelter continued to rise in October, offsetting a decline in the gasoline index and result",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.2"
+    }
+   },
+   "page": "ok",
+   "period": "2023-10",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2023 M10 Results"
+  },
+  "cpi_12112024": {
+   "edition": null,
+   "embargo_date": "2024-12-11",
+   "embargo_ms": 1733923800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Wednesday, December 11, 2024",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in November, as it did in each of the previous 3 months. Indexes that increased in November include shelter, used cars and trucks, household f",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 3.3 percent over the last 12 months. The energy index decreased 3.2 percent for the 12 months ending November. The food index increased 2.4 percent over the l",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.3"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.3 percent on a seasonally adjusted basis in November, after rising 0.2 percent in each of the previous 4 months, the U.S. Bureau of",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.7 percent before seasonal adjustment. The index for shelter rose 0.3 percent in November, accounting for nearly forty percent of the monthly al",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.7"
+    }
+   },
+   "page": "ok",
+   "period": "2024-11",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2024 M11 Results"
+  },
+  "cpi_12122023": {
+   "edition": null,
+   "embargo_date": "2023-12-12",
+   "embargo_ms": 1702387800000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, December 12, 2023",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in November, after rising 0.2 percent in October. Indexes which increased in November include rent, owners' equivalent rent, medical care, and",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 4.0 percent over the last 12 months, as it did for the 12 months ending October. The energy index decreased 5.4 percent for the 12 months ending November, whi",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "4.0"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.1 percent in November on a seasonally adjusted basis, after being unchanged in October, the U.S. Bureau of Labor Statistics reporte",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 3.1 percent before seasonal adjustment. The index for shelter continued to rise in November, offsetting a decline in the gasoline index. The ener",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "3.1"
+    }
+   },
+   "page": "ok",
+   "period": "2023-11",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2023 M11 Results"
+  },
+  "cpi_12182025": {
+   "edition": null,
+   "embargo_date": "2025-12-18",
+   "embargo_ms": 1766064600000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Thursday, December 18, 2025",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": "texte",
+     "reason": "publication irrégulière : variation sur plusieurs mois (shutdown)",
+     "value": null
+    },
+    "us-core-cpi-yy": {
+     "excerpt": "all items less food and energy index rose 2.6 percent over the last 12 months. The energy index increased 4.2 percent for the 12 months ending November. The food index increased 2.6 percent over the l",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.6"
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.2 percent on a seasonally adjusted basis over the 2 months from September 2025 to November 2025, the U.S. Bureau of Labor Statistic",
+     "flags": [],
+     "part": "texte",
+     "reason": "publication irrégulière : variation sur plusieurs mois (shutdown)",
+     "value": null
+    },
+    "us-cpi-yy": {
+     "excerpt": "Over the last 12 months, the all items index increased 2.7 percent before seasonal adjustment. BLS did not collect survey data for October 2025 due to a lapse in appropriations. The seasonally adjuste",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "2.7"
+    }
+   },
+   "page": "ok",
+   "period": "2025-11",
+   "problems": [],
+   "title": "Consumer Price Index News Release - 2025 M11 Results"
+  },
+  "cpi_nr0_2026-11-20": {
+   "edition": null,
+   "embargo_date": "2026-11-10",
+   "embargo_ms": 1794317400000,
+   "embargo_text": "embargoed until 8:30 a.m. (ET) Tuesday, November 10, 2026",
+   "figures": {
+    "us-core-cpi-mm": {
+     "excerpt": "index for all items less food and energy rose 0.3 percent in October, as it did in September and August. Indexes that increased over the month include recreation, medical care, motor vehicle insurance",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-core-cpi-yy": {
+     "excerpt": null,
+     "flags": [],
+     "part": "tableau A",
+     "reason": "non publié par le BLS (« - »)",
+     "value": null
+    },
+    "us-cpi-mm": {
+     "excerpt": "The Consumer Price Index for All Urban Consumers (CPI-U) increased 0.4 percent on a seasonally adjusted basis in October after rising 0.6 percent in September, the U.S. Bureau of Labor Statistics repo",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-cpi-yy": {
+     "excerpt": null,
+     "flags": [],
+     "part": "tableau A",
+     "reason": "non publié par le BLS (« - »)",
+     "value": null
+    }
+   },
+   "page": "ok",
+   "period": "2026-10",
+   "problems": [],
+   "title": "Consumer Price Index Summary - 2026 M10 Results"
+  },
+  "empsit_01052024": {
+   "edition": null,
+   "embargo_date": "2024-01-05",
+   "embargo_ms": 1704461400000,
+   "embargo_text": "embargoed until USDL-24-0006 8:30 a.m. (ET) Friday, January 5, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 15 cents, or 0.4 percent, to $34.27. Over the past 12 months, average hourly earnings have increased by 4.1 percent. In De",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 216,000 in December, and the unemployment rate was unchanged at 3.7 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to t",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "216"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 3.7 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in government, health care, social assistance, and construction, wh",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.7"
+    }
+   },
+   "page": "ok",
+   "period": "2023-12",
+   "problems": [],
+   "title": "Employment Situation News Release - 2023 M13 Results"
+  },
+  "empsit_01092026": {
+   "edition": null,
+   "embargo_date": "2026-01-09",
+   "embargo_ms": 1767965400000,
+   "embargo_text": "embargoed until USDL-26-0020 8:30 a.m. (ET) Friday, January 9, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 12 cents, or 0.3 percent, to $37.02. Over the past 12 months, average hourly earnings have increased by 3.8 percent. In De",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "total nonfarm payroll employment (+50,000) and the unemployment rate (4.4 percent) changed little in December, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in f",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "50"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate (4.4 percent) changed little in December, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in food services and drinking places, health care, and ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-12",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M13 Results"
+  },
+  "empsit_01102025": {
+   "edition": null,
+   "embargo_date": "2025-01-10",
+   "embargo_ms": 1736515800000,
+   "embargo_text": "embargoed until USDL-25-0003 8:30 a.m. (ET) Friday, January 10, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 10 cents, or 0.3 percent, to $35.69. Over the past 12 months, average hourly earnings have increased by 3.9 percent. In De",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 256,000 in December, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment trended up in",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "256"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment trended up in health care, government, and social assistance. Retail trade added jobs in",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2024-12",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M13 Results"
+  },
+  "empsit_02022024": {
+   "edition": null,
+   "embargo_date": "2024-02-02",
+   "embargo_ms": 1706880600000,
+   "embargo_text": "embargoed until USDL-24-0148 8:30 a.m. (ET) Friday, February 2, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 19 cents, or 0.6 percent, to $34.55. Over the past 12 months, average hourly earnings have increased by 4.5 percent. In Ja",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.6"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 353,000 in January, and the unemployment rate remained at 3.7 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in professional a",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "353"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate remained at 3.7 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in professional and business services, health care, retail trade, and social assistanc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.7"
+    }
+   },
+   "page": "ok",
+   "period": "2024-01",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M01 Results"
+  },
+  "empsit_02072025": {
+   "edition": null,
+   "embargo_date": "2025-02-07",
+   "embargo_ms": 1738935000000,
+   "embargo_text": "embargoed until USDL-25-0133 8:30 a.m. (ET) Friday, February 7, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 17 cents, or 0.5 percent, to $35.87. Over the past 12 months, average hourly earnings have increased by 4.1 percent. In Ja",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.5"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 143,000 in January, and the unemployment rate edged down to 4.0 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care,",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "143"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate edged down to 4.0 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, retail trade, and social assistance. Employment declined in the mini",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.0"
+    }
+   },
+   "page": "ok",
+   "period": "2025-01",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M01 Results"
+  },
+  "empsit_02112026": {
+   "edition": null,
+   "embargo_date": "2026-02-11",
+   "embargo_ms": 1770816600000,
+   "embargo_text": "embargoed until USDL-26-0169 8:30 a.m. (ET) Wednesday, February 11, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 15 cents, or 0.4 percent, to $37.17. Over the past 12 months, average hourly earnings have increased by 3.7 percent. In Ja",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 130,000 in January, and the unemployment rate changed little at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health c",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "130"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, social assistance, and construction, while federal government an",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-01",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M01 Results"
+  },
+  "empsit_03062026": {
+   "edition": null,
+   "embargo_date": "2026-03-06",
+   "embargo_ms": 1772803800000,
+   "embargo_text": "embargoed until USDL-26-0367 8:30 a.m. (ET) Friday, March 6, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 15 cents, or 0.4 percent, to $37.32. Over the past 12 months, average hourly earnings have increased by 3.8 percent. In Fe",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment edged down by 92,000 in February, and the unemployment rate changed little at 4.4 percent, the U.S. Bureau of Labor Statistics reported today. Employment in health car",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-92"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.4 percent, the U.S. Bureau of Labor Statistics reported today. Employment in health care decreased, reflecting strike activity. Employment in information and fede",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-02",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M02 Results"
+  },
+  "empsit_03072025": {
+   "edition": null,
+   "embargo_date": "2025-03-07",
+   "embargo_ms": 1741354200000,
+   "embargo_text": "embargoed until USDL-25-0296 8:30 a.m. (ET) Friday, March 7, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 10 cents, or 0.3 percent, to $35.93. Over the past 12 months, average hourly earnings have increased by 4.0 percent. In Fe",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 151,000 in February, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment trended up in heal",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "151"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment trended up in health care, financial activities, transportation and warehousing, and soc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2025-02",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M02 Results"
+  },
+  "empsit_03082024": {
+   "edition": null,
+   "embargo_date": "2024-03-08",
+   "embargo_ms": 1709904600000,
+   "embargo_text": "embargoed until USDL-24-0451 8:30 a.m. (ET) Friday, March 8, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls edged up by 5 cents to $34.57, following an increase of 18 cents in January. Average hourly earnings were up by 0.1 percent in Feb",
+     "flags": [],
+     "part": "texte",
+     "reason": "variation publiée en cents seulement, sans pourcentage",
+     "value": null
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 275,000 in February, and the unemployment rate increased to 3.9 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care,",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "275"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate increased to 3.9 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, in government, in food services and drinking places, in social assist",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.9"
+    }
+   },
+   "page": "ok",
+   "period": "2024-02",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M02 Results"
+  },
+  "empsit_04032026": {
+   "edition": null,
+   "embargo_date": "2026-04-03",
+   "embargo_ms": 1775219400000,
+   "embargo_text": "embargoed until USDL-26-0580 8:30 a.m. (ET) Friday, April 3, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 9 cents, or 0.2 percent, to $37.38. Over the year, average hourly earnings have increased by 3.5 percent. In March, averag",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 178,000 in March, and the unemployment rate changed little at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in healt",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "178"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, in construction, and in transportation and warehousing. Federal ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-03",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M03 Results"
+  },
+  "empsit_04042025": {
+   "edition": null,
+   "embargo_date": "2025-04-04",
+   "embargo_ms": 1743769800000,
+   "embargo_text": "embargoed until USDL-25-0452 8:30 a.m. (ET) Friday, April 4, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 9 cents, or 0.3 percent, to $36.00. Over the past 12 months, average hourly earnings have increased by 3.8 percent. In Mar",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 228,000 in March, and the unemployment rate changed little at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health car",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "228"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, in social assistance, and in transportation and warehousing. Emp",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2025-03",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M03 Results"
+  },
+  "empsit_04052024": {
+   "edition": null,
+   "embargo_date": "2024-04-05",
+   "embargo_ms": 1712320200000,
+   "embargo_text": "embargoed until USDL-24-0629 8:30 a.m. (ET) Friday, April 5, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 12 cents, or 0.3 percent, to $34.69. Over the past 12 months, average hourly earnings have increased by 4.1 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 303,000 in March, and the unemployment rate changed little at 3.8 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health car",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "303"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 3.8 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, government, and construction. This news release presents statist",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.8"
+    }
+   },
+   "page": "ok",
+   "period": "2024-03",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 Q01 Results"
+  },
+  "empsit_05022025": {
+   "edition": null,
+   "embargo_date": "2025-05-02",
+   "embargo_ms": 1746189000000,
+   "embargo_text": "embargoed until USDL-25-0658 8:30 a.m. (ET) Friday, May 2, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 6 cents, or 0.2 percent, to $36.06. Over the past 12 months, average hourly earnings have increased by 3.8 percent. In Apr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 177,000 in April, and the unemployment rate was unchanged at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to tren",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "177"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in health care, transportation and warehousing, financial activitie",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2025-04",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M04 Results"
+  },
+  "empsit_05032024": {
+   "edition": null,
+   "embargo_date": "2024-05-03",
+   "embargo_ms": 1714739400000,
+   "embargo_text": "embargoed until USDL-24-0796 8:30 a.m. (ET) Friday, May 3, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 7 cents, or 0.2 percent, to $34.75. Over the past 12 months, average hourly earnings have increased by 3.9 percent. I",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 175,000 in April, and the unemployment rate changed little at 3.9 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in healt",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "175"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 3.9 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, in social assistance, and in transportation and warehousing. Thi",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.9"
+    }
+   },
+   "page": "ok",
+   "period": "2024-04",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M04 Results"
+  },
+  "empsit_05082026": {
+   "edition": null,
+   "embargo_date": "2026-05-08",
+   "embargo_ms": 1778243400000,
+   "embargo_text": "embargoed until USDL-26-0687 8:30 a.m. (ET) Friday, May 8, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 6 cents, or 0.2 percent, to $37.41. Over the year, average hourly earnings have increased by 3.6 percent. In April, averag",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment edged up by 115,000 in April, and the unemployment rate was unchanged at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "115"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care, transportation and warehousing, and retail trade. Federal governm",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-04",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M04 Results"
+  },
+  "empsit_06052026": {
+   "edition": null,
+   "embargo_date": "2026-06-05",
+   "embargo_ms": 1780662600000,
+   "embargo_text": "embargoed until USDL-26-0786 8:30 a.m. (ET) Friday, June 5, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 12 cents, or 0.3 percent, to $37.53. Over the year, average hourly earnings have increased by 3.4 percent. In May, average",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 172,000 in May, and the unemployment rate was unchanged at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in leisure ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "172"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 4.3 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in leisure and hospitality, local government, and health care. Employment in fina",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-05",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M05 Results"
+  },
+  "empsit_06062025": {
+   "edition": null,
+   "embargo_date": "2025-06-06",
+   "embargo_ms": 1749213000000,
+   "embargo_text": "embargoed until USDL-25-0927 8:30 a.m. (ET) Friday, June 6, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "Average hourly earnings for all employees on private nonfarm payrolls rose by 15 cents, or 0.4 percent, to $36.24 in May. Over the past 12 months, average hourly earnings have increased by 3.9 percent",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 139,000 in May, and the unemployment rate was unchanged at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "139"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in health care, leisure and hospitality, and social assistance. Fed",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2025-05",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M05 Results"
+  },
+  "empsit_06072024": {
+   "edition": null,
+   "embargo_date": "2024-06-07",
+   "embargo_ms": 1717763400000,
+   "embargo_text": "embargoed until USDL-24-1091 8:30 a.m. (ET) Friday, June 7, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 14 cents, or 0.4 percent, to $34.91. Over the past 12 months, average hourly earnings have increased by 4.1 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 272,000 in May, and the unemployment rate changed little at 4.0 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "272"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.0 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in several industries, led by health care; government; leisure and",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.0"
+    }
+   },
+   "page": "ok",
+   "period": "2024-05",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M05 Results"
+  },
+  "empsit_07022026": {
+   "edition": null,
+   "embargo_date": "2026-07-02",
+   "embargo_ms": 1782995400000,
+   "embargo_text": "embargoed until USDL-26-1125 8:30 a.m. (ET) Thursday, July 2, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 13 cents, or 0.3 percent, to $37.64. Over the year, average hourly earnings have increased by 3.5 percent. In June, averag",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "total nonfarm payroll employment (+57,000) and the unemployment rate (4.2 percent) changed little in June, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in profe",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "57"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate (4.2 percent) changed little in June, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in professional and business services, social assistance, a",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2026-06",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M06 Results"
+  },
+  "empsit_07032025": {
+   "edition": null,
+   "embargo_date": "2025-07-03",
+   "embargo_ms": 1751545800000,
+   "embargo_text": "embargoed until USDL-25-1089 8:30 a.m. (ET) Thursday, July 3, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "Average hourly earnings for all employees on private nonfarm payrolls rose by 8 cents, or 0.2 percent, to $36.30 in June. Over the past 12 months, average hourly earnings have increased by 3.7 percent",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 147,000 in June, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in state ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "147"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in state government and health care. Federal government continued to lose jobs. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2025-06",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M06 Results"
+  },
+  "empsit_07052024": {
+   "edition": null,
+   "embargo_date": "2024-07-05",
+   "embargo_ms": 1720182600000,
+   "embargo_text": "embargoed until USDL-24-1270 8:30 a.m. (ET) Friday, July 5, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 10 cents, or 0.3 percent, to $35.00. Over the past 12 months, average hourly earnings have increased by 3.9 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 206,000 in June, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in govern",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "206"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in government, health care, social assistance, and construction. This news relea",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2024-06",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 Q02 Results"
+  },
+  "empsit_08012025": {
+   "edition": null,
+   "embargo_date": "2025-08-01",
+   "embargo_ms": 1754051400000,
+   "embargo_text": "embargoed until USDL-25-1202 8:30 a.m. (ET) Friday, August 1, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "Average hourly earnings for all employees on private nonfarm payrolls rose by 12 cents, or 0.3 percent, to $36.44 in July. Over the past 12 months, average hourly earnings have increased by 3.9 percen",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment changed little in July (+73,000) and has shown little change since April, the U.S. Bureau of Labor Statistics (BLS) reported today. The unemployment rate, at 4.2 perce",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "73"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate, at 4.2 percent, also changed little in July. Employment continued to trend up in health care and in social assistance. Federal government continued to lose jobs. This news release p",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2025-07",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M07 Results"
+  },
+  "empsit_08022024": {
+   "edition": null,
+   "embargo_date": "2024-08-02",
+   "embargo_ms": 1722601800000,
+   "embargo_text": "embargoed until USDL-24-1571 8:30 a.m. (ET) Friday, August 2, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 8 cents, or 0.2 percent, to $35.07. Over the past 12 months, average hourly earnings have increased by 3.6 percent. I",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "nonfarm payroll employment edged up by 114,000, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in health care, in construction, and in transportation and warehous",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "114"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate rose to 4.3 percent in July, and nonfarm payroll employment edged up by 114,000, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in health care, ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.3"
+    }
+   },
+   "page": "ok",
+   "period": "2024-07",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M07 Results"
+  },
+  "empsit_08072026": {
+   "edition": null,
+   "embargo_date": "2026-08-07",
+   "embargo_ms": 1786105800000,
+   "embargo_text": "embargoed until USDL-26-1291 8:30 a.m. (ET) Friday, August 7, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": "texte",
+     "reason": "phrase du salaire horaire non reconnue",
+     "value": null
+    },
+    "us-nfp": {
+     "excerpt": "nonfarm payroll employment (-23,000) and the unemployment rate (4.1 percent) changed little in July, the U.S. Bureau of Labor Statistics reported today. Employment declined in local government educati",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-23"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate (4.1 percent) changed little in July, the U.S. Bureau of Labor Statistics reported today. Employment declined in local government education and retail trade. Employment continued to ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2026-07",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M07 Results"
+  },
+  "empsit_09042026": {
+   "edition": null,
+   "embargo_date": "2026-09-04",
+   "embargo_ms": 1788525000000,
+   "embargo_text": "embargoed until USDL-26-1435 8:30 a.m. (ET) Friday, September 4, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 10 cents, or 0.3 percent, to $37.75. Over the year, average hourly earnings have increased by 3.1 percent. In August, aver",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 162,000 in August, and the unemployment rate was unchanged at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in foo",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "162"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in food services and drinking places and in local government education. The inf",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2026-08",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M08 Results"
+  },
+  "empsit_09052025": {
+   "edition": null,
+   "embargo_date": "2025-09-05",
+   "embargo_ms": 1757075400000,
+   "embargo_text": "embargoed until USDL-25-1344 8:30 a.m. (ET) Friday, September 5, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "Average hourly earnings for all employees on private nonfarm payrolls rose by 10 cents, or 0.3 percent, to $36.53 in August. Over the past 12 months, average hourly earnings have increased by 3.7 perc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment changed little in August (+22,000) and has shown little change since April, the U.S. Bureau of Labor Statistics (BLS) reported today. The unemployment rate, at 4.3 per",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "22"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate, at 4.3 percent, also changed little in August. A job gain in health care was partially offset by losses in federal government and in mining, quarrying, and oil and gas extraction. T",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.3"
+    }
+   },
+   "page": "ok",
+   "period": "2025-08",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M08 Results"
+  },
+  "empsit_09062024": {
+   "edition": null,
+   "embargo_date": "2024-09-06",
+   "embargo_ms": 1725625800000,
+   "embargo_text": "embargoed until USDL-24-1817 8:30 a.m. (ET) Friday, September 6, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 14 cents, or 0.4 percent, to $35.21. Over the past 12 months, average hourly earnings have increased by 3.8 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 142,000 in August, and the unemployment rate changed little at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in cons",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "142"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in construction and health care. This news release presents statistics from two ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-08",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M08 Results"
+  },
+  "empsit_10022026": {
+   "edition": null,
+   "embargo_date": "2026-10-02",
+   "embargo_ms": 1790944200000,
+   "embargo_text": "embargoed until USDL-26-1549 8:30 a.m. (ET) Friday, October 2, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls edged up by 5 cents, or 0.1 percent, to $37.81. Over the past 12 months, average hourly earnings have increased by 3.0 percent. In",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-nfp": {
+     "excerpt": "nonfarm payroll employment (+29,000) and the unemployment rate (4.2 percent) changed little in September, the U.S. Bureau of Labor Statistics reported today. Employment in all major industries changed",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "29"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate (4.2 percent) changed little in September, the U.S. Bureau of Labor Statistics reported today. Employment in all major industries changed little over the month. This news release pre",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2026-09",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M09 Results"
+  },
+  "empsit_10042024": {
+   "edition": null,
+   "embargo_date": "2024-10-04",
+   "embargo_ms": 1728045000000,
+   "embargo_text": "embargoed until USDL-24-2052 8:30 a.m. (ET) Friday, October 4, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 13 cents, or 0.4 percent, to $35.36. Over the past 12 months, average hourly earnings have increased by 4.0 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 254,000 in September, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "254"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in food services and drinking places, health care, government, soc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2024-09",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 Q03 Results"
+  },
+  "empsit_11012024": {
+   "edition": null,
+   "embargo_date": "2024-11-01",
+   "embargo_ms": 1730464200000,
+   "embargo_text": "embargoed until USDL-24-2233 8:30 a.m. (ET) Friday, November 1, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 13 cents, or 0.4 percent, to $35.46. Over the past 12 months, average hourly earnings have increased by 4.0 percent. In Oc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment was essentially unchanged in October (+12,000), and the unemployment rate was unchanged at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "12"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate was unchanged at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment continued to trend up in health care and government. Temporary help services lost jobs. E",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2024-10",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M10 Results"
+  },
+  "empsit_11062026": {
+   "edition": null,
+   "embargo_date": "2026-11-06",
+   "embargo_ms": 1793971800000,
+   "embargo_text": "embargoed until USDL-26-1632 8:30 a.m. (ET) Friday, November 6, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 14 cents, or 0.4 percent, to $38.00. Over the past 12 months, average hourly earnings have increased by 3.1 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in profes",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "165"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation a",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2026-10",
+   "problems": [],
+   "title": "Employment Situation News Release - 2026 M10 Results"
+  },
+  "empsit_11202025": {
+   "edition": null,
+   "embargo_date": "2025-11-20",
+   "embargo_ms": 1763645400000,
+   "embargo_text": "embargoed until USDL-25-1487 8:30 a.m. (ET) Thursday, November 20, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "Average hourly earnings for all employees on private nonfarm payrolls rose by 9 cents, or 0.2 percent, to $36.67 in September. Over the past 12 months, average hourly earnings have increased by 3.8 pe",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.2"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment edged up by 119,000 in September but has shown little change since April, the U.S. Bureau of Labor Statistics reported today. The unemployment rate, at 4.4 percent, ch",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "119"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate, at 4.4 percent, changed little in September. Employment continued to trend up in health care, food services and drinking places, and social assistance. Job losses occurred in transp",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-09",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M09 Results"
+  },
+  "empsit_12042026": {
+   "edition": null,
+   "embargo_date": null,
+   "embargo_ms": null,
+   "embargo_text": null,
+   "figures": {},
+   "page": "page d'erreur",
+   "period": null,
+   "problems": [],
+   "title": "Sorry, the page you are looking for cannot be found."
+  },
+  "empsit_12062024": {
+   "edition": null,
+   "embargo_date": "2024-12-06",
+   "embargo_ms": 1733491800000,
+   "embargo_text": "embargoed until USDL-24-2477 8:30 a.m. (ET) Friday, December 6, 2024",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 13 cents, or 0.4 percent, to $35.61. Over the past 12 months, average hourly earnings have increased by 4.0 percent. In No",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 227,000 in November, and the unemployment rate changed little at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Employment trended up in heal",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "227"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.2 percent, the U.S. Bureau of Labor Statistics reported today. Employment trended up in health care, leisure and hospitality, government, and social assistance. R",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-11",
+   "problems": [],
+   "title": "Employment Situation News Release - 2024 M11 Results"
+  },
+  "empsit_12082023": {
+   "edition": null,
+   "embargo_date": "2023-12-08",
+   "embargo_ms": 1702042200000,
+   "embargo_text": "embargoed until USDL-23-2530 8:30 a.m. (ET) Friday, December 8, 2023",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls rose by 12 cents, or 0.4 percent, to $34.10. Over the past 12 months, average hourly earnings have increased by 4.0 percent. In No",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment increased by 199,000 in November, and the unemployment rate edged down to 3.7 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "199"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate edged down to 3.7 percent, the U.S. Bureau of Labor Statistics reported today. Job gains occurred in health care and government. Employment also increased in manufacturing, reflectin",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.7"
+    }
+   },
+   "page": "ok",
+   "period": "2023-11",
+   "problems": [],
+   "title": "Employment Situation News Release - 2023 M11 Results"
+  },
+  "empsit_12162025": {
+   "edition": null,
+   "embargo_date": "2025-12-16",
+   "embargo_ms": 1765891800000,
+   "embargo_text": "embargoed until USDL-25-1581 8:30 a.m. (ET) Tuesday, December 16, 2025",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls edged up by 5 cents, or 0.1 percent, to $36.86. Over the past 12 months, average hourly earnings have increased by 3.5 percent. In",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.1"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment changed little in November (+64,000) and has shown little net change since April, the U.S. Bureau of Labor Statistics reported today. In November, the unemployment rat",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "64"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate, at 4.6 percent, was little changed from September. Employment rose in health care and construction in November, while federal government continued to lose jobs. This news release pr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.6"
+    }
+   },
+   "page": "ok",
+   "period": "2025-11",
+   "problems": [],
+   "title": "Employment Situation News Release - 2025 M11 Results"
+  },
+  "empsit_nr0_2026-11-20": {
+   "edition": null,
+   "embargo_date": "2026-11-06",
+   "embargo_ms": 1793971800000,
+   "embargo_text": "embargoed until USDL-26-1632 8:30 a.m. (ET) Friday, November 6, 2026",
+   "figures": {
+    "us-ahe-mm": {
+     "excerpt": "average hourly earnings for all employees on private nonfarm payrolls increased by 14 cents, or 0.4 percent, to $38.00. Over the past 12 months, average hourly earnings have increased by 3.1 percent. ",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.4"
+    },
+    "us-nfp": {
+     "excerpt": "Total nonfarm payroll employment rose by 165,000 in October, and the unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in profes",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "165"
+    },
+    "us-unemployment": {
+     "excerpt": "unemployment rate changed little at 4.1 percent, the U.S. Bureau of Labor Statistics reported today. Employment increased in professional and business services, in health care, and in transportation a",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.1"
+    }
+   },
+   "page": "ok",
+   "period": "2026-10",
+   "problems": [],
+   "title": "Employment Situation Summary - 2026 M10 Results"
+  },
+  "ppi_01122024": {
+   "edition": null,
+   "embargo_date": "2024-01-12",
+   "embargo_ms": 1705066200000,
+   "embargo_text": "embargoed until USDL 24-0021 8:30 a.m. (ET) Friday, January 12, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand fell 0.1 percent in December, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices moved down 0.1 percent in November ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.1"
+    }
+   },
+   "page": "ok",
+   "period": "2023-12",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2023 M12 Results"
+  },
+  "ppi_01142025": {
+   "edition": null,
+   "embargo_date": "2025-01-14",
+   "embargo_ms": 1736861400000,
+   "embargo_text": "embargoed until USDL 25-0020 8:30 a.m. (ET) Tuesday, January 14, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand advanced 0.2 percent in December, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices rose 0.4 percent in November an",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-12",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M12 Results"
+  },
+  "ppi_01142026": {
+   "edition": null,
+   "embargo_date": "2026-01-14",
+   "embargo_ms": 1768397400000,
+   "embargo_text": "embargoed until USDL 26-0044 8:30 a.m. (ET) Wednesday, January 14, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.2 percent in November, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices edged up 0.1 percent in Octobe",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2025-11",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M11 Results"
+  },
+  "ppi_01302026": {
+   "edition": null,
+   "embargo_date": "2026-01-30",
+   "embargo_ms": 1769779800000,
+   "embargo_text": "embargoed until USDL 26-0121 8:30 a.m. (ET) Friday, January 30, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.5 percent in December, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.2 percent in Novemb",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.5"
+    }
+   },
+   "page": "ok",
+   "period": "2025-12",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M12 Results"
+  },
+  "ppi_02132025": {
+   "edition": null,
+   "embargo_date": "2025-02-13",
+   "embargo_ms": 1739453400000,
+   "embargo_text": "embargoed until USDL 25-0176 8:30 a.m. (ET) Thursday, February 13, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.4 percent in January, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices rose 0.5 percent in December 20",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-01",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M01 Results"
+  },
+  "ppi_02162024": {
+   "edition": null,
+   "embargo_date": "2024-02-16",
+   "embargo_ms": 1708090200000,
+   "embargo_text": "embargoed until USDL 24-0269 8:30 a.m. (ET) Friday, February 16, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.3 percent in January, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices declined 0.1 percent in Decembe",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    }
+   },
+   "page": "ok",
+   "period": "2024-01",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M01 Results"
+  },
+  "ppi_02272026": {
+   "edition": null,
+   "embargo_date": "2026-02-27",
+   "embargo_ms": 1772199000000,
+   "embargo_text": "embargoed until USDL 26-0289 8:30 a.m. (ET) Friday, February 27, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.5 percent in January, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.4 percent in Decembe",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.5"
+    }
+   },
+   "page": "ok",
+   "period": "2026-01",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M01 Results"
+  },
+  "ppi_03132025": {
+   "edition": null,
+   "embargo_date": "2025-03-13",
+   "embargo_ms": 1741869000000,
+   "embargo_text": "embargoed until USDL 25-0334 8:30 a.m. (ET) Thursday, March 13, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand was unchanged in February, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices rose 0.6 percent in January and 0.5 pe",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    }
+   },
+   "page": "ok",
+   "period": "2025-02",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M02 Results"
+  },
+  "ppi_03142024": {
+   "edition": null,
+   "embargo_date": "2024-03-14",
+   "embargo_ms": 1710419400000,
+   "embargo_text": "embargoed until USDL 24-0487 8:30 a.m. (ET) Thursday, March 14, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.6 percent in February, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices increased 0.3 percent in January an",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.6"
+    }
+   },
+   "page": "ok",
+   "period": "2024-02",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M02 Results"
+  },
+  "ppi_03182026": {
+   "edition": null,
+   "embargo_date": "2026-03-18",
+   "embargo_ms": 1773837000000,
+   "embargo_text": "embargoed until USDL 26-0503 8:30 a.m. (ET) Wednesday, March 18, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.7 percent in February, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices moved up 0.5 percent in Januar",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.7"
+    }
+   },
+   "page": "ok",
+   "period": "2026-02",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M02 Results"
+  },
+  "ppi_04112024": {
+   "edition": null,
+   "embargo_date": "2024-04-11",
+   "embargo_ms": 1712838600000,
+   "embargo_text": "embargoed until USDL 24-0655 8:30 a.m. (ET) Thursday, April 11, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.2 percent in March, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices moved up 0.6 percent in February and 0",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-03",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M03 Results"
+  },
+  "ppi_04112025": {
+   "edition": null,
+   "embargo_date": "2025-04-11",
+   "embargo_ms": 1744374600000,
+   "embargo_text": "embargoed until USDL 25-0461 8:30 a.m. (ET) Friday, April 11, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand decreased 0.4 percent in March, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices increased 0.1 percent in February",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-03",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M03 Results"
+  },
+  "ppi_04142026": {
+   "edition": null,
+   "embargo_date": "2026-04-14",
+   "embargo_ms": 1776169800000,
+   "embargo_text": "embargoed until USDL 26-0619 8:30 a.m. (ET) Tuesday, April 14, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.5 percent in March, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices moved up 0.5 percent in February ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.5"
+    }
+   },
+   "page": "ok",
+   "period": "2026-03",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M03 Results"
+  },
+  "ppi_05132026": {
+   "edition": null,
+   "embargo_date": "2026-05-13",
+   "embargo_ms": 1778675400000,
+   "embargo_text": "embargoed until USDL 26-0723 8:30 a.m. (ET) Wednesday, May 13, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 1.4 percent in April, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.7 percent in March and",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "1.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-04",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M04 Results"
+  },
+  "ppi_05142024": {
+   "edition": null,
+   "embargo_date": "2024-05-14",
+   "embargo_ms": 1715689800000,
+   "embargo_text": "embargoed until USDL 24-0943 8:30 a.m. (ET) Tuesday, May 14, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.5 percent in April, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices declined 0.1 percent in March and adva",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.5"
+    }
+   },
+   "page": "ok",
+   "period": "2024-04",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M04 Results"
+  },
+  "ppi_05152025": {
+   "edition": null,
+   "embargo_date": "2025-05-15",
+   "embargo_ms": 1747312200000,
+   "embargo_text": "embargoed until USDL 25-0788 8:30 a.m. (ET) Thursday, May 15, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand fell 0.5 percent in April, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices were unchanged in March and increased ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.5"
+    }
+   },
+   "page": "ok",
+   "period": "2025-04",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M04 Results"
+  },
+  "ppi_06112026": {
+   "edition": null,
+   "embargo_date": "2026-06-11",
+   "embargo_ms": 1781181000000,
+   "embargo_text": "embargoed until USDL 26-0826 8:30 a.m. (ET) Thursday, June 11, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 1.1 percent in May, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 1.1 percent in April and 0.7 pe",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "1.1"
+    }
+   },
+   "page": "ok",
+   "period": "2026-05",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M05 Results"
+  },
+  "ppi_06122025": {
+   "edition": null,
+   "embargo_date": "2025-06-12",
+   "embargo_ms": 1749731400000,
+   "embargo_text": "embargoed until USDL 25-0957 8:30 a.m. (ET) Thursday, June 12, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand advanced 0.1 percent in May, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices declined 0.2 percent in April and 0.",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    }
+   },
+   "page": "ok",
+   "period": "2025-05",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M05 Results"
+  },
+  "ppi_06132024": {
+   "edition": null,
+   "embargo_date": "2024-06-13",
+   "embargo_ms": 1718281800000,
+   "embargo_text": "embargoed until USDL 24-1125 8:30 a.m. (ET) Thursday, June 13, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand declined 0.2 percent in May, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices increased 0.5 percent in April and e",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-05",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M05 Results"
+  },
+  "ppi_07122024": {
+   "edition": null,
+   "embargo_date": "2024-07-12",
+   "embargo_ms": 1720787400000,
+   "embargo_text": "embargoed until USDL 24-1327 8:30 a.m. (ET) Friday, July 12, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand advanced 0.2 percent in June, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices were unchanged in May and increased",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-06",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M06 Results"
+  },
+  "ppi_07152026": {
+   "edition": null,
+   "embargo_date": "2026-07-15",
+   "embargo_ms": 1784118600000,
+   "embargo_text": "embargoed until USDL 26-1193 8:30 a.m. (ET) Wednesday, July 15, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand fell 0.3 percent in June, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.6 percent in May and 1.1 per",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-06",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M06 Results"
+  },
+  "ppi_07162025": {
+   "edition": null,
+   "embargo_date": "2025-07-16",
+   "embargo_ms": 1752669000000,
+   "embargo_text": "embargoed until USDL 25-1150 8:30 a.m. (ET) Wednesday, July 16, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand was unchanged in June, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices increased 0.3 percent in May and declined ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    }
+   },
+   "page": "ok",
+   "period": "2025-06",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M06 Results"
+  },
+  "ppi_08132024": {
+   "edition": null,
+   "embargo_date": "2024-08-13",
+   "embargo_ms": 1723552200000,
+   "embargo_text": "embargoed until USDL 24-1661 8:30 a.m. (ET) Tuesday, August 13, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.1 percent in July, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices rose 0.2 percent in June and were ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.1"
+    }
+   },
+   "page": "ok",
+   "period": "2024-07",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M07 Results"
+  },
+  "ppi_08132026": {
+   "edition": null,
+   "embargo_date": "2026-08-13",
+   "embargo_ms": 1786624200000,
+   "embargo_text": "embargoed until USDL 26-1380 8:30 a.m. (ET) Thursday, August 13, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand was unchanged in July, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices edged down 0.1 percent in June and rose 0.",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    }
+   },
+   "page": "ok",
+   "period": "2026-07",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M07 Results"
+  },
+  "ppi_08142025": {
+   "edition": null,
+   "embargo_date": "2025-08-14",
+   "embargo_ms": 1755174600000,
+   "embargo_text": "embargoed until USDL 25-1267 8:30 a.m. (ET) Thursday, August 14, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.9 percent in July, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices were unchanged in June and moved up 0.4",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.9"
+    }
+   },
+   "page": "ok",
+   "period": "2025-07",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M07 Results"
+  },
+  "ppi_09102025": {
+   "edition": null,
+   "embargo_date": "2025-09-10",
+   "embargo_ms": 1757507400000,
+   "embargo_text": "embargoed until USDL 25-1355 8:30 a.m. (ET) Wednesday, September 10, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand edged down 0.1 percent in August, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.7 percent in July an",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.1"
+    }
+   },
+   "page": "ok",
+   "period": "2025-08",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M08 Results"
+  },
+  "ppi_09102026": {
+   "edition": null,
+   "embargo_date": "2026-09-10",
+   "embargo_ms": 1789043400000,
+   "embargo_text": "embargoed until USDL 26-1495 8:30 a.m. (ET) Thursday, September 10, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand moved up 0.4 percent in August, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices rose 0.1 percent in July and decr",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    }
+   },
+   "page": "ok",
+   "period": "2026-08",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M08 Results"
+  },
+  "ppi_09122024": {
+   "edition": null,
+   "embargo_date": "2024-09-12",
+   "embargo_ms": 1726144200000,
+   "embargo_text": "embargoed until USDL 24-1866 8:30 a.m. (ET) Thursday, September 12, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.2 percent in August, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices were unchanged in July and rose ",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-08",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M08 Results"
+  },
+  "ppi_10112024": {
+   "edition": null,
+   "embargo_date": "2024-10-11",
+   "embargo_ms": 1728649800000,
+   "embargo_text": "embargoed until USDL 24-2103 8:30 a.m. (ET) Friday October 11, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand was unchanged in September, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.2 percent in August and we",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    }
+   },
+   "page": "ok",
+   "period": "2024-09",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M09 Results"
+  },
+  "ppi_10152026": {
+   "edition": null,
+   "embargo_date": "2026-10-15",
+   "embargo_ms": 1792067400000,
+   "embargo_text": "embargoed until USDL 26-1576 8:30 a.m. (ET) Thursday, October 15, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 1.3 percent in September, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices moved up 0.5 percent in Augus",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "1.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-09",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M09 Results"
+  },
+  "ppi_11132026": {
+   "edition": null,
+   "embargo_date": "2026-11-13",
+   "embargo_ms": 1794576600000,
+   "embargo_text": "embargoed until USDL 26-1687 8:30 a.m. (ET) Friday, November 13, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.3 percent in October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 1.4 percent in September an",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-10",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2026 M10 Results"
+  },
+  "ppi_11142024": {
+   "edition": null,
+   "embargo_date": "2024-11-14",
+   "embargo_ms": 1731591000000,
+   "embargo_text": "embargoed until USDL 24-2305 8:30 a.m. (ET) Thursday, November 14, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.2 percent in October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 0.1 percent in Septemb",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.2"
+    }
+   },
+   "page": "ok",
+   "period": "2024-10",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M10 Results"
+  },
+  "ppi_11152023": {
+   "edition": null,
+   "embargo_date": "2023-11-15",
+   "embargo_ms": 1700055000000,
+   "embargo_text": "embargoed until USDL 23-2423 8:30 a.m. (ET) Wednesday, November 15, 2023",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand fell 0.5 percent in October, seasonally adjusted, after advancing 0.4 percent in September, the U.S. Bureau of Labor Statistics reported today. (See table A.)",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "-0.5"
+    }
+   },
+   "page": "ok",
+   "period": "2023-10",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2023 M10 Results"
+  },
+  "ppi_11252025": {
+   "edition": null,
+   "embargo_date": "2025-11-25",
+   "embargo_ms": 1764077400000,
+   "embargo_text": "embargoed until USDL 25-1518 8:30 a.m. (ET) Tuesday, November 25, 2025",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand increased 0.3 percent in September, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices declined 0.1 percent in Augus",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    }
+   },
+   "page": "ok",
+   "period": "2025-09",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2025 M09 Results"
+  },
+  "ppi_12122024": {
+   "edition": null,
+   "embargo_date": "2024-12-12",
+   "embargo_ms": 1734010200000,
+   "embargo_text": "embargoed until USDL 24-2518 8:30 a.m. (ET) Thursday, December 12, 2024",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.4 percent in November, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices increased 0.3 percent in October an",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.4"
+    }
+   },
+   "page": "ok",
+   "period": "2024-11",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2024 M11 Results"
+  },
+  "ppi_12132023": {
+   "edition": null,
+   "embargo_date": "2023-12-13",
+   "embargo_ms": 1702474200000,
+   "embargo_text": "embargoed until USDL 23-2565 8:30 a.m. (ET) Wednesday, December 13, 2023",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand was unchanged in November, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices decreased 0.4 percent in October and r",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.0"
+    }
+   },
+   "page": "ok",
+   "period": "2023-11",
+   "problems": [],
+   "title": "Producer Price Index News Release - 2023 M11 Results"
+  },
+  "ppi_nr0_2026-11-20": {
+   "edition": null,
+   "embargo_date": "2026-11-13",
+   "embargo_ms": 1794576600000,
+   "embargo_text": "embargoed until USDL 26-1687 8:30 a.m. (ET) Friday, November 13, 2026",
+   "figures": {
+    "us-core-ppi-mm": {
+     "excerpt": null,
+     "flags": [],
+     "part": null,
+     "reason": "indice « final demand less foods and energy » absent du résumé du BLS : complété par l'API v1 (série WPSFD49104) dès sa mise à jour",
+     "value": null
+    },
+    "us-ppi-mm": {
+     "excerpt": "The Producer Price Index for final demand rose 0.3 percent in October, seasonally adjusted, the U.S. Bureau of Labor Statistics reported today. Final demand prices advanced 1.4 percent in September an",
+     "flags": [
+      "texte concordant"
+     ],
+     "part": "tableau A",
+     "reason": null,
+     "value": "0.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-10",
+   "problems": [],
+   "title": "Producer Price Index News Release summary - 2026 M10 Results"
+  },
+  "prod2_01082026": {
+   "edition": "Preliminary",
+   "embargo_date": "2026-01-08",
+   "embargo_ms": 1767879000000,
+   "embargo_text": "embargoed until USDL 26-0019 8:30 a.m. (ET) Thursday, January 8, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 4.9 percent in the third quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output increased 5.4 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.9"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector decreased 1.9 percent in the third quarter of 2025, reflecting a 2.9-percent increase in hourly compensation and a 4.9-percent increase in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-1.9"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q3",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q03 Results"
+  },
+  "prod2_01292026": {
+   "edition": "Revised",
+   "embargo_date": "2026-01-29",
+   "embargo_ms": 1769693400000,
+   "embargo_text": "embargoed until USDL 26-0120 8:30 a.m. (ET) Thursday, January 29, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 4.9 percent in the third quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output increased 5.4 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.9"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector decreased 1.9 percent in the third quarter of 2025, reflecting a 2.9-percent increase in hourly compensation and a 4.9-percent increase in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-1.9"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q3",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q03 Results"
+  },
+  "prod2_03052026": {
+   "edition": "Preliminary",
+   "embargo_date": "2026-03-05",
+   "embargo_ms": 1772717400000,
+   "embargo_text": "embargoed until USDL 26-0365 8:30 a.m. (ET) Thursday, March 5, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 2.8 percent in the fourth quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output increased 2.6 percent and hours worked dec",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "2.8"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 2.8 percent in the fourth quarter of 2025, reflecting a 5.7-percent increase in hourly compensation and a 2.8-percent increase in productivity",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "2.8"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q4",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q05 Results"
+  },
+  "prod2_03242026": {
+   "edition": "Revised",
+   "embargo_date": "2026-03-24",
+   "embargo_ms": 1774355400000,
+   "embargo_text": "embargoed until USDL 26-0558 8:30 a.m. (ET) Tuesday, March 24, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 1.8 percent in the fourth quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output increased 1.5 percent and hours worked dec",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.8"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 4.4 percent in the fourth quarter of 2025, reflecting a 6.3-percent increase in hourly compensation and a 1.8-percent increase in productivity",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "4.4"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q4",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q05 Results"
+  },
+  "prod2_05072026": {
+   "edition": "Preliminary",
+   "embargo_date": "2026-05-07",
+   "embargo_ms": 1778157000000,
+   "embargo_text": "embargoed until USDL 26-0686 8:30 a.m. (ET) Thursday, May 7, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 0.8 percent in the first quarter of 2026, the U.S. Bureau of Labor Statistics reported today, as output increased 1.5 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.8"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 2.3 percent in the first quarter of 2026, reflecting a 3.1-percent increase in hourly compensation and a 0.8-percent increase in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "2.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-Q1",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2026 Q01 Results"
+  },
+  "prod2_06042026": {
+   "edition": "Revised",
+   "embargo_date": "2026-06-04",
+   "embargo_ms": 1780576200000,
+   "embargo_text": "embargoed until USDL 26-0785 8:30 a.m. (ET) Thursday, June 4, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 0.3 percent in the first quarter of 2026, the U.S. Bureau of Labor Statistics reported today, as output increased 1.0 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "0.3"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 1.8 percent in the first quarter of 2026, reflecting a 2.1-percent increase in hourly compensation and a 0.3-percent increase in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.8"
+    }
+   },
+   "page": "ok",
+   "period": "2026-Q1",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2026 Q01 Results"
+  },
+  "prod2_06052025": {
+   "edition": "Revised",
+   "embargo_date": "2025-06-05",
+   "embargo_ms": 1749126600000,
+   "embargo_text": "embargoed until USDL 25-0926 8:30 a.m. (ET) Thursday, June 5, 2025",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity decreased 1.5 percent in the first quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output decreased 0.2 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-1.5"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 6.6 percent in the first quarter of 2025, reflecting a 5.0-percent increase in hourly compensation and a 1.5-percent decrease in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "6.6"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q1",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q01 Results"
+  },
+  "prod2_08062026": {
+   "edition": "Preliminary",
+   "embargo_date": "2026-08-06",
+   "embargo_ms": 1786019400000,
+   "embargo_text": "embargoed until USDL 26-1290 8:30 a.m. (ET) Thursday, August 6, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 1.4 percent in the second quarter of 2026, the U.S. Bureau of Labor Statistics reported today, as output increased 1.7 percent and hours worked inc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.4"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 1.3 percent in the second quarter of 2026, reflecting a 2.7-percent increase in hourly compensation and a 1.4-percent increase in productivity",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.3"
+    }
+   },
+   "page": "ok",
+   "period": "2026-Q2",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2026 Q02 Results"
+  },
+  "prod2_08072025": {
+   "edition": "Preliminary",
+   "embargo_date": "2025-08-07",
+   "embargo_ms": 1754569800000,
+   "embargo_text": "embargoed until USDL 25-1230 8:30 a.m. (ET) Thursday, August 7, 2025",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 2.4 percent in the second quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output increased 3.7 percent and hours worked inc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "2.4"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 1.6 percent in the second quarter of 2025, reflecting a 4.0-percent increase in hourly compensation and a 2.4-percent increase in productivity",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.6"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q2",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q02 Results"
+  },
+  "prod2_09032026": {
+   "edition": "Revised",
+   "embargo_date": "2026-09-03",
+   "embargo_ms": 1788438600000,
+   "embargo_text": "embargoed until USDL 26-1434 8:30 a.m. (ET) Thursday, September 3, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 1.4 percent in the second quarter of 2026, the U.S. Bureau of Labor Statistics reported today, as output increased 1.7 percent and hours worked inc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.4"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 1.2 percent in the second quarter of 2026, reflecting a 2.6-percent increase in hourly compensation and a 1.4-percent increase in productivity",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.2"
+    }
+   },
+   "page": "ok",
+   "period": "2026-Q2",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2026 Q02 Results"
+  },
+  "prod2_09042025": {
+   "edition": "Revised",
+   "embargo_date": "2025-09-04",
+   "embargo_ms": 1756989000000,
+   "embargo_text": "embargoed until USDL 25-1343 8:30 a.m. (ET) Thursday, September 4, 2025",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 3.3 percent in the second quarter of 2025, the U.S. Bureau of Labor Statistics reported today, as output increased 4.4 percent and hours worked inc",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.3"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector increased 1.0 percent in the second quarter of 2025, reflecting a 4.3-percent increase in hourly compensation and a 3.3-percent increase in productivity",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "1.0"
+    }
+   },
+   "page": "ok",
+   "period": "2025-Q2",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2025 Q02 Results"
+  },
+  "prod2_11052026": {
+   "edition": "Preliminary",
+   "embargo_date": "2026-11-05",
+   "embargo_ms": 1793885400000,
+   "embargo_text": "embargoed until USDL 26-1631 8:30 a.m. (ET) Thursday, November 5, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 3.6 percent in the third quarter of 2026, the U.S. Bureau of Labor Statistics reported today, as output increased 3.7 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.6"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector decreased 0.7 percent in the third quarter of 2026, reflecting a 2.9-percent increase in hourly compensation and a 3.6-percent increase in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-0.7"
+    }
+   },
+   "page": "ok",
+   "period": "2026-Q3",
+   "problems": [],
+   "title": "Productivity and Costs News Release - 2026 Q03 Results"
+  },
+  "prod2_nr0_2026-11-20": {
+   "edition": "Preliminary",
+   "embargo_date": "2026-11-05",
+   "embargo_ms": 1793885400000,
+   "embargo_text": "embargoed until USDL 26-1631 8:30 a.m. (ET) Thursday, November 5, 2026",
+   "figures": {
+    "us-prod-qq": {
+     "excerpt": "Nonfarm business sector labor productivity increased 3.6 percent in the third quarter of 2026, the U.S. Bureau of Labor Statistics reported today, as output increased 3.7 percent and hours worked incr",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "3.6"
+    },
+    "us-ulc-qq": {
+     "excerpt": "Unit labor costs in the nonfarm business sector decreased 0.7 percent in the third quarter of 2026, reflecting a 2.9-percent increase in hourly compensation and a 3.6-percent increase in productivity.",
+     "flags": [],
+     "part": "texte",
+     "reason": null,
+     "value": "-0.7"
+    }
+   },
+   "page": "ok",
+   "period": "2026-Q3",
+   "problems": [],
+   "title": "Third Quarter 2026, Preliminary - 2026 Q03 Results"
+  }
+ },
+ "special": {
+  "erreur": {
+   "page": "page d'erreur",
+   "problems": []
+  },
+  "octets nuls": {
+   "page": "octets nuls",
+   "problems": [
+    "2 octets nuls"
+   ]
+  },
+  "sans pre": {
+   "page": "forme inconnue",
+   "problems": [
+    "aucun bloc <pre> : forme du communiqué inconnue"
+   ]
+  },
+  "vide": {
+   "page": "vide",
+   "problems": []
+  }
+ }
+}

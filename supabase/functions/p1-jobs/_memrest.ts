@@ -20,8 +20,12 @@ export class MemRest implements Rest {
     const raw = rest.join('.');
     const v = r[col];
     const num = (x: string) => (typeof v === 'number' ? Number(x) : x);
+    if (cond === 'is.null') return v === null || v === undefined;
+    if (cond === 'not.is.null') return v !== null && v !== undefined;
     switch (op) {
       case 'eq': return v === num(raw);
+      case 'lte': return v !== null && v <= num(raw);
+      case 'like': return typeof v === 'string' && new RegExp(`^${raw.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*')}$`).test(v);
       case 'gt': return v !== null && v > num(raw);
       case 'gte': return v !== null && v >= num(raw);
       case 'lt': return v !== null && v < num(raw);
@@ -69,6 +73,17 @@ export class MemRest implements Rest {
       if (hit) Object.assign(hit, structuredClone(r) as Record<string, Json>);
       else await this.insert(t, [r]);
     }
+  }
+
+  async insertIgnore<T>(t: string, rows: Row[], onConflict: string): Promise<T[]> {
+    this.calls.push(`insertIgnore ${t} ${rows.length}`);
+    const cols = onConflict.split(',');
+    const made: Row[] = [];
+    for (const r of rows) {
+      if (this.rows(t).some((x) => cols.every((c) => x[c] === r[c]))) continue;
+      made.push(...await this.insert<Row>(t, [r], 'id'));
+    }
+    return made as T[];
   }
 
   async rpc<T>(): Promise<T> {

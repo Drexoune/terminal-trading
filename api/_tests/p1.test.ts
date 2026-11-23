@@ -13,6 +13,8 @@ const STATE = [
   { key: 'calendar:week:2026-W48', value: { week: '2026-W48', archive: false, events: [{ id: 'x' }] }, updated_ms: 2 },
   { key: 'calendar:official', value: { releases: [], moved: [] }, updated_ms: 2 },
   { key: 'feed:calendar', value: { name: 'calendar', status: 'connected' }, updated_ms: 2 },
+  { key: 'release:us-cpi-mm:2026-10', value: { indicator: 'us-cpi-mm', value: '0.4' }, updated_ms: 2 },
+  { key: 'lock:burst:cpi:1', value: { at: 1 }, updated_ms: 2 },
 ];
 
 /** Faux PostgREST pour p1_state : like, in, eq, order key.desc, limit. */
@@ -26,6 +28,7 @@ function fakeSupabase() {
     const k = params.key ?? '';
     if (k.startsWith('like.')) rows = rows.filter((r) => r.key.startsWith(k.slice(5).replace('*', '')));
     if (k.startsWith('eq.')) rows = rows.filter((r) => r.key === k.slice(3));
+    if (params.or) rows = rows.filter((r) => r.key.startsWith('release:us-') || r.key.startsWith('reaction:'));
     if (k.startsWith('in.(')) {
       const keys = k.slice(4, -1).split(',').map((x) => x.replace(/"/g, ''));
       rows = rows.filter((r) => keys.includes(r.key));
@@ -52,7 +55,8 @@ describe('/api/p1', () => {
     expect(r.status).toBe(200);
     expect(r.headers.get('cache-control')).toBe('no-store');
     const body = await r.json() as { items: [string, unknown][] };
-    expect(body.items.map(([k]) => k)).toEqual(['calendar:week:2026-W48', 'calendar:official', 'feed:calendar']);
+    expect(body.items.map(([k]) => k)).toEqual(['calendar:week:2026-W48', 'calendar:official', 'feed:calendar', 'release:us-cpi-mm:2026-10']);
+    expect(sb.calls[2].params).toMatchObject({ or: '(key.like.release:us-*,key.like.reaction:*)' });   // jamais les verrous
     expect(sb.calls[0].headers.get('apikey')).toBe(ENV.SUPABASE_SECRET_KEY);
     expect(JSON.stringify(body)).not.toContain(ENV.SUPABASE_SECRET_KEY);
   });

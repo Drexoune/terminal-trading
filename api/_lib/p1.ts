@@ -3,7 +3,8 @@
 // passerelle du Mac. Données publiques seulement (agenda, calendrier officiel, état des
 // flux ; chiffres captés à l'étape O3), lues avec la clé secrète côté serveur.
 //
-//   GET /api/p1/state               semaine en cours, calendrier officiel, flux
+//   GET /api/p1/state               semaine en cours, calendrier officiel, flux, chiffres captés
+//                                   et réactions du BTC des 40 derniers jours, état de la capture
 //   GET /api/p1/calendar?week=…     une semaine de l'archive (« AAAA-Wnn »)
 
 import { HttpError, json, NO_STORE, readQuery, respond } from './http.js';
@@ -11,7 +12,9 @@ import type { Context } from './routes.js';
 import { rest, supabaseConfig, type SupabaseConfig } from './supabase.js';
 import type { FetchFn } from './okx.js';
 
-export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar'] as const;
+export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'release:state', 'release:last'] as const;
+/** Chiffres captés et réactions du BTC des 40 derniers jours (même fenêtre que la passerelle). */
+export const RECENT_MS = 40 * 86_400_000;
 const WEEK = /^\d{4}-W\d{2}$/;
 
 interface StateRow { key: string; value: unknown; updated_ms: number }
@@ -26,7 +29,11 @@ export async function p1State(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
   const week = await latestWeek(cfg, fetchFn);
   const { rows } = await rest(cfg, fetchFn, 'GET', 'p1_state',
     { select: 'key,value,updated_ms', key: `in.(${STATE_KEYS.map((k) => `"${k}"`).join(',')})` }, false);
-  const items = [...(week ? [week] : []), ...(rows as StateRow[])].map((r) => [r.key, r.value] as [string, unknown]);
+  const recent = await rest(cfg, fetchFn, 'GET', 'p1_state', {
+    select: 'key,value,updated_ms', or: '(key.like.release:us-*,key.like.reaction:*)', updated_ms: `gte.${now - RECENT_MS}`,
+    order: 'key.asc', limit: '400' }, false);
+  const items = [...(week ? [week] : []), ...(rows as StateRow[]), ...(recent.rows as StateRow[])]
+    .map((r) => [r.key, r.value] as [string, unknown]);
   return { configured: true, items, computed_ms: now };
 }
 

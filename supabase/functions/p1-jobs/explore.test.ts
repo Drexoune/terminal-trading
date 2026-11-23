@@ -97,7 +97,7 @@ describe('p1-jobs : contrôle de l’appel', () => {
     expect((await h(new Request('https://x/functions/v1/p1-jobs?job=explore'))).status).toBe(405);
     expect((await createHandler(() => undefined, deps)(post('explore'))).status).toBe(500);
     expect((await h(post('explore', 'x'.repeat(40)))).status).toBe(401);
-    expect((await h(post('capture'))).status).toBe(400);
+    expect((await h(post('inconnue'))).status).toBe(400);
     const ok = await h(post('explore'));
     expect(ok.status).toBe(200);
     expect(await ok.json()).toEqual({ ok: true, report: { job: 'explore' } });

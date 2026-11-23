@@ -9,11 +9,13 @@
 import { MIN_SECRET_LENGTH, secretKeyFrom, secretMatches } from '../okx-collector/handler.ts';
 import type { FetchLike } from '../okx-collector/postgrest.ts';
 import { runBlsCalendar, runFfCalendar, type HttpFetch } from './calendar_job.ts';
+import { runCapture, type CapFetch } from './capture.ts';
 import { explore, type ExploreDeps } from './explore.ts';
 import { createRest, type Rest } from './rest.ts';
 
-// explore : sonde O0 ; ff-calendar (hh:45, hh:55) et bls-calendar (06:10, 06:40 UTC) : agenda O2.
-export const JOBS = ['explore', 'ff-calendar', 'bls-calendar'] as const;
+// explore : sonde O0 ; ff-calendar (hh:45, hh:55) et bls-calendar (06:10, 06:40 UTC) : agenda O2 ;
+// capture (chaque minute) : chiffres du BLS à l'heure H, rattrapage, révisions, réaction (O3).
+export const JOBS = ['explore', 'ff-calendar', 'bls-calendar', 'capture'] as const;
 export type Job = (typeof JOBS)[number];
 
 export interface RunDeps extends ExploreDeps { rest: Rest | null; force: boolean }
@@ -26,6 +28,9 @@ export interface HandlerDeps extends Omit<ExploreDeps, 'env'> {
 async function defaultRun(job: Job, d: RunDeps): Promise<unknown> {
   if (job === 'explore') return explore(d);
   if (!d.rest) throw new Error('SUPABASE_URL ou clé secrète Supabase absente');
+  if (job === 'capture') {
+    return runCapture({ fetch: d.fetch as unknown as CapFetch, now: d.now, sleep: d.sleep, env: d.env, rest: d.rest });
+  }
   const deps = { fetch: d.fetch as unknown as HttpFetch, now: d.now, env: d.env, rest: d.rest };
   return job === 'ff-calendar' ? runFfCalendar(deps, d.force) : runBlsCalendar(deps, d.force);
 }

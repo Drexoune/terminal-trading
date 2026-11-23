@@ -11,6 +11,8 @@ export interface Rest {
   select<T = Row>(table: string, query: Record<string, string>): Promise<T[]>;
   insert<T = Row>(table: string, rows: Row[], returning?: string): Promise<T[]>;
   upsert(table: string, rows: Row[], onConflict: string): Promise<void>;
+  /** INSERT … ON CONFLICT DO NOTHING ; renvoie les lignes réellement créées (verrou, première publication). */
+  insertIgnore<T = Row>(table: string, rows: Row[], onConflict: string, returning: string): Promise<T[]>;
   rpc<T = unknown>(fn: string, args: Row): Promise<T>;
 }
 
@@ -68,6 +70,14 @@ export function createRest(url: string, key: string, fetchFn: FetchLike, timeout
       await call(`${table(t)}?on_conflict=${onConflict}`, {
         method: 'POST', body: JSON.stringify(rows), prefer: 'resolution=merge-duplicates,return=minimal',
       });
+    },
+    async insertIgnore<T>(t: string, rows: Row[], onConflict: string, returning: string) {
+      if (!rows.length) return [];
+      if (!IDENT_LIST.test(onConflict) || !IDENT_LIST.test(returning)) throw new Error('colonnes invalides');
+      const text = await call(`${table(t)}?on_conflict=${onConflict}&select=${returning}`, {
+        method: 'POST', body: JSON.stringify(rows), prefer: 'resolution=ignore-duplicates,return=representation',
+      });
+      return JSON.parse(text) as T[];
     },
     async rpc<T>(fn: string, args: Row) {
       if (!IDENT.test(fn)) throw new Error(`fonction invalide : ${fn}`);
