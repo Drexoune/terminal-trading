@@ -67,6 +67,7 @@ export const ALL_MODULES: ModuleDef[] = [...MODULES, ...BOURSE_MODULES];
 /** Écrans hors menu (paramètres, planche de référence) : le menu reste celui de la maquette. */
 export const EXTRA_SCREENS = [
   { id: 'settings', path: '/parametres', command: 'SET', description: 'Paramètres · mode de fonctionnement (Online, Local, Tour)', category: 'Réglages' },
+  { id: 'alerts', path: '/alertes', command: 'ALRT', description: 'Alertes : règles, déclenchements, Telegram', category: 'News' },
   { id: 'design-system', path: '/design-system', command: 'DS', description: 'Planche du design system', category: 'Référence' },
 ];
 

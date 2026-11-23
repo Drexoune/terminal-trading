@@ -197,6 +197,43 @@ MIGRATIONS: list[list[str]] = [
              unique (release, ny_date)
            )""",
     ],
+    # 5 — alertes (E4, plan P1 § 11) : règles et déclenchements. Deux règles par défaut,
+    # armées : publication d'un chiffre capté, et T-5 min avant une publication captée.
+    [
+        """create table alert_rules (
+             id integer primary key,
+             kind text not null,                  -- price, funding, event_soon, release,
+                                                  -- surprise, keyword
+             params text not null,                -- JSON validé par alert_rules.validate
+             channels text not null,              -- JSON : ["écran", "telegram", "voix"]
+             state text not null default 'armée', -- armée, déclenchée, désactivée
+             created_ms integer not null,
+             updated_ms integer not null,
+             last_fired_ms integer
+           )""",
+        """create table alert_events (
+             id text primary key,                 -- identifiant court, publié sur le bus
+             rule_id integer not null references alert_rules (id) on delete cascade,
+             dedupe text not null,                -- un déclenchement par règle et par objet
+             fired_ms integer not null,
+             title text not null,
+             body text,
+             source text,                         -- « OKX EEA · trade », « BLS »…
+             source_ms integer,                   -- heure de la donnée qui a déclenché
+             data text not null default '{}',     -- JSON
+             telegram text,                       -- null : non demandé ; envoyé, échec, en attente
+             telegram_ms integer,
+             telegram_error text,
+             acked_ms integer,
+             unique (rule_id, dedupe)
+           )""",
+        "create index alert_events_fired on alert_events (fired_ms)",
+        """insert into alert_rules (kind, params, channels, created_ms, updated_ms) values
+             ('release', '{"releases": []}', '["écran", "telegram", "voix"]', 0, 0),
+             ('event_soon',
+              '{"minutes": 5, "captured_only": true, "impacts": [], "currencies": []}',
+              '["écran", "telegram"]', 0, 0)""",
+    ],
 ]
 
 

@@ -10,6 +10,7 @@ import type { ClockState, FeedState, Ticker } from '../data/protocol';
 import { MAIN_INST, useConn, useLatency, useValue } from '../data/store';
 import { SETTINGS_PATH } from '../modules';
 import { APP_NAME, ASSISTANT_NAME } from '../names';
+import { Bell, VoiceButton } from './Notifications';
 import { useNow } from './useNow';
 
 export function Clocks({ now }: { now: number }) {
@@ -107,7 +108,8 @@ export function TopBar({ onOpenPalette }: { onOpenPalette: () => void }) {
         <Clocks now={now} />
         <span className="num utc">{fmtHms(now, 'UTC')} UTC</span>
         <LatencyChip now={now} />
-        <span className="bell"><IconButton icon="bell" boxed label="Notifications, aucune" /></span>
+        <VoiceButton />
+        <Bell />
         <NavLink className="avatar" to={SETTINGS_PATH} aria-label="Paramètres du terminal"
           title="Paramètres du terminal : mode de fonctionnement">C</NavLink>
       </div>

@@ -37,6 +37,22 @@
 .utc { font-size: var(--fs-label); color: var(--text-1); }
 .bell { position: relative; }
 .bell__badge { position: absolute; top: 6px; right: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+.voice-btn--on { border-color: var(--gold-mid); color: var(--gold); }
+.bell-pop { position: absolute; top: calc(100% + 8px); right: 0; z-index: 30; width: 360px; max-width: calc(100vw - 32px);
+  display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control); background: var(--bg-panel); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45); }
+.bell-pop__head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.bell-pop__ack { height: 26px; padding: 0 8px; font-size: 12px; }
+.bell-pop__err { margin: 0; color: var(--down); font-size: 12px; }
+.bell-pop__empty { margin: 0; color: var(--text-2); font-size: 13px; line-height: 1.5; }
+.bell-pop__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; max-height: 360px; overflow-y: auto; }
+.bell-pop__list li { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 8px; padding: 8px 0; border-top: 1px solid var(--line); }
+.bell-pop__list li.is-acked { opacity: 0.6; }
+.bell-pop__time { color: var(--gold); font-size: 12px; }
+.bell-pop__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.bell-pop__title { color: var(--text-1); font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
+.bell-pop__all { color: var(--gold); font-size: 12px; text-decoration: none; }
+.bell-pop__all:hover { text-decoration: underline; }
 .avatar {
   display: inline-flex; align-items: center; justify-content: center; flex: none;
   width: var(--control-h); height: var(--control-h); border-radius: 50%;

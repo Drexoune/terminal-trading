@@ -4,11 +4,12 @@
 
 import { Link } from 'react-router-dom';
 import { Panel } from '../../components/Panel';
-import { Chip } from '../../components/ui';
+import { Icon } from '../../components/Icon';
+import { ruleChip, sortRules, type AlertRule } from '../../alerts/alerts';
 import { daysUntil, parisDay, shortDay, timeLabel, type CalendarNext } from '../../calendar/calendar';
 import { Flag } from '../../calendar/Flag';
 import { useSettings } from '../../config/settings';
-import { useValue } from '../../data/store';
+import { useKeys, useValue } from '../../data/store';
 import { useNow } from '../../shell/useNow';
 import { ImpactBars } from '../calendar/Calendar';
 
@@ -70,10 +71,39 @@ export function RiskPanel() {
   );
 }
 
+/**
+ * Alertes actives (E4) : règles du service « alert » de la passerelle (clés alert:rule:…),
+ * déclenchées d'abord, avec leur état (Armée / Déclenchée hh:mm). Gestion : écran /alertes.
+ */
 export function AlertsPanel() {
+  const { mode } = useSettings();
+  const now = useNow();
+  const rules = sortRules(useKeys<AlertRule>('alert:rule:').map(([, r]) => r).filter((r) => r.state !== 'désactivée'));
   return (
-    <Panel title="Alertes actives" controls="compact" chips={<Chip>0</Chip>}>
-      <Placeholder phase="P1" height={267} text="Alertes sur prix, chiffres publiés, mots-clés et liquidations : table alerts." />
+    <Panel title="Alertes actives" controls="compact" chips={<Link className="chip" to="/alertes" title="Gérer les règles">{rules.length}</Link>}>
+      {rules.length === 0 ? (
+        <Placeholder phase="P1" height={267}
+          text={mode === 'online' ? 'Alertes en Mode Online : non prévues en P1 (passerelle du Mac, Mode Local).'
+            : 'Aucune règle reçue : activer le service alert de la passerelle (GATEWAY_SERVICES), puis créer une règle dans /alertes.'} />
+      ) : (
+        <ul className="alert-rows" style={{ minHeight: 267 - 42 }}>
+          {rules.slice(0, 4).map((r) => {
+            const chip = ruleChip(r, now);
+            return (
+              <li key={r.id}>
+                <Link to="/alertes" className="alert-rows__row">
+                  <Icon name="bell" />
+                  <span className="alert-rows__text">
+                    <span className="alert-rows__title">{r.label}</span>
+                    <span className="lbl lbl--s">{r.category}</span>
+                  </span>
+                  <span className={`chip chip--s${chip.variant === 'fired' ? ' chip--hot' : ''}`} data-testid="alert-state">{chip.text}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </Panel>
   );
 }

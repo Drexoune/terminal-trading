@@ -26,6 +26,9 @@ const PATTERNS = [
   [/\b(GEMINI|ALPHA_VANTAGE|TIINGO|MASSIVE|OPENFIGI)_API_KEY\b/, 'nom de clé d’une source boursière'],
   [/pbkdf2-sha256\$\d+\$/, 'empreinte de mot de passe'],
   [/\bAIza[0-9A-Za-z_-]{35}\b/, 'clé API Google (Gemini)'],
+  // P1 (E4) : le jeton du bot Telegram reste sur la passerelle. Les NOMS des variables
+  // (TELEGRAM_BOT_TOKEN…) peuvent apparaître : l'écran dit lesquelles renseigner.
+  [/\b\d{8,10}:[A-Za-z0-9_-]{35}\b/, 'jeton de bot Telegram'],
 ];
 
 function* files(dir) {

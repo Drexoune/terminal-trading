@@ -21,8 +21,11 @@ from pathlib import Path
 
 import terminal_gateway.app as gw_app
 import uvicorn
+from terminal_gateway.alert_service import AlertService
 from terminal_gateway.bus import Bus
 from terminal_gateway.config import Settings
+from terminal_gateway.storage import Storage
+from terminal_gateway.telegram import SendResult
 
 FIX = json.loads((Path(__file__).parent / "fixtures" / "main-demo.json").read_text())
 CAL = json.loads((Path(__file__).parent / "fixtures" / "calendar-demo.json").read_text())
@@ -262,6 +265,29 @@ def clear_reaction(bus: Bus) -> None:
         "source_ts_ms": now_ms() - 600_000, "received_ms": now_ms() - 120_000}})
 
 
+class DemoNotifier:
+    """Telegram de démonstration (E4) : rien ne part, les messages sont gardés pour le test."""
+
+    name, configured = "telegram", True
+
+    def __init__(self) -> None:
+        self.sent: list[str] = []
+        self.last: SendResult | None = None
+
+    async def send(self, text: str, silent: bool = False) -> SendResult:
+        self.sent.append(text)
+        self.last = SendResult(True, now_ms())
+        return self.last
+
+    def health(self) -> dict:
+        r = self.last
+        return {"configured": True, "last_ok": r.ok if r else None,
+                "last_ms": r.sent_ms if r else None, "last_error": None}
+
+    async def aclose(self) -> None:
+        pass
+
+
 def main() -> None:
     p = argparse.ArgumentParser()
     p.add_argument("--port", type=int, default=8790)
@@ -272,7 +298,15 @@ def main() -> None:
                         stop_file=Path(tempfile.gettempdir()) / "fake-gateway.stop")
     bus = Bus()
     release = DemoRelease(bus)
-    app = gw_app.create_app(settings, services=[DemoService(bus), release], bus=bus)
+    # Alertes (E4) : le vrai moteur, sur une base jetable, à l'heure de la maquette.
+    db_path = Path(tempfile.gettempdir()) / f"fake-gateway-alerts-{a.port}.sqlite3"
+    for suffix in ("", "-wal", "-shm"):
+        Path(f"{db_path}{suffix}").unlink(missing_ok=True)
+    storage = Storage(db_path)
+    notifier = DemoNotifier()
+    alerts = AlertService(bus, storage, settings, notifier=notifier, clock=now_ms)
+    app = gw_app.create_app(settings, services=[DemoService(bus), release, alerts], bus=bus,
+                            storage=storage)
 
     # Routes de test seulement (E3) : publier un chiffre, lire l'heure d'affichage, effacer.
     @app.post("/test/release")
@@ -287,6 +321,19 @@ def main() -> None:
     async def test_clear() -> dict:
         release.clear()
         return {"ok": True}
+
+    @app.post("/test/trade")
+    async def test_trade(px: float) -> dict:
+        """Un trade BTC au prix donné (franchissement d'une règle de prix)."""
+        bus.publish("trade:BTC-USDT-SWAP", {
+            "kind": "trade", "inst": "BTC-USDT-SWAP", "trade_id": int(px * 10), "count": 1,
+            "px": px, "sz": 1.0, "side": "buy", "ts_source": now_ms(), "ts_recv": now_ms()})
+        await alerts.drain()
+        return {"ok": True}
+
+    @app.get("/test/telegram")
+    async def test_telegram_sent() -> dict:
+        return {"sent": notifier.sent}
 
     @app.post("/test/reaction")
     async def test_reaction() -> dict:
