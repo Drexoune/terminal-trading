@@ -4,7 +4,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { MemRest } from '../p1-jobs/_memrest.ts';
-import { type CollectDeps, runCloses, runCot, runCrowding, runLiquidity } from './collect.ts';
+import { type CollectDeps, runBanks, runCloses, runCot, runCrowding, runLiquidity } from './collect.ts';
 
 const fx = (name: string) => readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8');
 const NOW = Date.UTC(2026, 10, 24, 22, 30);
@@ -139,5 +139,42 @@ describe('tâche crowding', () => {
     rest.rows('crowding').push({ exchange: 'okx', symbol: 'BTC', metric: 'account', ts: '2026-09-01T00:00:00.000Z', value: 1, long_share: 0.5, ts_recv: 'x' });
     await runCrowding(deps(rest));
     expect(rest.rows('crowding').some((x) => x.ts === '2026-09-01T00:00:00.000Z')).toBe(false);
+  });
+});
+
+describe('tâche banks (Bank Participation Report via Vercel)', () => {
+  const page = (month: string, date: string) => ({ months: ['2026-09', '2026-10', '2026-11'], month, page: 'x', rows: [
+    { market: 'CME EURO FX', date, banks: 12, long: 10361, long_pct: 1.2, short: 161790, short_pct: 18.5, open_interest: 876122 },
+    { market: 'CBT WHEAT-SRW', date, banks: 18, long: 1, long_pct: 0, short: 2, short_pct: 0, open_interest: 3 },
+  ] });
+  function vdeps(rest: MemRest, seen: string[], fail = false): CollectDeps {
+    return { rest, now: () => NOW, env: (n) => (n === 'P1_JOBS_SECRET' ? 's'.repeat(40) : undefined),
+      fetch: async (url, init) => {
+        seen.push(`${url} ${JSON.stringify(init?.headers ?? {})}`);
+        if (fail) return { status: 502, text: async () => '{"detail":"CFTC : HTTP 403"}' };
+        const m = /month=(\d{4}-\d{2})/.exec(url)?.[1] ?? '2026-11';
+        return { status: 200, text: async () => JSON.stringify(page(m, `${m}-0${m === '2026-11' ? 3 : 6}`)) };
+      } };
+  }
+  it('premier passage : tous les mois de l’index ; ensuite les 2 derniers ; marchés suivis seulement', async () => {
+    const rest = new MemRest();
+    const seen: string[] = [];
+    const r = await runBanks(vdeps(rest, seen));
+    expect(r.months).toEqual(['2026-09', '2026-10', '2026-11']);
+    expect(seen[0]).toMatch(/^https:\/\/terminal-trading-steel\.vercel\.app\/api\/sentiment\/bpr \{.*"x-jobs-secret":"s{40}"/);
+    expect(rest.rows('bank_positions').map((x) => x.market)).toEqual(['CME EURO FX', 'CME EURO FX', 'CME EURO FX']);
+    const st = state(rest, 'bpr') as { report_date: string; markets: { label: string; net: number; net_change_1m: number; history: unknown[] }[] };
+    expect(st.report_date).toBe('2026-11-03');
+    expect(st.markets[0]).toMatchObject({ label: 'EUR', net: 10361 - 161790, net_change_1m: 0 });
+    expect(st.markets[0].history.length).toBe(3);
+    seen.length = 0;
+    expect((await runBanks(vdeps(rest, seen))).months).toEqual(['2026-10', '2026-11']);
+  });
+  it('refus de Vercel ou de la CFTC : erreur visible dans le flux, secret jamais recopié', async () => {
+    const rest = new MemRest();
+    const r = await runBanks(vdeps(rest, [], true));
+    expect(r.ok).toBe(false);
+    expect(state(rest, 'feed:banks')).toMatchObject({ status: 'reconnecting', last_message_ms: null });
+    expect(JSON.stringify(rest.tables.get('p4_state'))).not.toContain('s'.repeat(40));
   });
 });

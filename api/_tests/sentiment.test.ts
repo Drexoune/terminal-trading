@@ -100,4 +100,23 @@ describe('Bank Participation Report', () => {
     const refused = await (await probe(make(403), SECRET)).json() as { ok: boolean; lines: { status: number; challenge: boolean }[] };
     expect(refused).toMatchObject({ ok: false, lines: [{ status: 403, challenge: true }] });
   });
+  it('bpr : un mois lu et découpé pour p4-jobs ; secret, mois contrôlé, refus visible', async () => {
+    const make = (status: number) => createContext({ now: () => 0, monotonic: () => 0, sleep: async () => {}, fetch: async (url) => {
+      if (status !== 200) return new Response('<title>Just a moment...</title>', { status });
+      return new Response(url.endsWith('index.htm') ? fx('cftc-bpr-index-2026-11-24.html') : fx('cftc-bpr-deanov26f-2026-11-24.html'), { status: 200 });
+    } }, ENV);
+    const call = (c: ReturnType<typeof make>, q: string, s = SECRET) => handleSentiment(new Request(`https://x/api/sentiment/bpr${q}`, { headers: { 'x-jobs-secret': s } }), c);
+    const b = await (await call(make(200), '')).json() as { month: string; page: string; months: string[]; rows: { market: string }[] };
+    expect(b).toMatchObject({ month: '2026-11', page: 'deanov26f' });
+    expect(b.months[0] < b.months.at(-1)!).toBe(true);
+    expect(b.rows.some((r) => r.market === 'CME EURO FX')).toBe(true);
+    expect((await call(make(200), '?month=2026-10')).status).toBe(200);
+    expect((await call(make(200), '?month=1999-01')).status).toBe(404);
+    expect((await call(make(200), '?month=2026-13')).status).toBe(400);
+    expect((await call(make(200), '', 'faux')).status).toBe(401);
+    const refused = await call(make(403), '');
+    expect(refused.status).toBe(502);
+    expect(await refused.text()).toMatch(/Cloudflare/);
+    expect((await get(supa().ctx, 'risk&month=2026-11')).status).toBe(400);
+  });
 });

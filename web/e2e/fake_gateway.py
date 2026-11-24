@@ -23,6 +23,7 @@ import terminal_gateway.app as gw_app
 import uvicorn
 from macro_demo import demo_macro, demo_series
 from rates_demo import demo_rates, demo_rates_history
+from sentiment_demo import demo_sentiment
 from terminal_gateway.alert_service import AlertService
 from terminal_gateway.bus import Bus
 from terminal_gateway.config import Settings
@@ -167,6 +168,9 @@ class DemoService:
         for eco in ("JP", "US"):
             for ind in ("policy", "cpi"):
                 self.bus.publish(f"macro:series:{eco}:{ind}:10", demo_series(eco, ind))
+        # Écrans de P4 de démonstration (chiffres fictifs de la maquette Risque, tests seulement).
+        for route, r in demo_sentiment(now).items():
+            self.bus.publish(f"sentiment:{route}", r)
         ok = {"status": "ok", "last_ok_ms": now, "last_error": None, "items": 1, "noise": 0}
         self.bus.publish("news:feeds", {f: ok for f in ("fed-monetary", "boj-whatsnew",
                                                         "financialjuice")})

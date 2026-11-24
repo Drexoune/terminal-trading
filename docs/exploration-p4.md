@@ -58,6 +58,7 @@ La porte de P4 demande un indice « recalculé à la clôture ». Au relevé du 
 - **Contenu utile** : les 7 devises du CME, E-MINI S&P 500 et BITCOIN du CME. Le nombre de banques est masqué sous 4 (confidentialité) ; une ligne totale suit chaque marché.
 - **Accès** : 200 depuis le Mac, **403 depuis Supabase** (page de vérification Cloudflare « Just a moment… », adresses de centre de données refusées). Le relevé automatique depuis Supabase est donc impossible.
 - **Ce qui marche depuis Supabase** : la catégorie « dealer » du rapport TFF (API Socrata), hebdomadaire. Elle regroupe surtout les grandes banques, mais ce n'est pas le même périmètre que le BPR.
+- **Depuis Vercel** (sonde `/api/sentiment/probe`, 24/11/2026, région cdg1) : index et page de novembre en 200, sans vérification Cloudflare, 116 marchés lus. Comme le prévoit T-060, le BPR est donc relevé : Vercel lit et découpe la page (`/api/sentiment/bpr?month=`, secret exigé, aucune écriture) et la tâche `banks` de `p4-jobs` l'écrit dans `bank_positions`. Tous les mois de l'index au premier passage, les deux derniers ensuite, chaque soir à 21:15 UTC (le rapport est mensuel ; le relevé quotidien le prend dès sa parution).
 
 ## 6. Sentiment retail (ratios long/short)
 
@@ -90,3 +91,10 @@ Tâche `explore` de `p4-jobs`, deux passages le 24/11/2026 (9 s chacun). La fonc
 | `cftc-bpr` | **403** | 115 à 150 ms | vérification Cloudflare |
 | `binance-ratio-btc`, `binance-funding-btc` | 200 | 220 à 250 ms | pas de blocage géographique |
 | `bybit-ratio-btc` | 200 | 170 à 190 ms | `retCode` 0 |
+
+## 8. Mise en service (24/11/2026)
+
+- **Supabase** : tables `sentiment_series`, `cot_positions`, `crowding`, `bank_positions`, `p4_state` ; Edge Function `p4-jobs` (tâches `closes`, `liquidity`, `cot`, `crowding`, `banks`, `publish`, `explore`) ; 7 tâches planifiées (`supabase/cron-p4.sql`).
+- **Vercel** : `api/sentiment.ts` (routes `risk`, `cot`, `banks`, `crowding`, `liquidity`, `probe`, `bpr`).
+- **Écrans** : Sentiment de risque (maquette Risque, géométrie ±2 px), COT, Positions des banques, Sentiment retail, Liquidité, et le panneau de la Vue d'ensemble.
+- **Porte de P4** : chaque panneau affiche sa source et sa fraîcheur (puce du sous-en-tête et ligne de source marquée `data-fresh`, vérifiées par `web/e2e/sentiment.spec.ts`) ; l'indice est recalculé à chaque relevé des clôtures (22:30 et 06:00 UTC).

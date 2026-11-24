@@ -117,6 +117,8 @@ export const WATCHED_TOPICS = [
   'rates:',
   // P3 : écrans Heatmap et Macro (démonstration ; en ligne : /api/macro).
   'macro:',
+  // P4 : écrans de sentiment et de liquidité (démonstration ; en ligne : /api/sentiment).
+  'sentiment:',
 ];
 
 // --- Sources du worker (sources/gatewaySource.ts, sources/okxSource.ts) ----------

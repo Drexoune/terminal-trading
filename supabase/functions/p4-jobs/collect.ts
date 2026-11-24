@@ -5,16 +5,19 @@
 //   entier : un appel par titre quelle que soit la période), AUD/JPY (Tiingo), BTC et ETH (OKX) ;
 // - liquidity (chaque matin) : actif de la Fed, compte du Trésor, reverse repo (FRED) ;
 // - cot (vendredi soir, repris le samedi) : rapport TFF de la CFTC, 3 ans au premier passage ;
-// - crowding (toutes les 15 min) : ratios long/short de Binance, OKX et Bybit, financement.
+// - crowding (toutes les 15 min) : ratios long/short de Binance, OKX et Bybit, financement ;
+// - banks (chaque soir) : Bank Participation Report, lu par Vercel (/api/sentiment/bpr) parce que
+//   la CFTC refuse Supabase (T-060) ; tous les mois de l'index au premier passage, les 2 derniers
+//   ensuite.
 //
 // Rien n'est inventé : une source en échec garde ses lignes et porte l'erreur dans p4_state
 // (« series » et « feed:<tâche> », lus par l'écran). Chaque ligne porte sa date à la source et
 // son heure de réception.
 
 import type { Json, Rest, Row } from '../p1-jobs/rest.ts';
-import { CLOSES, COT_CATEGORIES, COT_MARKETS, CROWD_ASSETS, type DailySpec, HISTORY_START, LIQUIDITY } from './catalog.ts';
+import { BPR_MARKETS, CLOSES, COT_CATEGORIES, COT_MARKETS, CROWD_ASSETS, type DailySpec, HISTORY_START, LIQUIDITY, TERMINAL_WEB_DEFAULT } from './catalog.ts';
 import { BINANCE_F, BYBIT, CBOE_VIX, CFTC_TFF, OKX, TIINGO } from './explore.ts';
-import { publishCot, publishCrowding, publishLiquidity, publishRisk } from './publish.ts';
+import { publishBpr, publishCot, publishCrowding, publishLiquidity, publishRisk } from './publish.ts';
 import { binanceRatio, bybitRatio, cboeCsv, type CrowdPoint, fredDaily, funding, okxDailyCandles, okxRatio, type Point,
   tffRows, tiingoDaily, tiingoFxDaily } from './parse.ts';
 
@@ -227,4 +230,40 @@ export async function runCrowding(deps: CollectDeps): Promise<Record<string, unk
   await rest.upsert('p4_state', [feedRow('crowding', 'Ratios long/short (Binance, OKX, Bybit)', now, saved, problems, 0.75, 2)], 'key');
   const published = await publishStep(() => publishCrowding(rest, now), problems);
   return { job: 'crowding', ok: problems.length === 0, saved, published, problems };
+}
+
+// ---------------------------------------------------------------------------------------------
+// Bank Participation Report, relu par Vercel
+
+interface BprReply { months: string[]; month: string; rows: { market: string; date: string; banks: number | null; long: number; long_pct: number;
+  short: number; short_pct: number; open_interest: number }[] }
+
+export async function runBanks(deps: CollectDeps): Promise<Record<string, unknown>> {
+  const { rest } = deps;
+  const now = deps.now();
+  const recv = new Date(now).toISOString();
+  const web = (deps.env('TERMINAL_WEB_URL') ?? TERMINAL_WEB_DEFAULT).replace(/\/+$/, '');
+  const secret = deps.env('P1_JOBS_SECRET') ?? '';
+  const problems: string[] = [];
+  const done: string[] = [];
+  const fetchMonth = async (month: string | null): Promise<BprReply> =>
+    JSON.parse(await get(deps, `${web}/api/sentiment/bpr${month ? `?month=${month}` : ''}`, { 'x-jobs-secret': secret })) as BprReply;
+  try {
+    const latest = await fetchMonth(null);
+    const known = (await rest.select<{ report_date: string }>('bank_positions', { select: 'report_date', order: 'report_date.desc', limit: '1' })).length > 0;
+    const months = known ? latest.months.slice(-2) : latest.months;
+    for (const month of months) {
+      try {
+        const r = month === latest.month ? latest : await fetchMonth(month);
+        const rows = r.rows.filter((x) => x.market in BPR_MARKETS).map((x) => ({ report_date: x.date, market: x.market, banks: x.banks, long: x.long,
+          long_pct: x.long_pct, short: x.short, short_pct: x.short_pct, open_interest: x.open_interest, ts_recv: recv }));
+        if (!rows.length) throw new Error('aucun marché suivi');
+        await rest.upsert('bank_positions', rows, 'report_date,market');
+        done.push(month);
+      } catch (e) { problems.push(`${month} : ${errText(e, secret)}`); }
+    }
+  } catch (e) { problems.push(`index : ${errText(e, secret)}`); }
+  await rest.upsert('p4_state', [feedRow('banks', 'Positions des banques (CFTC, BPR via Vercel)', now, done.length, problems, 30, 54)], 'key');
+  const published = await publishStep(() => publishBpr(rest, now), problems);
+  return { job: 'banks', ok: problems.length === 0, months: done, published, problems };
 }

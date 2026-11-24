@@ -4,12 +4,15 @@
 //
 //   GET /api/sentiment/risk        indice de risque, 7 composantes, historique, SPY et VIX sur un an
 //   GET /api/sentiment/cot         rapport TFF : positions nettes par catégorie, percentile sur 3 ans
-//   GET /api/sentiment/banks       catégorie « dealers » du TFF (T-060) ; Bank Participation Report
-//                                  s'il est relevé un jour (« — » avec la raison sinon)
+//   GET /api/sentiment/banks       catégorie « dealers » du TFF et Bank Participation Report (T-060),
+//                                  chacun avec son flux
 //   GET /api/sentiment/crowding    ratios long/short et financement (Binance, OKX, Bybit)
 //   GET /api/sentiment/liquidity   liquidité nette de la Fed
 //   GET /api/sentiment/probe       sonde du Bank Participation Report depuis Vercel (T-060),
 //                                  en-tête x-jobs-secret exigé
+//   GET /api/sentiment/bpr?month=  un mois du Bank Participation Report, lu et découpé ici parce
+//                                  que la CFTC refuse Supabase ; appelé par la tâche « banks » de
+//                                  p4-jobs, qui écrit en base (Vercel n'écrit rien). Secret exigé.
 
 import { HttpError, json, NO_STORE, readQuery, respond, type Env } from './http.js';
 import { sameSecret } from './macro.js';
@@ -29,7 +32,7 @@ const KEYS: Record<Route, { state: string; feed: string; series?: string[] }> = 
   liquidity: { state: 'liquidity', feed: 'feed:liquidity', series: ['WALCL', 'WDTGAL', 'RRP'] },
 };
 
-export const BPR_REASON_NONE = 'Bank Participation Report non relevé : la page de la CFTC refuse les serveurs de Supabase (décision T-060)';
+export const BPR_REASON_NONE = 'Bank Participation Report pas encore relevé (tâche banks de p4-jobs, page de la CFTC lue par Vercel, T-060)';
 
 interface StateRow { key: string; value: unknown; updated_ms: number }
 interface CotMarket { code: string; label: string; group: string; date: string; open_interest: number;
@@ -37,7 +40,7 @@ interface CotMarket { code: string; label: string; group: string; date: string; 
 
 export async function sentimentRoute(cfg: SupabaseConfig, fetchFn: FetchFn, now: number, route: Route) {
   const k = KEYS[route];
-  const keys = [k.state, k.feed, ...(k.series ? ['series'] : []), ...(route === 'banks' ? ['bpr'] : [])];
+  const keys = [k.state, k.feed, ...(k.series ? ['series'] : []), ...(route === 'banks' ? ['bpr', 'feed:banks'] : [])];
   const { rows } = await rest(cfg, fetchFn, 'GET', 'p4_state',
     { select: 'key,value,updated_ms', key: `in.(${keys.map((x) => `"${x}"`).join(',')})` }, false);
   const by = new Map((rows as StateRow[]).map((r) => [r.key, r]));
@@ -55,7 +58,8 @@ export async function sentimentRoute(cfg: SupabaseConfig, fetchFn: FetchFn, now:
     dealer: m.categories.dealer ?? null, history: { dates: m.history.dates, net: m.history.net.dealer ?? [] } }));
   const bpr = by.get('bpr');
   return { ...base, data: cot ? { report_date: cot.report_date ?? null, label: 'Dealers (rapport TFF de la CFTC)', markets: dealers } : null,
-    reason: cot ? null : 'pas encore calculé', bpr: bpr?.value ?? null, bpr_reason: bpr ? null : BPR_REASON_NONE };
+    reason: cot ? null : 'pas encore calculé', bpr: bpr?.value ?? null, bpr_reason: bpr ? null : BPR_REASON_NONE,
+    bpr_feed: by.get('feed:banks')?.value ?? null, bpr_published_ms: bpr?.updated_ms ?? null };
 }
 
 const pick = (o: Record<string, unknown>, ids: string[]) => Object.fromEntries(ids.map((id) => [id, o[id] ?? null]));
@@ -110,6 +114,25 @@ export function bprRows(html: string): BprRow[] {
   return out;
 }
 
+/** Un mois (AAAA-MM, le plus récent sans paramètre) : mois disponibles et lignes totales. */
+export async function readBpr(fetchFn: FetchFn, month: string | null) {
+  const get = async (url: string) => {
+    let r: Response;
+    try {
+      r = await fetchFn(url, { headers: { 'User-Agent': UA, Accept: 'text/html' }, signal: AbortSignal.timeout(TIMEOUT_MS) });
+    } catch (e) { throw new HttpError(502, `CFTC injoignable : ${(e as Error).message}`.slice(0, 200)); }
+    const body = await r.text();
+    if (r.status !== 200) throw new HttpError(502, `CFTC : HTTP ${r.status}${/Just a moment/.test(body) ? ' (vérification Cloudflare)' : ''}`);
+    return body;
+  };
+  const pages = bprFuturesPages(await get(BPR_INDEX));
+  const pick = month ? pages.find((p) => p.month === month) : pages[pages.length - 1];
+  if (!pick) throw new HttpError(404, month ? `mois absent de l’index de la CFTC : ${month}` : 'index de la CFTC sans page');
+  const rows = bprRows(await get(`${BPR_PAGE}${pick.page}`));
+  if (!rows.length) throw new HttpError(502, `page ${pick.page} illisible : aucune ligne totale`);
+  return { months: pages.map((p) => p.month), month: pick.month, page: pick.page, rows };
+}
+
 export async function probeBpr(fetchFn: FetchFn, now: () => number) {
   const get = async (label: string, url: string) => {
     const t0 = now();
@@ -144,16 +167,20 @@ export function handleSentiment(request: Request, ctx: Context): Promise<Respons
     if (request.method !== 'GET') throw new HttpError(405, 'méthode non autorisée : GET attendu');
     // Route lue dans le chemin (/api/sentiment/risk, serveur de développement) ou dans ?path=
     // (réécriture de vercel.json), comme le module Alertes.
-    const q = readQuery(request, ['path']);
+    const q = readQuery(request, ['path', 'month']);
     const m = /^\/api\/sentiment\/([a-z]+)\/?$/.exec(new URL(request.url).pathname);
     const path = m ? m[1] : q.get('path') ?? '';
     const now = ctx.deps.now();
-    if (path === 'probe') {
+    if (path === 'probe' || path === 'bpr') {
       const secret = ctx.env.P1_JOBS_SECRET?.trim() ?? '';
       if (secret.length < MIN_SECRET) throw new HttpError(503, 'P1_JOBS_SECRET absente des variables de Vercel');
       if (!(await sameSecret(request.headers.get('x-jobs-secret') ?? '', secret))) throw new HttpError(401, 'secret d’appel invalide');
-      return json(await probeBpr(ctx.deps.fetch, ctx.deps.now), NO_STORE);
+      if (path === 'probe') return json(await probeBpr(ctx.deps.fetch, ctx.deps.now), NO_STORE);
+      const month = q.get('month') ?? null;
+      if (month !== null && !/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) throw new HttpError(400, 'month : AAAA-MM');
+      return json(await readBpr(ctx.deps.fetch, month), NO_STORE);
     }
+    if (q.has('month')) throw new HttpError(400, 'month : route /api/sentiment/bpr seulement');
     if (!(ROUTES as readonly string[]).includes(path)) {
       throw new HttpError(404, `route inconnue (attendues : ${ROUTES.map((r) => `/api/sentiment/${r}`).join(', ')})`);
     }

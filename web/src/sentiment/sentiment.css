@@ -1,0 +1,46 @@
+/* Écrans de P4 : éléments communs (fraîcheur, vide). Tokens seuls. */
+.sn-fresh-chip { max-width: 100%; height: auto; min-height: 22px; white-space: normal; overflow-wrap: anywhere; text-align: left; }
+.sn-fresh { padding: 10px 16px 12px; color: var(--text-3); line-height: 1.5; }
+.sn-empty { display: flex; align-items: center; gap: 8px; padding: 20px 16px; color: var(--text-3); font-size: 12.5px; }
+.sn-chart { padding: 14px 16px 4px; }
+.sn-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 8px; }
+.sn-ln { display: inline-block; width: 14px; height: 2px; margin-right: 6px; vertical-align: middle; }
+.sn-plot { position: relative; border-bottom: 1px solid var(--line); }
+.sn-plot svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.sn-plot path { fill: none; vector-effect: non-scaling-stroke; }
+.sn-line { stroke-width: 1.6; stroke-linejoin: round; }
+.sn-line--gold, .sn-ln--gold { stroke: var(--gold); background: var(--gold); }
+.sn-line--up, .sn-ln--up { stroke: var(--up); background: var(--up); }
+.sn-line--down, .sn-ln--down { stroke: var(--down); background: var(--down); }
+.sn-line--text, .sn-ln--text { stroke: var(--text-2); background: var(--text-2); }
+.sn-zero { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 4 4; }
+.sn-axis { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--text-3); }
+/* Tableaux des écrans sans maquette */
+.sn { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+.sn-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--gap); }
+.sn-row > .pn, .sn-row > .sn-col { min-width: 0; }
+.sn-col { display: flex; flex-direction: column; gap: var(--gap); }
+.sn-scroll { overflow-x: auto; }
+.sn-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.sn-table th { height: 34px; padding: 0 8px; text-align: left; font-weight: 500; white-space: nowrap; }
+.sn-table td { height: 46px; padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: middle; white-space: nowrap; }
+.sn-table th:first-child, .sn-table td:first-child { padding-left: 16px; }
+.sn-table th:last-child, .sn-table td:last-child { padding-right: 16px; }
+.sn-table .r { text-align: right; }
+.sn-table b { color: var(--text-1); font-weight: 600; }
+.sn-table tr[aria-selected="true"] td { background: var(--bg-selected); }
+.sn-table tbody tr.sn-click { cursor: pointer; }
+.sn-table .sn-pct { display: flex; align-items: center; gap: 10px; min-width: 140px; }
+.sn-table .sn-pct > div { flex: 1; }
+.sn-sub { display: block; margin-top: 2px; font-size: 11px; color: var(--text-3); }
+.sn-tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.sn-tools [role="group"] { flex-wrap: wrap; }
+.sn-kpi { padding: 18px 16px 6px; }
+.sn-kpi-v { font: 700 var(--fs-kpi)/1 var(--font-display); color: var(--text-1); }
+.sn-kpi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: 16px 0 0; background: var(--line); border: 1px solid var(--line); }
+.sn-kpi-grid > div { padding: 10px 12px; background: var(--bg-panel); }
+.sn-kpi-grid .num { display: block; margin-top: 4px; font-size: 14px; }
+@media (max-width: 480px) {
+  .sn-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sn-table .hide-xs { display: none; }
+}

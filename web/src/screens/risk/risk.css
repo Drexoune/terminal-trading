@@ -1,0 +1,84 @@
+/* Sentiment de risque (P4, S4), d'après la maquette Risque. Tokens seuls, aucune couleur en dur
+   hors des fonds de zones translucides de la maquette (dérivés de --up, --text-1 et --down). */
+.content.rk { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+.rk-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--gap); }
+.rk-row > .pn { min-width: 0; }
+.rk-empty { display: flex; align-items: center; gap: 8px; padding: 20px 16px; color: var(--text-3); font-size: 12.5px; }
+
+/* Composite */
+.rk-comp { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 22px 18px 18px; }
+.rk-comp > svg { width: 100% !important; max-width: 300px; height: auto !important; }
+.rk-kpi { display: flex; align-items: center; gap: 14px; }
+.rk-big { font: 700 64px/1 var(--font-display); color: var(--text-1); }
+.rk-moves { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; font-size: 12px; color: var(--text-2); }
+.rk-zones { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; width: 100%; margin-top: 4px; }
+.rk-zone { height: 6px; }
+.rk-zone--1 { background: var(--gauge-1); } .rk-zone--2 { background: var(--gauge-2); } .rk-zone--3 { background: var(--text-decor); }
+.rk-zone--4 { background: var(--gauge-4); } .rk-zone--5 { background: var(--gauge-5); }
+.rk-zone-l { margin-top: 6px; font-size: 9.5px; letter-spacing: .08em; text-align: center; }
+.rk-zone-r { margin-top: 2px; font-size: 10px; color: var(--text-3); text-align: center; }
+.rk-foot { color: var(--text-3); text-align: center; }
+
+/* Composantes */
+.rk-cp-scroll { overflow-x: auto; }
+.rk-cp-inner { min-width: 560px; }
+.rk-cp { display: grid; grid-template-columns: minmax(0, 1.6fr) 92px minmax(120px, 1.4fr) 44px; gap: 14px; align-items: center; padding: 0 16px; }
+.rk-cp .r { text-align: right; }
+.rk-cp-head { height: 34px; font-size: 10px; }
+.rk-cp-row { min-height: 56px; border-top: 1px solid var(--line); }
+.rk-cp-name { min-width: 0; }
+.rk-cp-l { font-weight: 600; color: var(--text-1); }
+.rk-cp-d { margin-top: 3px; font-size: 12px; color: var(--text-3); }
+.rk-cp-v { font-size: 13px; color: var(--text-1); }
+.rk-cp-p { font-size: 13px; font-weight: 700; }
+.rk-cp-why { font-size: 11.5px; color: var(--text-3); }
+.rk-bar { position: relative; height: 10px; background: var(--bg-panel-2); border: 1px solid var(--line); }
+.rk-bar-fill { position: absolute; top: 0; bottom: 0; left: 0; }
+.rk-bar-fill--1 { background: var(--gauge-1); } .rk-bar-fill--2 { background: var(--gauge-2); } .rk-bar-fill--3 { background: var(--text-decor); }
+.rk-bar-fill--4 { background: var(--gauge-4); } .rk-bar-fill--5 { background: var(--gauge-5); }
+.rk-bar-mid { position: absolute; top: -4px; bottom: -4px; left: 50%; width: 1px; background: var(--line-strong); }
+.rk-bar--avg { border-color: var(--gold-mid); }
+.rk-cp-avg { min-height: 48px; border-top: 1px solid var(--line-strong); background: var(--bg-selected); }
+.rk-avg-l { font: 600 13px var(--font-mono); letter-spacing: .1em; color: var(--gold-hi); }
+.rk-avg-v { font-size: 13px; font-weight: 700; color: var(--gold-hi); }
+.rk-cp-p.up { color: var(--up); } .rk-cp-p.dn { color: var(--down); } .rk-cp-p.nt { color: var(--text-1); }
+
+/* Graphiques */
+.rk-chart { padding: 14px 18px; }
+.rk-hist { display: flex; gap: 8px; }
+.rk-hist-plot { position: relative; flex: 1; min-width: 0; height: 230px; overflow: hidden; }
+.rk-band { position: absolute; left: 0; right: 0; }
+.rk-band--5 { top: 0; height: 25%; background: color-mix(in srgb, var(--up) 7%, transparent); }
+.rk-band--4 { top: 25%; height: 20%; background: color-mix(in srgb, var(--up) 3.5%, transparent); }
+.rk-band--3 { top: 45%; height: 10%; background: color-mix(in srgb, var(--text-1) 3%, transparent); }
+.rk-band--2 { top: 55%; height: 20%; background: color-mix(in srgb, var(--down) 4%, transparent); }
+.rk-band--1 { top: 75%; height: 25%; background: color-mix(in srgb, var(--down) 8%, transparent); }
+.rk-hist-plot svg, .rk-year svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.rk-hist-plot svg path, .rk-year svg path { vector-effect: non-scaling-stroke; }
+.rk-hist-line { fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linejoin: round; }
+.rk-hist-last { position: absolute; right: 6px; padding: 3px 6px; background: var(--gold); color: var(--bg-app); font-size: 11px; font-weight: 700; }
+.rk-hist-zones { position: relative; width: 96px; flex: none; font-size: 10px; color: var(--text-3); }
+.rk-hist-zones span { position: absolute; transform: translateY(-50%); white-space: nowrap; }
+.rk-hist-zones .up { color: var(--up); } .rk-hist-zones .dn { color: var(--down); }
+.rk-axis { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: var(--text-3); }
+.rk-axis--hist { margin-right: 104px; }
+.rk-year { position: relative; height: 150px; border-bottom: 1px solid var(--line); }
+.rk-spy-area { fill: color-mix(in srgb, var(--up) 6%, transparent); stroke: none; }
+.rk-spy-line { fill: none; stroke: var(--up); stroke-width: 1.4; stroke-linejoin: round; }
+.rk-vix-line { fill: none; stroke: var(--text-1); stroke-width: 1.3; stroke-linejoin: round; }
+.rk-thr { fill: none; stroke-width: 1; stroke-dasharray: 5 5; }
+.rk-thr--20 { stroke: var(--gold); } .rk-thr--30 { stroke: var(--down); }
+.rk-thr-l { position: absolute; left: 4px; font-size: 10px; }
+.rk-thr-l--20 { color: var(--gold); } .rk-thr-l--30 { color: var(--down); }
+.rk-val { font-size: 13px; color: var(--text-1); }
+.rk-chg { font-size: 12px; padding-right: 8px; }
+.rk-chg.up { color: var(--up); } .rk-chg.dn { color: var(--down); }
+.rk-src { margin-top: 10px; color: var(--text-3); }
+.rk-hist-chip { margin-right: 8px; }
+
+@media (max-width: 480px) {
+  .rk-big { font-size: 48px; }
+  .rk-hist-zones { display: none; }
+  .rk-axis--hist { margin-right: 0; }
+  .rk-zone-l { font-size: 8.5px; letter-spacing: .04em; }
+}

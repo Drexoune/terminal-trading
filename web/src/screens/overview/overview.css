@@ -73,3 +73,11 @@
 
 /* Markets Watch (T-051) : valeur en retard sur le seuil de sa source. */
 .wl__late { color: var(--gold-mid); }
+
+/* Sentiment de risque (P4) : jauge et indice, d'après la maquette Main. */
+.ov-risk { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; padding: 16px; }
+.ov-risk-kpi { display: flex; align-items: center; gap: 10px; }
+.ov-risk-v { font: 700 40px/1 var(--font-display); color: var(--text-1); }
+.ov-risk-m { margin-top: 10px; font-size: 11px; color: var(--text-2); }
+.ov-risk-m2 { margin-top: 4px; }
+.ov-risk > div { min-width: 0; }

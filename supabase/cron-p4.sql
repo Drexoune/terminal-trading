@@ -4,14 +4,15 @@
 --                  BTC et ETH (OKX) ;
 --   p4-liquidity   chaque jour à 06:10 UTC : bilan de la Fed, compte du Trésor, reverse repo ;
 --   p4-cot         vendredi à 21:00 UTC (publication à 15:30 New York), repris samedi à 09:00 UTC ;
---   p4-crowding    toutes les 15 min : ratios long/short et financement de Binance, OKX, Bybit.
+--   p4-crowding    toutes les 15 min : ratios long/short et financement de Binance, OKX, Bybit ;
+--   p4-banks       chaque jour à 21:15 UTC : Bank Participation Report (mensuel), lu par Vercel.
 -- Jamais pendant les jalons de P1 (04/12, 08/12, 10/12) : aucun déploiement ces jours-là (T-059).
 --
 -- Ne porte aucun secret : relit project_url et p1_jobs_secret dans Vault (p4-jobs utilise le même
 -- secret d'appel). Rejouable. Depuis le Mac :
 --   supabase db query --remote --yes -f supabase/cron-p4.sql
 -- Arrêt : select cron.unschedule(j) from unnest(array['p4-closes-eve','p4-closes-morn',
---         'p4-liquidity','p4-cot','p4-cot-retry','p4-crowding']) j;
+--         'p4-liquidity','p4-cot','p4-cot-retry','p4-crowding','p4-banks']) j;
 -- Débit : Tiingo 5 requêtes par passage (10 par jour, budget de 50 par heure partagé avec la
 -- watchlist) ; FRED 5 ; Cboe 1 ; OKX 2 ; CFTC 1 par semaine ; plateformes 20 par quart d'heure.
 
@@ -23,7 +24,8 @@ declare
     array['p4-liquidity',   '10 6 * * *',   'liquidity'],
     array['p4-cot',         '0 21 * * 5',   'cot'],
     array['p4-cot-retry',   '0 9 * * 6',    'cot'],
-    array['p4-crowding',    '*/15 * * * *', 'crowding']
+    array['p4-crowding',    '*/15 * * * *', 'crowding'],
+    array['p4-banks',       '15 21 * * *',  'banks']
   ];
   j text[];
 begin
@@ -48,4 +50,4 @@ end $$;
 
 -- Vérifier : select jobname, schedule, active from cron.job where jobname like 'p4-%';
 --            select key, value->>'last_error' from public.p4_state where key like 'feed:%';
--- Premier remplissage, à la main après le déploiement : closes, liquidity, cot, crowding.
+-- Premier remplissage, à la main après le déploiement : closes, liquidity, cot, crowding, banks.

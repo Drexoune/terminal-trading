@@ -4,8 +4,8 @@
 // refait les quatre.
 
 import type { Json, Rest } from '../p1-jobs/rest.ts';
-import { CLOSES, COT_MARKETS } from './catalog.ts';
-import { computeRisk, cotSummary, COT_WEEKS, crowdingSummary, CROWD_DAYS, type CotInput, type CrowdInput, netLiquidity, type Obs } from './sentiment.ts';
+import { BPR_MARKETS, CLOSES, COT_MARKETS } from './catalog.ts';
+import { bprSummary, type BprInput, computeRisk, cotSummary, COT_WEEKS, crowdingSummary, CROWD_DAYS, type CotInput, type CrowdInput, netLiquidity, type Obs } from './sentiment.ts';
 
 const DAY = 86_400_000;
 const isoDay = (ms: number) => new Date(ms).toISOString().slice(0, 10);
@@ -68,7 +68,16 @@ export async function publishCrowding(rest: Rest, now: number): Promise<{ groups
   return { groups: rows.length };
 }
 
+export async function publishBpr(rest: Rest, now: number): Promise<{ report_date: string | null }> {
+  const rows = await rest.select<BprInput>('bank_positions', { select: 'report_date,market,banks,long,long_pct,short,short_pct,open_interest',
+    report_date: `gte.${isoDay(now - 3 * 366 * DAY)}`, order: 'report_date.asc', limit: '1000' });
+  const st = bprSummary(rows.map((r) => ({ ...r, long: Number(r.long), short: Number(r.short), long_pct: Number(r.long_pct), short_pct: Number(r.short_pct),
+    open_interest: Number(r.open_interest), banks: r.banks === null ? null : Number(r.banks) })), BPR_MARKETS);
+  await save(rest, 'bpr', { ...st, source: 'CFTC, Bank Participation Report (futures)', computed_ms: now }, now);
+  return { report_date: st.report_date };
+}
+
 export async function publishAll(rest: Rest, now: number): Promise<Record<string, unknown>> {
   return { job: 'publish', ok: true, risk: await publishRisk(rest, now), liquidity: await publishLiquidity(rest, now),
-    cot: await publishCot(rest, now), crowding: await publishCrowding(rest, now) };
+    cot: await publishCot(rest, now), crowding: await publishCrowding(rest, now), bpr: await publishBpr(rest, now) };
 }

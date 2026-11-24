@@ -53,3 +53,20 @@ export const COT_CATEGORIES = {
 
 /** Instruments suivis pour le sentiment retail. */
 export const CROWD_ASSETS = ['BTC', 'ETH'] as const;
+
+/** Bank Participation Report (T-060) : marchés suivis, libellé de la CFTC -> libellé court. */
+export const BPR_MARKETS: Record<string, { label: string; group: 'fx' | 'index' | 'crypto' }> = {
+  'CME EURO FX': { label: 'EUR', group: 'fx' },
+  'CME JAPANESE YEN': { label: 'JPY', group: 'fx' },
+  'CME BRITISH POUND': { label: 'GBP', group: 'fx' },
+  'CME SWISS FRANC': { label: 'CHF', group: 'fx' },
+  'CME CANADIAN DOLLAR': { label: 'CAD', group: 'fx' },
+  'CME AUSTRALIAN DOLLAR': { label: 'AUD', group: 'fx' },
+  'CME NZ DOLLAR': { label: 'NZD', group: 'fx' },
+  'CME E-MINI S&P 500': { label: 'E-mini S&P 500', group: 'index' },
+  'CME NASDAQ MINI': { label: 'E-mini Nasdaq 100', group: 'index' },
+  'CME BITCOIN': { label: 'Bitcoin (CME)', group: 'crypto' },
+};
+
+/** Adresse publique du terminal (Vercel), qui relit le Bank Participation Report pour p4-jobs. */
+export const TERMINAL_WEB_DEFAULT = 'https://terminal-trading-steel.vercel.app';

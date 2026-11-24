@@ -18,10 +18,15 @@ import { MarketsWatchScreen } from './screens/watch/MarketsWatch';
 import { RatesScreen } from './screens/rates/Rates';
 import { HeatmapScreen } from './screens/heatmap/Heatmap';
 import { MacroScreen } from './screens/macro/Macro';
+import { RiskScreen } from './screens/risk/Risk';
+import { CotScreen } from './screens/cot/Cot';
+import { BanksScreen } from './screens/banks/Banks';
+import { RetailScreen } from './screens/retail/Retail';
+import { LiquidityScreen } from './screens/liquidity/Liquidity';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);

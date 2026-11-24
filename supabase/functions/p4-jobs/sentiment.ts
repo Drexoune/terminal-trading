@@ -305,3 +305,31 @@ export function netLiquidity(walcl: Obs[], tga: Obs[], rrp: Obs[]): {
   };
   return { last, changes: { w1: ch(1), w4: ch(4), w13: ch(13), w52: ch(52) }, history };
 }
+
+// ---------------------------------------------------------------------------------------------
+// Bank Participation Report
+
+export interface BprInput { report_date: string; market: string; banks: number | null; long: number; long_pct: number; short: number; short_pct: number; open_interest: number }
+export interface BprMarketState {
+  market: string; label: string; group: string; date: string; banks: number | null;
+  long: number; short: number; net: number; long_pct: number; short_pct: number; net_pct_oi: number; open_interest: number;
+  net_change_1m: number | null; history: { date: string; net: number }[];
+}
+
+/** Dernier mois par marché suivi, variation sur un mois, historique des positions nettes. */
+export function bprSummary(rows: BprInput[], markets: Record<string, { label: string; group: string }>): { report_date: string | null; markets: BprMarketState[] } {
+  let report: string | null = null;
+  const out: BprMarketState[] = [];
+  for (const [market, m] of Object.entries(markets)) {
+    const mine = rows.filter((r) => r.market === market).sort((a, b) => (a.report_date < b.report_date ? -1 : 1));
+    const cur = mine[mine.length - 1];
+    if (!cur) continue;
+    if (report === null || cur.report_date > report) report = cur.report_date;
+    const prev = mine[mine.length - 2];
+    const net = cur.long - cur.short;
+    out.push({ market, label: m.label, group: m.group, date: cur.report_date, banks: cur.banks, long: cur.long, short: cur.short, net,
+      long_pct: cur.long_pct, short_pct: cur.short_pct, net_pct_oi: round((net / cur.open_interest) * 100, 1), open_interest: cur.open_interest,
+      net_change_1m: prev ? net - (prev.long - prev.short) : null, history: mine.map((r) => ({ date: r.report_date, net: r.long - r.short })) });
+  }
+  return { report_date: report, markets: out };
+}

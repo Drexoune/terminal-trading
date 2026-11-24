@@ -168,7 +168,7 @@ describe('publication', () => {
     const r = await publishAll(rest, NOW);
     expect((r.risk as { used: number }).used).toBe(7);
     const keys = rest.rows('p4_state').map((x) => x.key).sort();
-    expect(keys).toEqual(['cot', 'crowding', 'liquidity', 'risk']);
+    expect(keys).toEqual(['bpr', 'cot', 'crowding', 'liquidity', 'risk']);
     const risk = rest.rows('p4_state').find((x) => x.key === 'risk')!.value as { computed_ms: number; zone: string };
     expect(risk).toMatchObject({ computed_ms: NOW, zone: 'risk_on' });
   });

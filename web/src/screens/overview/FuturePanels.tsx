@@ -19,6 +19,9 @@ import { OFFLINE_REASON, useNews } from '../news/News';
 import { fmtHm } from '../../lib/time';
 import { useNow } from '../../shell/useNow';
 import { ImpactBars } from '../calendar/Calendar';
+import { Gauge, Missing, Pill } from '../../components/ui';
+import { biasOf, fmtDay, freshText, indexMove, sentimentKey, type Reply, type Risk } from '../../sentiment/sentiment';
+import { useSentimentReason } from '../../sentiment/ui';
 
 function Placeholder({ phase, text, height }: { phase: string; text: string; height: number }) {
   return (
@@ -69,11 +72,30 @@ export function UpcomingEventsPanel() {
   );
 }
 
+/** Sentiment de risque (P4) : jauge, indice, variations sur 1 semaine et 1 mois, source et clôture. */
 export function RiskPanel() {
+  const now = useNow();
+  const reply = useValue<Reply<Risk>>(sentimentKey('risk'));
+  const reason = useSentimentReason(reply);
+  const r = reply?.data ?? null;
+  const v = r?.index ?? null;
+  const w = indexMove(v, r?.week_ago?.value), m = indexMove(v, r?.month_ago?.value);
   return (
     <Panel title="Sentiment de risque" controls="none"
-      chips={<Link className="chip chip--hot" to="/risque">Détail</Link>}>
-      <Placeholder phase="P4" height={168} text="Jauge 0–100 : percentiles sur 252 séances de 7 composantes." />
+      chips={<>
+        <span className="chip" data-fresh title={`${freshText('Cboe, Tiingo, OKX, FRED', reply?.feed, now)}${r ? ` · ${r.components_used}/7 composantes` : ''}`}>
+          {r ? `Clôture ${fmtDay(r.date)}` : 'Clôture —'}</span>
+        <Link className="chip chip--hot" to="/risque">Détail</Link>
+      </>}>
+      <div className="ov-risk">
+        <Gauge value={v} previous={r?.week_ago?.value ?? null} width={170} />
+        <div>
+          <div className="ov-risk-kpi">{v !== null ? <><span className="ov-risk-v">{Math.round(v)}</span><Pill bias={biasOf(v)} /></>
+            : <span className="ov-risk-v"><Missing reason={reason} /></span>}</div>
+          <div className="num ov-risk-m">1 S {w ? <span className={w.dir}>{w.text}</span> : '—'} · était {r?.week_ago?.value != null ? Math.round(r.week_ago.value) : '—'}</div>
+          <div className="num ov-risk-m ov-risk-m2">1 M {m ? <span className={m.dir}>{m.text}</span> : '—'} · était {r?.month_ago?.value != null ? Math.round(r.month_ago.value) : '—'}</div>
+        </div>
+      </div>
     </Panel>
   );
 }
