@@ -11,6 +11,8 @@ export interface BourseDb {
   select<T>(table: string, params: Record<string, string>): Promise<T[]>;
   count(table: string, params: Record<string, string>): Promise<number>;
   insert(table: string, rows: Record<string, unknown>[]): Promise<void>;
+  /** Modifie les lignes filtrées (jamais sans filtre) ; renvoie leur nombre. */
+  update(table: string, params: Record<string, string>, patch: Record<string, unknown>): Promise<number>;
   /** Supprime les lignes filtrées ; renvoie leur nombre. */
   remove(table: string, params: Record<string, string>): Promise<number>;
   /** Fonction SQL (/rest/v1/rpc/<fn>) ; renvoie son résultat JSON. */
@@ -58,6 +60,14 @@ export function createBourseDb(cfg: SupabaseConfig, fetchFn: FetchFn): BourseDb 
       await call(table, {}, {
         method: 'POST', headers: { 'Content-Type': 'application/json', Prefer: 'return=minimal' }, body: JSON.stringify(rows),
       });
+    },
+    async update(table, params, patch) {
+      if (!Object.keys(params).length) throw new Error('modification sans filtre refusée');
+      const r = await call(table, params, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json', Prefer: 'return=representation', Accept: 'application/json' }, body: JSON.stringify(patch),
+      });
+      const rows = await r.json().catch(() => []);
+      return Array.isArray(rows) ? rows.length : 0;
     },
     async remove(table, params) {
       if (!Object.keys(params).length) throw new Error('suppression sans filtre refusée');

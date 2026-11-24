@@ -693,3 +693,20 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **Clé** : copiée dans les secrets de Supabase le 24/11/2026 (pour la recherche autonome, S4) ; ajoutée par Clément dans les variables de Vercel (production). Jamais dans le bundle.
 - **Ce qui part chez Google** : le texte de la demande, la capture d'écran éventuelle, le code Pine et nos mesures calculées ; aucune clé, aucune donnée de compte.
 
+
+## T-064 — Recherche autonome du backtest · 24/11/2026
+
+**Contexte.** Étape S4 de la section Backtest. Une boucle de 50 essais avec une réécriture par Gemini à chaque essai consommerait à elle seule le plafond de 50 appels par jour fixé par T-063. Le quota gratuit de Google pour Gemini 3.1 Flash-Lite n'est pas publié sur la page officielle (environ 500 requêtes par jour selon des relevés d'utilisateurs, non officiels).
+
+**Décisions de Clément.**
+
+- **Hybride** : Gemini réécrit la logique de la stratégie tous les 5 essais (réglable de 2 à 20), à partir du meilleur essai ; entre deux, la boucle fait varier les paramètres numériques (`input.*`) du meilleur essai, sans IA, avec une graine fixe. Une recherche de 50 essais coûte environ 10 à 15 appels.
+- **Modèle et plafond inchangés** (T-063) : Gemini 3.1 Flash-Lite seul, offre gratuite, sans modèle de repli ; les appels de la recherche comptent dans le même plafond de 50 par jour de Paris que l'assistant. Plafond atteint : la recherche attend le lendemain et reprend où elle était ; quota de Google refusé (429) : nouvel essai une heure plus tard.
+
+**Règles retenues pour la boucle** (plan de S4) :
+
+- note partielle de 0 à 100 : moyenne des crédits des critères dans l'échantillon (crédit = valeur / seuil, plafonné à 1), moyennée sur les marchés du plan ;
+- hors échantillon à l'aveugle : consulté seulement pour un essai qui passe tous les critères dans l'échantillon, réduit à réussi / échoué, jamais transmis à Gemini, montré seulement quand la recherche est finie ; un candidat passe dans et hors échantillon, sinon la recherche continue ;
+- N du Sharpe déflaté = nombre d'essais valables de la recherche ;
+- bornes des données fixées à la création (dernière barre close ; pour le 4 h, dernière tranche complète) : un rejeu des essais redonne la même empreinte (sauf cours ajustés de Tiingo après un dividende) ;
+- la boucle tourne dans `bt-jobs` (Supabase, tâche `loop`, pg_cron chaque minute quand une recherche attend) : le moteur, PineTS compris, y est regroupé dans `research-core.gen.js` (`web/scripts/build-research-core.mjs`) ; une recherche à la fois.

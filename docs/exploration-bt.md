@@ -13,6 +13,7 @@ Relevés du 24/11/2026 depuis le Mac, en lecture seule. Décision de cadrage : T
   - avec `margin_long=0, margin_short=0`, les transactions correspondent exactement aux croisements calculés à la main (16 allers-retours) ; première transaction vérifiée à la main : 0,101612 BTC = 10 000 / (98 363,9 × 1,0005), PnL (98 363,9 − 106 150,1) × 0,101612 − commissions 0,05 % aller et retour = −801,56.
 - **Vitesse** (Node 24, Mac) : 799 barres en 26 ms ; **50 000 barres en 235 ms** (2 706 transactions).
 - **Deno** (Edge Functions de Supabase) : annoncé par le README ; Deno n'est pas installé sur le Mac, vérification au premier déploiement de `bt-jobs`.
+- **Deno, vérifié le 24/11/2026 (S4)** : le build navigateur de PineTS, regroupé avec le moteur dans `supabase/functions/bt-jobs/research-core.gen.js` (1 Mio), tourne sous Deno 2.9 (799 bougies quotidiennes en 40 ms) puis dans l'Edge Function `bt-jobs` déployée (recherche autonome, T-064).
 
 ## 2. Données
 

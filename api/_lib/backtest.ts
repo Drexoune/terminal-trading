@@ -6,9 +6,11 @@
 //   GET  /api/backtest/ai                  état de l'assistant (clé, appels du jour, plafond)
 //   POST /api/backtest/ai-generate|ai-repair|ai-explain   assistant IA (S3, T-063) : session
 //                                          exigée, Gemini en offre gratuite (backtest-ai.ts).
-// Les routes de la recherche autonome (S4) s'ajouteront ici.
+//   GET  /api/backtest/loops, /api/backtest/loop?id=   recherche autonome (S4, T-064) : session
+//   POST /api/backtest/loop-create, loop-stop           exigée ; calcul dans bt-jobs (backtest-loop.ts).
 
 import { aiStatus, handleAi } from './backtest-ai.js';
+import { handleLoop } from './backtest-loop.js';
 import { HttpError, json, NO_STORE, readQuery, respond } from './http.js';
 import type { FetchFn } from './okx.js';
 import type { Context } from './routes.js';
@@ -45,7 +47,7 @@ export async function candles(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
 export function handleBacktest(request: Request, ctx: Context): Promise<Response> {
   return respond(ctx.env, '/api/backtest', async () => {
     const m = /^\/api\/backtest\/([a-z-]+)\/?$/.exec(new URL(request.url).pathname);
-    const q = readQuery(request, ['path', 'asset', 'tf']);
+    const q = readQuery(request, ['path', 'asset', 'tf', 'id']);
     const path = m ? m[1] : q.get('path') ?? '';
     const now = ctx.deps.now();
     const cfg = supabaseConfig(ctx.env);
@@ -53,12 +55,16 @@ export function handleBacktest(request: Request, ctx: Context): Promise<Response
       if (!cfg.ok) throw new HttpError(503, `assistant non configuré : ${cfg.reason}`);
       return handleAi(request, ctx.env, ctx.deps.fetch, cfg.config, now, path.slice(3));
     }
-    if (request.method !== 'GET') throw new HttpError(405, 'méthode non autorisée : GET attendu (POST pour ai-generate, ai-repair, ai-explain)');
+    if ((request.method === 'POST' && (path === 'loop-create' || path === 'loop-stop')) || (request.method === 'GET' && (path === 'loops' || path === 'loop'))) {
+      if (!cfg.ok) throw new HttpError(503, `recherche autonome non configurée : ${cfg.reason}`);
+      return handleLoop(request, ctx.env, ctx.deps.fetch, cfg.config, now, path);
+    }
+    if (request.method !== 'GET') throw new HttpError(405, 'méthode non autorisée : GET attendu (POST pour ai-generate, ai-repair, ai-explain, loop-create, loop-stop)');
     if (path === 'ai') {
       if (!cfg.ok) return json({ configured: false, reason: cfg.reason }, NO_STORE);
       return json(await aiStatus(ctx.env, ctx.deps.fetch, cfg.config, now), NO_STORE);
     }
-    if (path !== 'candles') throw new HttpError(404, 'route inconnue (attendues : /api/backtest/candles?asset=&tf=, /api/backtest/ai)');
+    if (path !== 'candles') throw new HttpError(404, 'route inconnue (attendues : /api/backtest/candles?asset=&tf=, /api/backtest/ai, /api/backtest/loops)');
     const asset = (q.get('asset') ?? '').toUpperCase(), tf = (q.get('tf') ?? '').toUpperCase();
     const a = ASSETS[asset];
     if (!a) throw new HttpError(400, `asset attendu parmi ${Object.keys(ASSETS).join(', ')}`);

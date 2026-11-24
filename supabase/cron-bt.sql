@@ -3,11 +3,13 @@
 --               l'historique (120 pages au plus par passage, jusqu'à 2018 en 1 j et 2021 en 1 h) ;
 --               QQQ et SPY relus en entier chez Tiingo au plus une fois toutes les 20 h (2 requêtes
 --               par jour ; budget de 50 par heure partagé avec la watchlist et P4).
+--   bt-loop     chaque minute, seulement si une recherche autonome attend son tour (bt_loop_due()) :
+--               quelques essais par passage (S4, T-064).
 -- Jamais pendant les jalons de P1 (04/12, 08/12, 10/12) : aucun déploiement ces jours-là (T-061).
 --
 -- Ne porte aucun secret : relit project_url et p1_jobs_secret dans Vault. Rejouable. Depuis le Mac :
 --   supabase db query --remote --yes -f supabase/cron-bt.sql
--- Arrêt : select cron.unschedule('bt-candles');
+-- Arrêt : select cron.unschedule('bt-candles'); select cron.unschedule('bt-loop');
 
 do $$
 begin
@@ -26,7 +28,20 @@ begin
       timeout_milliseconds := 140000
     ) as request_id;
     $job$);
+  perform cron.schedule('bt-loop', '* * * * *', $job$
+    select net.http_post(
+      url := (select decrypted_secret from vault.decrypted_secrets where name = 'project_url')
+             || '/functions/v1/bt-jobs?job=loop',
+      headers := jsonb_build_object(
+        'Content-Type', 'application/json',
+        'x-jobs-secret', (select decrypted_secret from vault.decrypted_secrets where name = 'p1_jobs_secret')
+      ),
+      body := '{}'::jsonb,
+      timeout_milliseconds := 140000
+    ) as request_id
+    where public.bt_loop_due();
+    $job$);
 end $$;
 
--- Vérifier : select jobname, schedule, active from cron.job where jobname = 'bt-candles';
+-- Vérifier : select jobname, schedule, active from cron.job where jobname in ('bt-candles', 'bt-loop');
 --            select value from public.bt_state where key = 'series';

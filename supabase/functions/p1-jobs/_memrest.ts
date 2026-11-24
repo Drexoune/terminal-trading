@@ -22,6 +22,7 @@ export class MemRest implements Rest {
     const num = (x: string) => (typeof v === 'number' ? Number(x) : x);
     if (cond === 'is.null') return v === null || v === undefined;
     if (cond === 'not.is.null') return v !== null && v !== undefined;
+    if (typeof v === 'boolean' && (op === 'eq' || op === 'neq')) return (String(v) === raw) === (op === 'eq');   // eq.false, eq.true
     switch (op) {
       case 'eq': return v === num(raw);
       case 'neq': return v !== num(raw);
@@ -99,7 +100,7 @@ export class MemRest implements Rest {
     return made as T[];
   }
 
-  async rpc<T>(): Promise<T> {
+  async rpc<T>(_fn?: string, _args?: Row): Promise<T> {
     throw new Error('rpc non simulé');
   }
 

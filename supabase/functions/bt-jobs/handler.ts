@@ -7,9 +7,11 @@ import { MIN_SECRET_LENGTH, secretKeyFrom, secretMatches } from '../okx-collecto
 import type { FetchLike } from '../okx-collector/postgrest.ts';
 import { createRest, type Rest } from '../p1-jobs/rest.ts';
 import { type CandleDeps, runCandles } from './candles.ts';
+import { runLoop } from './loop.ts';
 
 // candles : bougies OKX et Tiingo (collecte et rattrapage de l'historique).
-export const JOBS = ['candles'] as const;
+// loop : recherche autonome (S4, T-064), quelques essais par passage.
+export const JOBS = ['candles', 'loop'] as const;
 export type Job = (typeof JOBS)[number];
 
 export interface HandlerDeps {
@@ -25,7 +27,9 @@ function json(status: number, body: unknown, extra: Record<string, string> = {})
 }
 
 export function createHandler(env: (name: string) => string | undefined, deps: HandlerDeps): (req: Request) => Promise<Response> {
-  const run = deps.run ?? ((_job: Job, d: CandleDeps) => runCandles(d));
+  const run = deps.run ?? ((job: Job, d: CandleDeps) => job === 'loop'
+    ? runLoop({ fetch: d.fetch as unknown as (url: string, init?: RequestInit) => Promise<Response>, now: d.now, rest: d.rest, env: d.env })
+    : runCandles(d));
   return async (req) => {
     if (req.method !== 'POST') return json(405, { ok: false, error: 'méthode non autorisée : POST attendu' }, { Allow: 'POST' });
     const expected = env('P1_JOBS_SECRET') ?? '';

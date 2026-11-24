@@ -1,6 +1,6 @@
 // Backtest (section Backtest, T-061, T-062 ; commande BT). Pas de maquette : design system (T-033).
 // Quatre façons d'obtenir une stratégie (stratégies connues, éditeur Pine, assistant IA, recherche
-// autonome ; les deux dernières arrivent aux étapes S3 et S4), un moteur commun (PineTS dans un Web
+// autonome en arrière-plan), un moteur commun (PineTS dans un Web
 // Worker) et une vue de résultats commune : tuiles notées E → S en grille « bento », courbe de
 // capital et drawdown, journal des transactions. Les bougies viennent de /api/backtest/candles.
 
@@ -20,6 +20,7 @@ import { recordTrial, resetTrials, variantHash } from '../../backtest/trials';
 import { exitReason, tiles } from '../../backtest/view';
 import { FirmsPanel, MonteCarloPanel, SamplePanel, type DiagInput } from './Diagnostics';
 import { AssistantPanel } from './Assistant';
+import { ResearchPanel, type Candidate } from './Research';
 import { BourseGate } from '../bourse/BourseGate';
 import { monteCarlo, splitSample } from '../../backtest/diagnostics';
 import { fmtDay, monthLabel, dateTicks } from '../../sentiment/sentiment';
@@ -179,6 +180,7 @@ export function BacktestScreen() {
   const [outcome, setOutcome] = useState<Outcome | null>(null);
   const [runErr, setRunErr] = useState<Extract<RunResult, { ok: false }> | null>(null);
   const editor = useRef<PineEditorHandle>(null);
+  const [pendingRun, setPendingRun] = useState(false);
   const a = ASSETS.find((x) => x.id === asset)!;
 
   useEffect(() => { if (!(a.tfs as readonly string[]).includes(tf)) setTf('1D'); }, [a, tf]);
@@ -193,6 +195,19 @@ export function BacktestScreen() {
   const candles = useMemo(() => slicePeriod(data?.candles ?? [], period), [data, period]);
   const dataReason = dataErr ?? (data && !data.reply.configured ? `non configuré : ${data.reply.reason ?? ''}`
     : data && !candles.length ? 'aucune bougie relevée pour cet actif (tâche bt-jobs)' : !data ? (mode === 'online' ? 'chargement des bougies…' : 'chargement des bougies (fonctions de Vercel)…') : null);
+
+  // Candidat de la recherche autonome : éditeur, marché et période du plan, backtest lancé dès que
+  // les bougies de ce marché sont là.
+  const loadCandidate = (c: Candidate) => {
+    setAsset(c.asset as typeof asset); setTf(c.tf); if (c.period && c.period in PERIOD_YEARS) setPeriod(c.period as Period);
+    setSource(c.code); setValues(c.inputs); setTab('editor'); setOutcome(null); setRunErr(null); setPendingRun(true);
+  };
+  useEffect(() => {
+    if (!pendingRun || !candles.length || data?.reply.asset !== asset || data?.reply.tf !== tf) return;
+    setPendingRun(false);
+    void run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingRun, candles, data, asset, tf]);
 
   const chooseKnown = (id: string) => { setKnownId(id); setSource(knownById(id)!.source); setValues({}); setOutcome(null); setRunErr(null); };
 
@@ -296,13 +311,12 @@ export function BacktestScreen() {
               )}</BourseGate>
             )}
             {tab === 'loop' && (
-              <Panel title="Recherche autonome" label="Recherche autonome" controls="none">
-                <Empty reason="étape S4 : boucle de recherche en arrière-plan, validation hors échantillon à l’aveugle" />
-              </Panel>
+              <BourseGate>{() => <ResearchPanel settings={settings} editorCode={source} onLoad={loadCandidate} />}</BourseGate>
             )}
 
+            {(tab !== 'loop' || outcome) && (<>
             <div className="bt-run">
-              <Button variant="primary" onClick={() => void run()} disabled={running || !candles.length || tab === 'loop'}>
+              <Button variant="primary" onClick={() => void run()} disabled={running || !candles.length}>
                 {running ? 'Calcul…' : 'Lancer le backtest'}</Button>
               {dataReason && <span className="bt-why"><Missing reason={dataReason} />{dataReason}</span>}
               {outcome && <span className="lbl lbl--s bt-meta">{`${outcome.title ?? 'stratégie'} · ${outcome.metrics.trades} trades clos${outcome.openCount ? `, ${outcome.openCount} ouverte` : ''} · ${outcome.ms} ms`}</span>}
@@ -340,6 +354,7 @@ export function BacktestScreen() {
               {outcome ? <TradeLog o={outcome} tf={tf} cur={a.cur} /> : <Empty reason="aucun backtest lancé" />}
               <div className="lbl lbl--s bt-src" data-fresh>Exécution à l’ouverture de la barre suivante · PnL net des commissions · heures UTC</div>
             </Panel>
+            </>)}
           </div>
         </div>
       </div>

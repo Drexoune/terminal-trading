@@ -138,3 +138,21 @@
   .bt-form, .bt-params, .bt-form--inline, .bt-kpis, .bt-ai-row { grid-template-columns: minmax(0, 1fr); }
   .bt-table .hide-xs { display: none; }
 }
+
+/* Recherche autonome (S4) */
+.bt-markets { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.bt-markets legend { width: 100%; padding: 0 0 6px; }
+.bt-check-inline { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-2); }
+.bt-check-inline input { accent-color: var(--gold); }
+.bt-ai-row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bt-kpis--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.bt-report { margin: 0 16px 12px; padding: 10px 12px; border: 1px solid var(--line); background: var(--bg-panel-2); font-size: 13px; line-height: 1.5; }
+.bt-report p { margin: 0 0 6px; } .bt-report b { color: var(--text-1); }
+.bt-report .bt-note { padding: 0; }
+.bt-caption { caption-side: top; text-align: left; padding: 8px 16px; color: var(--text-3); }
+.bt-credit { display: inline-block; width: 64px; height: 8px; border: 1px solid var(--line-strong); background: var(--bg-panel-2); vertical-align: middle; }
+.bt-credit > span { display: block; height: 100%; background: var(--gold); }
+.bt-table td.bt-wrap { white-space: normal; min-width: 180px; max-width: 420px; overflow-wrap: anywhere; }
+.bt-table td.up { color: var(--up); } .bt-table td.dn { color: var(--down); }
+@media (max-width: 760px) { .bt-ai-row--3, .bt-kpis--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .bt-ai-row--3, .bt-kpis--4 { grid-template-columns: minmax(0, 1fr); } }
