@@ -11,10 +11,12 @@ import type { FetchLike } from '../okx-collector/postgrest.ts';
 import { createRest, type Rest } from '../p1-jobs/rest.ts';
 import { type CollectDeps, runCloses, runCot, runCrowding, runLiquidity } from './collect.ts';
 import { explore, type ExploreDeps } from './explore.ts';
+import { publishAll } from './publish.ts';
 
 // explore : sonde S0 des sources (FRED, Cboe, Tiingo, OKX, CFTC, Binance, Bybit), sans écriture.
-// closes, liquidity, cot, crowding : collecte S1 (collect.ts).
-export const JOBS = ['explore', 'closes', 'liquidity', 'cot', 'crowding'] as const;
+// closes, liquidity, cot, crowding : collecte S1 (collect.ts), suivie de la publication S2 ;
+// publish : recalcule et publie les quatre états sans relever les sources (publish.ts).
+export const JOBS = ['explore', 'closes', 'liquidity', 'cot', 'crowding', 'publish'] as const;
 export type Job = (typeof JOBS)[number];
 
 export interface RunDeps extends ExploreDeps { rest: Rest | null }
@@ -31,6 +33,7 @@ async function defaultRun(job: Job, d: RunDeps): Promise<unknown> {
   if (job === 'closes') return runCloses(cd);
   if (job === 'liquidity') return runLiquidity(cd);
   if (job === 'cot') return runCot(cd);
+  if (job === 'publish') return publishAll(d.rest, d.now());
   return runCrowding(cd);
 }
 

@@ -14,6 +14,7 @@
 import type { Json, Rest, Row } from '../p1-jobs/rest.ts';
 import { CLOSES, COT_CATEGORIES, COT_MARKETS, CROWD_ASSETS, type DailySpec, HISTORY_START, LIQUIDITY } from './catalog.ts';
 import { BINANCE_F, BYBIT, CBOE_VIX, CFTC_TFF, OKX, TIINGO } from './explore.ts';
+import { publishCot, publishCrowding, publishLiquidity, publishRisk } from './publish.ts';
 import { binanceRatio, bybitRatio, cboeCsv, type CrowdPoint, fredDaily, funding, okxDailyCandles, okxRatio, type Point,
   tffRows, tiingoDaily, tiingoFxDaily } from './parse.ts';
 
@@ -38,6 +39,11 @@ async function get(deps: CollectDeps, url: string, headers: Record<string, strin
   const body = await r.text();
   if (r.status !== 200) throw new Error(`HTTP ${r.status}`);
   return body;
+}
+
+/** Calcul et publication après la collecte : un échec s'ajoute aux problèmes sans perdre la collecte. */
+async function publishStep(fn: () => Promise<unknown>, problems: string[]): Promise<unknown> {
+  try { return await fn(); } catch (e) { problems.push(`publication : ${errText(e)}`); return null; }
 }
 
 async function upsertChunks(rest: Rest, table: string, rows: Row[], onConflict: string): Promise<void> {
@@ -112,7 +118,8 @@ async function runDaily(deps: CollectDeps, job: 'closes' | 'liquidity', specs: D
   for (const [id, st] of Object.entries(status)) merged[id] = { ...(prev[id] ?? {}), ...(st as Record<string, Json>) };
   await rest.upsert('p4_state', [{ key: 'series', updated_ms: now, value: merged },
     feedRow(job, label, now, Object.keys(done).length, problems, 30, 54)], 'key');
-  return { job, ok: problems.length === 0, done, problems };
+  const published = await publishStep(() => (job === 'closes' ? publishRisk(rest, now) : publishLiquidity(rest, now)), problems);
+  return { job, ok: problems.length === 0, done, published, problems };
 }
 
 export const runCloses = (deps: CollectDeps) => runDaily(deps, 'closes', CLOSES, 'Clôtures (Cboe, Tiingo, OKX, FRED)');
@@ -144,7 +151,8 @@ export async function runCot(deps: CollectDeps): Promise<Record<string, unknown>
   const missing = last ? Object.keys(COT_MARKETS).filter((c) => !rows.some((r) => r.market_code === c && r.date === last)) : [];
   if (missing.length) problems.push(`absents du rapport du ${last} : ${missing.join(', ')}`);
   await rest.upsert('p4_state', [feedRow('cot', 'COT (CFTC, rapport TFF)', now, rows.length, problems, 8 * 24, 15 * 24)], 'key');
-  return { job: 'cot', ok: problems.length === 0, from, rows: rows.length, last_report: last || null, problems };
+  const published = await publishStep(() => publishCot(rest, now), problems);
+  return { job: 'cot', ok: problems.length === 0, from, rows: rows.length, last_report: last || null, published, problems };
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -217,5 +225,6 @@ export async function runCrowding(deps: CollectDeps): Promise<Record<string, unk
   }
   await rest.remove('crowding', { ts: `lt.${new Date(now - CROWD_KEEP_DAYS * DAY).toISOString()}` });
   await rest.upsert('p4_state', [feedRow('crowding', 'Ratios long/short (Binance, OKX, Bybit)', now, saved, problems, 0.75, 2)], 'key');
-  return { job: 'crowding', ok: problems.length === 0, saved, problems };
+  const published = await publishStep(() => publishCrowding(rest, now), problems);
+  return { job: 'crowding', ok: problems.length === 0, saved, published, problems };
 }
