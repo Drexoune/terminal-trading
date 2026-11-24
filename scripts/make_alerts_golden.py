@@ -49,7 +49,14 @@ RULES = [
     ("news_category", {"category": "crypto", "urgent_only": True}, ["telegram"]),
     ("news_category", {"category": "general"}, []),
     ("news_category", {"category": "sport"}, []),
+    ("rate_gap", {"bank": "FED", "threshold_pts": "5"}, ["telegram"]),
+    ("rate_gap", {"threshold_pts": "2.5"}, []),
+    ("rate_gap", {"bank": "ECB", "threshold_pts": "5"}, []),
+    ("rate_gap", {"bank": "BOE", "threshold_pts": "80"}, []),
+    ("rate_gap", {"bank": "BOE"}, []),
 ]
+GAP = {"bank": "FED", "meeting": "2026-12-09", "pts": "6.2", "outcome": "Statu quo", "sources": ["Polymarket", "Kalshi"],
+       "values": ["86.5", "80.3"]}
 NUMS = [["-1234.5", None, False], ["0.0312", 4, True], ["-0.00", 2, False], ["110000", None, False],
         ["0.3", None, True], ["abc", None, False], ["1e3", None, False]]
 CROSS = [[{"level": "100", "direction": "hausse"}, prev, px] for prev, px in ((None, 101), (99.5, 100), (100.5, 99))]
@@ -93,6 +100,12 @@ def build() -> dict:
             ({"category": "crypto", "urgent_only": True}, {"category": "crypto", "urgent": True}),
             ({"category": "macro", "urgent_only": False}, {"category": "macro", "urgent": False}),
             ({"category": "macro", "urgent_only": False}, {"category": "crypto", "urgent": True}))],
+        "rate_gap_hit": [[p, g, ar.rate_gap_hit(p, g)] for p, g in (
+            ({"bank": "FED", "threshold_pts": "5"}, GAP),
+            ({"bank": "FED", "threshold_pts": "6.2"}, GAP),
+            ({"bank": "BCE", "threshold_pts": "1"}, GAP),
+            ({"bank": None, "threshold_pts": "1"}, GAP),
+            ({"bank": None, "threshold_pts": "1"}, {**GAP, "pts": None}))],
         "messages": {
             "price": list(ar.price_message({"inst": "BTC-USDT-SWAP", "level": "110000"}, 109999.5, 110000.5)),
             "funding": list(ar.funding_message({"inst": "BTC-USDT-SWAP", "threshold_pct": "0.02", "side": "au-dessus"}, 0.000312)),
@@ -110,6 +123,7 @@ def build() -> dict:
                                                                "forecast_raw": None, "previous_raw": "0.3%"},
                                                           "0,6\u00a0%", "BLS")),
             "event_missing": list(ar.event_missing_message(EW, {"title": "Flash Manufacturing PMI"}, "15:45")),
+            "rate_gap": list(ar.rate_gap_message({"bank": "FED", "threshold_pts": "5"}, GAP)),
             "news_category": list(ar.news_category_message({"category": "crypto", "urgent_only": False},
                                                            {"title": "Spot bitcoin ETFs", "source": "FinancialJuice",
                                                             "urgent": True})),

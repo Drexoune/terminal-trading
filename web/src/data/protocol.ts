@@ -113,6 +113,8 @@ export const WATCHED_TOPICS = [
   'gateway:',
   // P1 : agenda, publications, fil d'actus, alertes (docs/plan-p1.md § 5).
   'calendar:', 'release:', 'reaction:', 'news:', 'alert:', 'watch:',
+  // P2 : écran Taux (démonstration de la fausse passerelle ; en ligne : /api/rates).
+  'rates:',
 ];
 
 // --- Sources du worker (sources/gatewaySource.ts, sources/okxSource.ts) ----------

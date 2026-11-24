@@ -33,6 +33,7 @@ group('règles d’alerte en ligne : portage de alert_rules.py', () => {
     for (const [w, t, want] of G.keyword_hit) expect(ar.keywordHit({ words: w }, t)).toBe(want);
     for (const [p, f, want] of G.surprise_hit) expect(ar.surpriseHit(p, f)).toBe(want);
     for (const [p, i, want] of G.news_category_hit) expect(ar.newsCategoryHit(p, i)).toBe(want);
+    for (const [p, g, want] of G.rate_gap_hit) expect(ar.rateGapHit(p, g)).toBe(want);
   });
 
   it('messages, au caractère près', () => {
@@ -53,6 +54,8 @@ group('règles d’alerte en ligne : portage de alert_rules.py', () => {
       '54,5', 'FinancialJuice (fil d’actus)')).toEqual(m.event_watch);
     expect(ar.eventWatchMessage(EW, { title: 'CPI m/m', title_fr: 'IPC (m/m)', forecast_raw: null, previous_raw: '0.3%' }, '0,6\u00a0%', 'BLS')).toEqual(m.event_watch_fr);
     expect(ar.eventMissingMessage(EW, { title: 'Flash Manufacturing PMI' }, '15:45')).toEqual(m.event_missing);
+    const GAP = { bank: 'FED', meeting: '2026-12-09', pts: '6.2', outcome: 'Statu quo', sources: ['Polymarket', 'Kalshi'], values: ['86.5', '80.3'] };
+    expect(ar.rateGapMessage({ bank: 'FED', threshold_pts: '5' }, GAP)).toEqual(m.rate_gap);
     expect(ar.newsCategoryMessage({ category: 'crypto', urgent_only: false }, { title: 'Spot bitcoin ETFs', source: 'FinancialJuice', urgent: true })).toEqual(m.news_category);
   });
 });

@@ -64,3 +64,13 @@ describe('formulaire', () => {
     expect(draftToBody({ ...EMPTY_DRAFT, kind: 'keyword', words: 'Powell, ETF ,' })).toMatchObject({ body: { params: { words: ['Powell', 'ETF'] } } });
   });
 });
+
+describe('règle d’écart entre sources (P2, R5)', () => {
+  it('banque ou toutes, seuil de 0 à 50 points', () => {
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'rate_gap', gapBank: 'FED', gapPts: '2,5', telegram: false }))
+      .toEqual({ body: { kind: 'rate_gap', params: { bank: 'FED', threshold_pts: '2.5' }, channels: ['écran'] } });
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'rate_gap', gapBank: '', gapPts: '5' }))
+      .toMatchObject({ body: { params: { bank: null, threshold_pts: '5' } } });
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'rate_gap', gapPts: '80' })).toEqual({ error: 'Écart : saisir un seuil de 0 à 50 points.' });
+  });
+});

@@ -98,3 +98,18 @@ Aucune source n'est bloquée depuis Supabase : la collecte de chaque minute (Pol
 - **Issues normalisées** par le texte (`decrease`/`increase`, `25`, `50+`, `no change` sans casse), jamais par l'ordre.
 - **Probabilité** = milieu de la fourchette achat/vente si l'écart est d'au plus 10 points, sinon dernier échange, marqué « fourchette large ». Volume affiché.
 - **Sources par banque** : Polymarket pour les 8, Kalshi pour Fed, BoJ, BoC, BNS et RBNZ. Futures : « — » partout (aucun flux gratuit).
+
+## 8. Vérifications faites pendant R1 (23–24/11/2026)
+
+Relevés en lecture seule, réponses gardées dans `supabase/functions/p2-jobs/fixtures/`.
+
+- **Gamma est servi par un cache** (`cache-control: max-age=60` sur `/public-search`, 300 s et `age: 266` sur `/events`) : ses prix peuvent dater de 5 min. Gamma ne sert donc qu'à la découverte des marchés (toutes les 15 min) et au volume sur 24 h.
+- **Prix de chaque minute : CLOB** (documentation relue le 23/11/2026, `docs.polymarket.com/api-reference/market-data/`) :
+  - `POST /books` (lots de 100 jetons) : réponse réelle avec `bids` croissants et `asks` décroissants, l'inverse de la documentation. Le meilleur achat est donc pris comme le maximum et la meilleure vente comme le minimum, quel que soit l'ordre ;
+  - le champ `last_trade_price` de `/books` porte parfois l'échange du jeton « non » (0,965 pour une issue cotée 3 %). Le dernier échange vient donc de `POST /last-trades-prices` (500 jetons au plus).
+  - Limites documentées : 500 requêtes / 10 s pour `/books`, 1 000 / 10 s pour `/prices-history`. La collecte fait 3 requêtes par minute.
+- **Historique Polymarket** : `interval=max&fidelity=60` donne environ 30 jours au pas horaire, `fidelity=1440` tout l'historique au pas quotidien. Le premier remplissage combine les deux, ensuite `startTs`/`endTs` (14 jours au plus) depuis le dernier point.
+- **Kalshi** : `updated_time` date la fiche du marché, pas la cotation. Les cotes Kalshi portent donc l'heure de réception seule.
+- **KXFED** : règle officielle lue sur un marché (« upper bound of the target federal funds rate … greater than K »). La trajectoire de la Fed est en borne haute, comparée à la borne haute actuelle (milieu du BIS + 12,5 pb). Le marché du 08/12/2027 n'a pas de réunion officielle à cette date : il est écarté (section 4).
+- **BIS** : 3,6 Mo pour 2 ans et 8 banques ; le paramètre `attributes=none` ne réduit rien. Le premier passage relit 800 jours, les suivants partent de la dernière date relevée moins 7 jours, et le dernier mouvement connu est gardé d'un passage à l'autre.
+- **Pages de décision** (R4) : l'URL vient du fil d'actus de P1 (`news_items`, règle `decision:<BANQUE>`). Le vote est lu sur la page pour la Fed (« by a 10 – 2 vote », dissidents et préférence) et pour la BoE (« voted by a majority of 8–1 to increase Bank Rate by 0.25 percentage points, to 4% »). Pour les autres banques, la variation est déduite de la série du BIS dans les 10 jours qui suivent ; elle reste « en attente » tant que la série ne couvre pas 8 jours.

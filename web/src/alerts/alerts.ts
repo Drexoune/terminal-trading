@@ -7,7 +7,7 @@ import { fetchJson } from '../data/gateway';
 import { refreshAlertsAfterWrite } from '../data/online/alerts';
 import { fmtHm } from '../lib/time';
 
-export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category';
+export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category' | 'rate_gap';
 export type AlertState = 'armée' | 'déclenchée' | 'désactivée';
 export type Channel = 'écran' | 'telegram' | 'voix';
 
@@ -58,7 +58,11 @@ export const KIND_LABEL: Record<AlertKind, string> = {
   price: 'Prix OKX', funding: 'Funding OKX', event_soon: 'Avant une publication',
   release: 'Chiffre publié', surprise: 'Surprise', keyword: 'Mot-clé (fil d’actus)',
   event_watch: 'Réel d’un événement (cloche du calendrier)', news_category: 'Catégorie du fil d’actus',
+  rate_gap: 'Écart entre sources (Taux)',
 };
+
+/** Banques de l'écran Taux (règle rate_gap) ; '' : toutes. */
+export const GAP_BANKS = ['', 'FED', 'BCE', 'BOE', 'BOJ', 'BNS', 'BOC', 'RBA', 'RBNZ'] as const;
 
 /** Une règle récurrente (agenda, chiffres, mots-clés) reste armée : on montre son dernier déclenchement récent. */
 export const RECENT_FIRE_MS = 30 * 60_000;
@@ -114,6 +118,8 @@ export interface RuleDraft {
   zMin: string;
   rawMin: string;
   words: string;
+  gapBank: string;           // '' : toutes les banques
+  gapPts: string;            // seuil d'écart en points
   telegram: boolean;
   voice: boolean;
 }
@@ -121,7 +127,7 @@ export interface RuleDraft {
 export const EMPTY_DRAFT: RuleDraft = {
   kind: 'price', inst: 'BTC-USDT-SWAP', level: '', direction: 'les deux', threshold: '', side: 'au-dessus',
   minutes: '5', capturedOnly: true, impacts: [], currencies: '', release: '', indicator: '', zMin: '', rawMin: '',
-  words: '', telegram: true, voice: false,
+  words: '', gapBank: 'FED', gapPts: '5', telegram: true, voice: false,
 };
 
 /** Saisie à la française (« 110 000,5 ») -> texte décimal (« 110000.5 ») ; null si illisible. */
@@ -164,13 +170,18 @@ export function draftToBody(d: RuleDraft): { body: { kind: AlertKind; params: Re
       if (!words.length) return { error: 'Mots-clés : au moins un, séparés par des virgules.' };
       return wrap({ words });
     }
+    case 'rate_gap': {
+      const pts = parseDecimal(d.gapPts);
+      if (!pts || Number(pts) <= 0 || Number(pts) > 50) return { error: 'Écart : saisir un seuil de 0 à 50 points.' };
+      return wrap({ bank: d.gapBank || null, threshold_pts: pts });
+    }
     default:
       return { error: 'Cette alerte se crée depuis son écran : cloche du Calendrier, ou « Alertes Telegram » du fil d’actus.' };
   }
 }
 
 /** Sortes proposées dans le formulaire de /alertes (les autres se posent depuis leur écran). */
-export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword'];
+export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'rate_gap'];
 
 // --- écritures ------------------------------------------------------------------------------
 

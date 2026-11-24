@@ -11,11 +11,16 @@ import { createRest, type Rest } from '../p1-jobs/rest.ts';
 import { explore, type ExploreDeps } from './explore.ts';
 import { exploreWatch } from './explore_watch.ts';
 import { runWatch, type WatchDeps } from './watch.ts';
+import { runPolicy, runRates, runRatesHistory, type RatesDeps } from './rates.ts';
+import { runDecisions } from './decisions.ts';
+import type { AlertDeps } from '../p1-jobs/alerts.ts';
 
 // explore : sonde R0 des sources (Polymarket, Kalshi, BIS, pages officielles), sans écriture ;
 // explore-watch : sonde des sources de la watchlist hors crypto (T-005), sans écriture ;
-// watch (toutes les 3 min) : cours de la watchlist hors crypto (T-051, T-052).
-export const JOBS = ['explore', 'explore-watch', 'watch'] as const;
+// watch (toutes les 3 min) : cours de la watchlist hors crypto (T-051, T-052) ;
+// rates (chaque minute), rates-history et policy (chaque jour), decisions (toutes les 10 min) :
+// écran Taux (plan P2, R1 et R4).
+export const JOBS = ['explore', 'explore-watch', 'watch', 'rates', 'rates-history', 'policy', 'decisions'] as const;
 export type Job = (typeof JOBS)[number];
 
 export interface RunDeps extends ExploreDeps { rest: Rest | null }
@@ -29,6 +34,12 @@ async function defaultRun(job: Job, d: RunDeps): Promise<unknown> {
   if (job === 'explore-watch') return exploreWatch(d);
   if (job === 'explore') return explore(d);
   if (!d.rest) throw new Error('SUPABASE_URL ou clé secrète Supabase absente');
+  const rd: RatesDeps = { fetch: d.fetch as unknown as RatesDeps['fetch'], now: d.now, rest: d.rest,
+    alerts: { fetch: d.fetch as unknown as AlertDeps['fetch'], sleep: d.sleep, now: d.now, env: d.env, rest: d.rest } };
+  if (job === 'rates') return runRates(rd);
+  if (job === 'rates-history') return runRatesHistory(rd);
+  if (job === 'policy') return runPolicy(rd);
+  if (job === 'decisions') return runDecisions(rd);
   return runWatch({ fetch: d.fetch as unknown as WatchDeps['fetch'], now: d.now, env: d.env, rest: d.rest });
 }
 

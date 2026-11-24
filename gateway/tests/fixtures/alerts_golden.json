@@ -225,6 +225,10 @@
    "BTC-USDT perp franchit 110 000 à la hausse",
    "Dernier 110 000,5 (précédent 109 999,5) · OKX"
   ],
+  "rate_gap": [
+   "Écart Polymarket / Kalshi : 6,2 pts · Fed 09/12/2026",
+   "Statu quo : Polymarket 86,5 % · Kalshi 80,3 % · seuil 5 pts"
+  ],
   "release": [
    "Consumer Price Index · 2026-11",
    "IPC (m/m) : 0,6 % (prév. 0,3 %, surprise +0,3, z +2,1)\nIPC (sur un an) : — (non publié)\nBLS"
@@ -355,6 +359,113 @@
    },
    99,
    98,
+   false
+  ]
+ ],
+ "rate_gap_hit": [
+  [
+   {
+    "bank": "FED",
+    "threshold_pts": "5"
+   },
+   {
+    "bank": "FED",
+    "meeting": "2026-12-09",
+    "outcome": "Statu quo",
+    "pts": "6.2",
+    "sources": [
+     "Polymarket",
+     "Kalshi"
+    ],
+    "values": [
+     "86.5",
+     "80.3"
+    ]
+   },
+   true
+  ],
+  [
+   {
+    "bank": "FED",
+    "threshold_pts": "6.2"
+   },
+   {
+    "bank": "FED",
+    "meeting": "2026-12-09",
+    "outcome": "Statu quo",
+    "pts": "6.2",
+    "sources": [
+     "Polymarket",
+     "Kalshi"
+    ],
+    "values": [
+     "86.5",
+     "80.3"
+    ]
+   },
+   false
+  ],
+  [
+   {
+    "bank": "BCE",
+    "threshold_pts": "1"
+   },
+   {
+    "bank": "FED",
+    "meeting": "2026-12-09",
+    "outcome": "Statu quo",
+    "pts": "6.2",
+    "sources": [
+     "Polymarket",
+     "Kalshi"
+    ],
+    "values": [
+     "86.5",
+     "80.3"
+    ]
+   },
+   false
+  ],
+  [
+   {
+    "bank": null,
+    "threshold_pts": "1"
+   },
+   {
+    "bank": "FED",
+    "meeting": "2026-12-09",
+    "outcome": "Statu quo",
+    "pts": "6.2",
+    "sources": [
+     "Polymarket",
+     "Kalshi"
+    ],
+    "values": [
+     "86.5",
+     "80.3"
+    ]
+   },
+   true
+  ],
+  [
+   {
+    "bank": null,
+    "threshold_pts": "1"
+   },
+   {
+    "bank": "FED",
+    "meeting": "2026-12-09",
+    "outcome": "Statu quo",
+    "pts": null,
+    "sources": [
+     "Polymarket",
+     "Kalshi"
+    ],
+    "values": [
+     "86.5",
+     "80.3"
+    ]
+   },
    false
   ]
  ],
@@ -810,6 +921,82 @@
    [],
    {
     "error": "catégorie inconnue : 'sport'"
+   }
+  ],
+  [
+   "rate_gap",
+   {
+    "bank": "FED",
+    "threshold_pts": "5"
+   },
+   [
+    "telegram"
+   ],
+   {
+    "channels": [
+     "écran",
+     "telegram"
+    ],
+    "describe": [
+     "Écart entre sources > 5 pts · Fed",
+     "Taux · sources"
+    ],
+    "params": {
+     "bank": "FED",
+     "threshold_pts": "5"
+    }
+   }
+  ],
+  [
+   "rate_gap",
+   {
+    "threshold_pts": "2.5"
+   },
+   [],
+   {
+    "channels": [
+     "écran"
+    ],
+    "describe": [
+     "Écart entre sources > 2,5 pts · toutes les banques",
+     "Taux · sources"
+    ],
+    "params": {
+     "bank": null,
+     "threshold_pts": "2.5"
+    }
+   }
+  ],
+  [
+   "rate_gap",
+   {
+    "bank": "ECB",
+    "threshold_pts": "5"
+   },
+   [],
+   {
+    "error": "banque inconnue : 'ECB'"
+   }
+  ],
+  [
+   "rate_gap",
+   {
+    "bank": "BOE",
+    "threshold_pts": "80"
+   },
+   [],
+   {
+    "error": "seuil d'écart hors bornes (50 points au plus)"
+   }
+  ],
+  [
+   "rate_gap",
+   {
+    "bank": "BOE"
+   },
+   [],
+   {
+    "error": "threshold_pts manquant"
    }
   ]
  ],

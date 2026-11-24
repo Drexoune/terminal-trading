@@ -16,6 +16,7 @@ import { fetchJson } from '../gateway';
 import { keysWithPrefix, setValue } from '../store';
 import { startAlertsOnline } from './alerts';
 import { startWatchOnline } from './watch';
+import { startRatesOnline } from './rates';
 import { connectRealtime, realtimeConfig, type RealtimeStatus, type StateMessage } from './realtime';
 
 export const P1_STATUS_KEY = '$p1-online';
@@ -83,6 +84,8 @@ export interface OnlineDeps {
   startAlerts?: () => () => void;
   /** Markets Watch (T-051), relu toutes les 60 s ; remplaçable en test. */
   startWatch?: () => () => void;
+  /** Écran Taux (P2), relu toutes les 30 s ; remplaçable en test. */
+  startRates?: () => () => void;
 }
 
 /** Démarre Realtime et la relecture ; renvoie de quoi tout arrêter (changement de mode). */
@@ -111,10 +114,12 @@ export function startP1Online(deps: OnlineDeps = {}): () => void {
   const next = setInterval(() => refreshNext(Date.now()), NEXT_EVERY_MS);
   const stopAlerts = (deps.startAlerts ?? startAlertsOnline)();
   const stopWatch = (deps.startWatch ?? startWatchOnline)();
+  const stopRates = (deps.startRates ?? startRatesOnline)();
   return () => {
     stopped = true;
     stopAlerts();
     stopWatch();
+    stopRates();
     if (timer !== null) clearTimer(timer);
     clearInterval(next);
     disconnect();

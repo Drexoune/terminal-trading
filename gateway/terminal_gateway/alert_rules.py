@@ -12,6 +12,9 @@ Six sortes de règles :
 - `release` : publication d'un chiffre capté à la source (BLS). Une fois par publication.
 - `surprise` : |z| ou surprise brute au-delà d'un seuil, sur un chiffre capté.
 - `keyword` : mot-clé dans un titre du fil d'actus (E6). Une fois par titre.
+- `rate_gap` : écart entre sources (Polymarket, Kalshi) sur la prochaine réunion d'une banque
+  centrale, au-delà d'un seuil en points (écran Taux, P2). Se réarme d'elle-même quand l'écart
+  repasse sous le seuil. Évaluée en ligne seulement (tâche rates de p2-jobs).
 
 Nombres au format français : virgule décimale, espace fine insécable entre milliers,
 signe moins U+2212.
@@ -27,7 +30,10 @@ from .bls_release import RELEASES
 from .calendar_data import INDICATORS
 
 KINDS = ("price", "funding", "event_soon", "release", "surprise", "keyword",
-         "event_watch", "news_category")
+         "event_watch", "news_category", "rate_gap")
+# Écran Taux (P2) : banques suivies et leur nom court.
+RATE_BANKS = {"FED": "Fed", "BCE": "BCE", "BOE": "BoE", "BOJ": "BoJ", "BNS": "BNS", "BOC": "BoC",
+              "RBA": "RBA", "RBNZ": "RBNZ"}
 # Fil d'actus (E6/O6) : catégories des titres, comme news_rules.ts de Supabase.
 NEWS_CATEGORIES = {"banque-centrale": "Banque centrale", "macro": "Macro", "crypto": "Crypto",
                    "matieres-premieres": "Matières premières", "general": "Général"}
@@ -160,6 +166,14 @@ def validate(kind: str, params: dict, channels: list[str],
         if t is not None and (not isinstance(t, int) or isinstance(t, bool) or t <= 0):
             raise RuleError("time_ms : entier positif ou absent")
         out = {"event_id": eid, "title": title, "currency": eid.split("|")[1], "time_ms": t}
+    elif kind == "rate_gap":
+        bank = params.get("bank") or None
+        if bank is not None and bank not in RATE_BANKS:
+            raise RuleError(f"banque inconnue : {bank!r}")
+        thr = _decimal(params, "threshold_pts")
+        if Decimal(thr) > 50:
+            raise RuleError("seuil d'écart hors bornes (50 points au plus)")
+        out = {"bank": bank, "threshold_pts": thr}
     elif kind == "news_category":
         cat = params.get("category")
         if cat not in NEWS_CATEGORIES:
@@ -211,6 +225,10 @@ def describe(kind: str, p: dict) -> tuple[str, str]:
     if kind == "news_category":
         return (f"Fil d\u2019actus : {NEWS_CATEGORIES[p['category']]}"
                 + (" · fort impact" if p["urgent_only"] else ""), "Fil d\u2019actus · catégorie")
+    if kind == "rate_gap":
+        scope = RATE_BANKS[p["bank"]] if p["bank"] else "toutes les banques"
+        return (f"Écart entre sources > {fr_num(p['threshold_pts'])}{NBSP}pts · {scope}",
+                "Taux · sources")
     return f"Mot-clé : {', '.join(p['words'])}", "Fil d\u2019actus"
 
 
@@ -255,6 +273,14 @@ def surprise_hit(p: dict, fig: dict) -> bool:
 def news_category_hit(p: dict, item: dict) -> bool:
     return (item.get("category") == p["category"]
             and (not p["urgent_only"] or bool(item.get("urgent"))))
+
+
+def rate_gap_hit(p: dict, gap: dict) -> bool:
+    """Écart de la prochaine réunion (en points, texte décimal) strictement au-delà du seuil."""
+    pts = dec(gap.get("pts"))
+    if pts is None or (p["bank"] and gap.get("bank") != p["bank"]):
+        return False
+    return pts > Decimal(p["threshold_pts"])
 
 
 def fold(text: str) -> str:
@@ -349,3 +375,13 @@ def news_category_message(p: dict, item: dict) -> tuple[str, str]:
     return (f"{label} : {item.get('title') or ''}"[:200],
             f"{item.get('source') or NEWS_FR}{' · fort impact' if item.get('urgent') else ''} · VO")
 
+
+def rate_gap_message(p: dict, gap: dict) -> tuple[str, str]:
+    """Écart entre sources : réunion, issue, valeurs de chaque source (en %), seuil."""
+    a, b = gap["sources"]
+    va, vb = gap["values"]
+    m = gap["meeting"]
+    return (f"Écart {a} / {b} : {fr_num(gap['pts'], 1)}{NBSP}pts · "
+            f"{RATE_BANKS.get(gap['bank'], gap['bank'])} {m[8:10]}/{m[5:7]}/{m[0:4]}",
+            f"{gap['outcome']} : {a} {fr_num(va, 1)}{NBSP}% · {b} {fr_num(vb, 1)}{NBSP}% · "
+            f"seuil {fr_num(p['threshold_pts'])}{NBSP}pts")

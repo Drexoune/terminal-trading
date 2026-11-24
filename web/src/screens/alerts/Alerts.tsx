@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { Panel } from '../../components/Panel';
 import { Button, Chip, Missing } from '../../components/ui';
 import {
-  ackAlerts, createRule, deleteRule, draftToBody, EMPTY_DRAFT, FORM_KINDS, KIND_LABEL, ruleChip, setRuleChannels, setRuleState,
+  ackAlerts, createRule, deleteRule, draftToBody, EMPTY_DRAFT, FORM_KINDS, GAP_BANKS, KIND_LABEL, ruleChip, setRuleChannels, setRuleState,
   sortEvents, sortRules, telegramText, testTelegram, unacked,
   type AlertEvent, type AlertKind, type AlertRule, type AlertSummary, type Channel, type RuleDraft,
 } from '../../alerts/alerts';
@@ -250,6 +250,17 @@ function NewRulePanel() {
             <input className="input" placeholder="Powell, ETF, hack" value={d.words} onChange={(e) => set('words', e.target.value)} />
           </label>
         )}
+        {d.kind === 'rate_gap' && (<>
+          <label className="field"><span className="lbl lbl--s">Banque centrale (prochaine réunion)</span>
+            <select className="input" value={d.gapBank} onChange={(e) => set('gapBank', e.target.value)}>
+              {GAP_BANKS.map((b) => <option key={b} value={b}>{b || 'Toutes les banques'}</option>)}
+            </select>
+          </label>
+          <label className="field"><span className="lbl lbl--s">Écart Polymarket / Kalshi au-delà de (points)</span>
+            <input className="input num" inputMode="decimal" placeholder="5" value={d.gapPts} onChange={(e) => set('gapPts', e.target.value)} />
+          </label>
+          <p className="lbl lbl--s">Évaluée chaque minute en Mode Online (tâche rates) ; se réarme quand l’écart repasse sous le seuil.</p>
+        </>)}
         <div className="rule-form__channels" role="group" aria-label="Canaux">
           <span className="lbl lbl--s">Canaux : écran, et</span>
           <label className="rule-form__check"><input type="checkbox" checked={d.telegram} onChange={(e) => set('telegram', e.target.checked)} />Telegram</label>

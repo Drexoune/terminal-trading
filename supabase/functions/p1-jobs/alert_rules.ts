@@ -5,7 +5,9 @@
 
 import { INDICATORS } from './calendar.ts';
 
-export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category'] as const;
+export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category', 'rate_gap'] as const;
+/** Écran Taux (P2) : banques suivies et leur nom court. */
+export const RATE_BANKS: Record<string, string> = { FED: 'Fed', BCE: 'BCE', BOE: 'BoE', BOJ: 'BoJ', BNS: 'BNS', BOC: 'BoC', RBA: 'RBA', RBNZ: 'RBNZ' };
 /** Catégories du fil d'actus (news_rules.ts). */
 export const NEWS_CATEGORIES: Record<string, string> = {
   'banque-centrale': 'Banque centrale', macro: 'Macro', crypto: 'Crypto', 'matieres-premieres': 'Matières premières', general: 'Général',
@@ -179,6 +181,12 @@ export function validate(kind: string, params: unknown, channels: unknown, instr
     const t = p.time_ms ?? null;
     if (t !== null && (typeof t !== 'number' || !Number.isInteger(t) || t <= 0)) throw new RuleError('time_ms : entier positif ou absent');
     out = { event_id: eid, title, currency: eid.split('|')[1], time_ms: t };
+  } else if (kind === 'rate_gap') {
+    const bank = p.bank || null;
+    if (bank !== null && !(typeof bank === 'string' && bank in RATE_BANKS)) throw new RuleError(`banque inconnue : ${pyRepr(bank)}`);
+    const thr = decimalParam(p, 'threshold_pts')!;
+    if (cmp(dec(thr)!, { n: 50n, scale: 0 }) > 0) throw new RuleError('seuil d\'écart hors bornes (50 points au plus)');
+    out = { bank, threshold_pts: thr };
   } else if (kind === 'news_category') {
     const cat = p.category;
     if (typeof cat !== 'string' || !(cat in NEWS_CATEGORIES)) throw new RuleError(`catégorie inconnue : ${pyRepr(cat)}`);
@@ -224,6 +232,10 @@ export function describe(kind: string, p: Params): [string, string] {
   if (kind === 'news_category') {
     return [`Fil d’actus : ${NEWS_CATEGORIES[p.category as string]}${p.urgent_only ? ' · fort impact' : ''}`, 'Fil d’actus · catégorie'];
   }
+  if (kind === 'rate_gap') {
+    const scope = p.bank ? RATE_BANKS[p.bank as string] : 'toutes les banques';
+    return [`Écart entre sources > ${frNum(p.threshold_pts)}${NBSP}pts · ${scope}`, 'Taux · sources'];
+  }
   return [`Mot-clé : ${(p.words as string[]).join(', ')}`, 'Fil d’actus'];
 }
 
@@ -263,6 +275,13 @@ export function surpriseHit(p: Params, fig: Record<string, unknown>): boolean {
 
 export function newsCategoryHit(p: Params, item: Record<string, unknown>): boolean {
   return item.category === p.category && (!p.urgent_only || !!item.urgent);
+}
+
+/** Écart de la prochaine réunion (en points, texte décimal) strictement au-delà du seuil. */
+export function rateGapHit(p: Params, gap: Record<string, unknown>): boolean {
+  const pts = dec(gap.pts);
+  if (pts === null || (p.bank && gap.bank !== p.bank)) return false;
+  return cmp(pts, dec(p.threshold_pts)!) > 0;
 }
 
 export function fold(text: string): string {
@@ -344,3 +363,11 @@ export function newsCategoryMessage(p: Params, item: Record<string, unknown>): [
   return [`${label} : ${item.title || ''}`.slice(0, 200), `${item.source || NEWS_FR}${item.urgent ? ' · fort impact' : ''} · VO`];
 }
 
+/** Écart entre sources : réunion, issue, valeurs de chaque source (en %), seuil. */
+export function rateGapMessage(p: Params, gap: Record<string, unknown>): [string, string] {
+  const [a, b] = gap.sources as [string, string];
+  const [va, vb] = gap.values as [string, string];
+  const m = String(gap.meeting);
+  return [`Écart ${a} / ${b} : ${frNum(gap.pts, 1)}${NBSP}pts · ${RATE_BANKS[gap.bank as string] ?? gap.bank} ${m.slice(8, 10)}/${m.slice(5, 7)}/${m.slice(0, 4)}`,
+    `${gap.outcome} : ${a} ${frNum(va, 1)}${NBSP}% · ${b} ${frNum(vb, 1)}${NBSP}% · seuil ${frNum(p.threshold_pts)}${NBSP}pts`];
+}

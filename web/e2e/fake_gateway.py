@@ -21,6 +21,7 @@ from pathlib import Path
 
 import terminal_gateway.app as gw_app
 import uvicorn
+from rates_demo import demo_rates, demo_rates_history
 from terminal_gateway.alert_service import AlertService
 from terminal_gateway.bus import Bus
 from terminal_gateway.config import Settings
@@ -157,6 +158,9 @@ class DemoService:
                 "published_raw": "démo", "received_ms": t + 4000, "backfill": False, "lang": "en"})
         # Markets Watch de démonstration (chiffres fictifs de la maquette Main, tests seulement).
         self.bus.publish("watch:state", demo_watch(now))
+        # Écran Taux de démonstration (chiffres fictifs de la maquette Taux, tests seulement).
+        self.bus.publish("rates:state", demo_rates(now))
+        self.bus.publish("rates:history:FED:2026-10-28", demo_rates_history(now))
         ok = {"status": "ok", "last_ok_ms": now, "last_error": None, "items": 1, "noise": 0}
         self.bus.publish("news:feeds", {f: ok for f in ("fed-monetary", "boj-whatsnew",
                                                         "financialjuice")})

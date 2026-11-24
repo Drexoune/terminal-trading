@@ -364,6 +364,38 @@ export async function fireNewsAlerts(deps: AlertDeps, items: { id: number; title
   return e.fired.length;
 }
 
+/** Écart entre sources de la prochaine réunion d'une banque (écran Taux, P2) : textes décimaux. */
+export interface RateGap { bank: string; meeting: string; pts: string; outcome: string; sources: [string, string]; values: [string, string] }
+
+/**
+ * Appelé chaque minute par la tâche rates de p2-jobs (plan P2, R5). Déclenche les règles rate_gap
+ * armées dont l'écart dépasse le seuil ; une règle déclenchée se réarme quand l'écart repasse sous
+ * le seuil. Sans mesure pour la banque (une seule source cotée), ni déclenchement ni réarmement.
+ */
+export async function fireRateGapAlerts(deps: AlertDeps, gaps: RateGap[]): Promise<number> {
+  const any = await deps.rest.select<{ id: number }>('alert_rules', { select: 'id', kind: 'eq.rate_gap', limit: '1' });
+  if (!any.length) return 0;
+  const e = new Engine(deps);
+  await e.load();
+  const minute = deps.now() - (deps.now() % MIN);
+  for (const r of e.rules.filter((x) => x.kind === 'rate_gap' && (x.state === 'armée' || x.state === 'déclenchée'))) {
+    const scope = gaps.filter((g) => !r.params.bank || g.bank === r.params.bank);
+    if (!scope.length) continue;
+    const hits = scope.filter((g) => ar.rateGapHit(r.params, g as unknown as Record<string, unknown>));
+    if (r.state === 'armée' && hits.length) {
+      const g = hits.reduce((a, b) => (Number(b.pts) > Number(a.pts) ? b : a));
+      const [title, body] = ar.rateGapMessage(r.params, g as unknown as Record<string, unknown>);
+      e.fire(r, `${g.bank}|${g.meeting}|${minute}`, title, body, `${g.sources.join(' · ')}`, minute, { ...g }, 'déclenchée');
+    } else if (r.state === 'déclenchée' && !hits.length) {
+      r.state = 'armée';                    // écart repassé sous le seuil : réarmée
+      e.changed.add(r.id);
+    }
+  }
+  if (!e.fired.length && !e.changed.size) return 0;
+  await e.flush();
+  return e.fired.length;
+}
+
 /** Tâche « alerts », chaque minute. */
 export async function runAlerts(deps: AlertDeps): Promise<Record<string, unknown>> {
   const { rest } = deps;

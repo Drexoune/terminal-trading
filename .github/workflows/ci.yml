@@ -16,7 +16,7 @@ jobs:
       # launchd pointe sur .venv/bin/python, et le test du cycle installer / arrêter
       # (launchctl simulé, gateway/tests/test_macos_agent.py) s'en sert.
       - run: python -m venv .venv && .venv/bin/pip install -e '.[dev]'
-      - run: .venv/bin/ruff check collectors gateway scripts web/e2e/fake_gateway.py
+      - run: .venv/bin/ruff check collectors gateway scripts web/e2e/fake_gateway.py web/e2e/rates_demo.py
       - name: Syntaxe des scripts du Mac (deploy/macos)
         run: for f in deploy/macos/*.sh; do bash -n "$f"; done
       - run: .venv/bin/pytest -q

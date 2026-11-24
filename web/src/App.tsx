@@ -15,10 +15,11 @@ import { SquawkScreen } from './screens/squawk/Squawk';
 import { NewsScreen } from './screens/news/News';
 import { HoursScreen } from './screens/hours/Hours';
 import { MarketsWatchScreen } from './screens/watch/MarketsWatch';
+import { RatesScreen } from './screens/rates/Rates';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);
