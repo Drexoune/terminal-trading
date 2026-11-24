@@ -7,3 +7,7 @@ import { defaultContext } from './_lib/routes.js';
 export function GET(request: Request): Promise<Response> {
   return handleBacktest(request, defaultContext());
 }
+
+export function POST(request: Request): Promise<Response> {
+  return handleBacktest(request, defaultContext());
+}

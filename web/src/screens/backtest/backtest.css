@@ -99,6 +99,23 @@
 .bt-reason { min-width: 150px; color: var(--text-body); }
 .bt-table--firms th:first-child, .bt-table--firms td:first-child { min-width: 150px; }
 
+/* Assistant IA (S3) */
+.bt-ai { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 6px; }
+.bt-ai textarea { width: 100%; min-height: 92px; padding: 8px 10px; border: 1px solid var(--line-strong); background: var(--bg-panel-2); color: var(--text-1);
+  font: 13px/1.5 var(--font-body); resize: vertical; }
+.bt-ai textarea:focus { outline: 1px solid var(--gold-mid); }
+.bt-ai-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+.bt-ai-row input[type="file"] { color: var(--text-2); font-size: 12px; max-width: 100%; }
+.bt-ai-empty { display: flex; align-items: center; gap: 8px; padding: 14px 16px 0; color: var(--text-3); font-size: 12.5px; }
+.bt-steps { margin: 0; padding: 0 0 0 18px; font-size: 12.5px; line-height: 1.6; color: var(--text-2); }
+.bt-step--done { color: var(--up); } .bt-step--fail, .bt-step--compile { color: var(--down); }
+.bt-ai-reply { padding: 10px 12px; border: 1px solid var(--line); background: var(--bg-panel-2); font-size: 13px; line-height: 1.5; }
+.bt-ai-reply b { color: var(--text-1); }
+.bt-ai-reply p { margin: 6px 0 0; } .bt-ai-reply ul { margin: 6px 0 0; padding-left: 18px; color: var(--text-2); }
+.bt-ai-explain { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding-top: 6px; border-top: 1px solid var(--line); }
+.bt-ai-reading { flex-basis: 100%; margin: 0; padding: 10px 12px; border-left: 2px solid var(--gold); background: var(--bg-selected); font-size: 13.5px; line-height: 1.6; color: var(--text-1); }
+.bt-warn { color: var(--down); }
+
 /* Journal */
 .bt-scroll { overflow-x: auto; }
 .bt-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
@@ -118,6 +135,6 @@
   .bt-tile--7 .bt-tile-v { font-size: 34px; }
 }
 @media (max-width: 480px) {
-  .bt-form, .bt-params, .bt-form--inline, .bt-kpis { grid-template-columns: minmax(0, 1fr); }
+  .bt-form, .bt-params, .bt-form--inline, .bt-kpis, .bt-ai-row { grid-template-columns: minmax(0, 1fr); }
   .bt-table .hide-xs { display: none; }
 }

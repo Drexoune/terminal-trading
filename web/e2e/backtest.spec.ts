@@ -77,3 +77,37 @@ test('Backtest à 390 px : aucun défilement horizontal', async ({ page }) => {
   writeFileSync(`${ART}Backtest-390.png`, await page.screenshot({ fullPage: true }));
   expect(overflow).toBe(0);
 });
+
+test('Assistant IA : génération en erreur, réparée, testée ; lecture citant nos mesures', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1100 });
+  await mockCandles(page);
+  const bad = '//@version=6\nstrategy("Croisement IA", overlay=true)\nfast = ta.sma(close, 20\n';
+  const good = '//@version=6\nstrategy("Croisement IA", overlay=true)\nfast = ta.sma(close, 20)\nslow = ta.sma(close, 50)\nif ta.crossover(fast, slow)\n    strategy.entry("L", strategy.long)\nif ta.crossunder(fast, slow)\n    strategy.entry("S", strategy.short)\n';
+  const seen: string[] = [];
+  await page.route('**/api/bourse/session', (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify({ authenticated: true, configured: true, expires_at: null }) }));
+  await page.route('**/api/backtest/ai', (r) => r.fulfill({ contentType: 'application/json', body: JSON.stringify({ configured: true, model: 'gemini-3.1-flash-lite', calls_today: 2, daily_calls: 50 }) }));
+  await page.route('**/api/backtest/ai-*', async (r) => {
+    const path = new URL(r.request().url()).pathname;
+    seen.push(path);
+    const body = path.endsWith('generate') ? { ok: true, title: 'Croisement IA', code: bad, summary: 'Croisement de deux moyennes.', assumptions: ['Moyennes simples'] }
+      : path.endsWith('repair') ? { ok: true, code: good, change: 'Parenthèse fermée ligne 3.' }
+      : { ok: true, text: 'Sharpe de 0,90 sur 16 trades : avec 1 essai, le Sharpe déflaté de 91,1 % reste en deçà de 95.' };
+    await r.fulfill({ contentType: 'application/json', body: JSON.stringify(body) });
+  });
+  await page.goto('/backtest');
+  await expect(page.getByRole('region', { name: 'Données et simulation' })).toContainText('799 bougies', { timeout: 15_000 });
+  await page.getByRole('group', { name: 'Mode' }).getByRole('button', { name: 'Assistant IA' }).click();
+  const panel = page.getByRole('region', { name: 'Assistant IA' });
+  await expect(panel).toContainText('2 / 50 appels aujourd’hui');
+  await panel.getByLabel('Décrire la stratégie').fill('Croisement des moyennes 20 et 50, long et short.');
+  await panel.getByRole('button', { name: 'Générer et tester' }).click();
+  const steps = panel.getByRole('list', { name: 'Étapes de la génération' });
+  await expect(steps).toContainText('Erreur ligne 4', { timeout: 30_000 });
+  await expect(steps).toContainText('Le script tourne après 1 réparation');
+  await expect(page.getByRole('list', { name: 'Mesures notées' }).getByRole('listitem')).toHaveCount(8, { timeout: 30_000 });
+  await expect(page.getByRole('region', { name: 'Journal des transactions' })).toContainText('16 trades');
+  expect(seen).toEqual(['/api/backtest/ai-generate', '/api/backtest/ai-repair']);
+  await panel.getByRole('button', { name: 'Expliquer ces résultats' }).click();
+  await expect(panel.getByTestId('ai-reading')).toContainText('Sharpe de 0,90');
+  writeFileSync(`${ART}Backtest-assistant.png`, await page.screenshot({ fullPage: true }));
+});

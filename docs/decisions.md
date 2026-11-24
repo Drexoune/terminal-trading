@@ -67,6 +67,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-060 | 24/11/2026 | Sources de P4 | VIX : Cboe (FRED en repli) ; S&P 500 : clôture de SPY (Tiingo) ; écart haut rendement : FRED ; positions des banques : catégorie « dealers » du TFF (API CFTC), BPR via Vercel s'il répond ; liquidité nette : WALCL − WDTGAL − RRPONTSYD |
 | T-061 | 24/11/2026 | Section Backtest avant P5 | Nouvelle section « Backtest » avant P5, aux conditions de T-049 : stratégies connues, éditeur Pine, assistant IA (Gemini) et recherche autonome ; tuiles notées E à S ; BTC, ETH, QQQ, SPY ; long et short avec frais |
 | T-062 | 24/11/2026 | Moteur du backtest | PineTS (Pine Script natif, émulateur de courtier de type TradingView), licence AGPL-3.0 pour un usage personnel sans redistribution ; appels de marge désactivés par défaut (levier 1), activables |
+| T-063 | 24/11/2026 | IA du backtest | Gemini en offre gratuite seulement (0 $ par jour), modèle le moins cher (Gemini 3.1 Flash-Lite) ; quota gratuit épuisé : « quota gratuit atteint », jamais de bascule payante ; clé dans les secrets de Supabase et les variables de Vercel |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -679,4 +680,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **Moteur** : PineTS, pour l'éditeur, les stratégies connues et le code écrit par l'IA. Licence AGPL-3.0 acceptée pour un usage strictement personnel, sans redistribution (règle du projet).
 - **Appels de marge** : désactivés par défaut (levier 1, `margin_long=0`, `margin_short=0`) dans nos modèles et stratégies connues ; activables, et indiqués à l'écran.
 - **Mesures** : les tuiles notées sont calculées par notre module `metrics.ts` à partir des transactions de l'émulateur, testées et comparées à un script Python de référence ; les mesures de l'émulateur servent de contrôle.
+
+## T-063 — IA du backtest · 24/11/2026
+
+**Contexte.** Étape S3 (assistant IA de la section Backtest). Tarifs relevés sur la page officielle de Google le 24/11/2026 : Gemini 3.8 Flash 0,75 $ / 3,75 $ par million de jetons en entrée / sortie jusqu'au 31/12/2026 ; Gemini 3.1 Flash-Lite 0,25 $ / 1,50 $ ; Gemini 3.1 Pro Preview 2 $ / 12 $, sans offre gratuite. L'offre gratuite existe pour les modèles Flash et Flash-Lite ; Google indique qu'il peut s'en servir pour améliorer ses produits.
+
+**Décisions de Clément.**
+
+- **Offre gratuite seulement, plafond de 0 $ par jour.** Modèle : Gemini 3.1 Flash-Lite, le moins cher, pour écrire, réparer et expliquer les stratégies.
+- **Garantie de gratuité** : elle ne dépend pas du terminal mais du projet Google de la clé, qui doit rester sans facturation ; une clé d'un projet facturé serait payante dès le premier appel. Aucun appel réel avant la confirmation de Clément.
+- **Quota** : un plafond d'appels par jour côté terminal, journal des appels dans Supabase ; quand Google refuse (quota gratuit épuisé), les routes répondent « quota gratuit atteint », sans bascule vers un modèle payant.
+- **Clé** : copiée dans les secrets de Supabase le 24/11/2026 (pour la recherche autonome, S4) ; ajoutée par Clément dans les variables de Vercel (production). Jamais dans le bundle.
+- **Ce qui part chez Google** : le texte de la demande, la capture d'écran éventuelle, le code Pine et nos mesures calculées ; aucune clé, aucune donnée de compte.
 

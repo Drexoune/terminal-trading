@@ -19,6 +19,9 @@ import { KNOWN, knownById } from '../../backtest/strategies';
 import { recordTrial, resetTrials, variantHash } from '../../backtest/trials';
 import { exitReason, tiles } from '../../backtest/view';
 import { FirmsPanel, MonteCarloPanel, SamplePanel, type DiagInput } from './Diagnostics';
+import { AssistantPanel } from './Assistant';
+import { BourseGate } from '../bourse/BourseGate';
+import { monteCarlo, splitSample } from '../../backtest/diagnostics';
 import { fmtDay, monthLabel, dateTicks } from '../../sentiment/sentiment';
 import { Empty, FreshChip } from '../../sentiment/ui';
 import { SubHeader } from '../../shell/SubHeader';
@@ -193,15 +196,15 @@ export function BacktestScreen() {
 
   const chooseKnown = (id: string) => { setKnownId(id); setSource(knownById(id)!.source); setValues({}); setOutcome(null); setRunErr(null); };
 
-  async function run() {
+  async function run(src = source, vals = values) {
     if (!candles.length) return;
     setRunning(true); setRunErr(null);
-    const r = await runBacktest(source, candles, tf, settings, values);
+    const r = await runBacktest(src, candles, tf, settings, vals);
     setRunning(false);
     if (!r.ok) { if (r.error !== 'remplacé par un nouveau backtest') { setRunErr(r); setOutcome(null); } return; }
     const bpy = barsPerYear(asset, tf);
     const first = computeMetrics(candles, r.trades, r.open, settings.capital, bpy);
-    const trials = recordTrial(asset, tf, period, variantHash([source, values, settings]), first.sharpe_bar);
+    const trials = recordTrial(asset, tf, period, variantHash([src, vals, settings]), first.sharpe_bar);
     const metrics = computeMetrics(candles, r.trades, r.open, settings.capital, bpy, trials);
     setOutcome({ metrics, trades: r.trades, open: r.open, candles, ms: r.ms, title: r.title, stored: trials.stored, openCount: r.open.length,
       trials, bpy, capital: settings.capital });
@@ -209,6 +212,18 @@ export function BacktestScreen() {
 
   const diag: DiagInput | null = useMemo(() => (outcome ? { candles: outcome.candles, trades: outcome.trades, open: outcome.open, equity: outcome.metrics.equity,
     capital: outcome.capital, bpy: outcome.bpy, trials: outcome.trials, tf, cur: a.cur } : null), [outcome, tf, a.cur]);
+  // Assistant IA : compilation dans notre moteur, et chiffres transmis pour la lecture.
+  const compile = async (code: string): Promise<Extract<RunResult, { ok: false }> | null> => {
+    if (!candles.length) return { ok: false, error: 'aucune bougie chargée pour compiler', line: null, column: null };
+    const r = await runBacktest(code, candles, tf, settings, {});
+    return r.ok ? null : r;
+  };
+  const aiExtra = useMemo(() => {
+    if (!diag) return {};
+    const sp = splitSample(diag.trades, diag.equity, Math.round(diag.candles.length * 0.7), diag.capital, diag.bpy, diag.trials);
+    const mc = monteCarlo(diag.trades, diag.capital, { iterations: 1000, seed: 42, ruinDdPct: 50 });
+    return { is_sharpe: sp?.is.sharpe ?? null, oos_sharpe: sp?.oos.sharpe ?? null, mc_ruin_pct: mc?.bootstrap.p_ruin ?? null };
+  }, [diag]);
   const setNum = (k: keyof Settings) => (e: React.ChangeEvent<HTMLInputElement>) => setSettings((s) => ({ ...s, [k]: Number(e.target.value) }));
   const range = candles.length ? `${fmtTs(candles[0].t, tf)} → ${fmtTs(candles[candles.length - 1].t, tf)}` : '—';
 
@@ -274,9 +289,11 @@ export function BacktestScreen() {
               </Panel>
             )}
             {tab === 'ai' && (
-              <Panel title="Assistant IA" label="Assistant IA" controls="none">
-                <Empty reason="étape S3 : génération de Pine par Gemini (texte, capture, indicateur) ; clé Gemini à ajouter côté serveur" />
-              </Panel>
+              <BourseGate>{() => (
+                <AssistantPanel asset={asset} tf={tf} cur={a.cur} editorCode={source} compile={compile}
+                  onAccepted={(code) => { setSource(code); setValues({}); void run(code, {}); }}
+                  metrics={outcome?.metrics ?? null} extra={aiExtra} />
+              )}</BourseGate>
             )}
             {tab === 'loop' && (
               <Panel title="Recherche autonome" label="Recherche autonome" controls="none">
@@ -285,7 +302,7 @@ export function BacktestScreen() {
             )}
 
             <div className="bt-run">
-              <Button variant="primary" onClick={() => void run()} disabled={running || !candles.length || tab === 'ai' || tab === 'loop'}>
+              <Button variant="primary" onClick={() => void run()} disabled={running || !candles.length || tab === 'loop'}>
                 {running ? 'Calcul…' : 'Lancer le backtest'}</Button>
               {dataReason && <span className="bt-why"><Missing reason={dataReason} />{dataReason}</span>}
               {outcome && <span className="lbl lbl--s bt-meta">{`${outcome.title ?? 'stratégie'} · ${outcome.metrics.trades} trades clos${outcome.openCount ? `, ${outcome.openCount} ouverte` : ''} · ${outcome.ms} ms`}</span>}
