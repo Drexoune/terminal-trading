@@ -38,3 +38,9 @@ verify_jwt = false
 # Fonction distincte de p1-jobs, p2-jobs et p3-jobs : leurs paquets ne changent pas. Sans JWT :
 # l'en-tête x-jobs-secret est vérifié (P1_JOBS_SECRET, même secret).
 verify_jwt = false
+
+[functions.bt-jobs]
+# Section Backtest (T-061, T-062) : bougies d'OKX et de Tiingo pour le moteur de backtest, appelée
+# par pg_cron. Fonction distincte des fonctions p1 à p4. Sans JWT : l'en-tête x-jobs-secret est
+# vérifié (P1_JOBS_SECRET, même secret).
+verify_jwt = false

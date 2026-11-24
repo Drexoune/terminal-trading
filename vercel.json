@@ -11,6 +11,7 @@
     { "source": "/api/rates/:path", "destination": "/api/rates?path=:path" },
     { "source": "/api/macro/:path", "destination": "/api/macro?path=:path" },
     { "source": "/api/sentiment/:path", "destination": "/api/sentiment?path=:path" },
+    { "source": "/api/backtest/:path", "destination": "/api/backtest?path=:path" },
     { "source": "/api/alerts/:path*", "destination": "/api/alerts?path=:path*" },
     { "source": "/((?!api/|api$).*)", "destination": "/index.html" }
   ],

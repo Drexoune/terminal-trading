@@ -4,7 +4,8 @@
 import type { IconName } from './components/Icon';
 
 export type Phase = 'P0' | 'P1' | 'P2' | 'P3' | 'P4' | 'P5' | 'P6' | 'P7'
-  | 'B0' | 'B1' | 'B2' | 'B3' | 'B4';   // module Bourse (docs/plan-bourse.md)
+  | 'B0' | 'B1' | 'B2' | 'B3' | 'B4'    // module Bourse (docs/plan-bourse.md)
+  | 'BT';                                // section Backtest (T-061)
 
 export interface ModuleDef {
   id: string;
@@ -18,7 +19,7 @@ export interface ModuleDef {
   description: string; // ligne de la palette
 }
 
-export const SECTIONS = ['Global', 'News', 'Macro', 'Positionnement & sentiment', 'Analyse', 'Compte', 'Bourse'];
+export const SECTIONS = ['Global', 'News', 'Macro', 'Positionnement & sentiment', 'Analyse', 'Compte', 'Bourse', 'Backtest'];
 
 export const MODULES: ModuleDef[] = [
   { id: 'overview', label: 'Vue d’ensemble', section: 'Global', path: '/', icon: 'overview', phase: 'P0', command: 'HOME', category: 'Global', description: 'Vue d’ensemble' },
@@ -62,7 +63,12 @@ export const BOURSE_MODULES: ModuleDef[] = [
   { id: 'sources', label: 'Sources', section: 'Bourse', path: '/bourse/sources', icon: 'sources', phase: 'B0', command: 'BSRC', category: 'Bourse', description: 'Sources du module Bourse : relevés, quota, dernières clôtures' },
 ];
 
-export const ALL_MODULES: ModuleDef[] = [...MODULES, ...BOURSE_MODULES];
+/** Section Backtest (T-061, T-062) : repliable comme Bourse, sans maquette (T-033). */
+export const BACKTEST_MODULES: ModuleDef[] = [
+  { id: 'backtest', label: 'Backtest', section: 'Backtest', path: '/backtest', icon: 'backtest', phase: 'BT', command: 'BT', category: 'Backtest', description: 'Backtest : stratégies connues, éditeur Pine, mesures notées' },
+];
+
+export const ALL_MODULES: ModuleDef[] = [...MODULES, ...BOURSE_MODULES, ...BACKTEST_MODULES];
 
 /** Écrans hors menu (paramètres, planche de référence) : le menu reste celui de la maquette. */
 export const EXTRA_SCREENS = [

@@ -65,6 +65,8 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-058 | 24/11/2026 | Sources nationales de P3 | L'OCDE refuse aussi Vercel : ONS, Statistics Japan et RBA (copies DBnomics), Statistics Canada et BNS (API), FRED ; IPC néo-zélandais « — » ; thème Sentiment affiché sans compter au score ; remplace le point « OCDE » de T-056 |
 | T-059 | 24/11/2026 | P4 avant la porte P1 | Plan puis code de P4 sans attendre le 10/12, aux conditions de T-049 ; proxys quotidiens par des ETF (Tiingo) : CPER/GLD pour cuivre/or, SPY/TLT pour actions/refuge |
 | T-060 | 24/11/2026 | Sources de P4 | VIX : Cboe (FRED en repli) ; S&P 500 : clôture de SPY (Tiingo) ; écart haut rendement : FRED ; positions des banques : catégorie « dealers » du TFF (API CFTC), BPR via Vercel s'il répond ; liquidité nette : WALCL − WDTGAL − RRPONTSYD |
+| T-061 | 24/11/2026 | Section Backtest avant P5 | Nouvelle section « Backtest » avant P5, aux conditions de T-049 : stratégies connues, éditeur Pine, assistant IA (Gemini) et recherche autonome ; tuiles notées E à S ; BTC, ETH, QQQ, SPY ; long et short avec frais |
+| T-062 | 24/11/2026 | Moteur du backtest | PineTS (Pine Script natif, émulateur de courtier de type TradingView), licence AGPL-3.0 pour un usage personnel sans redistribution ; appels de marge désactivés par défaut (levier 1), activables |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -650,3 +652,31 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **Écart haut rendement** : FRED (`BAMLH0A0HYM2`), seule source libre, un jour ouvré de retard affiché.
 - **Positions des banques** : catégorie « dealers » du rapport TFF (API Socrata de la CFTC, hebdomadaire), nommée comme telle. À l'étape S3, essai de lecture du BPR depuis Vercel ; s'il répond, une tâche mensuelle l'ajoute, sinon l'écran affiche « — » avec la raison.
 - **Liquidité nette de la Fed** : `WALCL − WDTGAL − RRPONTSYD`, les trois au mercredi, le reverse repo converti de milliards en millions. `WDTGAL` remplace `WTREGEN` (moyenne de la semaine) prévu au plan. Unités à confirmer en S1.
+
+## T-061 — Section Backtest avant P5 · 24/11/2026
+
+**Contexte.** P4 est en service depuis le 24/11/2026. Clément demande une section de backtest avant de commencer P5, dans l'esprit des outils de recherche quantitative de LuxAlgo (jamais leur nom, leur logo ni leurs textes). Plan : `~/.claude/plans/hidden-bubbling-quilt-of-fc7c07be-d554-4b51-aaf8-3edfa4060801.md`.
+
+**Décision de Clément.** La section est construite avant P5, aux conditions de T-049 :
+
+- rien ne touche à la capture de P1 ; aucun déploiement les 04/12, 08/12 et 10/12 ;
+- P5 attend la fin de la section.
+
+**Réponses de Clément.**
+
+- **Trois façons d'obtenir une stratégie** : assistant IA (texte, capture d'écran ou indicateur connu vers Pine Script, avec une boucle de recherche autonome), éditeur de code sans IA, bibliothèque de stratégies connues. Fournisseur IA : Gemini, clé ajoutée par Clément dans `.env`.
+- **Actifs** : BTC et ETH (OKX) en quotidien, 1 h et 4 h ; Nasdaq 100 par QQQ et S&P 500 par SPY (Tiingo), en quotidien.
+- **Simulation** : long et short, frais et glissement actifs par défaut, modifiables.
+- **Tuiles notées**, en grille « bento », de la moins importante à la plus importante : taux de réussite [E], PnL total [D], RR [C], espérance E[X] [B], drawdown maximal [B], Sharpe [A], t-stat [A], Sharpe déflaté [S]. La note qualifie l'importance de la mesure, pas le résultat.
+- **Hors périmètre** (décisions à venir) : agent graphique (FVG, order blocks, liquidité, killzones, alertes posées par l'IA) et cartes d'exécution en paper trading : le terminal ne passe jamais d'ordre.
+
+## T-062 — Moteur du backtest · 24/11/2026
+
+**Contexte.** Exploration S0 (`docs/exploration-bt.md`) : PineTS 0.13.1 (dépôt LuxAlgo/PineTS) exécute le Pine Script v5/v6 natif sur nos bougies OKX, 50 000 barres en 235 ms, avec un émulateur de courtier qui reproduit TradingView, appels de marge compris.
+
+**Décisions de Clément.**
+
+- **Moteur** : PineTS, pour l'éditeur, les stratégies connues et le code écrit par l'IA. Licence AGPL-3.0 acceptée pour un usage strictement personnel, sans redistribution (règle du projet).
+- **Appels de marge** : désactivés par défaut (levier 1, `margin_long=0`, `margin_short=0`) dans nos modèles et stratégies connues ; activables, et indiqués à l'écran.
+- **Mesures** : les tuiles notées sont calculées par notre module `metrics.ts` à partir des transactions de l'émulateur, testées et comparées à un script Python de référence ; les mesures de l'émulateur servent de contrôle.
+

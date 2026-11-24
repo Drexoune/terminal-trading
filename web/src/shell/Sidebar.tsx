@@ -4,11 +4,11 @@ import { Icon } from '../components/Icon';
 import { ALL_MODULES, SECTIONS } from '../modules';
 
 /**
- * Sections repliables : ajoutées après la maquette (module Bourse, T-036).
+ * Sections repliables : ajoutées après la maquette (module Bourse, T-036 ; Backtest, T-061).
  * Repliées par défaut pour que le menu garde les mesures de la maquette Main ;
  * ouvertes d'office quand l'écran affiché en fait partie.
  */
-const COLLAPSIBLE: Record<string, string> = { Bourse: '/bourse/' };
+const COLLAPSIBLE: Record<string, string> = { Bourse: '/bourse/', Backtest: '/backtest' };
 
 export function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);

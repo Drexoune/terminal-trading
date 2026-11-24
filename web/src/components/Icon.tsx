@@ -46,6 +46,8 @@ const PATHS = {
   lock: ['M7 11h10v9H7zM9 11V8a3 3 0 0 1 6 0v3'],
   maximize: ['M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7'],
   close: ['M6 6l12 12M18 6L6 18'],
+  // Section Backtest (T-061) : fiole de laboratoire.
+  backtest: ['M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3M7.5 15h9'],
 } as const;
 
 export type IconName = keyof typeof PATHS;

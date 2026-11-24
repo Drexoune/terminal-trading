@@ -1,0 +1,157 @@
+{
+ "strategy": "SMA 20/50, long et short, commission 0.05 %, sans glissement",
+ "capital": 10000.0,
+ "trades": [
+  {
+   "entry_bar": 112,
+   "entry_price": 98363.9,
+   "exit_bar": 128,
+   "exit_price": 106150.1,
+   "size": -0.101612,
+   "pnl": -801.5618926840012
+  },
+  {
+   "entry_bar": 128,
+   "entry_price": 106150.1,
+   "exit_bar": 154,
+   "exit_price": 96105.6,
+   "size": 0.086662,
+   "pnl": -879.2404007367
+  },
+  {
+   "entry_bar": 154,
+   "entry_price": 96105.6,
+   "exit_bar": 221,
+   "exit_price": 93974.0,
+   "size": -0.086563,
+   "pnl": 176.2907605926005
+  },
+  {
+   "entry_bar": 221,
+   "entry_price": 93974.0,
+   "exit_bar": 287,
+   "exit_price": 108361.5,
+   "size": 0.0904,
+   "pnl": 1291.4844354
+  },
+  {
+   "entry_bar": 287,
+   "entry_price": 108361.5,
+   "exit_bar": 296,
+   "exit_price": 108926.0,
+   "size": -0.090317,
+   "pnl": -60.79632406874999
+  },
+  {
+   "entry_bar": 296,
+   "entry_price": 108926.0,
+   "exit_bar": 344,
+   "exit_price": 110119.0,
+   "size": 0.089292,
+   "pnl": 96.74587293
+  },
+  {
+   "entry_bar": 344,
+   "entry_price": 110119.0,
+   "exit_bar": 377,
+   "exit_price": 109630.8,
+   "size": -0.089202,
+   "pnl": 33.747355570199744
+  },
+  {
+   "entry_bar": 377,
+   "entry_price": 109630.8,
+   "exit_bar": 403,
+   "exit_price": 110073.9,
+   "size": 0.089907,
+   "pnl": 29.961296468549218
+  },
+  {
+   "entry_bar": 403,
+   "entry_price": 110073.9,
+   "exit_bar": 480,
+   "exit_price": 91097.2,
+   "size": -0.089818,
+   "pnl": 1695.4148476700998
+  },
+  {
+   "entry_bar": 480,
+   "entry_price": 91097.2,
+   "exit_bar": 505,
+   "exit_price": 78734.1,
+   "size": 0.12712,
+   "pnl": -1582.391749427999
+  },
+  {
+   "entry_bar": 505,
+   "entry_price": 78734.1,
+   "exit_bar": 551,
+   "exit_price": 70515.6,
+   "size": -0.127005,
+   "pnl": 1034.31286342575
+  },
+  {
+   "entry_bar": 551,
+   "entry_price": 70515.6,
+   "exit_bar": 568,
+   "exit_price": 68840.9,
+   "size": 0.15646,
+   "pnl": -272.9254209950018
+  },
+  {
+   "entry_bar": 568,
+   "entry_price": 68840.9,
+   "exit_bar": 573,
+   "exit_price": 73054.3,
+   "size": -0.156317,
+   "pnl": -669.7163637892013
+  },
+  {
+   "entry_bar": 573,
+   "entry_price": 73054.3,
+   "exit_bar": 622,
+   "exit_price": 73883.2,
+   "size": 0.138143,
+   "pnl": 104.3575391687492
+  },
+  {
+   "entry_bar": 622,
+   "entry_price": 73883.2,
+   "exit_bar": 673,
+   "exit_price": 65259.5,
+   "size": -0.137997,
+   "pnl": 1180.4440913140495
+  },
+  {
+   "entry_bar": 673,
+   "entry_price": 65259.5,
+   "exit_bar": 773,
+   "exit_price": 81351.9,
+   "size": 0.174303,
+   "pnl": 2792.1761937728993
+  }
+ ],
+ "open": [
+  {
+   "entry_bar": 773,
+   "entry_price": 81351.9,
+   "size": -0.17416
+  }
+ ],
+ "metrics": {
+  "trades": 16,
+  "wins": 10,
+  "winrate": 0.625,
+  "total_pnl": 4168.303104611244,
+  "rr": 1.1861723658950267,
+  "ex_pnl": 260.51894403820273,
+  "ex_ret_pct": 2.6908786006201764,
+  "max_dd_pct": 23.24629919482204,
+  "max_dd": 2553.5387735864515,
+  "sharpe": 0.9041468001413946,
+  "t_stat": 1.0271019933730752,
+  "dsr": 0.9114258446160778,
+  "profit_factor": 1.976953943158378,
+  "final_equity": 17665.279160611244
+ }
+}

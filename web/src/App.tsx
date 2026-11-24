@@ -23,10 +23,11 @@ import { CotScreen } from './screens/cot/Cot';
 import { BanksScreen } from './screens/banks/Banks';
 import { RetailScreen } from './screens/retail/Retail';
 import { LiquidityScreen } from './screens/liquidity/Liquidity';
+import { BacktestScreen } from './screens/backtest/Backtest';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);
