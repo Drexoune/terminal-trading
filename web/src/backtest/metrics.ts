@@ -126,7 +126,16 @@ export function equityCurve(candles: Candle[], trades: Trade[], open: OpenTrade[
 
 export function computeMetrics(candles: Candle[], trades: Trade[], open: OpenTrade[], initial: number, barsPerYear: number,
   trials: Trials = { n: 1, srVariance: 0 }): Metrics & { equity: number[] } {
-  const equity = equityCurve(candles, trades, open, initial);
+  return metricsFromEquity(trades, equityCurve(candles, trades, open, initial), initial, barsPerYear, trials);
+}
+
+/**
+ * Mesures à partir d'une courbe de capital déjà calculée : sert aussi aux segments (dans et hors
+ * échantillon), où la courbe est une tranche de la courbe complète et `base` son capital de départ.
+ */
+export function metricsFromEquity(trades: Trade[], equity: number[], base: number, barsPerYear: number,
+  trials: Trials = { n: 1, srVariance: 0 }): Metrics & { equity: number[] } {
+  const initial = base;
   const pnl = trades.map((t) => t.pnl);
   const ret = trades.map((t) => t.pnl / (Math.abs(t.size) * t.entry_price));
   const wins = pnl.filter((p) => p > 0), losses = pnl.filter((p) => p <= 0);

@@ -12,12 +12,13 @@ import { useSettings } from '../../config/settings';
 import { loadCandles, type LoadedCandles } from '../../data/online/backtest';
 import { direction, fmtNumber, fmtSigned, NBSP } from '../../lib/format';
 import { DEFAULT_SETTINGS, scriptInputs, type RunResult, type ScriptInput, type Settings } from '../../backtest/engine';
-import { barsPerYear, computeMetrics, type Candle, type Metrics, type Trade } from '../../backtest/metrics';
+import { barsPerYear, computeMetrics, type Candle, type Metrics, type OpenTrade, type Trade, type Trials } from '../../backtest/metrics';
 import { PineEditor, type PineEditorHandle } from '../../backtest/PineEditor';
 import { runBacktest } from '../../backtest/runner';
 import { KNOWN, knownById } from '../../backtest/strategies';
 import { recordTrial, resetTrials, variantHash } from '../../backtest/trials';
 import { exitReason, tiles } from '../../backtest/view';
+import { FirmsPanel, MonteCarloPanel, SamplePanel, type DiagInput } from './Diagnostics';
 import { fmtDay, monthLabel, dateTicks } from '../../sentiment/sentiment';
 import { Empty, FreshChip } from '../../sentiment/ui';
 import { SubHeader } from '../../shell/SubHeader';
@@ -34,7 +35,8 @@ const ASSETS = [
 const PERIOD_YEARS: Record<Period, number | null> = { all: null, '5y': 5, '3y': 3, '1y': 1 };
 const TF_LABEL: Record<string, string> = { '1D': '1 j', '4H': '4 h', '1H': '1 h' };
 
-interface Outcome { metrics: Metrics & { equity: number[] }; trades: Trade[]; candles: Candle[]; ms: number; title: string | null; stored: boolean; openCount: number }
+interface Outcome { metrics: Metrics & { equity: number[] }; trades: Trade[]; open: OpenTrade[]; candles: Candle[]; ms: number; title: string | null; stored: boolean; openCount: number;
+  trials: Trials; bpy: number; capital: number }
 
 function slicePeriod(c: Candle[], p: Period): Candle[] {
   const y = PERIOD_YEARS[p];
@@ -201,9 +203,12 @@ export function BacktestScreen() {
     const first = computeMetrics(candles, r.trades, r.open, settings.capital, bpy);
     const trials = recordTrial(asset, tf, period, variantHash([source, values, settings]), first.sharpe_bar);
     const metrics = computeMetrics(candles, r.trades, r.open, settings.capital, bpy, trials);
-    setOutcome({ metrics, trades: r.trades, candles, ms: r.ms, title: r.title, stored: trials.stored, openCount: r.open.length });
+    setOutcome({ metrics, trades: r.trades, open: r.open, candles, ms: r.ms, title: r.title, stored: trials.stored, openCount: r.open.length,
+      trials, bpy, capital: settings.capital });
   }
 
+  const diag: DiagInput | null = useMemo(() => (outcome ? { candles: outcome.candles, trades: outcome.trades, open: outcome.open, equity: outcome.metrics.equity,
+    capital: outcome.capital, bpy: outcome.bpy, trials: outcome.trials, tf, cur: a.cur } : null), [outcome, tf, a.cur]);
   const setNum = (k: keyof Settings) => (e: React.ChangeEvent<HTMLInputElement>) => setSettings((s) => ({ ...s, [k]: Number(e.target.value) }));
   const range = candles.length ? `${fmtTs(candles[0].t, tf)} → ${fmtTs(candles[candles.length - 1].t, tf)}` : '—';
 
@@ -308,6 +313,10 @@ export function BacktestScreen() {
               {outcome ? <EquityChart o={outcome} initial={settings.capital} /> : <Empty reason="aucun backtest lancé" />}
               <div className="lbl lbl--s bt-src" data-fresh>{outcome ? `${monthLabel(new Date(outcome.candles[0].t).toISOString().slice(0, 10))} → ${monthLabel(new Date(outcome.candles[outcome.candles.length - 1].t).toISOString().slice(0, 10))} · capital initial ${fmtNumber(settings.capital, 0)}${NBSP}${a.cur}` : 'Source : —'}</div>
             </Panel>
+
+            {diag && <MonteCarloPanel x={diag} />}
+            {diag && <FirmsPanel x={diag} />}
+            {diag && <SamplePanel x={diag} />}
 
             <Panel title="Journal des transactions" label="Journal des transactions" controls="none"
               chips={outcome ? <Chip>{`${outcome.trades.length} trades`}</Chip> : undefined}>

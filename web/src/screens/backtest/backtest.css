@@ -83,6 +83,22 @@
 .bt-ln--eq { background: var(--gold); } .bt-ln--dd { background: var(--down); margin-left: 10px; }
 .bt-final { font-size: 13px; color: var(--text-1); padding-right: 8px; }
 
+/* Diagnostics (S2) */
+.bt-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin: 14px 16px; background: var(--line); border: 1px solid var(--line); }
+.bt-kpis > div { display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; background: var(--bg-panel); min-width: 0; }
+.bt-kpis b { font: 700 22px/1.1 var(--font-display); color: var(--text-1); }
+.bt-kpis b.dn { color: var(--down); }
+.bt-inline { padding: 10px 16px 4px; }
+.bt-inline input[type="range"] { accent-color: var(--gold); width: 100%; }
+.bt-form--inline { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; padding-bottom: 12px; }
+.bt-verdict { display: inline-block; padding: 2px 8px; border: 1px solid var(--line-strong); font: 600 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.bt-verdict--up { border-color: var(--up-border); color: var(--up); }
+.bt-verdict--dn { border-color: var(--down-border); color: var(--down); }
+.bt-verdict--nt { color: var(--text-2); }
+.bt-table--firms td { white-space: normal; vertical-align: top; padding-top: 8px; padding-bottom: 8px; }
+.bt-reason { min-width: 150px; color: var(--text-body); }
+.bt-table--firms th:first-child, .bt-table--firms td:first-child { min-width: 150px; }
+
 /* Journal */
 .bt-scroll { overflow-x: auto; }
 .bt-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
@@ -102,6 +118,6 @@
   .bt-tile--7 .bt-tile-v { font-size: 34px; }
 }
 @media (max-width: 480px) {
-  .bt-form, .bt-params { grid-template-columns: minmax(0, 1fr); }
+  .bt-form, .bt-params, .bt-form--inline, .bt-kpis { grid-template-columns: minmax(0, 1fr); }
   .bt-table .hide-xs { display: none; }
 }

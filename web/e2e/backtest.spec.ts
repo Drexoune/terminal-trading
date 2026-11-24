@@ -34,6 +34,16 @@ test('Backtest : stratégie connue, tuiles notées E → S, journal', async ({ p
   await expect(page.getByTestId('tile-winrate')).toContainText('Taux de réussite');
   await expect(page.getByTestId('tile-dsr')).toContainText('N = 1 essai');
   await expect(page.getByRole('region', { name: 'Journal des transactions' })).toContainText('16 trades');
+  // Diagnostics (S2) : Monte Carlo, sociétés de financement, coupure dans et hors échantillon.
+  await expect(page.getByTestId('mc-ruin')).toHaveText(/%$/);
+  const firms = page.getByRole('region', { name: 'Sociétés de financement' });
+  for (const id of ['ftmo2_p1', 'ftmo2_p2', 'ftmo1', 'lucid25']) await expect(firms.getByTestId(`firm-${id}`)).toContainText(/Réussi|Échoué|En cours/);
+  await expect(firms).toContainText('LucidFlex 25K');
+  await expect(firms).toContainText('consolidation non officielle');
+  const sample = page.getByRole('region', { name: 'Dans et hors échantillon' });
+  await expect(sample.getByTestId('split-sharpe')).toBeVisible();
+  await sample.getByLabel('Part de la période dans l’échantillon').fill('50');
+  await expect(sample).toContainText('Coupure : 50 %');
   writeFileSync(`${ART}Backtest-app.png`, await page.screenshot({ fullPage: true }));
   // Deuxième variante : N = 2 essais pour le Sharpe déflaté.
   await page.getByRole('region', { name: 'Paramètres' }).getByLabel('Moyenne rapide').fill('10');

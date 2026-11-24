@@ -22,7 +22,9 @@ Relevés du 24/11/2026 depuis le Mac, en lecture seule. Décision de cadrage : T
 
 ## 3. Gemini
 
-**En attente** : aucune clé `GEMINI_API_KEY` dans `.env` au 24/11. À vérifier avec la clé : noms exacts des modèles (`models.list`), entrée image, sortie JSON, prix, plus petit modèle suffisant pour la réparation de code. Tarifs relevés par recherche (à confirmer sur la page officielle) : Flash à 0,75 $ / 3,75 $ par million de jetons en entrée / sortie jusqu'au 31/12/2026, puis 1,50 $ / 7,50 $.
+- **Clé** : `GEMINI_API_KEY` ajoutée par Clément dans `.env` le 24/11/2026 ; valide (`models.list`, 49 modèles en `generateContent`). Elle reste côté serveur : secrets de Supabase et variables de Vercel à l'étape S3, jamais dans le bundle (le contrôle du bundle refuse même son nom).
+- **Modèles candidats** (relevé du 24/11/2026, 1 048 576 jetons en entrée, 65 536 en sortie) : `gemini-3.8-flash`, `gemini-3.7-flash`, `gemini-3.5-flash`, `gemini-3.1-flash-lite` et `gemini-3.5-flash-lite` (les plus petits, pour réparer du code), `gemini-3.1-pro-preview` (préversion). Choix et prix arrêtés au début de S3, sur la page officielle des tarifs.
+- **Tarifs relevés par recherche** (à confirmer) : Flash à 0,75 $ / 3,75 $ par million de jetons en entrée / sortie jusqu'au 31/12/2026, puis 1,50 $ / 7,50 $.
 
 ## 4. Règles des sociétés de financement
 
@@ -38,9 +40,21 @@ Relevés du 24/11/2026 depuis le Mac, en lecture seule. Décision de cadrage : T
 - Un objectif est atteint quand le solde le dépasse, toutes positions fermées. Aucune limite de durée publiée.
 - Swing (2-Step seulement) : mêmes objectifs non précisés par la page, levier 1:30, positions gardées le week-end.
 
-### Lucid Trading
+### Lucid Trading (LucidFlex 25K, évaluation)
 
-**Non lu** : le site refuse les lectures automatiques (HTTP 403). Les règles (objectif, drawdown suiveur en fin de journée ou intraday, limite journalière, constance, contrats par taille de compte) sont à fournir par Clément (copie de la page) avant l'étape S2.
+**Source** : règles transmises par Clément le 24/11/2026. Le document est lui-même une consolidation non officielle ; le site de Lucid refuse les lectures automatiques (HTTP 403). Chiffres à vérifier sur le tableau de bord du compte ; l'écran le dira.
+
+| Règle | Valeur | Remarque |
+| --- | --- | --- |
+| Objectif de profit | 1 250 $ | évaluation |
+| Perte maximale | 1 000 $, suiveuse en fin de journée | suit le plus haut solde de fin de journée ; se fige à 25 100 $ (départ + 100 $) quand le solde atteint 26 100 $ |
+| Perte journalière (DLL) | 600 $ si activée, sinon aucune | atteinte : séance bloquée, pas d'échec |
+| Constance | meilleur jour ≤ 40 % du profit net total (50 % en option) | manque : il faut plus de profit, pas un échec |
+| Taille maximale | 2 minis ou 20 micros | non vérifiable ici : nos actifs ne sont pas des futures |
+| Horaires | séance de 18:00 à 16:45 (heure de New York) ; positions fermées à 16:45 | journée de trading coupée en `America/New_York` |
+| Interdits | HFT, microscalping (plus de 50 % du profit sur des trades de 5 s ou moins), couverture entre comptes | hors du champ d'un backtest sur bougies de 1 h et plus |
+
+Seule la taille 25K est décrite : les autres tailles s'afficheront « — » avec la raison.
 
 ## 5. Proposition de décision (T-062)
 
