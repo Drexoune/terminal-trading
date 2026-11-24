@@ -63,6 +63,8 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-056 | 24/11/2026 | Sources de P3 | États-Unis : FRED ; zone euro : BCE ; 6 autres économies : API de l'OCDE ; taux : BIS ; changes : FRED ; dernier chiffre : agenda ; DBnomics écarté (copie de l'OCDE arrêtée au 16/06/2026) |
 | T-057 | 24/11/2026 | Accès à l'OCDE | L'OCDE refuse Supabase (HTTP 500) : relevé par une tâche de Vercel si l'OCDE lui répond, sinon instituts nationaux |
 | T-058 | 24/11/2026 | Sources nationales de P3 | L'OCDE refuse aussi Vercel : ONS, Statistics Japan et RBA (copies DBnomics), Statistics Canada et BNS (API), FRED ; IPC néo-zélandais « — » ; thème Sentiment affiché sans compter au score ; remplace le point « OCDE » de T-056 |
+| T-059 | 24/11/2026 | P4 avant la porte P1 | Plan puis code de P4 sans attendre le 10/12, aux conditions de T-049 ; proxys quotidiens par des ETF (Tiingo) : CPER/GLD pour cuivre/or, SPY/TLT pour actions/refuge |
+| T-060 | 24/11/2026 | Sources de P4 | VIX : Cboe (FRED en repli) ; S&P 500 : clôture de SPY (Tiingo) ; écart haut rendement : FRED ; positions des banques : catégorie « dealers » du TFF (API CFTC), BPR via Vercel s'il répond ; liquidité nette : WALCL − WDTGAL − RRPONTSYD |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -621,3 +623,30 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **IPC néo-zélandais** : « — » avec la raison. Stats NZ exige une clé ; elle sera demandée plus tard si besoin. Le thème Inflation compte avec 7 économies ;
 - **thème Sentiment** : affiché avec les indices libres (États-Unis ; zone euro, Japon et Suisse à vérifier), sans compter dans le score tant que moins de 6 économies sont connues. Les indices du Royaume-Uni, du Canada, de l'Australie et de la Nouvelle-Zélande sont privés.
 
+## T-059 — P4 en parallèle de la porte P1 · 24/11/2026
+
+**Contexte.** P3 est en service depuis le 24/11/2026. La porte de P1 (IPC capté et affiché en moins d'une seconde) ne peut se passer que le 10/12. T-049 et T-053 ne valaient que pour P2 et P3.
+
+**Décision de Clément.** P4 (sentiment et liquidité) commence sans attendre le 10/12 : plan, puis code. Mêmes conditions que T-049 :
+
+- rien de P4 ne modifie la capture de P1 ; P4 a sa propre Edge Function (`p4-jobs`), ses tables et ses écrans ;
+- les jalons de P1 (04/12, 08/12, 10/12) passent avant, sans déploiement ces jours-là.
+
+**Question posée à Clément.** Le cuivre n'existe qu'en mensuel chez FRED (`PCOPPUSDM`), et aucune série quotidienne libre ne donne le prix des obligations longues. Proposition : des ETF lus par Tiingo, des séries recalculées depuis FRED, ou retirer les deux composantes.
+
+**Décision de Clément.** Proxys quotidiens par des ETF, lus par Tiingo (clé de T-051) et nommés comme tels à l'écran :
+
+- composante « Cuivre / or » : CPER / GLD ;
+- composante « Actions vs refuge » : SPY / TLT.
+
+## T-060 — Sources de P4 · 24/11/2026
+
+**Contexte.** Exploration S0 du 24/11/2026 (`docs/exploration-p4.md`), depuis le Mac et depuis Supabase (`p4-jobs`, tâche `explore`). Toutes les sources répondent depuis Supabase, sauf la page du Bank Participation Report (403, vérification Cloudflare). FRED a un jour ouvré de plus de retard que Cboe et Tiingo sur le VIX et le S&P 500.
+
+**Décisions de Clément.**
+
+- **VIX** : fichier officiel de Cboe (`VIX_History.csv`) ; FRED (`VIXCLS`) en repli.
+- **S&P 500** : clôture de SPY chez Tiingo (déjà relevée pour « Actions vs refuge »), nommée « SPY » à l'écran, pour la composante et pour le graphique sur un an.
+- **Écart haut rendement** : FRED (`BAMLH0A0HYM2`), seule source libre, un jour ouvré de retard affiché.
+- **Positions des banques** : catégorie « dealers » du rapport TFF (API Socrata de la CFTC, hebdomadaire), nommée comme telle. À l'étape S3, essai de lecture du BPR depuis Vercel ; s'il répond, une tâche mensuelle l'ajoute, sinon l'écran affiche « — » avec la raison.
+- **Liquidité nette de la Fed** : `WALCL − WDTGAL − RRPONTSYD`, les trois au mercredi, le reverse repo converti de milliards en millions. `WDTGAL` remplace `WTREGEN` (moyenne de la semaine) prévu au plan. Unités à confirmer en S1.

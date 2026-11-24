@@ -31,3 +31,10 @@ verify_jwt = false
 # backtest, appelés par pg_cron. Fonction distincte de p1-jobs et p2-jobs : leurs paquets ne
 # changent pas. Sans JWT : l'en-tête x-jobs-secret est vérifié (P1_JOBS_SECRET, même secret).
 verify_jwt = false
+
+[functions.p4-jobs]
+# Plan P4 (sentiment et liquidité, T-059) : sonde S0 (?job=explore), puis collecte des clôtures,
+# du COT, des positions des banques, des ratios long/short et de la liquidité, appelée par pg_cron.
+# Fonction distincte de p1-jobs, p2-jobs et p3-jobs : leurs paquets ne changent pas. Sans JWT :
+# l'en-tête x-jobs-secret est vérifié (P1_JOBS_SECRET, même secret).
+verify_jwt = false
