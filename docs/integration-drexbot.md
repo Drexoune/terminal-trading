@@ -1,5 +1,7 @@
 # Intégration avec le bot `drexbot`
 
+> **T-066 (24/11/2026)** : drexbot n'entre jamais dans ce projet. Le terminal ne lit ni n'écrit ses données ; seules restent valables les règles qui protègent le bot (pas de collecteur en double, ressources de la tour).
+
 Le terminal et le bot BTC tournent sur les mêmes machines. Le bot est le projet le plus avancé et le plus sensible : **le terminal lit le bot, jamais l'inverse**, et rien dans le terminal ne doit pouvoir gêner sa collecte.
 
 État relevé le 19/10/2026 sur `github.com/Drexoune/drexbot` (privé, branche par défaut, commit `796c152`). Relire le dépôt avant de s'appuyer sur un détail : il évolue.
@@ -29,6 +31,9 @@ Incohérence à signaler : `drexbot/CLAUDE.md` parle encore d'un hébergement ma
 6. **Données interdites, mêmes règles.** Pas de niveaux de liquidation estimés (Coinglass et équivalents) ni de cartes de stops inférées : seulement des données observées. Le flux de liquidations Binance est un plancher, jamais un total.
 
 ## Ce que le terminal peut réutiliser
+
+> **Abandonné le 24/11/2026 (T-066).** drexbot n'entre jamais dans ce projet : rien de ce qui suit n'est repris. La section reste pour l'historique.
+
 
 - **Microstructure (P5)** : la carte Hyperliquid de `hl-map` (JSON) peut devenir un panneau « Liquidations réelles par palier » à côté de la carte de profondeur ; l'historique du lac permet un profil de volume et un CVD long terme.
 - **Graphiques** : afficher la fenêtre de trading du bot (D-001) comme bande sur les graphiques BTC, lue depuis drexbot plutôt que recopiée en dur.

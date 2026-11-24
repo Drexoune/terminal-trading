@@ -710,3 +710,33 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - N du Sharpe déflaté = nombre d'essais valables de la recherche ;
 - bornes des données fixées à la création (dernière barre close ; pour le 4 h, dernière tranche complète) : un rejeu des essais redonne la même empreinte (sauf cours ajustés de Tiingo après un dividende) ;
 - la boucle tourne dans `bt-jobs` (Supabase, tâche `loop`, pg_cron chaque minute quand une recherche attend) : le moteur, PineTS compris, y est regroupé dans `research-core.gen.js` (`web/scripts/build-research-core.mjs`) ; une recherche à la fois.
+
+## T-065 — Architecture et plateformes de P5 · 24/11/2026
+
+**Contexte.** La section Backtest est finie (S4 en service, `785ddd5`) ; Clément lance P5 (microstructure BTC). Plan : `~/.claude/plans/pure-splashing-scone-of-98c0bcdc-0bfa-451e-84e1-b8d97c9e3490.md`. Tout doit tourner sans le Mac (T-042) : Vercel ne garde pas de WebSocket ouverte et une Edge Function ne dure que 150 s.
+
+**Fait relevé le 24/11/2026** (requêtes avec en-tête Origin) : les REST de Binance (fapi, api), Bybit, Coinbase, Hyperliquid et `www.okx.com` acceptent le navigateur (CORS) ; `eea.okx.com` non.
+
+**Décisions de Clément.**
+
+- **Flux temps réel dans le navigateur, dans les trois modes** : un worker dédié à la microstructure lit les WebSockets publiques des plateformes (aucune clé) et garde ses flux ouverts tant que l'application est ouverte. La passerelle Python n'est pas touchée.
+- **Historique** : la CVD sur 4 h est reconstruite à l'ouverture à partir des bougies 1 min (volume preneur) ; funding et open interest viennent du REST ; la carte de profondeur et les liquidations se remplissent depuis l'ouverture du terminal. Aucun stockage côté serveur, aucune tâche Supabase.
+- **Plateformes** : perpétuels OKX, Binance, Bybit, Hyperliquid ; spot (CVD) Binance, OKX, Coinbase.
+- **Vercel** : aucune 13e fonction ; un REST d'OKX EEA nécessaire passe par une route d'une fonction existante.
+
+## T-066 — drexbot hors du terminal · 24/11/2026
+
+**Décision de Clément.** drexbot n'entre jamais dans ce projet : ni la carte `hl-map`, ni le lac de trades, ni les journaux du bot, ni ses scripts. **Remplace** la section « Ce que le terminal peut réutiliser » de `docs/integration-drexbot.md` et toute mention d'une lecture du bot dans `docs/plan.md` (fenêtre de trading D-001 sur les graphiques, journal de décision dans le Track record).
+
+## T-067 — Sources de P5 · 24/11/2026
+
+**Contexte.** Exploration S0 (`docs/exploration-p5.md`). `eea.okx.com` renvoie des listes vides pour trois historiques publics (volume preneur du perpétuel, historique de l'OI, liquidations récentes) et refuse le navigateur (CORS) ; `www.okx.com` les sert et accepte le navigateur.
+
+**Décision de Clément.** `www.okx.com` est utilisé pour l'historique public d'OKX seulement : volume preneur du perpétuel (rattrapage de la CVD), historique de l'OI (variation 24 h), liquidations de la dernière heure, et cliché profond du carnet (`books-full`, ±1,4 %). Aucun compte, aucune clé, aucune fonction Vercel. Le temps réel d'OKX reste sur `wseea.okx.com` (T-008 inchangé pour tout le reste).
+
+**Sources retenues** (détail et mesures dans `docs/exploration-p5.md`) :
+
+- **Binance USDⓈ-M** : chemins routés `/public` (carnet) et `/market` (aggTrade, forceOrder, markPrice) ; l'ancienne URL ne reçoit plus que le carnet.
+- **Liquidations** : Binance et OKX sont des **planchers** (au plus un envoi par seconde, documenté par chaque plateforme) ; Bybit (`allLiquidation`) se dit complet (envoi toutes les 500 ms) ; Hyperliquid n'a **aucun flux public** de liquidations : « — » avec la raison.
+- **Rattrapage de la CVD (4 h)** : Binance spot et perp (bougies 1 min, volume preneur), OKX perp (`www`, 5 min) et spot (5 min). Bybit, Hyperliquid et Coinbase n'ont pas d'historique de volume preneur : direct seulement, signalé à l'écran.
+- **Variation 24 h de l'OI** : Binance, Bybit, OKX (`www`) ; Hyperliquid « — » (aucun historique public).
