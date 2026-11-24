@@ -20,6 +20,7 @@ describe('dates de publication', () => {
     expect(asOf(s, 'cpi', DATE)!.obs.period).toBe('2026-09');
     expect(asOf(s, 'cpi', '2026-11-30')!.obs.period).toBe('2026-10');
     expect(asOf(s, 'policy', DATE)!.obs.period).toBe('2026-10');   // taux : sans délai
+    expect(asOf(s, 'cpi', DATE, true)!.obs.period).toBe('2026-10');   // score du jour : la valeur en base est publiée
   });
   it('périmée au-delà de deux publications manquées', () => {
     const s = monthly('2026-05', () => 1);

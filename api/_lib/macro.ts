@@ -1,15 +1,56 @@
-// /api/macro/* — P3 (macro et heatmap). Étape M0 : sonde de l'API de l'OCDE depuis Vercel
-// (décision T-057). Le 24/11/2026, l'OCDE renvoie HTTP 500 à toute requête de Supabase qui atteint
-// son serveur d'origine, et répond au Mac. Si elle répond à Vercel, une tâche quotidienne de Vercel
-// relèvera l'OCDE ; sinon P3 passera par les instituts nationaux.
+// /api/macro/* — P3 (macro et heatmap), lecture de l'état publié par l'Edge Function p3-jobs
+// (p3_state, macro_observations) avec la clé secrète, côté serveur. Données publiques seulement.
 //
-//   GET /api/macro/probe     deux requêtes à l'OCDE (IPC COICOP 2018, chômage), sans écriture ;
-//                            en-tête x-jobs-secret exigé (P1_JOBS_SECRET) : personne d'autre ne
-//                            consomme le quota de l'OCDE (60 téléchargements par heure).
+//   GET /api/macro/state                          scores, matrice, fiches des 8 économies, backtest,
+//                                                 flux ; taux et prochaine réunion de l'écran Taux (P2)
+//   GET /api/macro/series?economy=&indicator=&years=   historique d'une série (5, 10 ou 20 ans)
+//   GET /api/macro/probe                          sonde de l'OCDE (M0, T-057 ; l'OCDE refuse Vercel
+//                                                 aussi, T-058), en-tête x-jobs-secret exigé
 
 import { HttpError, json, NO_STORE, readQuery, respond, type Env } from './http.js';
 import type { FetchFn } from './okx.js';
 import type { Context } from './routes.js';
+import { rest, supabaseConfig, type SupabaseConfig } from './supabase.js';
+
+export const ECONOMIES = ['US', 'EA', 'GB', 'JP', 'CH', 'CA', 'AU', 'NZ'] as const;
+export const INDICATORS = ['policy', 'cpi', 'cpi_core', 'gdp', 'unemployment', 'confidence', 'retail'] as const;
+export const YEARS = [5, 10, 20] as const;
+/** Banque centrale de chaque économie (codes de l'écran Taux). */
+const BANK: Record<string, string> = { US: 'FED', EA: 'BCE', GB: 'BOE', JP: 'BOJ', CH: 'BNS', CA: 'BOC', AU: 'RBA', NZ: 'RBNZ' };
+
+interface StateRow { key: string; value: unknown; updated_ms: number }
+
+export async function macroState(cfg: SupabaseConfig, fetchFn: FetchFn, now: number) {
+  const q = (table: string, params: Record<string, string>) => rest(cfg, fetchFn, 'GET', table, params, false).then((r) => r.rows);
+  const [p3, p2, series] = await Promise.all([
+    q('p3_state', { select: 'key,value,updated_ms', key: 'in.("scores","sheets","backtest","feed:macro")' }),
+    q('p2_state', { select: 'value,updated_ms', key: 'eq.rates:state', limit: '1' }),
+    q('macro_series', { select: 'id,source,last_period,last_ok_ms,last_error', order: 'id.asc', limit: '200' }),
+  ]);
+  const by = new Map((p3 as StateRow[]).map((r) => [r.key, r]));
+  // Taux et prochaine réunion de l'écran Taux (P2), en lecture seule.
+  const banks = ((p2[0] as { value?: { banks?: Record<string, { policy?: unknown; next?: { date?: string; days?: number } | null; name?: string; tz?: string }> } } | undefined)
+    ?.value?.banks) ?? {};
+  const rates = Object.fromEntries(ECONOMIES.map((e) => {
+    const b = banks[BANK[e]];
+    return [e, b ? { bank: BANK[e], name: b.name ?? null, tz: b.tz ?? null, policy: b.policy ?? null, next: b.next ? { date: b.next.date ?? null } : null } : null];
+  }));
+  return {
+    configured: true,
+    scores: by.get('scores')?.value ?? null, sheets: by.get('sheets')?.value ?? null, backtest: by.get('backtest')?.value ?? null,
+    feed: by.get('feed:macro')?.value ?? null, series, rates, computed_ms: now,
+  };
+}
+
+export async function macroSeries(cfg: SupabaseConfig, fetchFn: FetchFn, now: number, economy: string, indicator: string, years: number) {
+  const d = new Date(now);
+  d.setUTCFullYear(d.getUTCFullYear() - years);   // même jour, n années plus tôt
+  const since = d.toISOString().slice(0, 10);
+  const { rows } = await rest(cfg, fetchFn, 'GET', 'macro_observations',
+    { select: 'period,value', series_id: `eq.${economy}:${indicator}`, period_end: `gte.${since}`, order: 'period.asc', limit: '1000' }, false);
+  return { economy, indicator, years, points: (rows as { period: string; value: number | string }[]).map((r) => ({ period: r.period, value: Number(r.value) })),
+    computed_ms: now };
+}
 
 export const OECD = 'https://sdmx.oecd.org/public/rest/data';
 const AREAS = 'USA+GBR+JPN+CHE+CAN+AUS+NZL';
@@ -84,11 +125,30 @@ export async function probeOecd(fetchFn: FetchFn, now: () => number) {
 export function handleMacro(request: Request, ctx: Context): Promise<Response> {
   return respond(ctx.env, '/api/macro', async () => {
     if (request.method !== 'GET') throw new HttpError(405, 'méthode non autorisée : GET attendu');
-    const q = readQuery(request, ['path']);
-    if (q.get('path') !== 'probe') throw new HttpError(404, 'route inconnue (attendue : /api/macro/probe)');
-    const secret = ctx.env.P1_JOBS_SECRET?.trim() ?? '';
-    if (secret.length < MIN_SECRET) throw new HttpError(503, 'P1_JOBS_SECRET absente des variables de Vercel');
-    if (!(await sameSecret(request.headers.get('x-jobs-secret') ?? '', secret))) throw new HttpError(401, 'secret d’appel invalide');
-    return json(await probeOecd(ctx.deps.fetch, ctx.deps.now), NO_STORE);
+    const q = readQuery(request, ['path', 'economy', 'indicator', 'years']);
+    const path = q.get('path') ?? '';
+    const now = ctx.deps.now();
+    if (path === 'probe') {
+      const secret = ctx.env.P1_JOBS_SECRET?.trim() ?? '';
+      if (secret.length < MIN_SECRET) throw new HttpError(503, 'P1_JOBS_SECRET absente des variables de Vercel');
+      if (!(await sameSecret(request.headers.get('x-jobs-secret') ?? '', secret))) throw new HttpError(401, 'secret d’appel invalide');
+      return json(await probeOecd(ctx.deps.fetch, ctx.deps.now), NO_STORE);
+    }
+    const cfg = supabaseConfig(ctx.env);
+    if (path === 'state') {
+      if (q.has('economy') || q.has('indicator') || q.has('years')) throw new HttpError(400, 'cette route ne prend aucun paramètre');
+      if (!cfg.ok) return json({ configured: false, reason: cfg.reason, scores: null, sheets: null, backtest: null, feed: null, series: [], rates: {}, computed_ms: now }, NO_STORE);
+      return json(await macroState(cfg.config, ctx.deps.fetch, now), NO_STORE);
+    }
+    if (path === 'series') {
+      const economy = q.get('economy') ?? '', indicator = q.get('indicator') ?? '';
+      const years = Number(q.get('years') ?? 10);
+      if (!(ECONOMIES as readonly string[]).includes(economy)) throw new HttpError(400, `economy attendu parmi ${ECONOMIES.join(', ')}`);
+      if (!(INDICATORS as readonly string[]).includes(indicator)) throw new HttpError(400, `indicator attendu parmi ${INDICATORS.join(', ')}`);
+      if (!(YEARS as readonly number[]).includes(years)) throw new HttpError(400, 'years : 5, 10 ou 20');
+      if (!cfg.ok) throw new HttpError(503, `écran macro non configuré : ${cfg.reason}`);
+      return json(await macroSeries(cfg.config, ctx.deps.fetch, now, economy, indicator, years), NO_STORE);
+    }
+    throw new HttpError(404, 'route inconnue (attendues : /api/macro/state, /api/macro/series?economy=&indicator=&years=)');
   });
 }

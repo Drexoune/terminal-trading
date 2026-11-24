@@ -40,9 +40,14 @@ function availableFrom(period: string, lagMonths: number): string {
   return periodEnd(shiftPeriod(end.slice(0, 7), lagMonths));
 }
 
-/** Dernière observation publiée au jour `date` (AAAA-MM-JJ), délai de publication compris. */
-export function asOf(s: Series | undefined, indicator: Indicator, date: string): { obs: Obs; index: number } | null {
+/**
+ * Dernière observation publiée au jour `date` (AAAA-MM-JJ), délai de publication compris.
+ * `live` : score du jour ; une valeur en base est publiée par construction, le délai ne s'applique
+ * pas (il sert au backtest, pour n'utiliser que ce qui était connu à chaque date passée).
+ */
+export function asOf(s: Series | undefined, indicator: Indicator, date: string, live = false): { obs: Obs; index: number } | null {
   if (!s?.obs.length) return null;
+  if (live) return { obs: s.obs[s.obs.length - 1], index: s.obs.length - 1 };
   const lag = LAG_MONTHS[indicator][s.freq];
   for (let i = s.obs.length - 1; i >= 0; i--) {
     if (availableFrom(s.obs[i].period, lag) <= date) return { obs: s.obs[i], index: i };
@@ -70,9 +75,9 @@ export interface Cell {
 
 const r2 = (x: number) => Math.round(x * 100) / 100;
 
-function lookup(panel: Panel, e: Economy, ind: Indicator, date: string) {
+function lookup(panel: Panel, e: Economy, ind: Indicator, date: string, live: boolean) {
   const s = panel[e]?.[ind];
-  const a = asOf(s, ind, date);
+  const a = asOf(s, ind, date, live);
   if (!s || !a) return { s, a: null, reason: s ? 'aucune valeur publiée à cette date' : 'série absente' };
   if (isStale(s, ind, a.obs, date)) return { s, a, reason: `valeur périmée (${a.obs.period})` };
   return { s, a, reason: null };
@@ -86,14 +91,14 @@ function back(s: Series, index: number, n: number): Obs | null {
 }
 
 /** Signal d'un thème pour une économie à une date. */
-export function cell(panel: Panel, e: Economy, theme: Theme, date: string): Cell {
+export function cell(panel: Panel, e: Economy, theme: Theme, date: string, live = false): Cell {
   const empty = (reason: string, partial: Partial<Cell> = {}): Cell =>
     ({ theme, x: null, value: null, unit: '', period: null, indicator: null, reason, stale: false, ...partial });
   if (theme === 'activity') return empty('PMI relevés depuis le 23/11/2026 : comptent au score après 3 mois (T-056)');
   if (theme === 'surprises') return empty('surprises relevées depuis le 23/11/2026 : comptent au score après 3 mois (T-054)');
   const ind: Indicator = theme === 'rates' ? 'policy' : theme === 'inflation' ? 'cpi' : theme === 'growth' ? 'gdp'
     : theme === 'employment' ? 'unemployment' : 'confidence';
-  const { s, a, reason } = lookup(panel, e, ind, date);
+  const { s, a, reason } = lookup(panel, e, ind, date, live);
   const unit: Cell['unit'] = ind === 'confidence' ? 'pts' : '%';
   if (!s || !a) return empty(reason ?? 'série absente', { indicator: ind, unit });
   const base = { theme, unit, period: a.obs.period, indicator: ind, value: r2(a.obs.value) };
@@ -147,9 +152,9 @@ export function level(z: number): number {
   return z <= -1 ? -2 : z < -0.33 ? -1 : z <= 0.33 ? 0 : z < 1 ? 1 : 2;
 }
 
-export function scoreAt(panel: Panel, date: string, opts: { themes?: Theme[]; weights?: Partial<Record<Theme, number>> } = {}): Scored {
+export function scoreAt(panel: Panel, date: string, opts: { themes?: Theme[]; weights?: Partial<Record<Theme, number>>; live?: boolean } = {}): Scored {
   const themes = opts.themes ?? [...THEMES];
-  const grid = ECONOMIES.map((e) => themes.map((t) => cell(panel, e, t, date)));
+  const grid = ECONOMIES.map((e) => themes.map((t) => cell(panel, e, t, date, opts.live ?? false)));
   const zs: (number | null)[][] = ECONOMIES.map(() => themes.map(() => null));
   const counted: Theme[] = [];
   const excluded: { theme: Theme; reason: string }[] = [];

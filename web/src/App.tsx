@@ -16,10 +16,12 @@ import { NewsScreen } from './screens/news/News';
 import { HoursScreen } from './screens/hours/Hours';
 import { MarketsWatchScreen } from './screens/watch/MarketsWatch';
 import { RatesScreen } from './screens/rates/Rates';
+import { HeatmapScreen } from './screens/heatmap/Heatmap';
+import { MacroScreen } from './screens/macro/Macro';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);

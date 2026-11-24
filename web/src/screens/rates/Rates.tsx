@@ -7,6 +7,7 @@
 import './rates.css';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { flagUrl } from '../../components/flags';
 import { Panel } from '../../components/Panel';
 import { Chip, Missing, Segmented } from '../../components/ui';
 import { useSettings } from '../../config/settings';
@@ -23,8 +24,6 @@ import { SubHeader } from '../../shell/SubHeader';
 import { useNow } from '../../shell/useNow';
 
 const PARIS = 'Europe/Paris';
-const FLAGS = import.meta.glob('@design/assets/flags/*.svg', { eager: true, query: '?url', import: 'default' }) as Record<string, string>;
-const flagUrl = (code: string) => Object.entries(FLAGS).find(([p]) => p.endsWith(`/${code}.svg`))?.[1];
 
 function BankFlag({ bank }: { bank: Bank }) {
   const url = flagUrl(FLAG[bank]);

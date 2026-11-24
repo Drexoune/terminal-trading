@@ -1,0 +1,109 @@
+/* Heatmap fondamentale (P3, M5) : maquette design/maquettes/html/Heatmap.html. Tokens seuls. */
+.content.hm { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+.hm-row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--gap); }
+.hm-row > .pn, .hm-side { min-width: 0; }
+.hm-side { flex: 1 1 340px; display: flex; flex-direction: column; gap: var(--gap); }
+.hm-small { font-size: 10px; }
+.hm-spacer { flex: 1; }
+.hm-muted { font-size: 12.5px; color: var(--text-2); }
+.hm-gold { color: var(--gold); font-weight: 400; }
+.hm-cyan { color: var(--up); }
+.hm-cy { color: var(--up); border-color: var(--up-border); }
+.hm-co { color: var(--down); border-color: var(--down-border); }
+.hm-empty { display: flex; align-items: center; gap: 8px; padding: 20px 16px; color: var(--text-3); font-size: 12.5px; }
+.hm-flag { display: block; border-radius: 1px; }
+
+/* Classement relatif */
+.hm-rank { margin-top: -1px; }
+.hm-rk {
+  display: grid; grid-template-columns: 22px 26px 44px minmax(0, 1fr) 48px 92px; gap: 10px; align-items: center; width: 100%;
+  min-height: 44px; padding: 0 12px; border: 0; border-top: 1px solid var(--line); background: transparent; color: var(--text-1);
+  text-align: left; cursor: pointer;
+}
+.hm-rk:hover { background: var(--bg-panel-2); }
+.hm-rk[aria-pressed="true"] { background: var(--bg-selected); box-shadow: inset 2px 0 0 var(--gold); }
+.hm-rk-n { font-size: 11px; color: var(--text-3); }
+.hm-rk-c, .hm-rk-s { font-size: 13px; font-weight: 700; }
+.hm-rk-s { text-align: right; }
+.hm-rk-p { justify-self: end; }
+.hm-bar { position: relative; height: 10px; background: var(--bg-panel-2); }
+.hm-bar-zero { position: absolute; top: -3px; bottom: -3px; left: 50%; width: 1px; background: var(--line-strong); }
+.hm-bar-fill { position: absolute; top: 0; bottom: 0; }
+.hm-bar-fill.up { background: var(--up); }
+.hm-bar-fill.dn { background: var(--down); }
+
+/* Fiche devise */
+.hm-sheet-top { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px 36px; padding: 18px 18px 8px; }
+.hm-key-wrap { display: flex; align-items: center; gap: 16px; }
+.hm-key-wrap .hm-flag { border: 1px solid var(--line); border-radius: 2px; }
+.hm-key { margin-top: 4px; font: 600 64px/1 var(--font-display); color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+.hm-key-side { display: flex; flex-direction: column; gap: 8px; }
+.hm-prev { font-size: 12px; color: var(--text-2); }
+.hm-gauge-wrap { padding: 10px 18px 4px; }
+.hm-gauge-head { display: flex; justify-content: space-between; align-items: baseline; }
+.hm-gauge-vals { font-size: 11px; color: var(--text-2); }
+.hm-gauge-vals b { font-weight: 400; color: var(--text-1); }
+.hm-gauge-vals b.hm-gold { color: var(--gold); }
+.hm-gauge { position: relative; height: 30px; margin-top: 10px; }
+.hm-gauge-track { position: absolute; left: 0; right: 0; top: 13px; height: 4px; background: var(--line); }
+.hm-gauge-target { position: absolute; top: 4px; bottom: 4px; width: 0; border-left: 1px dashed var(--up); }
+.hm-gauge-cpi { position: absolute; top: 8px; width: 12px; height: 12px; margin-left: -6px; background: var(--gold); transform: rotate(45deg); }
+.hm-gauge-core { position: absolute; top: 10px; width: 10px; height: 10px; margin-left: -5px; border: 2px solid var(--text-1); border-radius: 50%; background: var(--bg-panel); }
+.hm-gauge-axis { display: flex; justify-content: space-between; font-size: 10px; color: var(--text-3); }
+.hm-chart { padding: 12px 18px 16px; }
+.hm-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 8px; }
+.hm-legend .lbl { display: inline-flex; align-items: center; gap: 6px; }
+.hm-ln { display: inline-block; width: 14px; border-top: 2px solid; }
+.hm-ln--policy { border-color: var(--up); }
+.hm-ln--cpi { border-color: var(--gold); }
+.hm-ln--target { border-top: 1px dashed var(--text-2); }
+.hm-plot { display: flex; gap: 6px; }
+.hm-area { position: relative; flex: 1; min-width: 0; height: 220px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.hm-area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hm-area svg path { fill: none; vector-effect: non-scaling-stroke; }
+.hm-grid { stroke: var(--line); stroke-width: 1; }
+.hm-target { stroke: var(--text-2); stroke-width: 1; stroke-dasharray: 5 4; }
+.hm-cpi { stroke: var(--gold); stroke-width: 1.8; stroke-linejoin: round; }
+.hm-policy { stroke: var(--up); stroke-width: 2; }
+.hm-yaxis { position: relative; width: 40px; flex: none; font-size: 10px; color: var(--text-3); }
+.hm-yaxis span { position: absolute; left: 0; transform: translateY(-50%); }
+.hm-xaxis { position: relative; height: 16px; margin: 6px 46px 0 0; font-size: 10px; color: var(--text-3); }
+.hm-xaxis span { position: absolute; transform: translateX(-50%); }
+
+/* Matrice */
+.hm-mx-scroll { overflow-x: auto; padding-bottom: 10px; }
+.hm-mx-inner { min-width: 700px; }
+.hm-mx { display: grid; grid-template-columns: 104px repeat(7, minmax(58px, 1fr)) 96px; gap: 4px; align-items: center; padding: 0 12px; margin-top: 4px; }
+.hm-mx-head { height: 38px; margin-top: 0; font-size: 10px; }
+.hm-mx .c { text-align: center; }
+.hm-mx .cell { min-width: 0; height: 40px; padding: 0 4px; font-size: 12.5px; }
+.hm-mx > span { display: block; min-width: 0; }
+.hm-mx > span > .cell { width: 100%; }
+.hm-cell-off { color: var(--text-3); }
+.hm-cb {
+  display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 8px; border: 1px solid transparent; border-radius: 2px;
+  background: transparent; color: var(--text-1); font: 600 12.5px var(--font-mono); cursor: pointer;
+}
+.hm-cb[aria-pressed="true"] { border-color: var(--gold); color: var(--gold-hi); }
+.hm-cb-s { margin-left: auto; font-size: 11px; }
+.hm-mx-bias { display: flex; justify-content: center; }
+.hm-mx-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; border-top: 1px solid var(--line); }
+.hm-sw { display: flex; gap: 2px; }
+.hm-sw span { display: block; width: 24px; height: 12px; }
+
+/* Lecture et paire */
+.hm-reading { padding: 16px; }
+.hm-reading p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--text-body); }
+.hm-reading-note { margin-top: 12px; }
+.hm-pair { display: grid; grid-template-columns: minmax(0, 1.3fr) repeat(3, minmax(0, 1fr)); gap: 8px; align-items: center; padding: 0 14px; }
+.hm-pair .r { text-align: right; }
+.hm-pair-head { height: 32px; font-size: 10px; }
+.hm-pair-row { height: 36px; border-top: 1px solid var(--line); font-size: 13px; }
+.hm-pair-l { color: var(--text-2); }
+.hm-pair-d { font-weight: 700; }
+.hm-verdict { display: flex; align-items: center; gap: 10px; padding: 14px; border-top: 1px solid var(--line); color: var(--gold-hi); font-weight: 500; }
+
+@media (max-width: 600px) {
+  .hm-key { font-size: 48px; }
+  .hm-rk { grid-template-columns: 18px 24px 40px minmax(0, 1fr) 40px 84px; gap: 6px; padding: 0 8px; }
+}

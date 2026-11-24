@@ -36,6 +36,12 @@ describe('tâche scores', () => {
     expect(r.themes).toEqual(['inflation']);
     const st = rest.rows('p3_state').find((x) => x.key === 'scores')!.value as { rows: { score: number }[] };
     expect(st.rows.every((x) => Math.abs(x.score) <= 100)).toBe(true);
+    const sh = rest.rows('p3_state').find((x) => x.key === 'sheets')!.value as { economies: Record<string, { values: { indicator: string; period: string | null;
+      previous: { period: string } | null; reason: string | null }[] }> };
+    const us = sh.economies.US.values.find((v) => v.indicator === 'cpi')!;
+    expect(us).toMatchObject({ period: '2026-10', previous: { period: '2026-09' }, reason: null });   // en base = publié
+    expect(sh.economies.NZ.values.find((v) => v.indicator === 'cpi')!.reason).toMatch(/Stats NZ/);
+    expect(sh.economies.US.values.find((v) => v.indicator === 'gdp')!.reason).toBe('pas encore relevée');
   });
 });
 

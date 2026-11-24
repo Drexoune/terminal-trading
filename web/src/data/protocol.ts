@@ -115,6 +115,8 @@ export const WATCHED_TOPICS = [
   'calendar:', 'release:', 'reaction:', 'news:', 'alert:', 'watch:',
   // P2 : écran Taux (démonstration de la fausse passerelle ; en ligne : /api/rates).
   'rates:',
+  // P3 : écrans Heatmap et Macro (démonstration ; en ligne : /api/macro).
+  'macro:',
 ];
 
 // --- Sources du worker (sources/gatewaySource.ts, sources/okxSource.ts) ----------

@@ -1,0 +1,54 @@
+/* Écran Macro (P3, M5) : pas de maquette, construit avec le design system (T-033). Tokens seuls. */
+.content.mc { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+.mc-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.mc-tab {
+  height: 36px; padding: 0 16px; border: 1px solid var(--line-strong); border-radius: var(--radius-chip); background: transparent;
+  color: var(--text-2); font: 600 12px var(--font-mono); letter-spacing: .14em; cursor: pointer;
+}
+.mc-tab:hover { color: var(--text-1); border-color: var(--gold-mid); }
+.mc-tab[aria-pressed="true"] { background: var(--gold-deep); border-color: var(--gold); color: var(--gold-hi); }
+.mc-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: var(--gap); align-items: start; }
+.mc-grid > * { min-width: 0; }
+.mc-side { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
+.mc-table { width: 100%; border-collapse: collapse; }
+.mc-table th { height: 34px; padding: 0 8px; text-align: left; font-weight: 500; white-space: nowrap; }
+.mc-table td { height: 54px; padding: 6px 8px; border-top: 1px solid var(--line); vertical-align: middle; cursor: pointer; }
+.mc-table tr[aria-selected="true"] td { background: var(--bg-selected); }
+.mc-table th:first-child, .mc-table td:first-child { padding-left: 14px; }
+.mc-table th:last-child, .mc-table td:last-child { padding-right: 14px; }
+.mc-table .r { text-align: right; }
+.mc-table b { color: var(--text-1); font-weight: 500; }
+.mc-table a { color: var(--gold); text-decoration: none; }
+.mc-last { color: var(--text-1); font-size: 15px; }
+.mc-sub { display: block; margin-top: 3px; }
+.mc-stale { color: var(--down); }
+.mc-muted { color: var(--text-3); }
+.mc-note { margin: 0; padding: 12px 14px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.5; color: var(--text-3); }
+.mc-warn { color: var(--down); }
+.mc-empty { display: flex; align-items: center; gap: 8px; padding: 20px 16px; color: var(--text-3); font-size: 12.5px; }
+.mc-hist { padding: 14px 16px; }
+.mc-plot { display: flex; gap: 6px; }
+.mc-area { position: relative; flex: 1; min-width: 0; height: 200px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.mc-area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.mc-area svg path { fill: none; vector-effect: non-scaling-stroke; }
+.mc-line { stroke: var(--gold); stroke-width: 1.8; stroke-linejoin: round; }
+.mc-line--policy { stroke: var(--up); }
+.mc-zero { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 4 4; }
+.mc-yaxis { position: relative; width: 36px; flex: none; font-size: 10px; color: var(--text-3); }
+.mc-yaxis span { position: absolute; left: 0; transform: translateY(-50%); }
+.mc-xaxis { display: flex; justify-content: space-between; margin: 6px 42px 0 0; font-size: 10px; color: var(--text-3); }
+.mc-events { margin: 0; padding: 0; list-style: none; }
+.mc-events li { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 14px; border-top: 1px solid var(--line); font-size: 13px; }
+.mc-events li:first-child { border-top: 0; }
+.mc-ev-t { color: var(--text-2); font-size: 12px; }
+.mc-events li.mc-muted { display: block; font-size: 12.5px; }
+.mc-ev-i--high { color: var(--down); }
+.mc-ev-i--medium { color: var(--gold); }
+@media (max-width: 1180px) { .mc-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 860px) { .mc-table .hide-s { display: none; } }
+@media (max-width: 480px) {
+  .mc-table .hide-xs { display: none; }
+  .mc-tab { padding: 0 10px; }
+  .mc-events li { grid-template-columns: 84px minmax(0, 1fr); }
+  .mc-ev-i { display: none; }
+}

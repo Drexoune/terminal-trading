@@ -18,6 +18,7 @@ function ctx(status: number, env: Record<string, string> = { P1_JOBS_SECRET: SEC
   return { urls, ctx: createContext({ fetch, now: () => 0, monotonic: () => 0, sleep: async () => {} }, env) };
 }
 const req = (secret?: string) => new Request('https://x/api/macro?path=probe', { headers: secret ? { 'x-jobs-secret': secret } : {} });
+const ENV = { SUPABASE_URL: 'https://ref.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_0123456789abcdefghij' };
 
 describe('/api/macro/probe', () => {
   it('sans le secret : 401, et aucune requête à l’OCDE', async () => {
@@ -42,3 +43,36 @@ describe('/api/macro/probe', () => {
     expect(Object.keys(lastByArea(UNE)).length).toBe(7);
   });
 });
+
+describe('/api/macro/state et /api/macro/series', () => {
+  function supa(tables: Record<string, (p: URLSearchParams) => unknown[]>) {
+    const urls: string[] = [];
+    const fetch: FetchFn = async (url) => {
+      urls.push(url);
+      const u = new URL(url);
+      return new Response(JSON.stringify(tables[u.pathname.split('/').pop()!]?.(u.searchParams) ?? []), { status: 200 });
+    };
+    return { urls, ctx: createContext({ fetch, now: () => Date.parse('2026-11-24T08:00:00Z'), monotonic: () => 0, sleep: async () => {} }, ENV) };
+  }
+  it('état : scores, fiches, backtest, flux, taux de l’écran Taux en lecture', async () => {
+    const { ctx } = supa({
+      p3_state: () => [{ key: 'scores', value: { date: '2026-11-24', rows: [] }, updated_ms: 1 }, { key: 'backtest', value: { proven: false }, updated_ms: 1 }],
+      p2_state: () => [{ value: { banks: { BOJ: { name: 'Banque du Japon', policy: { display: 1.25 }, next: { date: '2026-12-18', days: 24 } } } }, updated_ms: 1 }],
+      macro_series: () => [{ id: 'JP:cpi', source: 'dbnomics', last_period: '2026-10', last_ok_ms: 1, last_error: null }],
+    });
+    const b = await (await handleMacro(new Request('https://x/api/macro?path=state'), ctx)).json() as Record<string, unknown>;
+    expect(b).toMatchObject({ configured: true, scores: { date: '2026-11-24' }, backtest: { proven: false }, sheets: null,
+      rates: { JP: { bank: 'BOJ', policy: { display: 1.25 }, next: { date: '2026-12-18' } }, US: null }, series: [{ id: 'JP:cpi' }] });
+  });
+  it('série : fenêtre en années, paramètres contrôlés', async () => {
+    const { ctx, urls } = supa({ macro_observations: (p) => (p.get('series_id') === 'eq.JP:cpi' ? [{ period: '2026-10', value: '2.3' }] : []) });
+    const b = await (await handleMacro(new Request('https://x/api/macro?path=series&economy=JP&indicator=cpi&years=10'), ctx)).json() as { points: unknown[] };
+    expect(b.points).toEqual([{ period: '2026-10', value: 2.3 }]);
+    expect(new URL(urls[0]).searchParams.get('period_end')).toBe('gte.2016-11-24');
+    for (const [path, status] of [['series&economy=XX&indicator=cpi', 400], ['series&economy=JP&indicator=pib', 400], ['series&economy=JP&indicator=cpi&years=7', 400],
+      ['state&economy=JP', 400], ['nope', 404]] as const) {
+      expect((await handleMacro(new Request(`https://x/api/macro?path=${path}`), ctx)).status, path).toBe(status);
+    }
+  });
+});
+

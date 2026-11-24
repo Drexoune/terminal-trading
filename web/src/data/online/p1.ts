@@ -17,6 +17,7 @@ import { keysWithPrefix, setValue } from '../store';
 import { startAlertsOnline } from './alerts';
 import { startWatchOnline } from './watch';
 import { startRatesOnline } from './rates';
+import { startMacroOnline } from './macro';
 import { connectRealtime, realtimeConfig, type RealtimeStatus, type StateMessage } from './realtime';
 
 export const P1_STATUS_KEY = '$p1-online';
@@ -86,6 +87,8 @@ export interface OnlineDeps {
   startWatch?: () => () => void;
   /** Écran Taux (P2), relu toutes les 30 s ; remplaçable en test. */
   startRates?: () => () => void;
+  /** Écrans Heatmap et Macro (P3), relus toutes les 5 min ; remplaçable en test. */
+  startMacro?: () => () => void;
 }
 
 /** Démarre Realtime et la relecture ; renvoie de quoi tout arrêter (changement de mode). */
@@ -115,11 +118,13 @@ export function startP1Online(deps: OnlineDeps = {}): () => void {
   const stopAlerts = (deps.startAlerts ?? startAlertsOnline)();
   const stopWatch = (deps.startWatch ?? startWatchOnline)();
   const stopRates = (deps.startRates ?? startRatesOnline)();
+  const stopMacro = (deps.startMacro ?? startMacroOnline)();
   return () => {
     stopped = true;
     stopAlerts();
     stopWatch();
     stopRates();
+    stopMacro();
     if (timer !== null) clearTimer(timer);
     clearInterval(next);
     disconnect();
