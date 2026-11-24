@@ -25,3 +25,9 @@ verify_jwt = false
 # taux, appelée par pg_cron. Fonction distincte de p1-jobs : la capture de P1 n'est jamais
 # redéployée pour P2. Sans JWT : l'en-tête x-jobs-secret est vérifié (P1_JOBS_SECRET, même secret).
 verify_jwt = false
+
+[functions.p3-jobs]
+# Plan P3 (macro et heatmap, T-053) : sonde M0 (?job=explore), puis collecte macro, scores et
+# backtest, appelés par pg_cron. Fonction distincte de p1-jobs et p2-jobs : leurs paquets ne
+# changent pas. Sans JWT : l'en-tête x-jobs-secret est vérifié (P1_JOBS_SECRET, même secret).
+verify_jwt = false

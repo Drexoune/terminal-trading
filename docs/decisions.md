@@ -57,6 +57,11 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-050 | 23/11/2026 | Suivi de comptes X | Abandonné : aucune source gratuite et fiable ; le fil d'actus reste sur les banques centrales et FinancialJuice ; surlignage de mots-clés réglable sur ce fil |
 | T-051 | 23/11/2026 | Source de la watchlist hors crypto | Tiingo gratuit toutes les 3 min (change, or, DXY recalculé, QQQ et SPY) ; FRED et clôtures de Bourse au quotidien ; remplace T-005 |
 | T-052 | 23/11/2026 | Indice dollar de la watchlist | Pas de DXY recalculé (formule propriété de l'ICE) : indice large du dollar de la Fed (FRED), quotidien ; ligne DXY « — » ; remplace ce point de T-051 |
+| T-053 | 24/11/2026 | P3 avant la porte P1 | Plan puis code de P3 sans attendre le 10/12, aux conditions de T-049 ; P1 reste prioritaire |
+| T-054 | 24/11/2026 | Surprises hors des États-Unis | Surprise = réel FinancialJuice − consensus ForexFactory, marquée « fil d'actus » ; remplace ce point de T-048 ; compte au score après 3 mois de données |
+| T-055 | 24/11/2026 | Lecture fondamentale | Texte construit par le code à partir des chiffres affichés, chacun cité, « lecture automatique » ; pas de clé Anthropic avant P6 |
+| T-056 | 24/11/2026 | Sources de P3 | États-Unis : FRED ; zone euro : BCE ; 6 autres économies : API de l'OCDE ; taux : BIS ; changes : FRED ; dernier chiffre : agenda ; DBnomics écarté (copie de l'OCDE arrêtée au 16/06/2026) |
+| T-057 | 24/11/2026 | Accès à l'OCDE | L'OCDE refuse Supabase (HTTP 500) : relevé par une tâche de Vercel si l'OCDE lui répond, sinon instituts nationaux |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -546,4 +551,56 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 
 - La watchlist affiche l'indice large du dollar de la Réserve fédérale (FRED, `DTWEXBGS`), public et gratuit. Il est quotidien, publié avec environ une semaine de retard, daté et nommé comme tel, jamais comme le DXY.
 - La ligne DXY affiche « — » avec la raison (indice propriétaire de l'ICE, aucune source gratuite).
+
+## T-053 — P3 en parallèle de la porte P1 · 24/11/2026
+
+**Contexte.** P2 est en service depuis le 24/11/2026 (cotes de la Fed chaque minute depuis 07:22 UTC). La porte de P1 (IPC capté et affiché en moins d'une seconde) ne peut se passer que le 10/12. T-049 ne valait que pour P2.
+
+**Décision de Clément.** P3 commence sans attendre le 10/12 : plan, puis code.
+
+**Conditions** (celles de T-049) :
+
+- rien de P3 ne modifie la capture de P1 (`capture.ts` et ce qu'elle appelle, crons `p1-*`, bandeau, `/api/p1/displayed`) ; P3 a sa propre Edge Function (`p3-jobs`), ses tables et ses écrans ;
+- tout problème de P1 (rapport emploi du 04/12, répétition du 08/12, IPC du 10/12) passe avant P3 ; aucun déploiement ces jours-là.
+
+## T-054 — Surprises hors des États-Unis · 24/11/2026
+
+**Contexte.** Le thème « Surprises » de la heatmap (plan, Heatmap fondamentale) demande réel et consensus pour les 8 économies. Seuls les chiffres américains sont captés au BLS ; T-048 interdisait de calculer une surprise sur les réels de FinancialJuice.
+
+**Question posée à Clément.** Calculer la surprise sur les réels de FinancialJuice, ou garder les surprises aux États-Unis seulement.
+
+**Décision de Clément.** La surprise se calcule sur le réel de FinancialJuice rattaché à l'événement (règles strictes de T-048) moins le consensus de ForexFactory, et se marque « fil d'actus ». **Remplace le point de T-048** « aucune surprise n'est calculée dessus » ; le reste de T-048 ne change pas (jamais à la place d'un chiffre du BLS).
+
+**Conséquences.** Historique bâti à partir du 23/11/2026 (mise en service du fil). Le thème n'entre dans le score qu'avec 3 mois de données ; avant, sa colonne s'affiche avec la raison.
+
+## T-055 — Lecture fondamentale sans IA en P3 · 24/11/2026
+
+**Contexte.** La heatmap a un panneau « Lecture fondamentale » de 4 à 6 lignes. Ce serait le premier appel à l'API Claude (T-019 : aucune IA en P1).
+
+**Question posée à Clément.** Texte construit par le code, API Claude dès P3, ou panneau vide jusqu'à P6.
+
+**Décision de Clément.** Texte construit par le code à partir des seuls chiffres affichés, chaque chiffre avec sa source et sa date, marqué « lecture automatique ». Aucune clé Anthropic en P3 ; la lecture par Claude arrive en P6 avec l'assistant.
+
+## T-056 — Sources de P3 · 24/11/2026
+
+**Contexte.** Le plan prévoyait DBnomics pour l'historique macro. Exploration M0 du 24/11/2026 (`docs/exploration-p3.md`) : la copie de l'OCDE chez DBnomics n'est plus mise à jour depuis le 16/06/2026 (IPC américain arrêté en 2026-05, japonais en 2021-06 dans le jeu des indicateurs clés).
+
+**Décision de Clément** (grille proposée, § 7 de l'exploration) :
+
+- États-Unis : FRED (IPC, IPC sous-jacent, chômage, PIB, confiance de l'université du Michigan, ventes au détail) ;
+- zone euro : BCE (IPCH, jeu `HICP` depuis 2026 ; chômage et PIB, composition à 21 pays `I10`) ;
+- Royaume-Uni, Japon, Suisse, Canada, Australie, Nouvelle-Zélande : API SDMX de l'OCDE (IPC COICOP 2018 ou 1999 selon le pays, chômage, PIB, confiance, ventes au détail) ;
+- taux directeurs : BIS (mensuel pour l'historique, quotidien de P2) ; changes du backtest : FRED (H.10) ;
+- dernier chiffre : l'agenda dès sa publication (BLS, sinon réel FinancialJuice rattaché, T-048) ;
+- « — » avec la raison : confiance des consommateurs au Canada (indice privé), ventes au détail en Australie et en Nouvelle-Zélande, PMI jusqu'à 3 mois de relevés.
+
+**Conséquences.** Au plus 6 requêtes par jour à l'OCDE (limite publiée : 60 par heure ; 20 selon une copie de la même page).
+
+## T-057 — Accès à l'OCDE · 24/11/2026
+
+**Contexte.** Sonde `explore` de `p3-jobs` depuis Supabase (région eu-central-2) le 24/11/2026 : toute requête de données qui atteint le serveur d'origine de l'OCDE reçoit HTTP 500 (« Internal server error », `cf-cache-status: BYPASS`). Seules passent les réponses déjà en cache chez Cloudflare et les requêtes de structure. Les mêmes requêtes, avec les mêmes en-têtes, répondent 200 depuis le Mac. BCE, FRED, BIS et DBnomics répondent à Supabase.
+
+**Question posée à Clément.** Tâche de Vercel, instituts nationaux, ou relais par le Mac.
+
+**Décision de Clément.** Essayer d'abord Vercel : une route protégée par le secret des tâches (`/api/macro/probe`) interroge l'OCDE depuis Vercel. Si l'OCDE répond, une tâche quotidienne de Vercel relève l'OCDE et écrit dans Supabase ; sinon, les 6 économies passent par leurs instituts nationaux (nouvelle exploration). Pas de relais par le Mac (T-042).
 

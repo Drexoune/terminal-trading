@@ -28,7 +28,7 @@ import { loadEnv, type Plugin } from 'vite';
  */
 const ROUTE = /^\/api\/([a-z0-9][a-z0-9-]*)(?:\/([a-z0-9][a-z0-9-]*)(?:\/\d{1,9})?)?\/?$/;
 /** Fonctions à routeur interne (api/<nom>.ts sert /api/<nom>/<route>). */
-const NESTED = new Set(['bourse', 'p1', 'alerts', 'rates']);
+const NESTED = new Set(['bourse', 'p1', 'alerts', 'rates', 'macro']);
 const BODY_METHODS = ['POST', 'DELETE', 'PATCH'];
 const MAX_BODY = 64 * 1024;
 
