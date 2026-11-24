@@ -62,6 +62,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-055 | 24/11/2026 | Lecture fondamentale | Texte construit par le code à partir des chiffres affichés, chacun cité, « lecture automatique » ; pas de clé Anthropic avant P6 |
 | T-056 | 24/11/2026 | Sources de P3 | États-Unis : FRED ; zone euro : BCE ; 6 autres économies : API de l'OCDE ; taux : BIS ; changes : FRED ; dernier chiffre : agenda ; DBnomics écarté (copie de l'OCDE arrêtée au 16/06/2026) |
 | T-057 | 24/11/2026 | Accès à l'OCDE | L'OCDE refuse Supabase (HTTP 500) : relevé par une tâche de Vercel si l'OCDE lui répond, sinon instituts nationaux |
+| T-058 | 24/11/2026 | Sources nationales de P3 | L'OCDE refuse aussi Vercel : ONS, Statistics Japan et RBA (copies DBnomics), Statistics Canada et BNS (API), FRED ; IPC néo-zélandais « — » ; thème Sentiment affiché sans compter au score ; remplace le point « OCDE » de T-056 |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -603,4 +604,20 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 **Question posée à Clément.** Tâche de Vercel, instituts nationaux, ou relais par le Mac.
 
 **Décision de Clément.** Essayer d'abord Vercel : une route protégée par le secret des tâches (`/api/macro/probe`) interroge l'OCDE depuis Vercel. Si l'OCDE répond, une tâche quotidienne de Vercel relève l'OCDE et écrit dans Supabase ; sinon, les 6 économies passent par leurs instituts nationaux (nouvelle exploration). Pas de relais par le Mac (T-042).
+
+## T-058 — Sources nationales de P3 · 24/11/2026
+
+**Contexte.** La sonde `/api/macro/probe` de Vercel (région cdg1) reçoit elle aussi HTTP 500 de l'OCDE, le 24/11/2026. Exploration des sources nationales, depuis le Mac puis depuis Supabase (`docs/exploration-p3.md` § 8) : toutes répondent à Supabase.
+
+**Décisions de Clément :**
+
+- **grille nationale approuvée** ; elle remplace le point « 6 autres économies : API de l'OCDE » de T-056 :
+  - Royaume-Uni : copie DBnomics de l'ONS ;
+  - Japon : copie DBnomics de Statistics Japan, plus FRED pour le chômage et le PIB ;
+  - Suisse : API de la BNS ;
+  - Canada : API de Statistics Canada ;
+  - Australie : copie DBnomics de la RBA ;
+  - Nouvelle-Zélande : FRED pour le chômage et le PIB ;
+- **IPC néo-zélandais** : « — » avec la raison. Stats NZ exige une clé ; elle sera demandée plus tard si besoin. Le thème Inflation compte avec 7 économies ;
+- **thème Sentiment** : affiché avec les indices libres (États-Unis ; zone euro, Japon et Suisse à vérifier), sans compter dans le score tant que moins de 6 économies sont connues. Les indices du Royaume-Uni, du Canada, de l'Australie et de la Nouvelle-Zélande sont privés.
 

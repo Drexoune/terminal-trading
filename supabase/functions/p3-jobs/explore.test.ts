@@ -33,7 +33,8 @@ describe('sonde M0', () => {
       fetch: async (url) => ({
         status, headers: { get: (k: string) => (k === 'cf-cache-status' ? 'DYNAMIC' : null) },
         text: async () => url.includes('ecb') ? fx('ecb-hicp-2026-11-24.csv') : url.includes('fred') ? fx('fred-cpiaucsl-2026-11-24.csv')
-          : url.includes('db.nomics') ? '{"series":{"docs":[]}}' : fx('oecd-unemployment-2026-11-24.csv'),
+          : url.includes('db.nomics') ? '{"series":{"docs":[]}}' : url.includes('statcan') ? '[{"object":{"vectorId":1,"vectorDataPoint":[{"refPer":"2026-10-01"}]}}]'
+          : url.includes('snb.ch') ? '"CubeId";"plkopr"\n"PublishingDate";"2026-11-23 09:00"\n"2026-10";"VVP";"1.4"' : fx('oecd-unemployment-2026-11-24.csv'),
       }),
     };
   };
@@ -41,7 +42,7 @@ describe('sonde M0', () => {
     const r = await explore(deps(200)) as { ok: boolean; region: string; lines: { label: string; status: number; extract: unknown }[] };
     expect(r.ok).toBe(true);
     expect(r.region).toBe('eu-central-2');
-    expect(r.lines.map((l) => l.label)).toEqual(['oecd-cpi-2018', 'oecd-unemployment', 'oecd-unemployment-accept', 'oecd-structure', 'ecb-hicp', 'fred-cpi', 'bis-monthly', 'dbnomics-oecd-cpi-usa']);
+    expect(r.lines.map((l) => l.label)).toEqual(['oecd-cpi-2018', 'oecd-unemployment', 'oecd-unemployment-accept', 'oecd-structure', 'ecb-hicp', 'fred-cpi', 'bis-monthly', 'dbnomics-ons-cpi', 'statcan-wds', 'snb-cpi', 'dbnomics-oecd-cpi-usa']);
     expect(r.lines.find((l) => l.label === 'fred-cpi')!.extract).toEqual({ last: '2026-10-01' });
     expect((await explore(deps(403)) as { ok: boolean }).ok).toBe(false);
   });

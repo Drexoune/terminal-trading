@@ -1,10 +1,13 @@
-// Catalogue des séries de P3 (décision T-056, codes relevés en M0 le 24/11/2026,
-// docs/exploration-p3.md). Une série = une économie × un indicateur × une source.
+// Catalogue des séries de P3 (décisions T-056 et T-058, codes relevés le 24/11/2026,
+// docs/exploration-p3.md § 7 et § 8). Une série = une économie × un indicateur × une source.
 //
-// - États-Unis : FRED ; zone euro : BCE (inflation, chômage, PIB) et OCDE (confiance, ventes) ;
-//   6 autres économies : OCDE (relevé hors Supabase, décision T-057) ; taux : BIS mensuel.
+// - États-Unis : FRED ; zone euro : BCE ; Royaume-Uni : ONS (copie DBnomics) ; Japon : Statistics
+//   Japan (copie DBnomics) et FRED ; Suisse : BNS ; Canada : Statistics Canada ; Australie : RBA
+//   (copie DBnomics) ; Nouvelle-Zélande : FRED ; taux directeurs : BIS mensuel. L'OCDE refuse
+//   Supabase et Vercel (T-057, T-058) : aucune série n'en dépend.
 // - `transform` : `level` (valeur publiée telle quelle), `yoy` (variation sur un an calculée depuis
-//   un indice : 12 mois ou 4 trimestres). Une série sans source porte sa raison.
+//   un indice ou un niveau : 12 mois ou 4 trimestres), `yoy_qoq` (variation sur un an chaînée depuis
+//   quatre variations trimestrielles publiées, marquée « calculé »). Une série sans source porte sa raison.
 
 export const ECONOMIES = ['US', 'EA', 'GB', 'JP', 'CH', 'CA', 'AU', 'NZ'] as const;
 export type Economy = (typeof ECONOMIES)[number];
@@ -12,9 +15,8 @@ export type Economy = (typeof ECONOMIES)[number];
 export const CURRENCY: Record<Economy, string> = { US: 'USD', EA: 'EUR', GB: 'GBP', JP: 'JPY', CH: 'CHF', CA: 'CAD', AU: 'AUD', NZ: 'NZD' };
 /** Banque centrale (codes de P2, p2-jobs/meetings.ts). */
 export const BANK: Record<Economy, string> = { US: 'FED', EA: 'BCE', GB: 'BOE', JP: 'BOJ', CH: 'BNS', CA: 'BOC', AU: 'RBA', NZ: 'RBNZ' };
-/** Code de zone du BIS (WS_CBPOL) et de l'OCDE. */
+/** Code de zone du BIS (WS_CBPOL). */
 export const BIS_AREA: Record<Economy, string> = { US: 'US', EA: 'XM', GB: 'GB', JP: 'JP', CH: 'CH', CA: 'CA', AU: 'AU', NZ: 'NZ' };
-export const OECD_AREA: Record<Economy, string> = { US: 'USA', EA: 'EA20', GB: 'GBR', JP: 'JPN', CH: 'CHE', CA: 'CAN', AU: 'AUS', NZ: 'NZL' };
 /** Cible d'inflation de chaque banque (milieu de la fourchette quand elle en publie une). */
 export const INFLATION_TARGET: Record<Economy, { mid: number; text: string }> = {
   US: { mid: 2, text: '2 %' }, EA: { mid: 2, text: '2 %' }, GB: { mid: 2, text: '2 %' }, JP: { mid: 2, text: '2 %' },
@@ -28,29 +30,22 @@ export const INDICATOR_LABEL: Record<Indicator, string> = {
   unemployment: 'Taux de chômage', confidence: 'Confiance des consommateurs', retail: 'Ventes au détail sur un an',
 };
 
-export type Source = 'fred' | 'ecb' | 'oecd' | 'bis';
+export type Source = 'fred' | 'ecb' | 'bis' | 'dbnomics' | 'statcan' | 'snb';
 export interface SeriesSpec {
   id: string;                 // « US:cpi »
   economy: Economy;
   indicator: Indicator;
   source: Source;
-  code: string;               // identifiant FRED, clé BCE, clé OCDE (flux|clé) ou zone BIS
+  code: string;               // identifiant FRED, clé BCE, zone BIS, série DBnomics (fournisseur/jeu/série, « + » pour fusionner),
+                              // vecteur Statistics Canada, cube BNS et dimensions (« cube|D0|D1 »)
   freq: 'M' | 'Q';
-  transform: 'level' | 'yoy';
+  transform: 'level' | 'yoy' | 'yoy_qoq';
   unit: '%' | 'pts';
   url: string;                // page publique de la série
 }
 export interface MissingSpec { id: string; economy: Economy; indicator: Indicator; reason: string }
 
-const OECD_CPI18 = 'OECD.SDD.TPS,DSD_PRICES_COICOP2018@DF_PRICES_C2018_ALL,1.0';
-const OECD_CPI99 = 'OECD.SDD.TPS,DSD_PRICES@DF_PRICES_ALL,1.0';
-const OECD_UNE = 'OECD.SDD.TPS,DSD_LFS@DF_IALFS_UNE_M,1.0';
-const OECD_QNA = 'OECD.SDD.NAD,DSD_NAMAIN1@DF_QNA,1.1';
-const OECD_CS = 'OECD.SDD.STES,DSD_STES@DF_CS,4.0';
-const OECD_KEI = 'OECD.SDD.STES,DSD_KEI@DF_KEI,4.0';
-const OECD_EXPLORER = 'https://data-explorer.oecd.org/';
-
-function fred(economy: Economy, indicator: Indicator, code: string, freq: 'M' | 'Q', transform: 'level' | 'yoy', unit: '%' | 'pts' = '%'): SeriesSpec {
+function fred(economy: Economy, indicator: Indicator, code: string, freq: 'M' | 'Q', transform: SeriesSpec['transform'], unit: '%' | 'pts' = '%'): SeriesSpec {
   return { id: `${economy}:${indicator}`, economy, indicator, source: 'fred', code, freq, transform, unit,
     url: `https://fred.stlouisfed.org/series/${code}` };
 }
@@ -58,26 +53,17 @@ function ecb(economy: Economy, indicator: Indicator, code: string, freq: 'M' | '
   return { id: `${economy}:${indicator}`, economy, indicator, source: 'ecb', code, freq, transform: 'level', unit: '%',
     url: `https://data.ecb.europa.eu/data/datasets/${code.split('/')[0]}/${code.replace('/', '.')}` };
 }
-function oecd(economy: Economy, indicator: Indicator, flow: string, key: string, freq: 'M' | 'Q', unit: '%' | 'pts' = '%'): SeriesSpec {
-  return { id: `${economy}:${indicator}`, economy, indicator, source: 'oecd', code: `${flow}|${key}`, freq, transform: 'level', unit, url: OECD_EXPLORER };
+function dbn(economy: Economy, indicator: Indicator, code: string, freq: 'M' | 'Q', transform: SeriesSpec['transform'] = 'level'): SeriesSpec {
+  return { id: `${economy}:${indicator}`, economy, indicator, source: 'dbnomics', code, freq, transform, unit: '%',
+    url: `https://db.nomics.world/${code.split('+')[0]}` };
 }
-
-/** Clés de l'OCDE par économie (zone à la première place, sauf le PIB). */
-function oecdSeries(e: Exclude<Economy, 'US' | 'EA'>): SeriesSpec[] {
-  const a = OECD_AREA[e];
-  // IPC : COICOP 2018 pour le Japon, la Suisse et le Canada (l'ancien jeu s'y arrête) ; ancien jeu ailleurs.
-  const cpi18 = e === 'JP' || e === 'CH' || e === 'CA';
-  const cpiFreq: 'M' | 'Q' = e === 'NZ' || e === 'AU' ? 'Q' : 'M';   // Australie : mensuel seulement depuis 2025-04
-  const cpiKey = (exp: string) => (cpi18 ? `${a}.${cpiFreq}.N.CPI..${exp}..GY` : `${a}.${cpiFreq}.N.CPI.PA.${exp}.N.GY`);
-  const quarterlyLabour = e === 'CH' || e === 'NZ';
-  return [
-    oecd(e, 'cpi', cpi18 ? OECD_CPI18 : OECD_CPI99, cpiKey('_T'), cpiFreq),
-    oecd(e, 'cpi_core', cpi18 ? OECD_CPI18 : OECD_CPI99, cpiKey('_TXCP01_NRG'), cpiFreq),
-    oecd(e, 'unemployment', OECD_UNE, `${a}.UNE_LF_M...Y._T.Y_GE15..${quarterlyLabour ? 'Q' : 'M'}`, quarterlyLabour ? 'Q' : 'M'),
-    oecd(e, 'gdp', OECD_QNA, `Q.Y.${a}.S1.S1.B1GQ._Z._Z._Z.PC.L.GY.T0102`, 'Q'),
-    ...(e === 'CA' ? [] : [oecd(e, 'confidence', OECD_CS, `${a}.${quarterlyLabour ? 'Q' : 'M'}.CCICP......`, quarterlyLabour ? 'Q' : 'M', 'pts')]),
-    ...(e === 'AU' || e === 'NZ' ? [] : [oecd(e, 'retail', OECD_KEI, `${a}.M.TOVM.GR.G47.Y.GY`, 'M')]),
-  ];
+function statcan(economy: Economy, indicator: Indicator, vector: number, freq: 'M' | 'Q', transform: SeriesSpec['transform'] = 'level'): SeriesSpec {
+  return { id: `${economy}:${indicator}`, economy, indicator, source: 'statcan', code: String(vector), freq, transform, unit: '%',
+    url: `https://www150.statcan.gc.ca/t1/tbl1/en/cv.action?vectorId=${vector}` };
+}
+function snb(economy: Economy, indicator: Indicator, code: string, freq: 'M' | 'Q'): SeriesSpec {
+  return { id: `${economy}:${indicator}`, economy, indicator, source: 'snb', code, freq, transform: 'level', unit: '%',
+    url: `https://data.snb.ch/en/topics/uvo/cube/${code.split('|')[0]}` };
 }
 
 export const SERIES: SeriesSpec[] = [
@@ -91,17 +77,50 @@ export const SERIES: SeriesSpec[] = [
   ecb('EA', 'cpi_core', 'HICP/M.U2.N.XEF000.4D0.ANR', 'M'),
   ecb('EA', 'unemployment', 'LFSI/M.I10.S.UNEHRT.TOTAL0.15_74.T', 'M'),
   ecb('EA', 'gdp', 'MNA/Q.Y.I10.W2.S1.S1.B.B1GQ._Z._Z._Z.EUR.LR.GY', 'Q'),
-  oecd('EA', 'confidence', OECD_CS, 'EA20.M.CCICP......', 'M', 'pts'),
-  oecd('EA', 'retail', OECD_KEI, 'EA20.M.TOVM.GR.G47.Y.GY', 'M'),
-  ...(['GB', 'JP', 'CH', 'CA', 'AU', 'NZ'] as const).flatMap(oecdSeries),
+  dbn('GB', 'cpi', 'ONS/MM23/D7G7.M', 'M'),
+  dbn('GB', 'cpi_core', 'ONS/MM23/DKO8.M', 'M'),
+  dbn('GB', 'unemployment', 'ONS/LMS/MGSX.M', 'M'),
+  dbn('GB', 'gdp', 'ONS/QNA/IHYR.Q+ONS/PN2/IHYR.Q', 'Q'),   // QNA révisé d'abord, PN2 pour le trimestre le plus récent
+  dbn('GB', 'retail', 'ONS/DRSI/J5EK.M', 'M', 'yoy'),
+  dbn('JP', 'cpi', 'STATJP/CPIm/001', 'M', 'yoy'),
+  dbn('JP', 'cpi_core', 'STATJP/CPIm/740', 'M', 'yoy'),   // hors produits frais et énergie
+  fred('JP', 'unemployment', 'LRHUTTTTJPM156S', 'M', 'level'),
+  fred('JP', 'gdp', 'JPNRGDPEXP', 'Q', 'yoy'),
+  snb('CH', 'cpi', 'plkopr|VVP', 'M'),
+  snb('CH', 'unemployment', 'amarbma|S1', 'M'),            // chômeurs inscrits, corrigé des variations saisonnières (SECO)
+  snb('CH', 'gdp', 'gdpap|VVP|BBIPS', 'Q'),                // corrigé des événements sportifs (SECO)
+  statcan('CA', 'cpi', 41690973, 'M', 'yoy'),
+  statcan('CA', 'cpi_core', 108785714, 'M'),               // IPC-médian, sur un an
+  statcan('CA', 'unemployment', 2062815, 'M'),
+  statcan('CA', 'gdp', 62305752, 'Q', 'yoy'),
+  dbn('AU', 'cpi', 'RBA/G1/GCPIAGYP', 'Q'),
+  dbn('AU', 'cpi_core', 'RBA/G1/GCPIOCPMTMYP', 'Q'),        // moyenne tronquée
+  dbn('AU', 'unemployment', 'RBA/H5/GLFSURSA', 'M'),
+  dbn('AU', 'gdp', 'RBA/H1/GGDPCVGDPY', 'Q'),
+  fred('NZ', 'unemployment', 'LRUN64TTNZQ156S', 'Q', 'level'),
+  fred('NZ', 'gdp', 'NAEXKP01NZQ657S', 'Q', 'yoy_qoq'),
   ...[...ECONOMIES].map((e): SeriesSpec => ({ id: `${e}:policy`, economy: e, indicator: 'policy', source: 'bis', code: BIS_AREA[e],
     freq: 'M', transform: 'level', unit: '%', url: 'https://data.bis.org/topics/CBPOL' })),
 ];
 
+const PRIVATE = 'indice privé (T-058)';
 export const MISSING: MissingSpec[] = [
-  { id: 'CA:confidence', economy: 'CA', indicator: 'confidence', reason: 'indice du Conference Board of Canada, privé (T-056)' },
-  { id: 'AU:retail', economy: 'AU', indicator: 'retail', reason: 'série de l’OCDE arrêtée en 2026-05 (T-056)' },
-  { id: 'NZ:retail', economy: 'NZ', indicator: 'retail', reason: 'aucune série mensuelle libre (T-056)' },
+  { id: 'NZ:cpi', economy: 'NZ', indicator: 'cpi', reason: 'Stats NZ exige une clé ; pas encore demandée (T-058)' },
+  { id: 'NZ:cpi_core', economy: 'NZ', indicator: 'cpi_core', reason: 'Stats NZ exige une clé ; pas encore demandée (T-058)' },
+  { id: 'CH:cpi_core', economy: 'CH', indicator: 'cpi_core', reason: 'série de la BNS pas encore identifiée' },
+  { id: 'EA:confidence', economy: 'EA', indicator: 'confidence', reason: 'Commission européenne : source à vérifier (T-058)' },
+  { id: 'JP:confidence', economy: 'JP', indicator: 'confidence', reason: 'Cabinet Office : source à vérifier (T-058)' },
+  { id: 'CH:confidence', economy: 'CH', indicator: 'confidence', reason: 'SECO : source à vérifier (T-058)' },
+  { id: 'GB:confidence', economy: 'GB', indicator: 'confidence', reason: `GfK : ${PRIVATE}` },
+  { id: 'CA:confidence', economy: 'CA', indicator: 'confidence', reason: `Conference Board of Canada : ${PRIVATE}` },
+  { id: 'AU:confidence', economy: 'AU', indicator: 'confidence', reason: `Westpac : ${PRIVATE}` },
+  { id: 'NZ:confidence', economy: 'NZ', indicator: 'confidence', reason: `ANZ et Westpac : ${PRIVATE}` },
+  { id: 'EA:retail', economy: 'EA', indicator: 'retail', reason: 'série de la BCE pas encore identifiée' },
+  { id: 'JP:retail', economy: 'JP', indicator: 'retail', reason: 'METI : copie DBnomics arrêtée en 2023' },
+  { id: 'CA:retail', economy: 'CA', indicator: 'retail', reason: 'vecteur 52367097 arrêté en 2022-12 (table remplacée) : nouveau vecteur à identifier' },
+  { id: 'CH:retail', economy: 'CH', indicator: 'retail', reason: 'source pas encore identifiée' },
+  { id: 'AU:retail', economy: 'AU', indicator: 'retail', reason: 'l’ABS a remplacé la série par un indicateur de dépenses des ménages' },
+  { id: 'NZ:retail', economy: 'NZ', indicator: 'retail', reason: 'aucune série mensuelle libre' },
 ];
 
 export const FX_SERIES: Record<Exclude<Economy, 'US'>, { code: string; invert: boolean }> = {

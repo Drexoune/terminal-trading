@@ -10,7 +10,7 @@
 
 export interface HeadersLike { get(name: string): string | null }
 export interface ProbeResponse { status: number; headers: HeadersLike; text(): Promise<string> }
-export type ProbeFetch = (url: string, init?: { headers?: Record<string, string>; signal?: AbortSignal }) => Promise<ProbeResponse>;
+export type ProbeFetch = (url: string, init?: { method?: string; headers?: Record<string, string>; body?: string; signal?: AbortSignal }) => Promise<ProbeResponse>;
 
 export interface ExploreDeps {
   fetch: ProbeFetch;
@@ -82,10 +82,11 @@ export function dbnomicsLast(body: string): { period: string | null; indexed_at:
   return { period: s?.period?.at(-1) ?? null, indexed_at: s?.indexed_at ?? null };
 }
 
-async function probe(deps: ExploreDeps, label: string, url: string, read: (body: string) => unknown, accept = '*/*'): Promise<ProbeLine> {
+async function probe(deps: ExploreDeps, label: string, url: string, read: (body: string) => unknown, accept = '*/*', post?: unknown): Promise<ProbeLine> {
   const t0 = deps.perf();
   try {
-    const r = await deps.fetch(url, { headers: { 'User-Agent': UA, Accept: accept }, signal: AbortSignal.timeout(TIMEOUT_MS) });
+    const r = await deps.fetch(url, { method: post === undefined ? 'GET' : 'POST', body: post === undefined ? undefined : JSON.stringify(post),
+      headers: { 'User-Agent': UA, Accept: accept, ...(post === undefined ? {} : { 'Content-Type': 'application/json' }) }, signal: AbortSignal.timeout(TIMEOUT_MS) });
     const body = await r.text();
     const headers: Record<string, string> = {};
     for (const k of KEPT) { const v = r.headers.get(k); if (v !== null) headers[k] = v.slice(0, 120); }
@@ -125,6 +126,14 @@ export async function explore(deps: ExploreDeps): Promise<Record<string, unknown
   lines.push(await probe(deps, 'fred-cpi', `${FRED}?id=CPIAUCSL`, (b) => ({ last: fredLast(b) })));
   lines.push(await probe(deps, 'bis-monthly', `${BIS}/M.US+XM+GB+JP+CH+CA+AU+NZ?lastNObservations=1&format=csv`,
     (b) => ({ lines: b.trim().split(/\r?\n/).length - 1 })));
+  // Sources nationales (décision T-057 : l'OCDE refuse aussi Vercel, 24/11/2026).
+  lines.push(await probe(deps, 'dbnomics-ons-cpi', `${DBNOMICS}/ONS/MM23/D7G7.M?observations=1`, (b) => dbnomicsLast(b)));
+  lines.push(await probe(deps, 'statcan-wds', 'https://www150.statcan.gc.ca/t1/wds/rest/getDataFromVectorsAndLatestNPeriods',
+    (b) => (JSON.parse(b) as { object?: { vectorId?: number; vectorDataPoint?: { refPer?: string }[] } }[])
+      .map((x) => [x.object?.vectorId, x.object?.vectorDataPoint?.at(-1)?.refPer]), 'application/json',
+    [{ vectorId: 41690973, latestN: 1 }, { vectorId: 2062815, latestN: 1 }]));
+  lines.push(await probe(deps, 'snb-cpi', 'https://data.snb.ch/api/cube/plkopr/data/csv/en',
+    (b) => ({ published: /"PublishingDate";"([^"]+)"/.exec(b)?.[1] ?? null, last: b.trim().split(/\r?\n/).at(-1)?.slice(0, 40) ?? null })));
   lines.push(await probe(deps, 'dbnomics-oecd-cpi-usa', `${DBNOMICS}/OECD/DSD_KEI@DF_KEI/USA.M.CP.GR._Z._Z.GY?observations=1`,
     (b) => dbnomicsLast(b)));
   return { job: 'explore', ok: lines.every((l) => l.status === 200 || l.label.startsWith('oecd-')), started_ms: started, ms: deps.now() - started,

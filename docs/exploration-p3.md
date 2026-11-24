@@ -100,3 +100,36 @@ Les mêmes requêtes, avec les mêmes en-têtes (compression comprise), réponde
 **Requêtes par jour** : OCDE 6 (IPC deux jeux, chômage, PIB, confiance, ventes), BCE 4, FRED 13, BIS 1. Avec le cache de 2 h de l'OCDE et `updatedAfter`, bien sous la limite publiée.
 
 Le dernier chiffre de chaque indicateur suivi par l'agenda vient de l'agenda dès sa publication : le BLS pour les États-Unis, sinon le réel FinancialJuice rattaché. L'historique vient de la source de la grille.
+
+## 8. Sources nationales (24/11/2026, après le refus de Vercel)
+
+**L'OCDE refuse aussi Vercel.** La sonde `/api/macro/probe` tourne en région `cdg1` (Paris). Les deux requêtes répondent HTTP 500 « Internal server error », `cf-cache-status: BYPASS`. Comme le prévoit T-057, les 6 économies passent par des sources nationales.
+
+Sondé depuis le Mac, puis depuis Supabase (tâche `explore` redéployée) : toutes ces sources répondent aux deux.
+
+| Économie | Indicateur | Source | Série | Dernière période |
+| --- | --- | --- | --- | --- |
+| Royaume-Uni | IPC, sous-jacent | DBnomics, copie de l'ONS (`MM23`, indexée le 19/11) | `D7G7.M`, `DKO8.M` | 2026-10 |
+| Royaume-Uni | chômage | DBnomics, ONS (`LMS`) | `MGSX` (moyenne sur 3 mois) | 2026-T3 |
+| Royaume-Uni | PIB sur un an | DBnomics, ONS (`PN2` puis `QNA`) | `IHYR.Q` | 2026-T3 |
+| Royaume-Uni | ventes au détail | DBnomics, ONS (`DRSI`) | `J5EK.M` (indice en volume) | 2026-10 |
+| Japon | IPC, sous-jacent | DBnomics, Statistics Japan (`CPIm`) | `001` (global), `740` (hors produits frais et énergie), indices | 2026-10 |
+| Japon | chômage | FRED (OCDE, à jour) | `LRHUTTTTJPM156S` | 2026-09 |
+| Japon | PIB | FRED | `JPNRGDPEXP` (niveau en volume) | 2026-T3 |
+| Suisse | IPC | API de la BNS (`data.snb.ch`, cube `plkopr`) | indice et variation sur un an | 2026-10 |
+| Suisse | PIB, chômage | API de la BNS (cubes `gdpap`, `amarbma`) | à préciser à l'écriture | 2026-T2, 2026-10 |
+| Canada | IPC, chômage, PIB | API de Statistics Canada (WDS, sans clé) | vecteurs `41690973`, `2062815`, `62305752` | 2026-10, 2026-10, 2026-T2 |
+| Australie | IPC (trimestriel et mensuel), sous-jacent, chômage, PIB | DBnomics, copie de la RBA (`G1`, `G4`, `H5`, `H1`) | `GCPIAGYP`, `GCPIAGYPM`, `GCPIOCPMTMYP`, `GLFSURSA`, `GGDPCVGDPY` | 2026-T3, 2026-09, 2026-10, 2026-T2 |
+| Nouvelle-Zélande | chômage, PIB | FRED (OCDE, à jour) | `LRUN64TTNZQ156S`, `NAEXKP01NZQ657S` (sur un trimestre) | 2026-T3, 2026-T2 |
+| Nouvelle-Zélande | IPC | Stats NZ (API avec clé gratuite, HTTP 401 sans clé) | — | — |
+
+**Remarques :**
+
+- **Séries de l'OCDE chez FRED.** Seules quelques-unes sont encore à jour (chômage, PIB du Japon et de la Nouvelle-Zélande). Les autres sont figées entre 2021 et 2025 : IPC (`CPALTT01…`), confiance (`CSCICP03…`), PIB en niveau (`NAEXKP01…Q652S`).
+- **Statistics Canada et la BNS** se lisent directement, sans clé. Statistics Canada demande un POST JSON (`getDataFromVectorsAndLatestNPeriods`).
+- **Codes retenus à l'écriture :**
+  - BNS : IPC sur un an `plkopr`/`VVP` ; PIB sur un an `gdpap`/`VVP`/`BBIPS` (corrigé des événements sportifs, série du SECO) ; chômage corrigé `amarbma`/`S1` (3,09 % en 2026-10) ;
+  - Statistics Canada : IPC sous-jacent = IPC-médian sur un an (vecteur `108785714`) ;
+  - ventes au détail canadiennes : le vecteur `52367097` s'arrête en 2022-12 (table remplacée) ; « — » jusqu'à ce que le nouveau vecteur soit identifié ;
+  - PIB néo-zélandais : FRED ne publie que la variation trimestrielle (`NAEXKP01NZQ657S`) ; la variation sur un an est chaînée sur quatre trimestres consécutifs et marquée « calculé ».
+- **Confiance des consommateurs.** Elle n'est libre et à jour que pour les États-Unis (Michigan). Les indices du Royaume-Uni (GfK), du Canada (Conference Board), de l'Australie (Westpac) et de la Nouvelle-Zélande (ANZ, Westpac) sont privés. La zone euro (Commission européenne), le Japon (Cabinet Office) et la Suisse (SECO) restent à vérifier. Avec moins de 6 économies, le thème s'affiche mais ne compte pas dans le score (M2).

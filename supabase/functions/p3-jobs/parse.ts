@@ -91,3 +91,70 @@ export function periodEnd(p: string): string {
   const y = Number(p.slice(0, 4)), m = Number(p.slice(5, 7));
   return new Date(Date.UTC(y, m, 0)).toISOString().slice(0, 10);
 }
+
+/** Date ou période d'une source -> période « AAAA-MM » ou « AAAA-Qn » selon la fréquence. */
+export function toPeriod(raw: string, freq: 'M' | 'Q'): string | null {
+  if (QUARTERLY.test(raw)) return freq === 'Q' ? raw : null;
+  const m = /^(\d{4})-(\d{2})(?:-\d{2})?$/.exec(raw);
+  if (!m) return null;
+  const month = Number(m[2]);
+  if (month < 1 || month > 12) return null;
+  return freq === 'M' ? `${m[1]}-${m[2]}` : `${m[1]}-Q${Math.floor((month - 1) / 3) + 1}`;
+}
+
+/** Série DBnomics (`/v22/series/…?observations=1`) -> observations chiffrées (« NA » ignorés). */
+export function dbnomicsJson(body: string, freq: 'M' | 'Q'): Obs[] {
+  const d = JSON.parse(body) as { series?: { docs?: { period?: string[]; value?: (number | string | null)[] }[] } };
+  const s = d.series?.docs?.[0];
+  const out: Obs[] = [];
+  (s?.period ?? []).forEach((p, i) => {
+    const v = s?.value?.[i];
+    const period = toPeriod(p, freq);
+    if (period && typeof v === 'number' && Number.isFinite(v)) out.push({ period, value: v });
+  });
+  return out;
+}
+
+/** Réponse de Statistics Canada (`getDataFromVectorsAndLatestNPeriods`) -> observations par vecteur. */
+export function statcanJson(body: string, freq: Record<string, 'M' | 'Q'>): Map<string, Obs[]> {
+  const d = JSON.parse(body) as { status?: string; object?: { vectorId?: number; vectorDataPoint?: { refPer?: string; value?: number | null }[] } }[];
+  const out = new Map<string, Obs[]>();
+  for (const x of Array.isArray(d) ? d : []) {
+    const id = String(x.object?.vectorId ?? '');
+    if (x.status !== 'SUCCESS' || !freq[id]) continue;
+    out.set(id, (x.object?.vectorDataPoint ?? []).flatMap((p) => {
+      const period = p.refPer ? toPeriod(p.refPer, freq[id]) : null;
+      return period && typeof p.value === 'number' && Number.isFinite(p.value) ? [{ period, value: p.value }] : [];
+    }));
+  }
+  return out;
+}
+
+/** Cube CSV de la BNS (`data.snb.ch/api/cube/<cube>/data/csv/en`, séparateur « ; ») -> observations des dimensions demandées. */
+export function snbCsv(body: string, dims: string[], freq: 'M' | 'Q'): Obs[] {
+  const lines = body.replace(/^﻿/, '').split(/\r?\n/);
+  const start = lines.findIndex((l) => l.startsWith('"Date"'));
+  if (start < 0) return [];
+  const out: Obs[] = [];
+  for (const line of lines.slice(start + 1)) {
+    const f = line.split(';').map((x) => x.replace(/^"|"$/g, ''));
+    if (f.length !== dims.length + 2 || !dims.every((d, i) => f[i + 1] === d) || f[f.length - 1] === '') continue;
+    const period = toPeriod(f[0], freq);
+    const v = Number(f[f.length - 1]);
+    if (period && Number.isFinite(v)) out.push({ period, value: v });
+  }
+  return out;
+}
+
+/** Variation sur un an chaînée depuis quatre variations trimestrielles publiées (en %), trimestres consécutifs exigés. */
+export function yoyFromQoq(series: Obs[]): Obs[] {
+  const byPeriod = new Map(series.map((o) => [o.period, o.value]));
+  const out: Obs[] = [];
+  for (const o of series) {
+    const qs = [0, -1, -2, -3].map((n) => byPeriod.get(shiftPeriod(o.period, n)));
+    if (qs.some((q) => q === undefined)) continue;
+    const chained = qs.reduce((acc: number, q) => acc * (1 + (q as number) / 100), 1);
+    out.push({ period: o.period, value: Math.round((chained - 1) * 1e6) / 1e4 });
+  }
+  return out;
+}
