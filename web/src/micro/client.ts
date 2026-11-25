@@ -14,8 +14,8 @@ let inline = false;
  *  Branche retirée du build de production (import.meta.env.DEV). */
 async function startInline(): Promise<void> {
   inline = true;
-  const { MicroEngine } = await import('./engine');
-  const e = new MicroEngine({ WebSocket: WebSocket as never, fetch: (u, i) => fetch(u, i), now: () => Date.now(), random: Math.random });
+  const [{ MicroEngine }, { OKX_STATS_RELAY }] = await Promise.all([import('./engine'), import('./backfill')]);
+  const e = new MicroEngine({ WebSocket: WebSocket as never, fetch: (u, i) => fetch(u, i), now: () => Date.now(), random: Math.random, okxStatsBase: OKX_STATS_RELAY });
   e.start();
   setInterval(() => { for (const [k, v] of e.publish()) setValue(k, v); }, 100);
 }

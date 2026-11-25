@@ -121,6 +121,16 @@ async function fakeVenues(page: Page) {
     await route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(body) });
   });
 
+  // Relais des statistiques d'OKX (T-068) : jamais d'appel réel depuis le serveur de dev.
+  await page.route(/\/api\/okx-time\?stat=/, async (route) => {
+    const u = route.request().url();
+    const h = 3_600_000, unit = 300_000, base = Math.floor(now() / unit) * unit;
+    const data = u.includes('oi-hist')
+      ? Array.from({ length: 30 }, (_, i) => { const t = Math.floor(now() / h) * h - i * h; return [String(t), '3070000', String(30_000 + i * 40), '0']; })
+      : Array.from({ length: 60 }, (_, i) => { const t = base - i * unit, k = Math.sin(i / 7); return [String(t), (u.includes('perp') ? 300 - 40 * k : 9 + 2 * k).toFixed(3), (u.includes('perp') ? 320 + 40 * k : 8 - 2 * k).toFixed(3)]; });
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ code: '0', msg: '', data }) });
+  });
+
   return {
     cut: (venue: string) => { cut.add(venue); },
     restore: (venue: string) => { cut.delete(venue); },
@@ -167,6 +177,8 @@ test('Microstructure : source et fraîcheur sur chaque panneau, données affich�
   }
   await expect(page.getByTestId('mc-fd-binance')).toContainText('%');
   await expect(page.getByTestId('mc-fd-hyperliquid')).toContainText('horaire');
+  await expect(page.getByTestId('mc-fd-okx')).toContainText(/[+−]\d+,\d\s%/);           // OI 24 h par le relais (T-068)
+  await expect(page.locator('section[aria-label="CVD spot et perpétuel"] .mc-src')).toContainText('perp Binance + OKX, spot Binance + OKX');
   await expect(page.locator('.mc-lq')).toHaveCount(2);
   await expect(page.locator('.mc-lq--big')).toHaveCount(1);                 // 1 200 BTC × 59 650 $ ≥ 10 M$
   await expect(page.locator('section[aria-label="Liquidations"]')).toContainText('leurs totaux sont des minimums');

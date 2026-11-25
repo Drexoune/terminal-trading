@@ -12,6 +12,7 @@ import {
   type Env,
 } from './http.js';
 import { ALLOWED_INSTRUMENTS, OkxRest, realOkxDeps, type OkxDeps } from './okx.js';
+import { fetchOkxStat, OKX_STATS, okxStatName } from './okx-stats.js';
 import { collectorHealth, notConfigured, supabaseConfig } from './supabase.js';
 
 export const APP_NAME = 'TERMINAL';
@@ -74,6 +75,17 @@ export function handleOkxTime(request: Request, ctx: Context): Promise<Response>
   return respond(ctx.env, '/api/okx-time', async () => {
     readQuery(request, []);
     return json(await ctx.okx.time(), NO_STORE);
+  });
+}
+
+/**
+ * GET /api/okx-time?stat=taker-perp|taker-spot|oi-hist — statistiques publiques d'OKX relayées
+ * (T-068) : servies par la fonction de l'heure OKX pour ne pas en ouvrir une 13e.
+ */
+export function handleOkxStats(request: Request, ctx: Context): Promise<Response> {
+  return respond(ctx.env, '/api/okx-time?stat', async () => {
+    const stat = okxStatName(readQuery(request, ['stat']).get('stat') ?? '');
+    return json(await fetchOkxStat(ctx.deps, stat), OKX_STATS[stat].cache);
   });
 }
 

@@ -37,8 +37,8 @@ export const BACKFILL_CHECK_MS = 10_000;
 
 export interface EngineDeps {
   WebSocket: WebSocketCtor; fetch: FetchLike; now: () => number; random: () => number;
-  /** Base des statistiques `rubik` d'OKX (relais acceptant le navigateur). Absente : OKX hors des
-   *  courbes de CVD (ses trades restent comptés « depuis l'ouverture ») et sans variation 24 h de l'OI. */
+  /** Relais des statistiques `rubik` d'OKX (T-068, `/api/okx-time`). Absent : OKX hors des courbes
+   *  de CVD (ses trades restent comptés « depuis l'ouverture ») et sans variation 24 h de l'OI. */
   okxStatsBase?: string | null;
 }
 

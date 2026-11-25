@@ -68,6 +68,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-061 | 24/11/2026 | Section Backtest avant P5 | Nouvelle section « Backtest » avant P5, aux conditions de T-049 : stratégies connues, éditeur Pine, assistant IA (Gemini) et recherche autonome ; tuiles notées E à S ; BTC, ETH, QQQ, SPY ; long et short avec frais |
 | T-062 | 24/11/2026 | Moteur du backtest | PineTS (Pine Script natif, émulateur de courtier de type TradingView), licence AGPL-3.0 pour un usage personnel sans redistribution ; appels de marge désactivés par défaut (levier 1), activables |
 | T-063 | 24/11/2026 | IA du backtest | Gemini en offre gratuite seulement (0 $ par jour), modèle le moins cher (Gemini 3.1 Flash-Lite) ; quota gratuit épuisé : « quota gratuit atteint », jamais de bascule payante ; clé dans les secrets de Supabase et les variables de Vercel |
+| T-068 | 25/11/2026 | Statistiques d'OKX pour P5 | Volume preneur (perp, spot) et historique de l'OI de `www.okx.com` relayés par la fonction Vercel `api/okx-time.ts` (`?stat=`), liste blanche fixe, cache CDN ; complète T-067 (ces statistiques n'acceptent pas le navigateur) |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -740,3 +741,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - **Liquidations** : Binance et OKX sont des **planchers** (au plus un envoi par seconde, documenté par chaque plateforme) ; Bybit (`allLiquidation`) se dit complet (envoi toutes les 500 ms) ; Hyperliquid n'a **aucun flux public** de liquidations : « — » avec la raison.
 - **Rattrapage de la CVD (4 h)** : Binance spot et perp (bougies 1 min, volume preneur), OKX perp (`www`, 5 min) et spot (5 min). Bybit, Hyperliquid et Coinbase n'ont pas d'historique de volume preneur : direct seulement, signalé à l'écran.
 - **Variation 24 h de l'OI** : Binance, Bybit, OKX (`www`) ; Hyperliquid « — » (aucun historique public).
+
+## T-068 — Statistiques d'OKX pour P5 · 25/11/2026
+
+**Contexte.** En S3, les statistiques `rubik` de `www.okx.com` retenues par T-067 (volume preneur du perpétuel et du spot pour le rattrapage de la CVD, historique de l'OI pour la variation 24 h) se sont révélées sans en-tête CORS : le navigateur ne peut pas les lire (le relevé S0 n'avait vérifié que `books-full` et les liquidations, qui l'acceptent). Repli provisoire : OKX hors des courbes de CVD et « — » pour sa variation 24 h de l'OI.
+
+**Décision de Clément** (recommandation présentée : relais par une fonction existante, sans 13e fonction, conformément à T-065). Les trois statistiques passent par la fonction Vercel `api/okx-time.ts`, sous `GET /api/okx-time?stat=taker-perp|taker-spot|oi-hist` :
+
+- liste blanche fixe (`api/_lib/okx-stats.ts`), aucun paramètre libre, réponse d'OKX renvoyée inchangée ; tout code OKX ≠ 0 donne une erreur 502 ;
+- cache CDN de 60 s (volume preneur, 5 min) et de 300 s (OI horaire) : les onglets partagent les appels à OKX ;
+- la même route sert le serveur de développement (middleware `vite-plugins/api-dev.ts`) ; le front l'appelle sur sa propre origine, dans les trois modes.
+
+**Complète T-067**, qui reste valable pour `books-full` et les liquidations, lus directement par le navigateur.
+

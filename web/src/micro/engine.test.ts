@@ -50,7 +50,7 @@ function setup() {
         for (let t = from; t <= to && t + 60_000 <= Date.now(); t += 60_000) rows.push([t, '1', '1', '1', '1', '10', t + 59_999, '0', 1, '6', '0', '0']);
         return rows;
       }
-      if (url.includes('taker-volume')) {
+      if (url.includes('stat=taker')) {
         const rows = [];
         for (let t = Math.floor(Date.now() / 300_000) * 300_000; t > Date.now() - 5 * 3_600_000; t -= 300_000) rows.push([String(t), '1', '2']);
         return { code: '0', msg: '', data: rows };
@@ -74,7 +74,7 @@ describe('moteur', () => {
     const kl = calls.filter((u) => u.includes('/klines'));
     expect(kl).toHaveLength(2);
     expect(kl[0]).toContain(`startTime=${NOW - 4 * 3_600_000}`);
-    expect(calls.some((u) => u.startsWith('https://relais.test/okx/rubik/stat/taker-volume-contract'))).toBe(true);
+    expect(calls).toContain('https://relais.test/okx?stat=taker-perp');
     const cvd = get<CvdState>(e.publish(), 'micro:cvd')!;
     expect(cvd.ready).toBe(true);
     expect(cvd.perp_venues.sort()).toEqual(['binance', 'okx']);

@@ -5,7 +5,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { CACHE_INSTRUMENTS } from '../_lib/http.ts';
 import { okxReply, readJson, req, testContext } from './fakes.ts';
-import { handleHealth, handleInstruments, handleOkxTime } from '../_lib/routes.ts';
+import { handleHealth, handleInstruments, handleOkxStats, handleOkxTime } from '../_lib/routes.ts';
 import * as chartFn from '../chart.ts';
 import * as healthFn from '../health.ts';
 import * as instrumentsFn from '../instruments.ts';
@@ -128,5 +128,26 @@ describe('fichiers api/<nom>.ts : export GET au format Web standard', () => {
     vi.stubEnv('VERCEL', '1');
     vi.stubEnv('VERCEL_REGION', 'cdg1');
     expect(await (await healthFn.GET(req('/api/health'))).json()).toMatchObject({ host: 'vercel', fn_region: 'cdg1' });
+  });
+});
+
+describe('GET /api/okx-time?stat= (statistiques d’OKX relayées, T-068)', () => {
+  const body = { code: '0', msg: '', data: [['1795565400000', '8.026', '176.1619']] };
+  it('liste blanche vers www.okx.com, réponse d’OKX inchangée, cache CDN de 60 s', async () => {
+    const t = testContext({ nowMs: NOW, override: (r) => (r.url.startsWith('https://www.okx.com/') ? new Response(JSON.stringify(body)) : undefined) });
+    const direct = await handleOkxStats(req('/api/okx-time?stat=taker-perp'), t.ctx);
+    expect(direct.status).toBe(200);
+    expect(direct.headers.get('cache-control')).toBe('public, max-age=0, s-maxage=60');
+    expect(await direct.json()).toEqual(body);
+    expect(t.calls.map((c) => c.url)).toEqual(['https://www.okx.com/api/v5/rubik/stat/taker-volume-contract?instId=BTC-USDT-SWAP&period=5m&unit=0&limit=100']);
+  });
+  it('statistique inconnue : 404 ; paramètre en trop : 400 ; code OKX ≠ 0 : 502', async () => {
+    vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const t = testContext({ nowMs: NOW, override: () => new Response(JSON.stringify({ code: '50011', msg: 'Too Many Requests', data: [] })) });
+    expect((await handleOkxStats(req('/api/okx-time?stat=books'), t.ctx)).status).toBe(404);
+    expect((await handleOkxStats(req('/api/okx-time?stat=oi-hist&x=1'), t.ctx)).status).toBe(400);
+    const res = await handleOkxStats(req('/api/okx-time?stat=oi-hist'), t.ctx);
+    expect(res.status).toBe(502);
+    expect(await res.json()).toEqual({ detail: 'OKX indisponible : statistique refusée' });
   });
 });
