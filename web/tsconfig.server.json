@@ -1,0 +1,8 @@
+{
+  // Services de la machine Oracle (server/, T-069 à T-074) : vérifiés à part. Ils importent
+  // supabase/functions/, que Vercel ne reçoit pas (.vercelignore) : les inclure dans tsconfig.json
+  // faisait échouer la build du site (25/11/2026). « npm run typecheck » (CI) vérifie les deux.
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "incremental": false, "types": ["vite/client", "node"] },
+  "include": ["../server"]
+}

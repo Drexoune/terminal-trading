@@ -18,5 +18,5 @@
     // au-dessus d'eux, « vitest » doit être résolu vers celui du front.
     "paths": { "vitest": ["./node_modules/vitest"] }
   },
-  "include": ["src", "../api", "../supabase/functions", "../server", "vite-plugins"]
+  "include": ["src", "../api", "../supabase/functions", "vite-plugins"]
 }

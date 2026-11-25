@@ -17,15 +17,44 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "web" / "src" / "micro" / "fixtures"
 
 PICK = {
-    "okx": [("okx__books__BTC-USDT-SWAP__snapshot", 1), ("okx__books__BTC-USDT-SWAP__update", 20), ("okx__trades__BTC-USDT-SWAP__", 5),
-            ("okx__trades__BTC-USDT__", 3), ("okx__liquidation-orders__SWAP__", 40), ("okx__funding-rate__BTC-USDT-SWAP__", 1),
-            ("okx__open-interest__BTC-USDT-SWAP__", 1), ("okx__mark-price__BTC-USDT-SWAP__", 1), ("okx__index-tickers__BTC-USDT__", 1)],
-    "binance": [("binance__btcusdt-depth-100ms", 5), ("binance-market__btcusdt-aggTrade", 5), ("binance-market__btcusdt-markPrice-1s", 1),
-                ("binance-market__btcusdt-forceOrder", 10), ("binance-market__!forceOrder-arr", 5), ("binance-spot__btcusdt-aggTrade", 3)],
-    "bybit": [("bybit__orderbook.1000.BTCUSDT__snapshot", 1), ("bybit__orderbook.1000.BTCUSDT__delta", 20), ("bybit__publicTrade.BTCUSDT__snapshot", 3),
-              ("bybit__tickers.BTCUSDT__snapshot", 1), ("bybit__tickers.BTCUSDT__delta", 3), ("bybit__allLiquidation.BTCUSDT__snapshot", 10)],
-    "hyperliquid": [("hyperliquid__l2Book", 8), ("hyperliquid__trades", 3), ("hyperliquid__activeAssetCtx", 1)],
-    "coinbase": [("coinbase__subscriptions", 1), ("coinbase__last_match", 1), ("coinbase__match", 5), ("coinbase__heartbeat", 1)],
+    "okx": [
+        ("okx__books__BTC-USDT-SWAP__snapshot", 1),
+        ("okx__books__BTC-USDT-SWAP__update", 20),
+        ("okx__trades__BTC-USDT-SWAP__", 5),
+        ("okx__trades__BTC-USDT__", 3),
+        ("okx__liquidation-orders__SWAP__", 40),
+        ("okx__funding-rate__BTC-USDT-SWAP__", 1),
+        ("okx__open-interest__BTC-USDT-SWAP__", 1),
+        ("okx__mark-price__BTC-USDT-SWAP__", 1),
+        ("okx__index-tickers__BTC-USDT__", 1),
+    ],
+    "binance": [
+        ("binance__btcusdt-depth-100ms", 5),
+        ("binance-market__btcusdt-aggTrade", 5),
+        ("binance-market__btcusdt-markPrice-1s", 1),
+        ("binance-market__btcusdt-forceOrder", 10),
+        ("binance-market__!forceOrder-arr", 5),
+        ("binance-spot__btcusdt-aggTrade", 3),
+    ],
+    "bybit": [
+        ("bybit__orderbook.1000.BTCUSDT__snapshot", 1),
+        ("bybit__orderbook.1000.BTCUSDT__delta", 20),
+        ("bybit__publicTrade.BTCUSDT__snapshot", 3),
+        ("bybit__tickers.BTCUSDT__snapshot", 1),
+        ("bybit__tickers.BTCUSDT__delta", 3),
+        ("bybit__allLiquidation.BTCUSDT__snapshot", 10),
+    ],
+    "hyperliquid": [
+        ("hyperliquid__l2Book", 8),
+        ("hyperliquid__trades", 3),
+        ("hyperliquid__activeAssetCtx", 1),
+    ],
+    "coinbase": [
+        ("coinbase__subscriptions", 1),
+        ("coinbase__last_match", 1),
+        ("coinbase__match", 5),
+        ("coinbase__heartbeat", 1),
+    ],
 }
 
 
