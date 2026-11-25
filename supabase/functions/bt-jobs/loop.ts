@@ -104,7 +104,9 @@ export async function runLoop(d: LoopDeps): Promise<Record<string, Json>> {
     if (!key) return { error: 'GEMINI_API_KEY absente des secrets de Supabase' };
     const t = d.now();
     const day = core.parisDay(t);
-    const used = (await rest.select('bt_ai_calls', { select: 'id', day: `eq.${day}`, cached: 'eq.false' })).length;
+    // Plafond du backtest : ses seules routes (l'assistant de P6 a le sien, T-074).
+    const used = (await rest.select('bt_ai_calls', { select: 'id', day: `eq.${day}`, cached: 'eq.false',
+      route: 'in.(generate,repair,explain,loop-generate,loop-repair,loop-evolve)' })).length;
     if (used >= core.DAILY_CALLS) return { wait: `plafond de ${core.DAILY_CALLS} appels à Gemini atteint le ${day} : reprise demain (T-063)`, until: nextParisDay(t) };
     try {
       const r = await core.callGemini(d.fetch, key, task, text);

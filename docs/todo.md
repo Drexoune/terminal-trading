@@ -11,6 +11,16 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 - [ ] **Avant le 02/12/2026** : mémoire système de la machine au-dessus de 20 % (aujourd'hui ≈ 10 % sur 6 Go), sinon Oracle peut la récupérer au bout de 7 jours d'« inactivité » : ramener la forme à 2 Go, ou ajouter les tâches Oracle ci-dessous qui la font travailler
 - [ ] S4, porte de P5 : une séance entière (15:30–22:00, Paris) suivie depuis le seul écran ; revue du journal des coupures ; processeur et mémoire mesurés
 
+## P6 — Assistant et compte (T-073, T-074), en cours
+
+- [ ] S0 vérifications et décisions (quota Gemini à lire dans AI Studio par Clément)
+- [ ] S1 cœur de l'assistant (faits, contrôleur des nombres, route)
+- [ ] S2 colonne Assistant de l'écran Actus, traduction à la demande
+- [ ] S3 voix (appui pour parler)
+- [ ] S4 récap de session (service Oracle terminal-recap)
+- [ ] S5 track record (journal manuel) et calculateur de risque
+- [ ] S6 porte de P6
+
 ## Sur la machine Oracle (T-069), après la microstructure
 
 Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; jusqu'à 2 OCPU et 12 Go gratuits si les tâches ci-dessous l'exigent (l'activité du processeur suffit alors à ne pas être « inactif »).
@@ -18,7 +28,7 @@ Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; 
 - [ ] **Recherche autonome du backtest** (T-070, `0d6b2c1`) : code et service installés ; reste les secrets (`deployer.sh <ip> secrets`) et l'essai réel — déplacer la boucle de `bt-jobs` (Supabase, découpée par la limite de 2 s de calcul) sur la machine, d'un seul tenant
 - [ ] **Alertes à la seconde** (T-071) : code, écran et service installés ; reste les secrets, le redéploiement de `p1-jobs` (nouvelles sortes) et l'essai réel — prix contrôlé sur chaque trade (au lieu du haut et du bas de la bougie 1 min, T-046) ; nouvelles alertes de liquidations (ex. > 10 M$ en 1 min) et de mur retiré ; envoi Telegram — révision de T-046 à décider
 - [ ] **Fil d'actus en temps réel** (T-072) : code et service installés ; reste les secrets, le push et l'essai réel — WebSocket de Tree of Alpha tenue par la machine
-- [ ] **P6 — Track record et positions OKX** : clé en lecture seule côté serveur, positions et exécutions suivies en continu, journal tenu fenêtre fermée
+- [ ] **P6 — Positions OKX en lecture** (reporté par T-074 : pas de clé pour l'instant ; le track record démarre en saisie manuelle) : clé en lecture seule côté serveur, positions et exécutions suivies en continu, journal tenu fenêtre fermée
 - [ ] **P6 — Récap de session IA** (Asie, Londres, New York) à partir des données complètes de la séance (CVD, liquidations, volume, carnet)
 - [ ] **P7 — Saisonnalité et heatmap technique** : calculs de nuit (rôle prévu pour la tour dans le plan), historique en Parquet + DuckDB (T-003) sur les 200 Go gratuits
 - [ ] **P7 — Options BTC Deribit** : volatilité implicite, skew et DVOL enregistrés 24 h/24

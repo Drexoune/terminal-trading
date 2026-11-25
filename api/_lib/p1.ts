@@ -19,6 +19,7 @@ import type { FetchFn } from './okx.js';
 import { sameOriginJson } from './bourse/auth.js';
 import { watchState } from './watch.js';
 import { sessionProblem } from './bourse/routes.js';
+import { handleAssistant } from './assistant.js';
 
 /** Mots surlignés du fil d'actus (T-050) : 1 à 200 mots ou expressions, 40 caractères au plus. */
 export const HIGHLIGHT_MAX = 200;
@@ -162,6 +163,12 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
         throw new HttpError(400, 'JSON illisible');
       }
       return json(await saveHighlights(cfg.config, ctx.deps.fetch, ctx.deps.now(), validHighlights(body)), NO_STORE);
+    }
+    if (path === 'assistant' || path === 'translate') {
+      // Assistant de P6 (T-074) : session, plafond par usage, contrôle des nombres.
+      if (request.method !== 'POST') throw new HttpError(405, 'méthode non autorisée : POST attendu');
+      if (!cfg.ok) throw new HttpError(503, `non configuré : ${cfg.reason}`);
+      return handleAssistant(request, ctx.env, ctx.deps.fetch, cfg.config, ctx.deps.now(), path === 'assistant' ? 'ask' : 'translate');
     }
     if (request.method !== 'GET') throw new HttpError(405, 'méthode non autorisée : GET attendu');
     if (path === 'state') {

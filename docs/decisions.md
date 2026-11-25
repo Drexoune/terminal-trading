@@ -73,6 +73,8 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-070 | 25/11/2026 | Recherche du backtest sur Oracle | La boucle de `bt-jobs` tourne aussi sur la machine Oracle (service `terminal-bt`, passages de 5 min, bail de 6 min renouvelé), Supabase en repli ; secrets sur la machine : clé secrète Supabase dédiée « oracle » et GEMINI_API_KEY dans `/etc/terminal/bt.env` (0640), lus par `terminal-bt` seul ; révise T-069 (« aucun secret sur la machine ») |
 | T-071 | 25/11/2026 | Alertes à la seconde | Prix BTC et ETH jugés sur chaque trade par la machine Oracle (service `terminal-alerts`), Supabase à la minute en repli, même clé de dédoublonnage ; nouvelles alertes de liquidations et de mur retiré (Oracle seulement) ; secrets Telegram et clé « oracle » dans `/etc/terminal/alerts.env` ; révise T-046 |
 | T-072 | 25/11/2026 | Tree of Alpha en ligne | Flux gratuit sans clé (T-021) lu 24 h/24 par la machine Oracle (service `terminal-news`) : même table `news_items`, mêmes doublons, même diffusion et mêmes alertes que les RSS ; état `feed:toa` dans la barre de flux ; aucun nouveau secret ; révise T-046 sur Tree of Alpha |
+| T-073 | 25/11/2026 | P6 avant la porte P5 | Plan puis code de P6 sans attendre la séance S4 de P5 ; P5 reste prioritaire pour S4 ; aucun déploiement les 04/12, 08/12, 10/12 |
+| T-074 | 25/11/2026 | Choix de P6 | Gemini gratuit seulement (T-063) pour l'assistant, la traduction et les récaps ; traduction à la demande (T-019 inchangé) ; TERMINAL et « Assistant » définitifs (clôt T-006) ; positions OKX reportées, track record en saisie manuelle ; plafonds par usage dans bt_ai_calls |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -809,3 +811,20 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - l'état du flux (`feed:toa`) rejoint la barre de flux ; la fraîcheur se juge sur la connexion (des silences de 17 min sont normaux) ;
 - aucun nouveau secret : `terminal-news` lit `/etc/terminal/alerts.env` (T-071) ;
 - **révise T-046** sur Tree of Alpha. Abonnement payant (sans délai) toujours écarté (T-021).
+
+## T-073 et T-074 — P6 lancée, ses choix · 25/11/2026
+
+**Contexte.** Clément lance P6 (assistant et compte) alors que la porte de P5 (séance S4) reste à passer, comme pour T-049, T-053 et T-059. Plan validé : `~/.claude/plans/fluttering-baking-balloon-of-f9cc3ae9-2d73-4f7b-887b-25f45294f5a0.md`.
+
+**Faits relevés le 25/11/2026** (aistudio.google.com/docs/rate-limits et /pricing, anciennement ai.google.dev) : les limites gratuites (requêtes par minute, jetons par minute, requêtes par jour) ne sont pas publiées pour les modèles Flash-Lite, elles se lisent dans AI Studio, par projet (aistudio.google.com/rate-limit) ; les quotas quotidiens repartent à minuit, heure du Pacifique ; offre gratuite : entrées et sorties gratuites, **contenus utilisés par Google pour améliorer ses produits** ; aucune facturation sans passage explicite à un palier payant.
+
+**Décisions de Clément.**
+
+- **T-073** : plan puis code de P6 sans attendre la séance S4 ; P5 reste prioritaire pour S4 ; aucun déploiement les 04/12, 08/12 et 10/12.
+- **T-074** :
+  - IA : Gemini 3.1 Flash-Lite en offre gratuite seulement, même clé et même règle que T-063 (jamais de bascule payante, « quota atteint » sinon) ; l'assistant ne reçoit que des données publiques du terminal et l'article ouvert, jamais le journal de trading ;
+  - plafonds par jour de Paris dans `bt_ai_calls` : backtest 50 (inchangé), assistant 60, traduction 30, récaps 6 ; à abaisser si le quota lu dans AI Studio est plus bas ;
+  - traduction à la demande seulement (T-019 inchangé pour le fil) ;
+  - noms définitifs : TERMINAL et « Assistant » (clôt T-006) ;
+  - positions OKX reportées (pas de clé pour l'instant) : track record en saisie manuelle.
+

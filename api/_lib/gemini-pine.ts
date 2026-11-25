@@ -51,7 +51,17 @@ export class GeminiError extends Error {
   constructor(readonly status: number, message: string) { super(message); }
 }
 
+/** Routes du backtest dans bt_ai_calls : son plafond ne compte qu'elles (T-074 : un plafond par usage). */
+export const BACKTEST_ROUTES = ['generate', 'repair', 'explain', 'loop-generate', 'loop-repair', 'loop-evolve'] as const;
+export const BACKTEST_ROUTES_FILTER = `in.(${BACKTEST_ROUTES.join(',')})`;
+
 export async function callGemini(fetchFn: FetchLike, key: string, task: GeminiTask, userText: string, image?: { mime: string; data: string }): Promise<GeminiReply> {
+  return callGeminiWith(fetchFn, key, { system: SYSTEM[task], schema: SCHEMA[task], temperature: task === 'explain' ? 0.2 : task === 'evolve' ? 0.7 : 0.4 }, userText, image);
+}
+
+/** Appel générique (consignes et schéma JSON fournis) : backtest et assistant (P6, T-074). */
+export async function callGeminiWith(fetchFn: FetchLike, key: string, cfg: { system: string; schema: unknown; temperature: number },
+  userText: string, image?: { mime: string; data: string }): Promise<GeminiReply> {
   const parts: unknown[] = [{ text: userText }];
   if (image) parts.push({ inlineData: { mimeType: image.mime, data: image.data } });
   let r: Response;
@@ -60,9 +70,9 @@ export async function callGemini(fetchFn: FetchLike, key: string, task: GeminiTa
       method: 'POST', signal: AbortSignal.timeout(TIMEOUT_MS),
       headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: SYSTEM[task] }] },
+        systemInstruction: { parts: [{ text: cfg.system }] },
         contents: [{ role: 'user', parts }],
-        generationConfig: { responseMimeType: 'application/json', responseSchema: SCHEMA[task], temperature: task === 'explain' ? 0.2 : task === 'evolve' ? 0.7 : 0.4 },
+        generationConfig: { responseMimeType: 'application/json', responseSchema: cfg.schema, temperature: cfg.temperature },
       }),
     });
   } catch (e) {

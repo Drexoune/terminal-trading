@@ -1,5 +1,5 @@
 // GÉNÉRÉ par web/scripts/build-research-core.mjs : ne pas modifier à la main.
-// sources: 4890828414089a35
+// sources: c12561c818b538b7
 // PineTS (AGPL-3.0, LuxAlgo) inclus pour un usage strictement personnel (T-062).
 // deno-lint-ignore-file
 // @ts-nocheck
@@ -30542,7 +30542,25 @@ var GeminiError = class extends Error {
 		this.status = status;
 	}
 };
+/** Routes du backtest dans bt_ai_calls : son plafond ne compte qu'elles (T-074 : un plafond par usage). */
+const BACKTEST_ROUTES = [
+	"generate",
+	"repair",
+	"explain",
+	"loop-generate",
+	"loop-repair",
+	"loop-evolve"
+];
+const BACKTEST_ROUTES_FILTER = `in.(${BACKTEST_ROUTES.join(",")})`;
 async function callGemini(fetchFn, key, task, userText, image) {
+	return callGeminiWith(fetchFn, key, {
+		system: SYSTEM[task],
+		schema: SCHEMA[task],
+		temperature: task === "explain" ? .2 : task === "evolve" ? .7 : .4
+	}, userText, image);
+}
+/** Appel générique (consignes et schéma JSON fournis) : backtest et assistant (P6, T-074). */
+async function callGeminiWith(fetchFn, key, cfg, userText, image) {
 	const parts = [{ text: userText }];
 	if (image) parts.push({ inlineData: {
 		mimeType: image.mime,
@@ -30558,15 +30576,15 @@ async function callGemini(fetchFn, key, task, userText, image) {
 				"x-goog-api-key": key
 			},
 			body: JSON.stringify({
-				systemInstruction: { parts: [{ text: SYSTEM[task] }] },
+				systemInstruction: { parts: [{ text: cfg.system }] },
 				contents: [{
 					role: "user",
 					parts
 				}],
 				generationConfig: {
 					responseMimeType: "application/json",
-					responseSchema: SCHEMA[task],
-					temperature: task === "explain" ? .2 : task === "evolve" ? .7 : .4
+					responseSchema: cfg.schema,
+					temperature: cfg.temperature
 				}
 			})
 		});

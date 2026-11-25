@@ -13,7 +13,7 @@ import { sessionProblem } from './bourse/routes.js';
 import { HttpError, json, NO_STORE, type Env } from './http.js';
 import type { FetchFn } from './okx.js';
 import type { SupabaseConfig } from './supabase.js';
-import { callGemini, DAILY_CALLS, GeminiError, MODEL, parisDay, type GeminiReply } from './gemini-pine.js';
+import { BACKTEST_ROUTES_FILTER, callGemini, DAILY_CALLS, GeminiError, MODEL, parisDay, type GeminiReply } from './gemini-pine.js';
 
 export { DAILY_CALLS, GEMINI, GeminiError, MODEL, parisDay, SCHEMA, SYSTEM } from './gemini-pine.js';
 export type { GeminiReply } from './gemini-pine.js';
@@ -120,7 +120,7 @@ export async function handleAi(request: Request, env: Env, fetchFn: FetchFn, cfg
     await db.insert('bt_ai_calls', [{ day, route: t, model: MODEL, status: 200, cached: true }]);
     return json({ ok: true, task: t, model: MODEL, cached: true, ...hit[0].response }, NO_STORE);
   }
-  const used = await db.count('bt_ai_calls', { day: `eq.${day}`, cached: 'eq.false' });
+  const used = await db.count('bt_ai_calls', { day: `eq.${day}`, cached: 'eq.false', route: BACKTEST_ROUTES_FILTER });
   if (used >= DAILY_CALLS) throw new HttpError(429, `plafond du terminal atteint : ${DAILY_CALLS} appels à Gemini aujourd’hui (offre gratuite, T-063)`);
   let reply: GeminiReply;
   try {
@@ -141,6 +141,6 @@ export async function handleAi(request: Request, env: Env, fetchFn: FetchFn, cfg
 /** État de l'assistant : clé présente, appels du jour, plafond. */
 export async function aiStatus(env: Env, fetchFn: FetchFn, cfg: SupabaseConfig, now: number) {
   const day = parisDay(now);
-  const used = await createBourseDb(cfg, fetchFn).count('bt_ai_calls', { day: `eq.${day}`, cached: 'eq.false' });
+  const used = await createBourseDb(cfg, fetchFn).count('bt_ai_calls', { day: `eq.${day}`, cached: 'eq.false', route: BACKTEST_ROUTES_FILTER });
   return { configured: Boolean(env.GEMINI_API_KEY?.trim()), model: MODEL, calls_today: used, daily_calls: DAILY_CALLS, day, tier: 'gratuite (T-063)' };
 }
