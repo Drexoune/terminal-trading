@@ -11,6 +11,7 @@ import {
   ackAlerts, createRule, deleteRule, draftToBody, EMPTY_DRAFT, FORM_KINDS, GAP_BANKS, KIND_LABEL, ruleChip, setRuleChannels, setRuleState,
   sortEvents, sortRules, telegramText, testTelegram, unacked,
   type AlertEvent, type AlertKind, type AlertRule, type AlertSummary, type Channel, type RuleDraft,
+  judgeOf, type OracleAlerts,
 } from '../../alerts/alerts';
 import type { ReleaseFigure } from '../../calendar/releases';
 import { useSettings } from '../../config/settings';
@@ -40,6 +41,8 @@ export function AlertsScreen() {
     ? (online && !online.ok ? `Alertes en ligne : ${online.reason}.` : summary === undefined ? 'Alertes en ligne : chargement…' : null)
     : summary === undefined ? 'Service alert non reçu : ajouter « alert » à GATEWAY_SERVICES dans le .env de la passerelle, puis la relancer.' : null;
   const tg = summary?.telegram;
+  const oracle = useValue<OracleAlerts>('alert:oracle');
+  const judge = judgeOf(oracle, now);
 
   return (
     <>
@@ -52,6 +55,7 @@ export function AlertsScreen() {
               : tg.last_ok === false ? 'Telegram · dernier envoi en échec'
                 : tg.last_ms ? `Telegram · envoyé ${fmtHm(tg.last_ms, 'Europe/Paris')}` : 'Telegram · prêt'}
           </Chip>
+          {mode === 'online' && <span className={`chip ${judge.live ? 'chip--live' : 'chip--hot'}`} title={judge.title} data-testid="alert-judge">{judge.text}</span>}
         </>} />
       <div className="content alerts" data-screen="alerts">
         {unavailable ? (
@@ -260,6 +264,31 @@ function NewRulePanel() {
             <input className="input num" inputMode="decimal" placeholder="5" value={d.gapPts} onChange={(e) => set('gapPts', e.target.value)} />
           </label>
           <p className="lbl lbl--s">Évaluée chaque minute en Mode Online (tâche rates) ; se réarme quand l’écart repasse sous le seuil.</p>
+        </>)}
+        {d.kind === 'liquidations' && (<>
+          <label className="field"><span className="lbl lbl--s">Montant liquidé au moins (M$)</span>
+            <input className="input num" inputMode="decimal" placeholder="10" value={d.liqUsd} onChange={(e) => set('liqUsd', e.target.value)} />
+          </label>
+          <label className="field"><span className="lbl lbl--s">Sur une fenêtre de (minutes)</span>
+            <input className="input num" inputMode="numeric" value={d.liqWindow} onChange={(e) => set('liqWindow', e.target.value)} />
+          </label>
+          <label className="field"><span className="lbl lbl--s">Positions liquidées</span>
+            <select className="input" value={d.liqSide} onChange={(e) => set('liqSide', e.target.value as RuleDraft['liqSide'])}>
+              <option value="les deux">Longues et courtes</option><option value="long">Longues</option><option value="short">Courtes</option>
+            </select>
+          </label>
+          <p className="lbl lbl--s">Jugée sur la machine Oracle (T-071) : OKX, Binance, Bybit ; Binance et OKX sont des planchers. Silencieuse si la machine est injoignable.</p>
+        </>)}
+        {d.kind === 'wall' && (<>
+          <label className="field"><span className="lbl lbl--s">Taille du mur au moins (BTC, carnet agrégé)</span>
+            <input className="input num" inputMode="decimal" placeholder="200" value={d.wallBtc} onChange={(e) => set('wallBtc', e.target.value)} />
+          </label>
+          <label className="field"><span className="lbl lbl--s">Côté</span>
+            <select className="input" value={d.wallSide} onChange={(e) => set('wallSide', e.target.value as RuleDraft['wallSide'])}>
+              <option value="les deux">Achat ou vente</option><option value="achat">Achat</option><option value="vente">Vente</option>
+            </select>
+          </label>
+          <p className="lbl lbl--s">Changement observé du carnet, jamais un stop supposé. Jugée sur la machine Oracle (T-071).</p>
         </>)}
         <div className="rule-form__channels" role="group" aria-label="Canaux">
           <span className="lbl lbl--s">Canaux : écran, et</span>

@@ -1,0 +1,28 @@
+# Alertes à la seconde (T-071), installé par deploy/oracle/installer.sh.
+# Secrets dans /etc/terminal/alerts.env (root:terminal, 0640), posés par « deployer.sh <ip> secrets ».
+[Unit]
+Description=TERMINAL - alertes a la seconde (T-071)
+After=network-online.target terminal-micro.service
+Wants=network-online.target
+ConditionPathExists=/etc/terminal/alerts.env
+
+[Service]
+User=terminal
+Group=terminal
+EnvironmentFile=/etc/terminal/alerts.env
+Environment=ALERTS_STATUS=/var/lib/terminal-alerts/status.json
+Environment=MICRO_URL=http://127.0.0.1:8720
+ExecStart=/usr/bin/node /opt/terminal-alerts/alerts.mjs
+Restart=always
+RestartSec=5
+TimeoutStopSec=10
+Nice=5
+MemoryMax=300M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-alerts
+
+[Install]
+WantedBy=multi-user.target

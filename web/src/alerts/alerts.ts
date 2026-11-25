@@ -7,7 +7,7 @@ import { fetchJson } from '../data/gateway';
 import { refreshAlertsAfterWrite } from '../data/online/alerts';
 import { fmtHm } from '../lib/time';
 
-export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category' | 'rate_gap';
+export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category' | 'rate_gap' | 'liquidations' | 'wall';
 export type AlertState = 'armée' | 'déclenchée' | 'désactivée';
 export type Channel = 'écran' | 'telegram' | 'voix';
 
@@ -59,6 +59,7 @@ export const KIND_LABEL: Record<AlertKind, string> = {
   release: 'Chiffre publié', surprise: 'Surprise', keyword: 'Mot-clé (fil d’actus)',
   event_watch: 'Réel d’un événement (cloche du calendrier)', news_category: 'Catégorie du fil d’actus',
   rate_gap: 'Écart entre sources (Taux)',
+  liquidations: 'Liquidations (microstructure)', wall: 'Mur retiré (microstructure)',
 };
 
 /** Banques de l'écran Taux (règle rate_gap) ; '' : toutes. */
@@ -100,6 +101,23 @@ export function telegramText(e: AlertEvent): string | null {
   }
 }
 
+// --- machine Oracle (T-071) -----------------------------------------------------------------
+
+/** Battement de cœur de terminal-alerts (server/alerts/main.ts), toutes les 30 s. */
+export interface OracleAlerts { ok: boolean; at: number; armed: number; fired: number; ws: { status: string; reconnects: number; last_error: string | null } | null;
+  last_trade_ms: Record<string, number>; micro_stream: { connected: boolean; error: string | null } }
+
+/** Qui juge les prix : Oracle à la seconde si son battement a moins de 90 s et sa WebSocket est connectée, sinon Supabase à la minute. */
+export function judgeOf(o: OracleAlerts | undefined, now: number): { text: string; live: boolean; title: string } {
+  if (o && now - o.at < 90_000 && o.ok) {
+    return { text: 'Prix · Oracle à la seconde', live: true,
+      title: `Machine Oracle : trades OKX en direct, ${o.armed} règle(s) armée(s), microstructure ${o.micro_stream.connected ? 'reçue' : `injoignable (${o.micro_stream.error ?? '—'})`} (T-071)` };
+  }
+  return { text: 'Prix · Supabase à la minute', live: false,
+    title: o ? `Machine Oracle muette depuis ${Math.round((now - o.at) / 1000)} s ou WebSocket coupée : repli Supabase (bougies 1 min, 2 à 3 min de retard) ; liquidations et murs retirés en pause`
+      : 'Machine Oracle jamais vue : alertes de prix à la minute (Supabase) ; liquidations et murs retirés indisponibles' };
+}
+
 // --- formulaire de création --------------------------------------------------------------
 
 export interface RuleDraft {
@@ -120,6 +138,11 @@ export interface RuleDraft {
   words: string;
   gapBank: string;           // '' : toutes les banques
   gapPts: string;            // seuil d'écart en points
+  liqUsd: string;            // liquidations : montant en M$ (T-071)
+  liqWindow: string;         // liquidations : fenêtre en minutes
+  liqSide: 'long' | 'short' | 'les deux';
+  wallBtc: string;           // mur retiré : taille minimale en BTC
+  wallSide: 'achat' | 'vente' | 'les deux';
   telegram: boolean;
   voice: boolean;
 }
@@ -127,7 +150,8 @@ export interface RuleDraft {
 export const EMPTY_DRAFT: RuleDraft = {
   kind: 'price', inst: 'BTC-USDT-SWAP', level: '', direction: 'les deux', threshold: '', side: 'au-dessus',
   minutes: '5', capturedOnly: true, impacts: [], currencies: '', release: '', indicator: '', zMin: '', rawMin: '',
-  words: '', gapBank: 'FED', gapPts: '5', telegram: true, voice: false,
+  words: '', gapBank: 'FED', gapPts: '5', liqUsd: '10', liqWindow: '5', liqSide: 'les deux', wallBtc: '200', wallSide: 'les deux',
+  telegram: true, voice: false,
 };
 
 /** Saisie à la française (« 110 000,5 ») -> texte décimal (« 110000.5 ») ; null si illisible. */
@@ -175,13 +199,24 @@ export function draftToBody(d: RuleDraft): { body: { kind: AlertKind; params: Re
       if (!pts || Number(pts) <= 0 || Number(pts) > 50) return { error: 'Écart : saisir un seuil de 0 à 50 points.' };
       return wrap({ bank: d.gapBank || null, threshold_pts: pts });
     }
+    case 'liquidations': {
+      const m = parseDecimal(d.liqUsd), w = Number(d.liqWindow);
+      if (!m || Number(m) < 0.1) return { error: 'Liquidations : saisir un montant d’au moins 0,1 M$.' };
+      if (!Number.isInteger(w) || w < 1 || w > 60) return { error: 'Liquidations : fenêtre de 1 à 60 minutes.' };
+      return wrap({ min_usd: String(Math.round(Number(m) * 1e6)), window_min: w, side: d.liqSide });
+    }
+    case 'wall': {
+      const b = parseDecimal(d.wallBtc);
+      if (!b || Number(b) < 10) return { error: 'Mur retiré : saisir une taille d’au moins 10 BTC.' };
+      return wrap({ min_btc: b, side: d.wallSide });
+    }
     default:
       return { error: 'Cette alerte se crée depuis son écran : cloche du Calendrier, ou « Alertes Telegram » du fil d’actus.' };
   }
 }
 
 /** Sortes proposées dans le formulaire de /alertes (les autres se posent depuis leur écran). */
-export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'rate_gap'];
+export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'rate_gap', 'liquidations', 'wall'];
 
 // --- écritures ------------------------------------------------------------------------------
 

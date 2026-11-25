@@ -15,8 +15,8 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 
 Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; jusqu'à 2 OCPU et 12 Go gratuits si les tâches ci-dessous l'exigent (l'activité du processeur suffit alors à ne pas être « inactif »).
 
-- [ ] **Recherche autonome du backtest** : déplacer la boucle de `bt-jobs` (Supabase, découpée par la limite de 2 s de calcul) sur la machine, d'un seul tenant
-- [ ] **Alertes à la seconde** : prix contrôlé sur chaque trade (au lieu du haut et du bas de la bougie 1 min, T-046) ; nouvelles alertes de liquidations (ex. > 10 M$ en 1 min) et de mur retiré ; envoi Telegram — révision de T-046 à décider
+- [ ] **Recherche autonome du backtest** (T-070, `0d6b2c1`) : code et service installés ; reste les secrets (`deployer.sh <ip> secrets`) et l'essai réel — déplacer la boucle de `bt-jobs` (Supabase, découpée par la limite de 2 s de calcul) sur la machine, d'un seul tenant
+- [ ] **Alertes à la seconde** (T-071) : code, écran et service installés ; reste les secrets, le redéploiement de `p1-jobs` (nouvelles sortes) et l'essai réel — prix contrôlé sur chaque trade (au lieu du haut et du bas de la bougie 1 min, T-046) ; nouvelles alertes de liquidations (ex. > 10 M$ en 1 min) et de mur retiré ; envoi Telegram — révision de T-046 à décider
 - [ ] **Fil d'actus en temps réel** : WebSocket de Tree of Alpha tenue par la machine (abandonnée en ligne par T-046) — révision de T-046 à décider
 - [ ] **P6 — Track record et positions OKX** : clé en lecture seule côté serveur, positions et exécutions suivies en continu, journal tenu fenêtre fermée
 - [ ] **P6 — Récap de session IA** (Asie, Londres, New York) à partir des données complètes de la séance (CVD, liquidations, volume, carnet)

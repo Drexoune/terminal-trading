@@ -37,12 +37,13 @@ export function alertRoute(request: Request): { route: string; id: number | null
 
 export async function alertState(cfg: SupabaseConfig, fetchFn: FetchFn, now: number) {
   const q = (params: Record<string, string>) => rest(cfg, fetchFn, 'GET', 'p1_state', { select: 'key,value', ...params }, false);
-  const [rules, fired, summary] = await Promise.all([
+  const [rules, fired, summary, oracle] = await Promise.all([
     q({ key: 'like.alert:rule:*', order: 'key.asc', limit: '500' }),
     q({ key: 'like.alert:fired:*', order: 'value->fired_ms.desc', limit: String(FIRED_SHOWN) }),
     q({ key: 'eq.alert:summary', limit: '1' }),
+    q({ key: 'eq.alert:oracle', limit: '1' }),          // battement de cœur de la machine Oracle (T-071)
   ]);
-  const items = [...rules.rows, ...fired.rows, ...summary.rows].map((r) => {
+  const items = [...rules.rows, ...fired.rows, ...summary.rows, ...oracle.rows].map((r) => {
     const row = r as { key: string; value: unknown };
     return [row.key, row.value] as [string, unknown];
   });

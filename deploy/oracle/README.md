@@ -82,3 +82,14 @@ Exploitation :
 - `/micro/health` → champ `bt.last_pass`.
 
 Révoquer la clé « oracle » dans Supabase coupe le service ; Supabase continue seul.
+
+## Alertes à la seconde (T-071)
+
+Le service `terminal-alerts` juge les alertes de prix (BTC et ETH perp OKX) sur chaque trade. Il juge aussi les alertes de liquidations et de mur retiré, à partir du flux local de la microstructure. Supabase reste le repli des prix, à la minute, avec la même clé de minute, si bien qu'une alerte n'est jamais envoyée deux fois.
+
+Secrets : `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` et la clé « oracle », dans `/etc/terminal/alerts.env`. Ils sont posés par le même `deployer.sh <IP> secrets`, qui écrit un fichier par service.
+
+Exploitation :
+- `journalctl -u terminal-alerts` ;
+- `/micro/health` → champ `alerts` ;
+- l'écran `/alertes` affiche « Prix · Oracle à la seconde » tant que le battement de cœur (clé `alert:oracle`, toutes les 30 s) est frais.

@@ -34,3 +34,4 @@ web/e2e/__artifacts__/
 # Paquet du service de la machine Oracle (web/scripts/build-micro-server.mjs)
 server/micro/dist/
 server/bt/dist/
+server/alerts/dist/

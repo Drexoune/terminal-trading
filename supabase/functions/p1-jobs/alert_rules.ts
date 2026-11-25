@@ -5,7 +5,11 @@
 
 import { INDICATORS } from './calendar.ts';
 
-export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category', 'rate_gap'] as const;
+export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category', 'rate_gap', 'liquidations', 'wall'] as const;
+/** Sortes jugées par la machine Oracle seulement (T-071), sur le flux de la microstructure ; inconnues de la passerelle Python. */
+export const ORACLE_KINDS = ['liquidations', 'wall'] as const;
+export const LIQ_SIDES = ['long', 'short', 'les deux'] as const;
+export const WALL_SIDES = ['achat', 'vente', 'les deux'] as const;
 /** Écran Taux (P2) : banques suivies et leur nom court. */
 export const RATE_BANKS: Record<string, string> = { FED: 'Fed', BCE: 'BCE', BOE: 'BoE', BOJ: 'BoJ', BNS: 'BNS', BOC: 'BoC', RBA: 'RBA', RBNZ: 'RBNZ' };
 /** Catégories du fil d'actus (news_rules.ts). */
@@ -187,6 +191,21 @@ export function validate(kind: string, params: unknown, channels: unknown, instr
     const thr = decimalParam(p, 'threshold_pts')!;
     if (cmp(dec(thr)!, { n: 50n, scale: 0 }) > 0) throw new RuleError('seuil d\'écart hors bornes (50 points au plus)');
     out = { bank, threshold_pts: thr };
+  } else if (kind === 'liquidations') {
+    const side = p.side ?? 'les deux';
+    if (!(LIQ_SIDES as readonly string[]).includes(side as string)) throw new RuleError('côté : long, short ou les deux');
+    const w = p.window_min ?? 5;
+    if (typeof w !== 'number' || !Number.isInteger(w) || w < 1 || w > 60) throw new RuleError('fenêtre : entier de 1 à 60 minutes');
+    const usd = decimalParam(p, 'min_usd')!;
+    if (cmp(dec(usd)!, { n: 100_000n, scale: 0 }) < 0) throw new RuleError('montant minimal : 100 000 $');
+    if (cmp(dec(usd)!, { n: 10_000_000_000n, scale: 0 }) > 0) throw new RuleError('montant hors bornes (10 Md$ au plus)');
+    out = { min_usd: usd, window_min: w, side };
+  } else if (kind === 'wall') {
+    const side = p.side ?? 'les deux';
+    if (!(WALL_SIDES as readonly string[]).includes(side as string)) throw new RuleError('côté : achat, vente ou les deux');
+    const btc = decimalParam(p, 'min_btc')!;
+    if (cmp(dec(btc)!, { n: 10n, scale: 0 }) < 0) throw new RuleError('taille minimale : 10 BTC');
+    out = { min_btc: btc, side };
   } else if (kind === 'news_category') {
     const cat = p.category;
     if (typeof cat !== 'string' || !(cat in NEWS_CATEGORIES)) throw new RuleError(`catégorie inconnue : ${pyRepr(cat)}`);
@@ -231,6 +250,14 @@ export function describe(kind: string, p: Params): [string, string] {
   if (kind === 'event_watch') return [`Réel publié : ${p.title} (${p.currency})`, 'Calendrier · événement'];
   if (kind === 'news_category') {
     return [`Fil d’actus : ${NEWS_CATEGORIES[p.category as string]}${p.urgent_only ? ' · fort impact' : ''}`, 'Fil d’actus · catégorie'];
+  }
+  if (kind === 'liquidations') {
+    const who = ({ long: ' longues', short: ' courtes' } as Record<string, string>)[p.side as string] ?? '';
+    return [`Liquidations${who} ≥ ${usdM(p.min_usd)} en ${p.window_min}${NBSP}min`, 'Microstructure · Oracle'];
+  }
+  if (kind === 'wall') {
+    const way = ({ achat: ' côté achat', vente: ' côté vente' } as Record<string, string>)[p.side as string] ?? '';
+    return [`Mur retiré ≥ ${frNum(p.min_btc)}${NBSP}BTC${way}`, 'Microstructure · Oracle'];
   }
   if (kind === 'rate_gap') {
     const scope = p.bank ? RATE_BANKS[p.bank as string] : 'toutes les banques';
@@ -302,6 +329,30 @@ export function keywordHit(p: Params, text: string): string | null {
 export function priceMessage(p: Params, prev: number, px: number): [string, string] {
   const way = px >= prev ? 'à la hausse' : 'à la baisse';
   return [`${instLabel(p.inst as string)} franchit ${frNum(p.level)} ${way}`, `Dernier ${frNum(px)} (précédent ${frNum(prev)}) · OKX`];
+}
+
+/** Montant en millions de dollars : « 2,5 M$ » (1 décimale au plus, zéros retirés). */
+export function usdM(x: unknown): string {
+  const v = Number(x) / 1e6;
+  if (!Number.isFinite(v)) return '—';
+  return `${frNum(String(Math.round(v * 10) / 10))}${NBSP}M$`;
+}
+
+export const VENUE_FR: Record<string, string> = { okx: 'OKX', binance: 'Binance', bybit: 'Bybit', hyperliquid: 'Hyperliquid' };
+
+/** Liquidations cumulées sur la fenêtre (T-071) : total, détail par plateforme, rappel des planchers. */
+export function liquidationsMessage(p: Params, total: number, byVenue: Record<string, number>, count: number): [string, string] {
+  const who = ({ long: 'longues', short: 'courtes' } as Record<string, string>)[p.side as string] ?? 'longues et courtes';
+  const detail = Object.entries(byVenue).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([v, usd]) => `${VENUE_FR[v] ?? v} ${usdM(usd)}`).join(' · ');
+  return [`Liquidations : ${usdM(total)} en ${p.window_min}${NBSP}min (${who})`,
+    `${count} liquidation(s) : ${detail || '—'} · Binance et OKX diffusent au plus une liquidation par seconde : minimum · Hyperliquid : aucun flux public`];
+}
+
+/** Mur retiré (T-071) : changement observé du carnet agrégé, jamais un stop supposé. */
+export function wallMessage(w: { px: number; sz: number; side: string; left: number }, hmParis: string): [string, string] {
+  const side = w.side === 'bid' ? 'achat' : 'vente';
+  return [`Mur retiré : ${frNum(String(Math.round(w.sz)))}${NBSP}BTC à ${frNum(String(w.px))} (${side})`,
+    `Il reste ${frNum(String(Math.round(w.left * 10) / 10))}${NBSP}BTC à ${hmParis} (Paris) · carnets agrégés OKX, Binance, Bybit, Hyperliquid · changement observé du carnet, jamais un stop supposé`];
 }
 
 export function fundingMessage(p: Params, rate: number): [string, string] {

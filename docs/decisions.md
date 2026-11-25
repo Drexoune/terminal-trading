@@ -71,6 +71,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-068 | 25/11/2026 | Statistiques d'OKX pour P5 | Volume preneur (perp, spot) et historique de l'OI de `www.okx.com` relayés par la fonction Vercel `api/okx-time.ts` (`?stat=`), liste blanche fixe, cache CDN ; complète T-067 (ces statistiques n'acceptent pas le navigateur) |
 | T-069 | 25/11/2026 | Microstructure en continu | Le moteur de P5 tourne 24 h/24 sur une machine Oracle Cloud « Always Free » (région de rattachement en France), compte jamais passé en paiement à l'usage ; machine A1 petite (1 cœur, 2 Go) pour ne pas être jugée inactive ; plan à valider avant tout code ; révise T-065 (« aucun serveur ») |
 | T-070 | 25/11/2026 | Recherche du backtest sur Oracle | La boucle de `bt-jobs` tourne aussi sur la machine Oracle (service `terminal-bt`, passages de 5 min, bail de 6 min renouvelé), Supabase en repli ; secrets sur la machine : clé secrète Supabase dédiée « oracle » et GEMINI_API_KEY dans `/etc/terminal/bt.env` (0640), lus par `terminal-bt` seul ; révise T-069 (« aucun secret sur la machine ») |
+| T-071 | 25/11/2026 | Alertes à la seconde | Prix BTC et ETH jugés sur chaque trade par la machine Oracle (service `terminal-alerts`), Supabase à la minute en repli, même clé de dédoublonnage ; nouvelles alertes de liquidations et de mur retiré (Oracle seulement) ; secrets Telegram et clé « oracle » dans `/etc/terminal/alerts.env` ; révise T-046 |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -782,4 +783,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - règles inchangées : Gemini gratuit seulement, plafond de 50 appels par jour de Paris compté dans `bt_ai_calls` (T-063), hors échantillon à l'aveugle (T-064) ;
 - **secrets sur la machine** (révise T-069) : URL de Supabase, clé secrète Supabase **dédiée** « oracle » (révocable seule) et GEMINI_API_KEY, dans `/etc/terminal/bt.env` (root:terminal, 0640), lus par `terminal-bt` seul ; `terminal-micro` reste sans secret ; posés par `deploy/oracle/deployer.sh <ip> secrets` depuis le `.env` du Mac, par l'entrée standard de SSH ;
 - `terminal-bt` passe après la microstructure : `Nice=10`, `CPUQuota=80%`, `MemoryMax=1500M`.
+
+## T-071 — Alertes à la seconde sur Oracle · 25/11/2026
+
+**Contexte.** Deuxième feature Oracle de `docs/todo.md`. T-046 jugeait les alertes de prix à la minute sur les bougies 1 min (2 à 3 min de retard, bougies écrites par le collecteur environ 2 min après leur ouverture). Plan validé par Clément (même fichier de plan que T-070).
+
+**Décision de Clément** (approbation du plan) :
+
+- les alertes de prix (BTC-USDT-SWAP, ETH-USDT-SWAP) sont jugées sur **chaque trade** par la machine Oracle, service `terminal-alerts`, avec le moteur d'alertes existant (`p1-jobs/alerts.ts` : règles, base, Telegram) ;
+- la clé de dédoublonnage est la minute du franchissement au format que PostgREST renvoie pour `okx_candles_1m.t` (`2026-11-25T17:42:00+00:00`, relevé le 25/11/2026) : Supabase, inchangé, reste le repli à la minute et ne peut pas doubler une alerte ;
+- deux nouvelles sortes, sur Oracle seulement, nourries par le flux local de la microstructure (aucun second collecteur) : **liquidations** (montant sur une fenêtre de 1 à 60 min, rappel des planchers de Binance et d'OKX) et **mur retiré** (changement observé du carnet, jamais un stop supposé) ; la passerelle Python du Mode Local ne les connaît pas ;
+- secrets : `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` et la clé Supabase « oracle » dans `/etc/terminal/alerts.env` (root:terminal, 0640), lus par `terminal-alerts` seul ;
+- **révise T-046** pour les alertes de prix ; funding, calendrier et actus restent sur Supabase à la minute ; Tree of Alpha fait l'objet de la feature suivante.
 

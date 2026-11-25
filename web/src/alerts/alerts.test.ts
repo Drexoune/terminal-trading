@@ -74,3 +74,27 @@ describe('règle d’écart entre sources (P2, R5)', () => {
     expect(draftToBody({ ...EMPTY_DRAFT, kind: 'rate_gap', gapPts: '80' })).toEqual({ error: 'Écart : saisir un seuil de 0 à 50 points.' });
   });
 });
+
+describe('sortes de la machine Oracle (T-071)', () => {
+  it('liquidations : M$ saisis → dollars ; fenêtre bornée', () => {
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'liquidations', liqUsd: '2,5', liqWindow: '3', liqSide: 'long', telegram: true }))
+      .toEqual({ body: { kind: 'liquidations', params: { min_usd: '2500000', window_min: 3, side: 'long' }, channels: ['écran', 'telegram'] } });
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'liquidations', liqWindow: '90' })).toEqual({ error: 'Liquidations : fenêtre de 1 à 60 minutes.' });
+  });
+  it('mur retiré : taille minimale de 10 BTC', () => {
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'wall', wallBtc: '150', wallSide: 'vente', telegram: false }))
+      .toEqual({ body: { kind: 'wall', params: { min_btc: '150', side: 'vente' }, channels: ['écran'] } });
+    expect(draftToBody({ ...EMPTY_DRAFT, kind: 'wall', wallBtc: '5' })).toEqual({ error: 'Mur retiré : saisir une taille d’au moins 10 BTC.' });
+  });
+});
+
+describe('juge des prix (T-071)', () => {
+  const o = { ok: true, at: 1_000_000, armed: 2, fired: 0, ws: { status: 'connected', reconnects: 0, last_error: null }, last_trade_ms: {}, micro_stream: { connected: true, error: null } };
+  it('Oracle à la seconde si son battement est frais et sa WebSocket connectée, sinon Supabase', async () => {
+    const { judgeOf } = await import('./alerts');
+    expect(judgeOf(o, 1_050_000)).toMatchObject({ text: 'Prix · Oracle à la seconde', live: true });
+    expect(judgeOf(o, 1_100_000)).toMatchObject({ text: 'Prix · Supabase à la minute', live: false });
+    expect(judgeOf({ ...o, ok: false }, 1_010_000).live).toBe(false);
+    expect(judgeOf(undefined, 0).title).toMatch(/jamais vue/);
+  });
+});
