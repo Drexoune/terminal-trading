@@ -1,7 +1,10 @@
 // Tâche « loop » de bt-jobs (section Backtest, S4, T-064) : fait avancer la recherche autonome en
 // arrière-plan, navigateur fermé. Appelée chaque minute par pg_cron (supabase/cron-bt.sql) quand
 // une recherche attend son tour ; chaque passage prend une recherche, la verrouille (bail de
-// 150 s), fait autant d'essais que son budget de calcul le permet, puis rend la main.
+// 150 s), fait autant d'essais que son budget de calcul le permet, puis rend la main. La machine
+// Oracle (T-070, server/bt) appelle la même boucle avec de grands budgets et un bail renouvelé
+// après chaque essai : tant qu'elle tient la recherche, le cron la trouve occupée ; si elle
+// s'arrête, le bail expire et Supabase reprend.
 //
 // Hybride (T-064) : Gemini réécrit la logique tous les `rewrite_every` essais (et répare un script
 // qui ne tourne pas) ; entre deux, la boucle fait varier les paramètres du meilleur essai, sans IA.
@@ -19,6 +22,7 @@ export interface LoopDeps {
   now: () => number; rest: Rest; env: (n: string) => string | undefined;
   wallBudgetMs?: number;      // durée d'un passage (sous la limite de 150 s des Edge Functions)
   computeBudgetMs?: number;   // temps de calcul du moteur par passage (limite de CPU des Edge Functions)
+  leaseMs?: number;           // durée du bail, renouvelé après chaque essai (machine Oracle, T-070 : passages longs)
   token?: () => string;
 }
 
@@ -52,7 +56,8 @@ export async function runLoop(d: LoopDeps): Promise<Record<string, Json>> {
   const loop = due[0];
   // Bail : un seul passage à la fois sur une recherche.
   const token = (d.token ?? (() => crypto.randomUUID()))();
-  await rest.update('bt_loops', { id: `eq.${loop.id}`, lease_until: `lt.${iso(now)}` }, { lease_until: iso(now + LEASE_MS), lease_token: token });
+  const leaseMs = d.leaseMs ?? LEASE_MS;
+  await rest.update('bt_loops', { id: `eq.${loop.id}`, lease_until: `lt.${iso(now)}` }, { lease_until: iso(now + leaseMs), lease_token: token });
   const mine = await rest.select('bt_loops', { select: 'id', id: `eq.${loop.id}`, lease_token: `eq.${token}` });
   if (!mine.length) return { ok: true, busy: loop.id };
 
@@ -128,6 +133,12 @@ export async function runLoop(d: LoopDeps): Promise<Record<string, Json>> {
     return null;
   };
 
+  /** Renouvelle le bail avant d'écrire un essai ; false s'il a expiré et été repris par un autre passage. */
+  const hold = async (): Promise<boolean> => {
+    await rest.update('bt_loops', { id: `eq.${loop.id}`, lease_token: `eq.${token}` }, { lease_until: iso(d.now() + leaseMs) });
+    return (await rest.select('bt_loops', { select: 'id', id: `eq.${loop.id}`, lease_token: `eq.${token}` })).length > 0;
+  };
+
   const t0 = d.now();
   let compute = 0;
   const wall = d.wallBudgetMs ?? WALL_BUDGET_MS, cpu = d.computeBudgetMs ?? COMPUTE_BUDGET_MS;
@@ -191,6 +202,7 @@ export async function runLoop(d: LoopDeps): Promise<Record<string, Json>> {
         score: ev.score, is_pass: ev.is_pass, oos_pass: ev.is_pass ? ev.oos_pass : null, detail: ev.per, sr_bars: ev.sr_bars, ms: ev.ms }
       : { n, kind: act.kind as AttemptRow['kind'], parent, title, code, inputs, change, gemini_calls: gemini - g0, ok: false, error: ev.error,
         score: null, is_pass: false, oos_pass: null, detail: null, sr_bars: null, ms: ev.ms };
+    if (!(await hold())) return { ok: true, loop: loop.id, lost: true, attempts: attempts.length };
     attempts.push(row);
     if (code) seen.add(core.variantOf(code, inputs));
     if (ev.ok) ev.sr_bars.forEach((s, i) => prior[i].push(s));

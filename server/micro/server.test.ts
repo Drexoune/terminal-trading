@@ -2,7 +2,7 @@
 // Service de la microstructure sur la machine Oracle (T-069) : SSE (état complet puis
 // changements), origines refusées, plafond de clients, sauvegarde et reprise de l'état
 // (carte, liquidations, journal des flux ; refus au-delà d'une heure), arrêt propre.
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { get, type IncomingMessage } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { tmpdir } from 'node:os';
@@ -62,7 +62,9 @@ describe('service SSE', () => {
   });
 
   it('origine inconnue refusée (403) ; santé lisible sans origine', async () => {
-    const s = startMicroServer({ port: 0, host: '127.0.0.1', stateFile: tmp(), origins: [ORIGIN], deps: deps() });
+    const bt = tmp().replace('state.json', 'bt.json');
+    writeFileSync(bt, JSON.stringify({ at: 1, loop: 'L1', attempts: 7, idle: false }));
+    const s = startMicroServer({ port: 0, host: '127.0.0.1', stateFile: tmp(), origins: [ORIGIN], deps: deps(), btStatusFile: bt });
     await new Promise((r) => s.server.once('listening', r));
     const port = (s.server.address() as AddressInfo).port;
     expect((await readSse(port, 'https://ailleurs.example', () => true)).status).toBe(403);
@@ -72,6 +74,7 @@ describe('service SSE', () => {
     expect(health.status).toBe(200);
     expect(health.body).toMatchObject({ ok: true, kind: 'server', host: 'Oracle', restored_from: null });
     expect(typeof health.body.sys_mem_pct).toBe('number');
+    expect(health.body.bt).toEqual({ last_pass: { at: 1, loop: 'L1', attempts: 7, idle: false } });
     await s.stop();
   });
 

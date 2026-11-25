@@ -3,7 +3,8 @@
 // état en SSE (sse.ts) ; Caddy le sert en https devant. Aucune clé : données publiques seulement.
 //
 //   GET /micro/stream   état complet puis changements (text/event-stream)
-//   GET /micro/health   santé : démarrage, sauvegarde, mémoire système, clients, flux
+//   GET /micro/health   santé : démarrage, sauvegarde, mémoire système, clients, flux, dernier
+//                       passage de la recherche du backtest (T-070)
 //
 // Rythme : carnet et funding 4 fois par seconde, état complet (carte, liquidations, flux)
 // toutes les 5 s ; sauvegarde toutes les 60 s et à l'arrêt (SIGTERM), relue au démarrage si elle
@@ -26,6 +27,8 @@ export const DEFAULT_ORIGINS = ['https://terminal-trading-steel.vercel.app', 'ht
 
 export interface ServerOptions {
   port: number; host: string; stateFile: string; origins: readonly string[];
+  /** État de la recherche du backtest (T-070, server/bt), sans secret ; repris dans la santé. */
+  btStatusFile?: string;
   deps?: { WebSocket: WebSocketCtor; fetch: FetchLike; now: () => number; random: () => number };
 }
 
@@ -78,7 +81,8 @@ export function startMicroServer(o: ServerOptions) {
       const feeds = [...hub.latest].filter(([k]) => k.startsWith('micro:feed:'))
         .map(([, f]) => { const s = f as { name: string; status: string; last_message_ms: number | null; reconnects: number }; return { name: s.name, status: s.status, last_message_ms: s.last_message_ms, reconnects: s.reconnects }; });
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...(origin ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' } : {}) });
-      res.end(JSON.stringify({ ok: true, ...source(), load: loadavg(), feeds }));
+      const bt = o.btStatusFile ? loadJson<Record<string, unknown>>(o.btStatusFile) : null;
+      res.end(JSON.stringify({ ok: true, ...source(), load: loadavg(), feeds, bt: bt ? { last_pass: bt } : null }));
       return;
     }
     res.writeHead(404).end();
@@ -105,6 +109,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     port: Number(env.MICRO_PORT ?? 8720), host: env.MICRO_HOST ?? '127.0.0.1',
     stateFile: env.MICRO_STATE ?? '/var/lib/terminal-micro/state.json',
     origins: env.MICRO_ORIGINS ? env.MICRO_ORIGINS.split(',').map((x) => x.trim()).filter(Boolean) : DEFAULT_ORIGINS,
+    btStatusFile: env.MICRO_BT_STATUS ?? '/var/lib/terminal-bt/status.json',
   });
   console.log(`micro : service démarré${s.restored ? ' (état sauvegardé relu)' : ''}, port ${env.MICRO_PORT ?? 8720}`);
   const quit = (sig: string) => { console.log(`micro : ${sig}, arrêt propre`); void s.stop().then(() => process.exit(0)); };

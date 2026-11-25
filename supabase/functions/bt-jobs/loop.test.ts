@@ -234,3 +234,34 @@ describe('paquet généré', () => {
     expect(head).toContain(`// sources: ${expected}`);
   });
 });
+
+describe('machine Oracle (T-070) : passages longs, bail renouvelé', () => {
+  it('bail renouvelé après chaque essai, plusieurs essais dans un passage au-delà des 900 ms', async () => {
+    const db = new Db(), clock = { t: T0 };
+    newLoop(db, spec({ max_attempts: 4, max_gemini: 0 }));
+    const renewals: string[] = [];
+    const update = db.update.bind(db);
+    db.update = async (t, f, p) => { if (t === 'bt_loops' && f.lease_token && p.lease_until) renewals.push(String(p.lease_until)); return update(t, f, p); };
+    const r = await runLoop({ ...deps(db, gem(), clock), computeBudgetMs: 600_000, wallBudgetMs: 300_000, leaseMs: 360_000 });
+    const n = db.rows('bt_attempts').length;
+    expect(n).toBeGreaterThan(1);
+    expect(renewals).toHaveLength(n);
+    expect(renewals.every((x) => x === new Date(T0 + 360_000).toISOString())).toBe(true);
+    expect(r).toMatchObject({ ok: true, loop: 'loop-1' });
+  });
+
+  it('bail repris par un autre passage : arrêt sans écrire l’essai suivant', async () => {
+    const db = new Db(), clock = { t: T0 };
+    newLoop(db, spec({ max_attempts: 6, max_gemini: 0 }));
+    const insert = db.insert.bind(db);
+    db.insert = (async (t: string, rows: Row[], returning?: string) => {
+      const out = await insert(t, rows, returning);
+      if (t === 'bt_attempts') db.rows('bt_loops')[0].lease_token = 'autre-passage';   // bail expiré et repris ailleurs
+      return out;
+    }) as typeof db.insert;
+    const r = await runLoop({ ...deps(db, gem(), clock), computeBudgetMs: 600_000, wallBudgetMs: 300_000, leaseMs: 360_000 });
+    expect(r).toMatchObject({ ok: true, lost: true, attempts: 1 });
+    expect(db.rows('bt_attempts')).toHaveLength(1);
+    expect(db.rows('bt_loops')[0].lease_token).toBe('autre-passage');                // pas de libération par-dessus l'autre
+  });
+});

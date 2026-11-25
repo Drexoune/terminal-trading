@@ -2,7 +2,8 @@
 # Installation unique de la machine Oracle (T-069), lancée PAR deployer.sh, sur la machine :
 #   sudo bash installer.sh <nom-https>
 # Node 22 LTS (NodeSource), Caddy (dépôt officiel), utilisateur système « terminal », ports 80/443
-# ouverts dans iptables (l'image Ubuntu d'Oracle rejette tout sauf 22), service systemd,
+# ouverts dans iptables (l'image Ubuntu d'Oracle rejette tout sauf 22), services systemd
+# terminal-micro (T-069) et terminal-bt (T-070, démarre seulement une fois ses secrets posés),
 # mises à jour de sécurité automatiques. Rejouable sans risque.
 set -euo pipefail
 HOST="${1:?usage : sudo bash installer.sh <nom-https>}"
@@ -30,7 +31,8 @@ fi
 
 # Utilisateur et dossiers.
 id terminal >/dev/null 2>&1 || useradd --system --home /opt/terminal-micro --shell /usr/sbin/nologin terminal
-install -d -o terminal -g terminal -m 0755 /opt/terminal-micro /var/lib/terminal-micro
+install -d -o terminal -g terminal -m 0755 /opt/terminal-micro /var/lib/terminal-micro /opt/terminal-bt /var/lib/terminal-bt
+install -d -o root -g terminal -m 0750 /etc/terminal          # secrets de terminal-bt (T-070)
 
 # Ports 80 et 443 avant la règle REJECT de l'image d'Oracle.
 for p in 80 443; do
@@ -41,9 +43,10 @@ netfilter-persistent save
 
 # Service et proxy.
 install -m 0644 terminal-micro.service /etc/systemd/system/terminal-micro.service
+install -m 0644 terminal-bt.service /etc/systemd/system/terminal-bt.service
 sed "s/__HOST__/${HOST}/" Caddyfile.template > /etc/caddy/Caddyfile
 systemctl daemon-reload
-systemctl enable terminal-micro caddy
+systemctl enable terminal-micro terminal-bt caddy
 systemctl reload-or-restart caddy
 
 # Mises à jour de sécurité automatiques.

@@ -70,6 +70,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-063 | 24/11/2026 | IA du backtest | Gemini en offre gratuite seulement (0 $ par jour), modèle le moins cher (Gemini 3.1 Flash-Lite) ; quota gratuit épuisé : « quota gratuit atteint », jamais de bascule payante ; clé dans les secrets de Supabase et les variables de Vercel |
 | T-068 | 25/11/2026 | Statistiques d'OKX pour P5 | Volume preneur (perp, spot) et historique de l'OI de `www.okx.com` relayés par la fonction Vercel `api/okx-time.ts` (`?stat=`), liste blanche fixe, cache CDN ; complète T-067 (ces statistiques n'acceptent pas le navigateur) |
 | T-069 | 25/11/2026 | Microstructure en continu | Le moteur de P5 tourne 24 h/24 sur une machine Oracle Cloud « Always Free » (région de rattachement en France), compte jamais passé en paiement à l'usage ; machine A1 petite (1 cœur, 2 Go) pour ne pas être jugée inactive ; plan à valider avant tout code ; révise T-065 (« aucun serveur ») |
+| T-070 | 25/11/2026 | Recherche du backtest sur Oracle | La boucle de `bt-jobs` tourne aussi sur la machine Oracle (service `terminal-bt`, passages de 5 min, bail de 6 min renouvelé), Supabase en repli ; secrets sur la machine : clé secrète Supabase dédiée « oracle » et GEMINI_API_KEY dans `/etc/terminal/bt.env` (0640), lus par `terminal-bt` seul ; révise T-069 (« aucun secret sur la machine ») |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -769,4 +770,16 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - plan détaillé (service, accès https, sécurité, données servies, tests) présenté et validé avant tout code.
 
 **Révise T-065** sur un point : « aucun stockage côté serveur ». Le reste de T-065 (flux publics, aucune clé, worker du navigateur) demeure ; le worker reste la source en direct quand la machine est injoignable.
+
+## T-070 — Recherche autonome du backtest sur Oracle · 25/11/2026
+
+**Contexte.** Première feature Oracle de `docs/todo.md`. La boucle de la recherche autonome (T-064) avance sur Supabase par passages d'une minute limités à 900 ms de calcul (limite de 2 s de CPU des Edge Functions). Plan validé par Clément : `~/.claude/plans/scalable-purring-treehouse-of-b3553999-b571-4bbf-81b0-a23e98ed9831.md`.
+
+**Décision de Clément** (approbation du plan) :
+
+- la même boucle (`supabase/functions/bt-jobs/loop.ts`) tourne en continu sur la machine Oracle, service `terminal-bt` : passages de 5 min de calcul au plus, bail de 6 min renouvelé après chaque essai ; une recherche dont le bail a été repris ailleurs n'est plus écrite ;
+- repli : si `terminal-bt` s'arrête, le bail expire et le cron de Supabase (`cron-bt.sql`, inchangé) reprend la recherche ;
+- règles inchangées : Gemini gratuit seulement, plafond de 50 appels par jour de Paris compté dans `bt_ai_calls` (T-063), hors échantillon à l'aveugle (T-064) ;
+- **secrets sur la machine** (révise T-069) : URL de Supabase, clé secrète Supabase **dédiée** « oracle » (révocable seule) et GEMINI_API_KEY, dans `/etc/terminal/bt.env` (root:terminal, 0640), lus par `terminal-bt` seul ; `terminal-micro` reste sans secret ; posés par `deploy/oracle/deployer.sh <ip> secrets` depuis le `.env` du Mac, par l'entrée standard de SSH ;
+- `terminal-bt` passe après la microstructure : `Nice=10`, `CPUQuota=80%`, `MemoryMax=1500M`.
 

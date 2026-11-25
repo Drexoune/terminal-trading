@@ -65,3 +65,20 @@ Fonctionnement :
 - Le service écoute sur `127.0.0.1:8720`. Caddy seul est exposé (80/443).
 - Origines autorisées : `MICRO_ORIGINS`, par défaut le site Vercel et `127.0.0.1:5173`.
 - L'état est sauvegardé toutes les 60 s dans `/var/lib/terminal-micro/state.json`.
+
+## Recherche autonome du backtest (T-070)
+
+Le service `terminal-bt` fait tourner la boucle de `bt-jobs` sans la limite de calcul de Supabase. Supabase prend le relais s'il s'arrête : le bail expire en 6 min au plus.
+
+Ses secrets se posent une fois, puis à chaque changement de clé :
+
+1. Supabase → *Project Settings → API Keys → Secret keys → New secret key*, nom **oracle**. Cette clé dédiée se révoque seule, sans toucher aux autres.
+2. Dans le `.env` du Mac (jamais commis), ajouter `ORACLE_SUPABASE_SECRET_KEY=` suivi de la valeur. `SUPABASE_URL` et `GEMINI_API_KEY` y sont déjà.
+3. Lancer `deploy/oracle/deployer.sh <IP> secrets`. Les valeurs partent par l'entrée standard de SSH vers `/etc/terminal/bt.env` (root:terminal, 0640), sans être affichées.
+
+Exploitation :
+- `systemctl status terminal-bt` ;
+- `journalctl -u terminal-bt -n 50` : un passage par ligne ;
+- `/micro/health` → champ `bt.last_pass`.
+
+Révoquer la clé « oracle » dans Supabase coupe le service ; Supabase continue seul.

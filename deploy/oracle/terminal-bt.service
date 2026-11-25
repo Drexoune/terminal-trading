@@ -1,0 +1,29 @@
+# Recherche autonome du backtest (T-064, T-070), installé par deploy/oracle/installer.sh.
+# Secrets dans /etc/terminal/bt.env (root:terminal, 0640), posés par « deployer.sh <ip> secrets ».
+[Unit]
+Description=TERMINAL - recherche autonome du backtest (T-070)
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/terminal/bt.env
+
+[Service]
+User=terminal
+Group=terminal
+EnvironmentFile=/etc/terminal/bt.env
+Environment=BT_STATUS=/var/lib/terminal-bt/status.json
+ExecStart=/usr/bin/node /opt/terminal-bt/bt-runner.mjs
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+# Calcul lourd : jamais au détriment de la microstructure.
+Nice=10
+CPUQuota=80%
+MemoryMax=1500M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-bt
+
+[Install]
+WantedBy=multi-user.target
