@@ -24,10 +24,12 @@ const BUFFER_MAX = 600;                         // 60 s de diffs en attente de l
 interface Diff { U: number; u: number; pu: number; E: number; T: number; b: string[][]; a: string[][] }
 
 export function createBinance(ctx: VenueCtx): VenueAdapter {
-  const book = new LocalBook('binance');
-  let lastU: number | null = null;              // u du dernier diff appliqué
+  const book = new LocalBook('binance', 1, { bounded: true, maxLevels: 1000 });
+  let lastU: number | null = null;              // u du dernier diff appliqué (ou lastUpdateId de l'instantané)
+  let needFirst = false;                        // aucun diff appliqué depuis l'instantané : règle U ≤ id ≤ u
   let buffer: Diff[] = [];
   let fetching = false;
+  let staleTries = 0;                           // instantanés successifs plus anciens que les diffs
   let intervalH = 8;
   const lastAgg = { perp: null as number | null, spot: null as number | null };
   let pub: VenueStream;
@@ -44,14 +46,18 @@ export function createBinance(ctx: VenueCtx): VenueAdapter {
       buffer = [];
       if (pending.length && !(pending[0].U <= id && pending[0].u >= id)) {
         // Instantané plus ancien que les diffs reçus (REST en retard) : nouvel essai dans 500 ms.
+        // Un seul trou journalisé par resynchronisation ; nouvel essai à délai croissant (0,5 à 10 s).
         buffer = pending;
-        pub.gap('instantané REST plus ancien que les diffs : nouvel essai');
-        setTimeout(() => { fetching = false; void loadSnapshot(); }, 500);
+        if (staleTries === 0) pub.gap('instantané REST plus ancien que les diffs : nouvel essai');
+        const wait = Math.min(10_000, 500 * 2 ** staleTries++);
+        setTimeout(() => { fetching = false; void loadSnapshot(); }, wait);
         return;
       }
       book.snapshot(levels(s.bids), levels(s.asks), s.E, ctx.deps.now());
       lastU = id;
-      for (const d of pending) applyDiff(d, ctx.deps.now(), true);
+      needFirst = true;
+      staleTries = 0;
+      for (const d of pending) applyDiff(d, ctx.deps.now());
     } catch (e) {
       pub.gap(`instantané du carnet impossible : ${(e as Error).message}`);
       setTimeout(() => { fetching = false; void loadSnapshot(); }, 2_000);
@@ -61,15 +67,20 @@ export function createBinance(ctx: VenueCtx): VenueAdapter {
   }
 
   function resync(why: string) {
-    book.reset(); lastU = null; buffer = [];
+    book.reset(); lastU = null; buffer = []; needFirst = false; staleTries = 0;
     pub.gap(`carnet resynchronisé : ${why}`);
     void loadSnapshot();
   }
 
-  function applyDiff(d: Diff, recv: number, first = false) {
+  function applyDiff(d: Diff, recv: number) {
     if (lastU === null) return;
-    if (!first && d.pu !== lastU) { resync(`pu ${d.pu} au lieu de ${lastU}`); return; }
-    if (first && d.u < lastU) return;
+    if (needFirst) {
+      // Premier diff après l'instantané (le tampon peut être entièrement plus ancien que lui) :
+      // diffs antérieurs écartés, puis U ≤ lastUpdateId ≤ u, sinon des mises à jour manquent.
+      if (d.u < lastU) return;
+      if (d.U > lastU) { resync(`premier diff U ${d.U} après l’instantané ${lastU}`); return; }
+      needFirst = false;
+    } else if (d.pu !== lastU) { resync(`pu ${d.pu} au lieu de ${lastU}`); return; }
     book.apply(levels(d.b) as Level[], levels(d.a) as Level[], d.T, recv);
     lastU = d.u;
   }
@@ -127,7 +138,7 @@ export function createBinance(ctx: VenueCtx): VenueAdapter {
   }).catch(() => { /* 8 h par défaut, documenté */ });
 
   pub = new VenueStream({ name: 'binance-book', label: 'Binance WS (carnet)', venue: 'binance', url: BINANCE_PUBLIC, quietMs: 30_000,
-    subscribe: () => [], onOpen: () => { book.reset(); lastU = null; buffer = []; }, onMessage: onPublic }, ctx.deps, ctx.onFeed);
+    subscribe: () => [], onOpen: () => { book.reset(); lastU = null; buffer = []; needFirst = false; }, onMessage: onPublic }, ctx.deps, ctx.onFeed);
   const market = new VenueStream({ name: 'binance-perp', label: 'Binance WS (perp)', venue: 'binance', url: BINANCE_MARKET, quietMs: 30_000,
     subscribe: () => [], onOpen: () => { lastAgg.perp = null; }, onMessage: onMarket }, ctx.deps, ctx.onFeed);
   const spot = new VenueStream({ name: 'binance-spot', label: 'Binance WS (spot)', venue: 'binance', url: BINANCE_SPOT, quietMs: 60_000,

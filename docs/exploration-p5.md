@@ -10,7 +10,7 @@ Relevés du 24/11/2026 (≈ 19:43–19:55 UTC) depuis le Mac, en lecture seule, 
 | `api.bybit.com` | origine renvoyée | |
 | `api.hyperliquid.xyz` (`POST /info`) | `*` | |
 | `api.exchange.coinbase.com` | `*` | |
-| `www.okx.com` | `*` | sert aussi l'historique public absent d'EEA (§ 4) |
+| `www.okx.com` | `*` pour `market/books-full` et `public/liquidation-orders` ; **aucun** pour `rubik/stat/*` (relevé du 25/11/2026) | sert aussi l'historique public absent d'EEA (§ 4) ; les statistiques `rubik` (volume preneur, historique de l'OI) ne sont pas lisibles par le navigateur |
 | `eea.okx.com` | **aucun** | REST relayé par Vercel (fonctions existantes) ; renvoie des listes **vides** pour `taker-volume-contract`, `contracts/open-interest-history` et l'historique des liquidations |
 
 ## 2. WebSockets (débits observés, marché calme, BTC ≈ 59 700 $)
@@ -85,3 +85,17 @@ Conséquences :
 | Funding | retenu (8 h) | retenu (8 h) | retenu | retenu (horaire ×8) | — |
 | OI, 24 h | retenu (`www`) | retenu | retenu | instantané ; 24 h « — » | — |
 | Prime perp / spot | marque / indice | marque / indice | marque / indice | marque / oracle | — |
+
+## 8. Correctifs relevés en S1–S3 (25/11/2026)
+
+- **CORS d'OKX `rubik`** : le relevé S0 avait vérifié `www.okx.com` sur `books-full` et les liquidations seulement. Les statistiques `rubik/stat/taker-volume-contract`, `rubik/stat/taker-volume` et `rubik/stat/contracts/open-interest-history` répondent sans en-tête `Access-Control-Allow-Origin` : le navigateur ne peut pas les lire. Repli en place, en attendant la décision de Clément : OKX sort des courbes de CVD (ses trades restent comptés « depuis l'ouverture », hors courbes) et sa variation 24 h de l'OI affiche « — » avec la raison. Un relais (route d'une fonction Vercel existante) se branche par un seul paramètre (`okxStatsBase`, `web/src/micro/engine.ts`).
+- **Carnet local de Binance** : l'instantané REST est souvent plus récent que tous les diffs mis de côté ; le premier diff suivant se contrôle alors par `U ≤ lastUpdateId ≤ u`, pas par `pu` (sinon resynchronisation sans fin, vue en direct). Les diffs portent aussi des niveaux lointains isolés (bids à 1 000 $) : seuls les prix compris dans l'instantané sont tenus pour complets. OKX (400) et Bybit (1 000) sont tronqués à leur profondeur publiée.
+- **Playwright** n'intercepte pas les WebSockets ouvertes dans un worker dédié : le test de bout en bout lance le même moteur sur le fil principal (`?microInline=1`, serveur de dev seulement, absent du build).
+
+## 9. Règles de calcul retenues (S2)
+
+- **Carnet agrégé** : tranches de 10 $ (achats arrondis vers le bas, ventes vers le haut), 10 niveaux, OKX (WS), Binance, Bybit, Hyperliquid (`nSigFigs` 4). Déséquilibre = (Σ achats − Σ ventes) / (Σ achats + Σ ventes) sur les 10 niveaux. Carnets « croisés » entre plateformes (écart de prix de quelques dollars) affichés comme tels.
+- **Carte de profondeur** : relevé toutes les 5 s, colonne toutes les 40 s, ±0,5 % en 30 tranches au pas « rond » (20 $ à 60 000 $). Niveaux d'or = centiles 50/80/93/98 des cellules de la carte (légende en BTC). Bulles : volume agressif ≥ 5 BTC par tranche de 5 s. Mur retiré : tranche ≥ max(40 BTC, 93e centile) qui perd plus de 70 % entre deux relevés sans que les trades à ce prix expliquent 20 % de la baisse, comparée plateforme par plateforme à l'intérieur de la portée de chaque carnet (sans le carnet profond d'OKX, relevé toutes les 40 s).
+- **CVD 4 h** : tranches de 1 min (Binance) ; une tranche est « directe » si la connexion couvre toute sa durée, sinon c'est un trou rattrapé par les bougies 1 min une fois close. Divergence : signes opposés et |delta / volume preneur| ≥ 2 % pour chaque marché ; phrase de lecture par gabarit, sans IA.
+- **Liquidations** : heure glissante, doublons écartés (plateforme, heure, prix, taille), lignes ≥ 10 M$ surlignées.
+- **Funding / OI** : taux × 8 / intervalle ; OI 24 h en BTC contre le point horaire le plus proche d'il y a 24 h (à 90 min près) ; total : funding et prime pondérés par l'OI en dollars, variation 24 h sur les plateformes qui ont un historique.

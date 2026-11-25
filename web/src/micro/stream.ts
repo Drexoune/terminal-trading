@@ -11,6 +11,7 @@ import type { Venue } from './types';
 export const OPEN_TIMEOUT_MS = 10_000;
 export const OUTAGES_KEPT = 10;
 export const GAPS_KEPT = 20;
+export const LATE_AFTER_MS = 10_000;
 
 export interface Gap { at_ms: number; text: string }
 export interface MicroFeedState extends FeedState { venue: Venue; gaps: Gap[]; messages: number }
@@ -51,7 +52,9 @@ export class VenueStream {
 
   constructor(readonly spec: StreamSpec, private readonly deps: StreamDeps, private readonly onState: (s: MicroFeedState) => void) {
     this.state = { name: spec.name, label: spec.label, venue: spec.venue, status: 'connecting', connected_since_ms: null, last_message_ms: null,
-      reconnects: 0, outages: [], last_error: null, gaps: [], messages: 0 };
+      reconnects: 0, outages: [], last_error: null, gaps: [], messages: 0,
+      // « retard » après 10 s de silence, « périmé » au seuil de maintien en vie de la plateforme.
+      late_after_ms: LATE_AFTER_MS, stale_after_ms: Math.max(spec.quietMs, LATE_AFTER_MS) };
   }
 
   get attempts(): number { return this.attempt; }

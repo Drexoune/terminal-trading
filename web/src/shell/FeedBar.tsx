@@ -12,6 +12,8 @@ import { fmtHms } from '../lib/time';
 import { SETTINGS_PATH } from '../modules';
 import { COLLECTOR_POLL_MS, collectorStatus } from '../screens/settings/health';
 import { useNow } from './useNow';
+import type { MicroFeedState } from '../micro/stream';
+import { venueDots } from '../micro/view';
 
 export function feedFreshness(feed: FeedState | undefined, now: number, sourceUp: boolean): Freshness {
   if (!sourceUp || !feed || feed.status !== 'connected') return 'down';
@@ -81,6 +83,10 @@ export function FeedBar() {
   const gaps = useValue<GapsState>('gaps:okx');
   const others = useKeys<FeedState>('feed:').filter(([k]) => !OKX_FEEDS.has(k));
   const collector = useCollectorHealth(mode === 'online');
+  // Microstructure (P5) : une pastille par plateforme dès que son worker tourne, dans tous les modes.
+  const microList = useKeys<MicroFeedState>('micro:feed:');
+  const micro = venueDots(new Map(microList.map(([, f]) => [f.name, f])), Date.now())   // horloge du worker
+    .map((d): [string, Freshness, string] => [d.label, d.state, d.detail]);
   const pubState = feedFreshness(pub, now, up);
   const bizState = feedFreshness(biz, now, up);
   const okx: [string, Freshness, string?][] = [
@@ -106,6 +112,7 @@ export function FeedBar() {
         const st = feedFreshness(f, now, up);
         return [f.label ?? f.name, st, feedDetail(LABEL[st], f)];
       })];
+  feeds.push(...micro);
   const def = modeDef(mode);
   return (
     <div className="feedbar">

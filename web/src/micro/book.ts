@@ -13,15 +13,28 @@ export class LocalBook {
   recv = 0;
   synced = false;
 
-  constructor(readonly venue: Venue, private readonly scale = 1) {}   // scale : contrats → BTC (OKX : 0,01)
+  private lo = -Infinity;
+  private hi = Infinity;
+
+  /**
+   * scale : contrats → BTC (OKX : 0,01). maxLevels : profondeur publiée par la plateforme (OKX
+   * 400, Bybit 1 000) ; un niveau sorti de cette profondeur n'est pas toujours retiré par le flux.
+   * bounded (Binance) : le flux de diffs couvre tout le carnet, mais seuls les prix compris dans
+   * l'instantané sont complets ; au-delà, seuls les niveaux modifiés depuis existent.
+   */
+  constructor(readonly venue: Venue, private readonly scale = 1, private readonly opts: { maxLevels?: number; bounded?: boolean } = {}) {}
 
   reset(): void {
-    this.bids.clear(); this.asks.clear(); this.synced = false; this.ts = 0;
+    this.bids.clear(); this.asks.clear(); this.synced = false; this.ts = 0; this.lo = -Infinity; this.hi = Infinity;
   }
 
   snapshot(bids: Level[], asks: Level[], ts: number, recv: number): void {
     this.bids.clear(); this.asks.clear();
     this.apply(bids, asks, ts, recv);
+    if (this.opts.bounded) {
+      this.lo = bids.length ? Math.min(...bids.map((l) => l[0])) : -Infinity;
+      this.hi = asks.length ? Math.max(...asks.map((l) => l[0])) : Infinity;
+    }
     this.synced = true;
   }
 
@@ -36,8 +49,9 @@ export class LocalBook {
 
   /** Niveaux triés du meilleur au plus éloigné. */
   view(): BookView {
+    const n = this.opts.maxLevels ?? Infinity;
     const side = (m: Map<number, number>, desc: boolean): BookSide => {
-      const px = [...m.keys()].sort((a, b) => (desc ? b - a : a - b));
+      const px = [...m.keys()].filter((p) => p >= this.lo && p <= this.hi).sort((a, b) => (desc ? b - a : a - b)).slice(0, n);
       return { px, sz: px.map((p) => m.get(p)!) };
     };
     return { venue: this.venue, ts: this.ts, recv: this.recv, bids: side(this.bids, true), asks: side(this.asks, false), synced: this.synced };

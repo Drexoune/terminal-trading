@@ -5,8 +5,9 @@
 //   Chaque plateforme ne compte que sur la plage que son carnet couvre (bornes publiées).
 // - Prix : dernier trade des perpétuels, toutes les 5 s. Bulles : volume agressif d'achat et de
 //   vente par tranche de 5 s, au-delà d'un seuil (taille = volume).
-// - « Mur retiré » : une tranche ≥ seuil de mur qui perd plus de 70 % entre deux relevés alors que
-//   les trades n'y expliquent pas 20 % de la baisse. Changement observé du carnet, jamais un stop
+// - « Mur retiré » : une tranche ≥ seuil de mur (40 BTC, ou le 93e centile de la carte s'il est
+//   plus haut) qui perd plus de 70 % entre deux relevés alors que les trades n'y expliquent pas
+//   20 % de la baisse ; comparée plateforme par plateforme, dans la portée de chaque carnet. Changement observé du carnet, jamais un stop
 //   supposé ; il peut aussi s'agir d'un ordre déplacé.
 // - Niveaux d'or : quantiles 50, 80, 93 et 98 % des cellules non vides de la carte (légende en BTC).
 
@@ -15,6 +16,7 @@ import type { BookView, MicroTrade, Venue } from './types';
 export interface DepthColumn { t: number; mid: number; px: number[]; sz: number[] }
 export interface Bubble { t: number; px: number; sz: number; side: 'buy' | 'sell' }
 export interface Wall { t: number; px: number; sz: number; side: 'bid' | 'ask'; left: number }
+interface VenueCells { cells: Map<number, number>; lo: number; hi: number }
 export interface Coverage { venue: Venue; down: number; up: number }
 export interface DepthState {
   step: number; range_pct: number; column_ms: number; window_ms: number; from: number | null;
@@ -49,7 +51,7 @@ export class DepthMap {
   private bucketStart = 0;
   private acc = { buy: { v: 0, n: 0 }, sell: { v: 0, n: 0 } };
   private tradedAt = new Map<number, number>();            // volume échangé par tranche depuis le dernier relevé
-  private prev: Map<number, number> | null = null;
+  private prev: Map<Venue, VenueCells> | null = null;
   private lastColumn = 0;
   private coverage: Coverage[] = [];
   private from: number | null = null;
@@ -67,7 +69,26 @@ export class DepthMap {
   }
 
   /** Relevé toutes les `sampleMs` : prix, bulles, carnet fusionné, murs retirés, colonne. */
-  sample(now: number, views: BookView[]): void {
+  /** Tranches d'une plateforme et portée intérieure de son carnet [lo, hi] (tranche extrême exclue). */
+  private venueCells(views: BookView[]): Map<Venue, VenueCells> {
+    const out = new Map<Venue, VenueCells>();
+    for (const v of views) {
+      if (!v.synced || !v.bids.px.length || !v.asks.px.length) continue;
+      const cells = new Map<number, number>();
+      for (const s of [v.bids, v.asks]) for (let i = 0; i < s.px.length; i++) { const k = this.key(s.px[i]); cells.set(k, (cells.get(k) ?? 0) + s.sz[i]); }
+      out.set(v.venue, { cells, lo: this.key(v.bids.px[v.bids.px.length - 1]) + this.step, hi: this.key(v.asks.px[v.asks.px.length - 1]) - this.step });
+    }
+    return out;
+  }
+
+  private levels(): number[] {
+    const all = this.columns.flatMap((c) => c.sz).filter((x) => x > 0).sort((a, b) => a - b);
+    return [0.5, 0.8, 0.93, 0.98].map((q) => Math.round(quantile(all, q) * 100) / 100);
+  }
+
+  /** Relevé toutes les `sampleMs` : prix, bulles, carnet fusionné, murs retirés, colonne.
+   *  `wallViews` : carnets suivis en direct pour les murs (sans le carnet profond d'OKX, relevé toutes les 40 s). */
+  sample(now: number, views: BookView[], wallViews?: BookView[]): void {
     const live = views.filter((v) => v.synced && v.bids.px.length && v.asks.px.length);
     if (!live.length) return;
     const mid = (Math.max(...live.map((v) => v.bids.px[0])) + Math.min(...live.map((v) => v.asks.px[0]))) / 2;
@@ -97,18 +118,30 @@ export class DepthMap {
       }
       this.coverage.push({ venue: v.venue, down: Math.round((mid - v.bids.px[v.bids.px.length - 1]) * 100) / 100, up: Math.round((v.asks.px[v.asks.px.length - 1] - mid) * 100) / 100 });
     }
-    // Murs retirés : forte baisse d'une tranche que les trades n'expliquent pas.
+    // Murs retirés : par plateforme, seulement à l'intérieur de la portée de son carnet aux deux
+    // relevés (la tranche la plus éloignée exclue) : un bord de carnet qui se déplace n'est pas un
+    // retrait. Seuil : le plus grand de wallMinBtc et du 93e centile de la carte.
+    const byVenue = this.venueCells(wallViews ?? live);
     if (this.prev) {
-      for (const [k, before] of this.prev) {
-        if (before < this.o.wallMinBtc) continue;
-        const after = cells.get(k) ?? 0;
+      const threshold = Math.max(this.o.wallMinBtc, this.levels()[2]);
+      const keys = new Set<number>();
+      for (const c of this.prev.values()) for (const k of c.cells.keys()) keys.add(k);
+      for (const k of keys) {
+        if (k < lo || k > hi) continue;
+        let before = 0, after = 0;
+        for (const [v, p] of this.prev) {
+          const c = byVenue.get(v);
+          if (!c || k < p.lo || k > p.hi || k < c.lo || k > c.hi) continue;
+          before += p.cells.get(k) ?? 0;
+          after += c.cells.get(k) ?? 0;
+        }
         const drop = before - after;
-        if (after < before * 0.3 && (this.tradedAt.get(k) ?? 0) < drop * 0.2 && k >= lo && k <= hi) {
+        if (before >= threshold && after < before * 0.3 && (this.tradedAt.get(k) ?? 0) < drop * 0.2) {
           this.walls.push({ t: now, px: k, sz: Math.round(before * 100) / 100, side: sides.get(k) ?? (k < mid ? 'bid' : 'ask'), left: Math.round(after * 100) / 100 });
         }
       }
     }
-    this.prev = cells;
+    this.prev = byVenue;
     this.tradedAt.clear();
     if (now - this.lastColumn >= this.o.columnMs) {
       const keys = [...cells.keys()].sort((a, b) => a - b);
@@ -123,11 +156,10 @@ export class DepthMap {
   }
 
   state(): DepthState {
-    const all = this.columns.flatMap((c) => c.sz).filter((x) => x > 0).sort((a, b) => a - b);
     return {
       step: this.step, range_pct: this.o.rangePct, column_ms: this.o.columnMs, window_ms: this.o.windowMs, from: this.from,
       columns: this.columns, price: this.price, bubbles: this.bubbles, walls: this.walls,
-      levels: [0.5, 0.8, 0.93, 0.98].map((q) => Math.round(quantile(all, q) * 100) / 100), coverage: this.coverage,
+      levels: this.levels(), coverage: this.coverage,
     };
   }
 }

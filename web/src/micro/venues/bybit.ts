@@ -17,7 +17,7 @@ const BOOK = 'orderbook.1000.BTCUSDT';
 const TOPICS = [BOOK, 'publicTrade.BTCUSDT', 'tickers.BTCUSDT', 'allLiquidation.BTCUSDT'];
 
 export function createBybit(ctx: VenueCtx): VenueAdapter {
-  const book = new LocalBook('bybit');
+  const book = new LocalBook('bybit', 1, { maxLevels: 1000 });
   let lastU: number | null = null;
   const ticker: Record<string, string> = {};
   let stream: VenueStream;

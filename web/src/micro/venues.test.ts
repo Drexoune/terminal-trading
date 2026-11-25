@@ -174,6 +174,17 @@ describe('Binance', () => {
     ws.receive(diff(106, 110, 105, [], [['60005', '1']]));
     expect(a.books[0].bestAsk()).toBe(60005);
   });
+  it('instantané plus récent que tous les diffs du tampon : le diff suivant qui le couvre est appliqué sans resynchronisation', async () => {
+    const { a, ws, feeds } = setup(100);
+    ws.receive(diff(90, 95, 89));                             // tampon entièrement antérieur à l'instantané
+    await vi.advanceTimersByTimeAsync(0);
+    expect(a.books[0].synced).toBe(true);
+    ws.receive(diff(96, 99, 95));                             // u < 100 : écarté
+    ws.receive(diff(100, 104, 99, [['60000', '5']]));         // couvre 100
+    ws.receive(diff(105, 108, 104));
+    expect(feeds.get('binance-book')?.gaps ?? []).toEqual([]);
+    expect(a.books[0].bids.get(60000)).toBe(5);
+  });
   it('rupture de pu : trou journalisé, nouvel instantané ; instantané en retard : nouvel essai', async () => {
     const { a, ws, calls, feeds } = setup(100, 100, 135);
     ws.receive(diff(96, 105, 95));

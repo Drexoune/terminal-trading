@@ -27,7 +27,7 @@ const ARGS = [
 interface OkxMsg { event?: string; code?: string; msg?: string; arg?: { channel: string; instId?: string }; action?: string; data?: Record<string, unknown>[] }
 
 export function createOkx(ctx: VenueCtx): VenueAdapter {
-  const book = new LocalBook('okx', CT_VAL);
+  const book = new LocalBook('okx', CT_VAL, { maxLevels: 400 });
   let seq: number | null = null;
   const lastTid = new Map<string, number>();
   let mark: number | null = null, index: number | null = null, markTs = 0;
@@ -59,7 +59,7 @@ export function createOkx(ctx: VenueCtx): VenueAdapter {
       } else if (ch === 'trades') {
         const inst = String(d.instId), tid = num(d.tradeId), count = num(d.count ?? 1);
         const prev = lastTid.get(inst);
-        if (prev !== undefined && tid - count !== prev && tid > prev) stream.gap(`${inst} : ${tid - count - prev} trade(s) manquant(s)`);
+        if (prev !== undefined && tid - count > prev) stream.gap(`${inst} : ${tid - count - prev} trade(s) manquant(s)`);
         lastTid.set(inst, Math.max(tid, prev ?? tid));
         const perp = inst === SWAP;
         ctx.emit({ kind: 'trade', t: { venue: 'okx', market: perp ? 'perp' : 'spot', ts: num(d.ts), recv, px: num(d.px), sz: num(d.sz) * (perp ? CT_VAL : 1),
