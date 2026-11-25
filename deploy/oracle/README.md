@@ -102,7 +102,7 @@ Le service `terminal-news` tient la WebSocket gratuite de Tree of Alpha (`wss://
 - `news:item:<id>`, diffusé par Realtime ;
 - alertes par mot-clé et par catégorie.
 
-L'état du flux est publié sous `feed:toa`, toutes les 30 s ; la barre de flux l'affiche une fois la migration `20261125200000_feed_toa.sql` appliquée.
+L'état du flux est publié sous `feed:toa`, toutes les 30 s ; la barre de flux l'affiche une fois la migration `20261202120000_feed_toa.sql` appliquée.
 
 Secrets : les mêmes que `terminal-alerts` (`/etc/terminal/alerts.env`).
 
