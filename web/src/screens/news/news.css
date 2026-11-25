@@ -59,3 +59,34 @@
   .news-read__title { font-size: 22px; }
   .news-read__figure { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Assistant (P6, S2) : colonne droite de la maquette Actus. */
+.as { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 12px; }
+.as-thread { display: flex; flex-direction: column; gap: 12px; max-height: 620px; overflow-y: auto; }
+.as-empty { margin: 0; color: var(--text-3); font-size: 13px; line-height: 1.5; }
+.as-msg { padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: var(--radius-panel); background: var(--bg-panel); }
+.as-msg p { margin: 6px 0 0; color: var(--text-1); font-size: 13.5px; line-height: 1.6; white-space: pre-line; overflow-wrap: anywhere; }
+.as-msg--user { align-self: flex-end; max-width: 92%; background: var(--bg-panel-2); }
+.as-msg--bot { border-color: var(--gold-mid); }
+.as-msg--bot > .lbl { color: var(--gold); }
+.as-msg--error { border-color: var(--down-border); }
+.as-msg--error p { color: var(--text-2); }
+.as-wait p { color: var(--text-3); }
+.as-srcs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.as-src { text-decoration: none; }
+.as-note { display: block; margin-top: 8px; color: var(--text-3); font-size: 11px; }
+.as-sugg { display: flex; flex-wrap: wrap; gap: 8px; }
+.as-chip { height: 32px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 16px; background: transparent; color: var(--text-2);
+  font: 500 12.5px var(--font-body); cursor: pointer; }
+.as-chip:hover:not(:disabled) { color: var(--text-1); border-color: var(--gold-mid); }
+.as-chip:disabled { opacity: .5; cursor: default; }
+.as-input { display: grid; grid-template-columns: minmax(0, 1fr) 36px; align-items: center; gap: 8px; padding: 10px 10px 10px 14px; border: 1px solid var(--line-strong);
+  border-radius: var(--radius-control); background: var(--bg-panel); }
+.as-input textarea { min-height: 40px; resize: vertical; border: 0; background: transparent; color: var(--text-1); font: 400 13.5px var(--font-body); outline: none; }
+.as-send { width: 36px; height: 36px; border: 0; border-radius: var(--radius-control); background: var(--gold); color: var(--on-gold); font: 700 16px var(--font-body); cursor: pointer; }
+.as-send:disabled { opacity: .45; cursor: default; }
+.as-foot { margin: 0; text-align: center; color: var(--text-3); line-height: 1.5; }
+.as-mute { cursor: pointer; background: transparent; }
+.as-mute[aria-pressed='false'] { color: var(--up); border-color: var(--up-border); }
+/* En-tête : titre à sa largeur pour garder « Article chargé » et « Muet » sur la ligne (maquette). */
+[data-panel="Assistant"] > .ph h2 { flex-basis: auto; }

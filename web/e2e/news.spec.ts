@@ -88,3 +88,32 @@ test('Actus à 390 px : aucun défilement horizontal', async ({ page }) => {
   writeFileSync(`${ART}Actus-390.png`, await page.screenshot({ fullPage: true }));
   expect(overflow).toBe(0);
 });
+
+// --- Assistant (P6, S2) -------------------------------------------------------------------------
+
+test('Assistant : réponse citée (puce-source), « à vérifier » ; réponse non sourcée écartée par le contrôle local', async ({ page }) => {
+  const asked: Record<string, unknown>[] = [];
+  let reply: Record<string, unknown> = { ok: true, answer: 'Selon l’article ouvert, les ETF bitcoin au comptant enchaînent les flux entrants.', sources: ['F1'] };
+  await page.route('**/api/p1/assistant', async (route) => {
+    asked.push(JSON.parse(route.request().postData() ?? '{}'));
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(reply) });
+  });
+  await page.goto('/actus');
+  await expect(page.locator('.news-row').first()).toBeVisible({ timeout: 15_000 });
+  const panel = page.getByRole('region', { name: 'Assistant' });
+  await expect(panel.getByTestId('as-loaded')).toHaveText('Article chargé');
+  await expect(panel).toContainText('à vérifier');
+  await panel.getByLabel('Question').fill('Que dit cet article ?');
+  await panel.getByRole('button', { name: 'Envoyer' }).click();
+  const answer = panel.getByTestId('as-answer').last();
+  await expect(answer).toContainText('flux entrants');
+  await expect(answer.locator('.as-src')).toHaveText(['Article ouvert · titre (VO)']);
+  const facts = asked[0].facts as { id: string; label: string; value: string }[];
+  expect(facts[0]).toMatchObject({ id: 'F1', label: 'Article ouvert · titre (VO)' });
+  expect(facts[0].value).toContain('Spot bitcoin ETFs');
+  // Le serveur dit « ok » mais la réponse cite un nombre absent des faits : jamais affichée.
+  reply = { ok: true, answer: 'Les ETF ont reçu 9 999 millions.', sources: ['F1'] };
+  await panel.getByLabel('Question').fill('Combien ?');
+  await panel.getByRole('button', { name: 'Envoyer' }).click();
+  await expect(panel.getByTestId('as-answer').last()).toContainText('réponse écartée : chiffre non sourcé');
+});

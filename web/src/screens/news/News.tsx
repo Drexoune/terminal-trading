@@ -18,6 +18,7 @@ import { Highlighted } from '../../news/Highlighted';
 import { DEFAULT_HIGHLIGHTS, saveHighlights, useHighlights } from '../../news/highlight';
 import { SubHeader } from '../../shell/SubHeader';
 import { useNow } from '../../shell/useNow';
+import { AssistantPanel } from './AssistantPanel';
 
 const PARIS = 'Europe/Paris';
 export const OFFLINE_REASON = 'fil d’actus en Mode Online seulement : la tâche tourne dans Supabase (plan « Tout en ligne », O6)';
@@ -141,13 +142,7 @@ export function NewsScreen() {
             )}
           </Panel>
 
-          <Panel title="Assistant" controls="none" chips={<Chip variant="pending">P6</Chip>}>
-            <div className="placeholder" style={{ minHeight: 300 }}>
-              <span className="placeholder__dash" aria-hidden="true">—</span>
-              <span>Questions sur l’article, réponses citées depuis nos seules données.</span>
-              <span className="lbl lbl--s">Disponible en P6</span>
-            </div>
-          </Panel>
+          <AssistantPanel article={open} now={now} />
         </div>
       </div>
     </>
