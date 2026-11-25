@@ -72,6 +72,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-069 | 25/11/2026 | Microstructure en continu | Le moteur de P5 tourne 24 h/24 sur une machine Oracle Cloud « Always Free » (région de rattachement en France), compte jamais passé en paiement à l'usage ; machine A1 petite (1 cœur, 2 Go) pour ne pas être jugée inactive ; plan à valider avant tout code ; révise T-065 (« aucun serveur ») |
 | T-070 | 25/11/2026 | Recherche du backtest sur Oracle | La boucle de `bt-jobs` tourne aussi sur la machine Oracle (service `terminal-bt`, passages de 5 min, bail de 6 min renouvelé), Supabase en repli ; secrets sur la machine : clé secrète Supabase dédiée « oracle » et GEMINI_API_KEY dans `/etc/terminal/bt.env` (0640), lus par `terminal-bt` seul ; révise T-069 (« aucun secret sur la machine ») |
 | T-071 | 25/11/2026 | Alertes à la seconde | Prix BTC et ETH jugés sur chaque trade par la machine Oracle (service `terminal-alerts`), Supabase à la minute en repli, même clé de dédoublonnage ; nouvelles alertes de liquidations et de mur retiré (Oracle seulement) ; secrets Telegram et clé « oracle » dans `/etc/terminal/alerts.env` ; révise T-046 |
+| T-072 | 25/11/2026 | Tree of Alpha en ligne | Flux gratuit sans clé (T-021) lu 24 h/24 par la machine Oracle (service `terminal-news`) : même table `news_items`, mêmes doublons, même diffusion et mêmes alertes que les RSS ; état `feed:toa` dans la barre de flux ; aucun nouveau secret ; révise T-046 sur Tree of Alpha |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -796,3 +797,15 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - secrets : `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` et la clé Supabase « oracle » dans `/etc/terminal/alerts.env` (root:terminal, 0640), lus par `terminal-alerts` seul ;
 - **révise T-046** pour les alertes de prix ; funding, calendrier et actus restent sur Supabase à la minute ; Tree of Alpha fait l'objet de la feature suivante.
 
+
+## T-072 — Tree of Alpha en ligne sur Oracle · 25/11/2026
+
+**Contexte.** Troisième feature Oracle de `docs/todo.md`. T-046 avait abandonné Tree of Alpha en ligne : son flux est une WebSocket que ni Vercel ni Supabase ne gardent ouverte. Écoute de 3 jours (20–23/11, `docs/exploration-p1.md`) : environ 3,5 messages par heure, tweets sans délai, Blogs et usGov retardés de 5 s sur le flux gratuit, aucun chiffre macro, connexion coupée toutes les 70 s environ. Plan validé par Clément : `~/.claude/plans/fluttering-baking-balloon-of-f9cc3ae9-2d73-4f7b-887b-25f45294f5a0.md`.
+
+**Décision de Clément** (approbation du plan) :
+
+- le flux gratuit, sans clé (T-021), est lu 24 h/24 par la machine Oracle, service `terminal-news` ;
+- chaque message devient un titre de `news_items` après les quatre couches de doublons des RSS (fonction `isDuplicate` partagée), publié dans `p1_state` (`news:item:<id>`, diffusé par Realtime) et soumis aux mêmes alertes par mot-clé et par catégorie ;
+- l'état du flux (`feed:toa`) rejoint la barre de flux ; la fraîcheur se juge sur la connexion (des silences de 17 min sont normaux) ;
+- aucun nouveau secret : `terminal-news` lit `/etc/terminal/alerts.env` (T-071) ;
+- **révise T-046** sur Tree of Alpha. Abonnement payant (sans délai) toujours écarté (T-021).

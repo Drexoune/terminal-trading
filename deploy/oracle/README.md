@@ -93,3 +93,19 @@ Exploitation :
 - `journalctl -u terminal-alerts` ;
 - `/micro/health` → champ `alerts` ;
 - l'écran `/alertes` affiche « Prix · Oracle à la seconde » tant que le battement de cœur (clé `alert:oracle`, toutes les 30 s) est frais.
+
+## Tree of Alpha en temps réel (T-072)
+
+Le service `terminal-news` tient la WebSocket gratuite de Tree of Alpha (`wss://news.treeofalpha.com/ws`). Chaque message suit le même parcours que les flux RSS :
+- doublons (fonction `isDuplicate`) ;
+- table `news_items` ;
+- `news:item:<id>`, diffusé par Realtime ;
+- alertes par mot-clé et par catégorie.
+
+L'état du flux est publié sous `feed:toa`, toutes les 30 s ; la barre de flux l'affiche une fois la migration `20261125200000_feed_toa.sql` appliquée.
+
+Secrets : les mêmes que `terminal-alerts` (`/etc/terminal/alerts.env`).
+
+Exploitation :
+- `journalctl -u terminal-news` ;
+- `/micro/health` → champ `news` (messages, titres gardés, doublons, alertes).

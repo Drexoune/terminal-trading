@@ -46,7 +46,22 @@ export interface NewsDeps {
 interface FeedStatus { status: 'ok' | 'erreur' | 'bloqué'; last_ok_ms: number | null; last_error: string | null; blocked_until: number | null;
   etag: string | null; last_modified: string | null; polls: number; items: number; noise: number; first_done: boolean }
 
-interface Known { id: number; feed: string; native_id: string | null; url: string | null; title: string; title_norm: string; bank: string | null; t: number }
+export interface Known { id: number; feed: string; native_id: string | null; url: string | null; title: string; title_norm: string; bank: string | null; t: number }
+
+/**
+ * Les quatre couches de doublons du fil d'actus, partagées par les RSS (cette tâche) et Tree of
+ * Alpha (machine Oracle, T-072) : identifiant natif, URL canonique, titre normalisé de la même
+ * banque (ou du même flux), quasi-doublon dans les 15 min (jamais deux nombres différents).
+ */
+export function isDuplicate(known: Known[], feed: Pick<Feed, 'id' | 'bank'>, nativeId: string | null, url: string | null, title: string, norm: string, t: number): boolean {
+  for (const k of known) {
+    if (nativeId && k.feed === feed.id && k.native_id === nativeId) return true;                   // 1. identifiant natif
+    if (url && k.url === url) return true;                                                            // 2. URL canonique
+    if (k.title_norm === norm && (k.bank ?? k.feed) === (feed.bank ?? feed.id)) return true;          // 3. titre normalisé
+    if (Math.abs(k.t - t) <= NEAR_MS && nearDuplicate(k.title, title)) return true;                   // 4. quasi-doublon
+  }
+  return false;
+}
 
 export interface NewsItem {
   id: number; feed: string; source: string; kind: string; bank: string | null; title: string; summary: string | null; url: string | null;
@@ -100,13 +115,7 @@ class NewsRun {
   }
 
   duplicate(feed: Feed, nativeId: string | null, url: string | null, title: string, norm: string, t: number): boolean {
-    for (const k of this.known) {
-      if (nativeId && k.feed === feed.id && k.native_id === nativeId) return true;                   // 1. identifiant natif
-      if (url && k.url === url) return true;                                                            // 2. URL canonique
-      if (k.title_norm === norm && (k.bank ?? k.feed) === (feed.bank ?? feed.id)) return true;          // 3. titre normalisé
-      if (Math.abs(k.t - t) <= NEAR_MS && nearDuplicate(k.title, title)) return true;                   // 4. quasi-doublon
-    }
-    return false;
+    return isDuplicate(this.known, feed, nativeId, url, title, norm, t);
   }
 
   async poll(feed: Feed): Promise<void> {

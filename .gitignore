@@ -35,3 +35,4 @@ web/e2e/__artifacts__/
 server/micro/dist/
 server/bt/dist/
 server/alerts/dist/
+server/news/dist/

@@ -1,0 +1,611 @@
+[
+{
+"t_recv_ms": 1795186902414,
+"raw": {
+"title": "The Block (@TheBlockCo)",
+"body": "THE BLOCK: HeartSciences shareholders approved a merger with DCG-owned Zcash miner Fortitude, with roughly 86% of votes cast backing the deal. $ZEC \n\nFortitude controls more than 60 MW of power capacity across seven U.S. sites.\n\nThe company expects to trade on Nasdaq as $TUDE after the deal closes.",
+"requireInteraction": true,
+"type": "direct",
+"link": "https://x.com/TheBlockCo/status/2123793913278349448#",
+"info": {
+"twitterId": "963767159536209921",
+"isReply": false,
+"isRetweet": false,
+"isQuote": false,
+"truthId": null,
+"isSelfReply": false
+},
+"urls": [],
+"mentions": [],
+"suggestions": [
+{
+"found": [
+"ZEC",
+"Zcash"
+],
+"coin": "ZEC",
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "ZECUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "ZECUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "ZECBTC"
+},
+{
+"exchange": "binance",
+"symbol": "ZECETH"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "ZECUSDT"
+}
+],
+"supply": 16974559
+}
+],
+"stockSuggestions": [
+{
+"ticker": "ZCSH",
+"found": [
+"zcash"
+]
+}
+],
+"time": 1795186902380,
+"_id": "2123793913278349448",
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795186972988,
+"raw": {
+"title": "CoinDesk (@CoinDesk)",
+"body": "NEW: Hong Kong proposes expanding its crypto licensing regime to cover brokers, advisers, asset managers and custodians, bringing more digital asset businesses under SFC oversight, with the bill’s first reading set for December 2.",
+"requireInteraction": true,
+"type": "direct",
+"link": "https://x.com/CoinDesk/status/2123794210029789321#",
+"info": {
+"twitterId": "1333467482",
+"isReply": false,
+"isRetweet": false,
+"isQuote": false,
+"truthId": null,
+"isSelfReply": false
+},
+"urls": [],
+"mentions": [],
+"suggestions": [],
+"stockSuggestions": [],
+"time": 1795186972960,
+"_id": "2123794210029789321",
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795187015671,
+"raw": {
+"title": "CNBC: Bitcoin selloff: Crypto is failing the 'digital gold' test again as it sinks with stocks",
+"source": "Blogs",
+"url": "https://www.cnbc.com/2026/11/20/bitcoin-price-gold-market-hedge.html",
+"time": 1795187010638,
+"symbols": [],
+"sourceName": "CNBC",
+"en": "CNBC: Bitcoin selloff: Crypto is failing the 'digital gold' test again as it sinks with stocks",
+"_id": "1795187010637CBsCiftdgtaaisws",
+"suggestions": [
+{
+"found": [
+"Bitcoin"
+],
+"coin": "BTC",
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "BTCUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "BTCUSDT"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "BTCUSDT"
+}
+],
+"supply": 20114434
+}
+],
+"stockSuggestions": [
+{
+"ticker": "IBIT",
+"found": [
+"bitcoin"
+]
+},
+{
+"ticker": "GLD",
+"found": [
+"gold"
+]
+}
+],
+"show_feed": true,
+"show_notif": true,
+"delay": 5000
+}
+},
+{
+"t_recv_ms": 1795187021288,
+"raw": {
+"title": "NEW YORK TIMES: Watchdog Officials Considered Investigating Trump's Memecoin, Then Punted",
+"source": "Blogs",
+"url": "https://www.nytimes.com/2026/11/20/us/politics/cftc-cryptocurrency-trump-memecoin.html",
+"time": 1795187016260,
+"symbols": [],
+"sourceName": "NEW YORK TIMES",
+"en": "NEW YORK TIMES: Watchdog Officials Considered Investigating Trump's Memecoin, Then Punted",
+"_id": "1795187016259NYTWOCITMTP",
+"suggestions": [],
+"stockSuggestions": [
+{
+"ticker": "NYT",
+"found": [
+"new york times"
+]
+}
+],
+"show_feed": true,
+"show_notif": true,
+"delay": 5000
+}
+},
+{
+"t_recv_ms": 1795187055116,
+"raw": {
+"title": "Initia Foundation 🪢 (@initiaFDN)",
+"body": "Initia Foundation has approved funding to cover verified bridge escrow shortfalls from the November 9th security incident. The approved limits are 3.67M INIT from its holdings and $330K in total for other assets. No INIT will be sold to fund this.\n\nThere is no claim process and users do not need to take any action. Please rely only on official Initia channels.",
+"requireInteraction": true,
+"type": "direct",
+"link": "https://x.com/initiaFDN/status/2123794554948378825#",
+"info": {
+"twitterId": "1843759314483236864",
+"isReply": false,
+"isRetweet": false,
+"isQuote": false,
+"truthId": null,
+"isSelfReply": false
+},
+"coin": "INIT",
+"urls": [],
+"mentions": [],
+"suggestions": [
+{
+"found": [
+"INIT",
+"initia"
+],
+"coin": "INIT",
+"isAccountMapped": true,
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "INITUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "INITUSDT"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "INITUSDT"
+}
+],
+"supply": 335341029
+}
+],
+"stockSuggestions": [],
+"time": 1795187055087,
+"_id": "2123794554948378825",
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795187368801,
+"raw": {
+"title": "stacks.btc (@Stacks)",
+"body": "Stacks Weeklies\n\nGM Stackers!\nFrom growing STX staking participation and BTC-denominated yield to new infrastructure, DeFi integrations, and the next network upgrade, the pieces are coming together as Institutional Bitcoin Capital Markets gain momentum on Stacks.\n\nBefore you touch grass, take a moment to appreciate what moved the ecosystem forward this week.\n 🫳\n 🌾\n\nGovernance\nSIP-046: Stacks 4.1 and Clarity 7 Vote is live and running through Bitcoin block 978,350, ~1st December 2026.\nhttps://x.com/stacksorg/status/2123447448261849300?a=VJbzUjAI4jf8NDoliAQ&s=46\n\nBitcoin Capital Markets\nStacks has released “Why Bitcoin Needs Capital Markets, and How Stacks Is Building Them,” making the case for a more productive Bitcoin economy powered by onchain finance.\nhttps://x.com/stacks/status/2123100057188852077?a=0YWrhR9pp6xp5o3oxbc&s=46\n\nTech\nStacks Labs is building an AI-powered software factory to accelerate the development of Bitcoin infrastructure, bringing AI-driven engineering with no shortcut on security into the next phase of Bitcoin innovation.\nhttps://www.stacks.co/blog/how-stacks-labs-is-building-an-ai-software-factory-for-bitcoin-infrastructure\nhttps://x.com/stacks/status/2122778978897547284?a=QuwaesBeoXilq32kueY&s=46\n\nBitcoin Staking\nstBTC is now worth 1.00447 BTC, reflecting the accumulated Bitcoin rewards earned through Bitcoin Bond Staking.\nhttps://x.com/stackingdao/status/2123054149172601128?a=hp88tr82ahMQ_pOj8VI&s=46",
+"type": "direct",
+"link": "https://discord.com/channels/621759717756370964/670000565878521877/1573354591419109456",
+"coin": "STX",
+"info": {
+"twitterId": "3285797414",
+"isReply": false,
+"isRetweet": false,
+"isQuote": false,
+"discordGuild": "621759717756370964",
+"discordServer": "Stacks",
+"discordImportance": 2
+},
+"suggestions": [
+{
+"found": [
+"STX",
+"Stacks"
+],
+"coin": "STX",
+"isAccountMapped": true,
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "STXUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "STXUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "STXBTC"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "STXUSDT"
+}
+],
+"supply": 1884127270
+},
+{
+"found": [
+"BTC",
+"Bitcoin"
+],
+"coin": "BTC",
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "BTCUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "BTCUSDT"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "BTCUSDT"
+}
+],
+"supply": 20114434
+}
+],
+"stockSuggestions": [
+{
+"ticker": "IBIT",
+"found": [
+"bitcoin"
+]
+}
+],
+"time": 1795187368802,
+"_id": "1795187368802SWSgSspaBytniDi",
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795187598766,
+"raw": {
+"title": "PRN: Eddid Financial Singapore and 1exchange Sign MOU to Advance Tokenised Real-World Asset (RWA) and Blockchain Ecosystem",
+"source": "Blogs",
+"url": "https://www.prnewswire.com/apac/news-releases/eddid-financial-singapore-and-1exchange-sign-mou-to-advance-tokenised-real-world-asset-rwa-and-blockchain-ecosystem-302947092.html",
+"time": 1795187593745,
+"symbols": [],
+"sourceName": "PRN",
+"en": "PRN: Eddid Financial Singapore and 1exchange Sign MOU to Advance Tokenised Real-World Asset (RWA) and Blockchain Ecosystem",
+"_id": "1795187593745PEFSa1SMtATRARaBE",
+"suggestions": [],
+"stockSuggestions": [],
+"show_feed": true,
+"show_notif": true,
+"delay": 5000
+}
+},
+{
+"t_recv_ms": 1795189199867,
+"raw": {
+"title": "WHITEHOUSE: President Trump Brings Home Billions in Economic Growth and Strengthens Americas Security",
+"source": "usGov",
+"url": "https://www.whitehouse.gov/briefings-statements/2026/11/president-trump-brings-home-billions-in-economic-growth-and-strengthens-americas-security",
+"time": 1795189194887,
+"symbols": [],
+"sourceName": "WHITEHOUSE",
+"en": "WHITEHOUSE: President Trump Brings Home Billions in Economic Growth and Strengthens Americas Security",
+"_id": "1795189194886WPTBHBiEGaSAS",
+"suggestions": [],
+"stockSuggestions": [],
+"show_feed": true,
+"show_notif": true,
+"delay": 5000
+}
+},
+{
+"t_recv_ms": 1795190555870,
+"raw": {
+"title": "SEC: SEC Charges Indianapolis-Based Backward Hat Capital and Its Co-Founders With $560 Million Dollar Offering Fraud and Obtains Emergency Relief",
+"source": "usGov",
+"url": "https://www.sec.gov/newsroom/press-releases/2026-116-sec-charges-indianapolis-based-backward-hat-capital-its-co-founders-560-million-dollar-offering",
+"time": 1795190550851,
+"symbols": [],
+"sourceName": "SEC",
+"en": "SEC: SEC Charges Indianapolis-Based Backward Hat Capital and Its Co-Founders With $560 Million Dollar Offering Fraud and Obtains Emergency Relief",
+"_id": "1795190550851SSCIBHCaICW5MDOFaOER",
+"suggestions": [],
+"stockSuggestions": [],
+"show_feed": true,
+"show_notif": true,
+"delay": 5000
+}
+},
+{
+"t_recv_ms": 1795190558717,
+"raw": {
+"title": "SEC Charges Backward Hat Capital and Co-Founders With $560 Million Offering Fraud, Obtains Emergency Relief",
+"source": "usGov",
+"url": "https://www.sec.gov/newsroom/press-releases/2026-116-sec-charges-indianapolis-based-backward-hat-capital-its-co-founders-560-million-dollar-offering?type=content",
+"time": 1795190553709,
+"symbols": [],
+"sourceName": "SEC",
+"en": "SEC Charges Backward Hat Capital and Co-Founders With $560 Million Offering Fraud, Obtains Emergency Relief",
+"_id": "1795190553708SCBHCaCW5MOFOER",
+"suggestions": [],
+"stockSuggestions": [],
+"show_feed": true,
+"show_notif": true,
+"delay": 5000
+}
+},
+{
+"t_recv_ms": 1795192223253,
+"raw": {
+"title": "ZEC: Zcash grant request: $25,000 for 8thGuard tool letting users share selected evidence with wallet-support teams",
+"source": "Proposals",
+"url": "https://forum.zcashcommunity.com/t/59498",
+"time": 1795192223271,
+"symbols": [
+"ZEC_USDT",
+"ZEC_BTC"
+],
+"en": "ZEC: Zcash grant request: $25,000 for 8thGuard tool letting users share selected evidence with wallet-support teams",
+"firstPrice": {
+"ZECUSDT": 772.56,
+"ZECBTC": 0.0130615
+},
+"_id": "1795192223270ZZgr2f8tlussewwt",
+"suggestions": [
+{
+"found": [
+"ZEC",
+"Zcash"
+],
+"coin": "ZEC",
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "ZECUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "ZECUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "ZECBTC"
+},
+{
+"exchange": "binance",
+"symbol": "ZECETH"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "ZECUSDT"
+}
+],
+"supply": 16974559
+}
+],
+"stockSuggestions": [
+{
+"ticker": "ZCSH",
+"found": [
+"zcash"
+]
+}
+],
+"actions": [
+{
+"action": "BINFUT_ZECUSDT",
+"title": "ZECUSDT PERP",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BIN_ZEC_USDT",
+"title": "ZEC/USDT",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BIN_ZEC_BTC",
+"title": "ZEC/BTC",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BIN_ZEC_ETH",
+"title": "ZEC/ETH",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BYBIT_ZECUSDT",
+"title": "ZECUSDT PERP",
+"icon": "https://tree.news/static/images/bybit.png"
+}
+],
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795207675593,
+"raw": {
+"title": "Pavel Durov (t.me/durov)",
+"body": "I was offered $256,000 for the ‘pride’ username on Telegram.\n\nI don’t need the username.\n\nBut if I sell, does that mean I sold my pride? 🤔",
+"requireInteraction": true,
+"type": "telegram",
+"link": "https://t.me/durov/567",
+"telegramId": "durov",
+"suggestions": [],
+"stockSuggestions": [],
+"time": 1795207675605,
+"_id": "1795207675605Iwo2ftpuoTdntui",
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795208390545,
+"raw": {
+"title": "AAVE: LlamaRisk opens risk and technical assessment thread for listing cbBTC on Aave Tempo",
+"source": "Proposals",
+"url": "https://governance.aave.com/t/26468",
+"time": 1795208390546,
+"symbols": [
+"AAVE_USDT"
+],
+"en": "AAVE: LlamaRisk opens risk and technical assessment thread for listing cbBTC on Aave Tempo",
+"firstPrice": {
+"AAVEUSDT": 95.18,
+"BTCUSDT": 58417.99
+},
+"_id": "1795208390545ALoratatflcoAT",
+"suggestions": [
+{
+"found": [
+"AAVE",
+"aave"
+],
+"coin": "AAVE",
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "AAVEUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "AAVEUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "AAVEETH"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "AAVEUSDT"
+}
+],
+"supply": 15441269
+}
+],
+"stockSuggestions": [],
+"actions": [
+{
+"action": "BINFUT_AAVEUSDT",
+"title": "AAVEUSDT PERP",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BIN_AAVE_USDT",
+"title": "AAVE/USDT",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BIN_AAVE_ETH",
+"title": "AAVE/ETH",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BYBIT_AAVEUSDT",
+"title": "AAVEUSDT PERP",
+"icon": "https://tree.news/static/images/bybit.png"
+}
+],
+"show_feed": true,
+"show_notif": true
+}
+},
+{
+"t_recv_ms": 1795208751226,
+"raw": {
+"title": "CKB: ILE Labs drafts Sigsheet, a shared file format for signing CKB multisig transactions across ckb-cli, Neuron and CCC",
+"source": "Proposals",
+"url": "https://talk.nervos.org/t/11298",
+"time": 1795208751226,
+"symbols": [
+"CKB_USDT"
+],
+"en": "CKB: ILE Labs drafts Sigsheet, a shared file format for signing CKB multisig transactions across ckb-cli, Neuron and CCC",
+"firstPrice": {
+"CKBUSDT": 0.000775
+},
+"_id": "1795208751225CILdSasfffsCmtacNaC",
+"suggestions": [
+{
+"found": [
+"CKB"
+],
+"coin": "CKB",
+"symbols": [
+{
+"exchange": "binance-futures",
+"symbol": "CKBUSDT"
+},
+{
+"exchange": "binance",
+"symbol": "CKBUSDT"
+},
+{
+"exchange": "bybit-perps",
+"symbol": "CKBUSDT"
+}
+],
+"supply": 49935209824
+}
+],
+"stockSuggestions": [],
+"actions": [
+{
+"action": "BINFUT_CKBUSDT",
+"title": "CKBUSDT PERP",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BIN_CKB_USDT",
+"title": "CKB/USDT",
+"icon": "https://tree.news/static/images/binance_icon.png"
+},
+{
+"action": "BYBIT_CKBUSDT",
+"title": "CKBUSDT PERP",
+"icon": "https://tree.news/static/images/bybit.png"
+}
+],
+"show_feed": true,
+"show_notif": true
+}
+}
+]

@@ -1,0 +1,27 @@
+# Tree of Alpha en temps réel (T-072), installé par deploy/oracle/installer.sh.
+# Mêmes secrets que terminal-alerts (/etc/terminal/alerts.env) : clé Supabase « oracle », Telegram.
+[Unit]
+Description=TERMINAL - fil d'actus Tree of Alpha (T-072)
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/terminal/alerts.env
+
+[Service]
+User=terminal
+Group=terminal
+EnvironmentFile=/etc/terminal/alerts.env
+Environment=NEWS_STATUS=/var/lib/terminal-news/status.json
+ExecStart=/usr/bin/node /opt/terminal-news/news.mjs
+Restart=always
+RestartSec=5
+TimeoutStopSec=10
+Nice=5
+MemoryMax=200M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-news
+
+[Install]
+WantedBy=multi-user.target

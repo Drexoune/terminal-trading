@@ -17,7 +17,7 @@ Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; 
 
 - [ ] **Recherche autonome du backtest** (T-070, `0d6b2c1`) : code et service installés ; reste les secrets (`deployer.sh <ip> secrets`) et l'essai réel — déplacer la boucle de `bt-jobs` (Supabase, découpée par la limite de 2 s de calcul) sur la machine, d'un seul tenant
 - [ ] **Alertes à la seconde** (T-071) : code, écran et service installés ; reste les secrets, le redéploiement de `p1-jobs` (nouvelles sortes) et l'essai réel — prix contrôlé sur chaque trade (au lieu du haut et du bas de la bougie 1 min, T-046) ; nouvelles alertes de liquidations (ex. > 10 M$ en 1 min) et de mur retiré ; envoi Telegram — révision de T-046 à décider
-- [ ] **Fil d'actus en temps réel** : WebSocket de Tree of Alpha tenue par la machine (abandonnée en ligne par T-046) — révision de T-046 à décider
+- [ ] **Fil d'actus en temps réel** (T-072) : code et service installés ; reste les secrets, la migration `feed:toa` (`supabase db push`), le push et l'essai réel — WebSocket de Tree of Alpha tenue par la machine
 - [ ] **P6 — Track record et positions OKX** : clé en lecture seule côté serveur, positions et exécutions suivies en continu, journal tenu fenêtre fermée
 - [ ] **P6 — Récap de session IA** (Asie, Londres, New York) à partir des données complètes de la séance (CVD, liquidations, volume, carnet)
 - [ ] **P7 — Saisonnalité et heatmap technique** : calculs de nuit (rôle prévu pour la tour dans le plan), historique en Parquet + DuckDB (T-003) sur les 200 Go gratuits

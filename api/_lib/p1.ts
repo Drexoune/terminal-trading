@@ -47,7 +47,7 @@ async function saveHighlights(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
   return { words, updated_ms: now };
 }
 
-export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'feed:news', 'news:feeds', 'news:highlight', 'release:state', 'release:last'] as const;
+export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'feed:news', 'feed:toa', 'news:feeds', 'news:highlight', 'release:state', 'release:last'] as const;
 /** Titres du fil d'actus (O6) relus au chargement : 48 dernières heures, 400 au plus. */
 export const NEWS_MS = 48 * 3_600_000;
 export const NEWS_MAX = 400;

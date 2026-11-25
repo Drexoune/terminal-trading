@@ -31,6 +31,8 @@ export interface ServerOptions {
   btStatusFile?: string;
   /** État des alertes à la seconde (T-071, server/alerts), sans secret ; repris dans la santé. */
   alertsStatusFile?: string;
+  /** État du flux Tree of Alpha (T-072, server/news), sans secret ; repris dans la santé. */
+  newsStatusFile?: string;
   deps?: { WebSocket: WebSocketCtor; fetch: FetchLike; now: () => number; random: () => number };
 }
 
@@ -85,7 +87,8 @@ export function startMicroServer(o: ServerOptions) {
       res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', ...(origin ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin' } : {}) });
       const bt = o.btStatusFile ? loadJson<Record<string, unknown>>(o.btStatusFile) : null;
       const alerts = o.alertsStatusFile ? loadJson<Record<string, unknown>>(o.alertsStatusFile) : null;
-      res.end(JSON.stringify({ ok: true, ...source(), load: loadavg(), feeds, bt: bt ? { last_pass: bt } : null, alerts }));
+      const news = o.newsStatusFile ? loadJson<Record<string, unknown>>(o.newsStatusFile) : null;
+      res.end(JSON.stringify({ ok: true, ...source(), load: loadavg(), feeds, bt: bt ? { last_pass: bt } : null, alerts, news }));
       return;
     }
     res.writeHead(404).end();
@@ -114,6 +117,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     origins: env.MICRO_ORIGINS ? env.MICRO_ORIGINS.split(',').map((x) => x.trim()).filter(Boolean) : DEFAULT_ORIGINS,
     btStatusFile: env.MICRO_BT_STATUS ?? '/var/lib/terminal-bt/status.json',
     alertsStatusFile: env.MICRO_ALERTS_STATUS ?? '/var/lib/terminal-alerts/status.json',
+    newsStatusFile: env.MICRO_NEWS_STATUS ?? '/var/lib/terminal-news/status.json',
   });
   console.log(`micro : service démarré${s.restored ? ' (état sauvegardé relu)' : ''}, port ${env.MICRO_PORT ?? 8720}`);
   const quit = (sig: string) => { console.log(`micro : ${sig}, arrêt propre`); void s.stop().then(() => process.exit(0)); };

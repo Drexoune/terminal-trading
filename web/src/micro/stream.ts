@@ -32,6 +32,9 @@ export interface StreamSpec {
   onMessage: (raw: string, recv: number) => MessageResult;
   /** Appelé à chaque nouvelle connexion (remise à zéro du carnet). */
   onOpen?: () => void;
+  /** Connexion tenue pour établie dès l'ouverture : flux qui n'envoie rien à l'abonnement et peut se
+   *  taire longtemps (Tree of Alpha, T-072). */
+  connectedOnOpen?: boolean;
 }
 
 export interface StreamDeps { WebSocket: WebSocketCtor; now: () => number; random: () => number }
@@ -122,6 +125,7 @@ export class VenueStream {
       this.quietSince = this.deps.now();
       this.arm(this.spec.quietMs);
       this.spec.onOpen?.();
+      if (this.spec.connectedOnOpen) this.connected(this.deps.now());
       for (const m of this.spec.subscribe()) sock.send(m);
     };
     sock.onmessage = (ev) => { if (this.ws === sock) this.message(String(ev.data)); };
