@@ -18,8 +18,8 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 - [x] S2 colonne Assistant (`30bb7ae`) de l'écran Actus, traduction à la demande
 - [x] S3 voix (`3c8e662`) (appui pour parler)
 - [x] S4 récap de session (service Oracle terminal-recap ; tourne une fois les secrets posés)
-- [ ] S5 track record (journal manuel) et calculateur de risque
-- [ ] S6 porte de P6
+- [x] S5 track record (journal manuel) et calculateur de risque ; migration `20261203120000_journal.sql` à appliquer
+- [ ] S6 porte de P6 : une semaine d'usage réel (assistant et récaps sourcés, réponses écartées relues), après pose des secrets sur la machine
 
 ## Sur la machine Oracle (T-069), après la microstructure
 

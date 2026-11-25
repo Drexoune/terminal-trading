@@ -21,8 +21,9 @@ import {
 import { createBourseDb, type BourseDb } from './db.js';
 import { parseRows, resolveRows, toDbRow, type RawRow, type RefListing } from './importer.js';
 import { buildReport, DEFAULT_PERF_START, loadData, parisDate } from './report.js';
+import { JournalError, validateTrade, type JournalTrade } from '../journal-core.js';
 
-export const ROUTES = ['session', 'sources', 'quote', 'instruments', 'portfolio', 'transactions', 'import'] as const;
+export const ROUTES = ['session', 'sources', 'quote', 'instruments', 'portfolio', 'transactions', 'import', 'journal'] as const;
 export const MAX_FAILURES = 5;
 export const FAILURE_WINDOW_MS = 15 * 60_000;
 const DAY_MS = 86_400_000;
@@ -239,7 +240,7 @@ export function handleBourse(request: Request, ctx: Context): Promise<Response> 
       if (method === 'DELETE') return logout(request, query);
       throw new HttpError(405, 'méthode non autorisée (GET, POST ou DELETE)');
     }
-    const writes = route === 'import' ? ['POST', 'DELETE'] : [];
+    const writes = route === 'import' ? ['POST', 'DELETE'] : route === 'journal' ? ['POST', 'PATCH', 'DELETE'] : [];
     if (method !== 'GET' && !writes.includes(method)) {
       throw new HttpError(405, `méthode non autorisée (${['GET', ...writes].join(', ')} attendu)`);
     }
@@ -252,6 +253,7 @@ export function handleBourse(request: Request, ctx: Context): Promise<Response> 
     if (route === 'quote') return quote(query, ctx);
     if (route === 'portfolio') return portfolio(query, ctx);
     if (route === 'transactions') return transactions(query, ctx);
+    if (route === 'journal') return journal(request, query, ctx);
     if (route === 'import') return method === 'POST' ? importBatch(request, query, ctx) : deleteBatch(query, ctx);
     return instruments(query, ctx);
   });
@@ -282,6 +284,40 @@ interface TxnListRow {
   price: string | null; amount: string | null; fees: string; taxes: string; currency: string; fx_rate: string | null;
   reference: string | null; batch_id: number | null; source: string;
   instrument_listings: { symbol: string; instruments: { name: string } | null } | null;
+}
+
+// --- journal de trading (P6, S5, T-074) -----------------------------------------------------------
+
+async function journal(request: Request, query: Request, ctx: Context): Promise<Response> {
+  const q = readQuery(query, ['id']);
+  const db = database(ctx);
+  const now = ctx.deps.now();
+  const method = request.method;
+  if (method === 'GET') {
+    if (q.has('id')) throw new HttpError(400, 'paramètre inconnu : id (liste complète seulement)');
+    const rows = await db.select<JournalTrade>('journal_trades', { select: 'id,opened_ms,closed_ms,asset,side,qty,entry,exit,stop,fees,setup,notes', order: 'opened_ms.desc', limit: '1000' });
+    return json({ trades: rows, computed_ms: now }, NO_STORE);
+  }
+  const id = q.get('id');
+  if ((method === 'PATCH' || method === 'DELETE') && !(id && /^\d{1,12}$/.test(id))) throw new HttpError(400, 'identifiant de trade attendu (?id=)');
+  if (method === 'DELETE') {
+    const n = await db.remove('journal_trades', { id: `eq.${id}` });
+    if (!n) throw new HttpError(404, 'trade introuvable');
+    return json({ ok: true }, NO_STORE);
+  }
+  const raw = await request.text();
+  if (raw.length > 16 * 1024) throw new HttpError(413, 'trade trop long');
+  let body: unknown;
+  try { body = JSON.parse(raw); } catch { throw new HttpError(400, 'corps JSON illisible'); }
+  let t;
+  try { t = validateTrade(body, now); } catch (e) { if (e instanceof JournalError) throw new HttpError(400, e.message); throw e; }
+  if (method === 'POST') {
+    await db.insert('journal_trades', [{ ...t, created_ms: now, updated_ms: now }]);
+    return json({ ok: true }, NO_STORE);
+  }
+  const n = await db.update('journal_trades', { id: `eq.${id}` }, { ...t, updated_ms: now });
+  if (!n) throw new HttpError(404, 'trade introuvable');
+  return json({ ok: true }, NO_STORE);
 }
 
 async function transactions(query: Request, ctx: Context): Promise<Response> {
