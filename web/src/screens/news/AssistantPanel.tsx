@@ -4,13 +4,15 @@
 // sourcé) ; chaque source est une puce qui mène à l'écran qui montre la donnée. « À vérifier ».
 // Traduction de l'article à la demande (T-074), jamais automatique.
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Panel } from '../../components/Panel';
 import { ask, AssistantError, translate } from '../../assistant/client';
 import { collectFacts, type Fact } from '../../assistant/facts';
 import { setMuted, speak, useMuted } from '../../assistant/voice';
 import type { NewsItem } from '../../news/news';
+import { setValue, useValue } from '../../data/store';
+import { VOICE_KEY } from '../../shell/AssistantMic';
 
 export interface Message { role: 'user' | 'assistant'; text: string; sources?: Fact[]; error?: boolean; note?: string }
 
@@ -54,6 +56,16 @@ export function AssistantPanel({ article, now }: { article: NewsItem | null; now
       push({ role: 'assistant', error: true, text: status === 401 ? 'Session expirée : se reconnecter (mot de passe d’application).' : (e as Error).message });
     } finally { setBusy(false); }
   }
+
+  // Question dictée depuis le micro de la barre du haut (S3) : envoyée une seule fois.
+  const voiceQ = useValue<{ text: string; at: number }>(VOICE_KEY);
+  const lastVoice = useRef(0);
+  useEffect(() => {
+    if (!voiceQ || voiceQ.at === lastVoice.current) return;
+    lastVoice.current = voiceQ.at;
+    setValue(VOICE_KEY, null);
+    void send(voiceQ.text);
+  }, [voiceQ]);   // eslint-disable-line react-hooks/exhaustive-deps
 
   async function doTranslate() {
     if (!article || busy) return;

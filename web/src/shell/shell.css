@@ -146,3 +146,6 @@
 .release-banner__timing { margin-left: auto; color: var(--text-2); }
 .tone-up { color: var(--up); }
 .tone-down { color: var(--down); }
+
+/* Micro de l'assistant en écoute (P6, S3). */
+.ib.ib--live { color: var(--on-gold); background: var(--gold); border-color: var(--gold); }

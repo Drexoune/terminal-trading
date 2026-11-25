@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Icon } from '../components/Icon';
-import { Button, IconButton, Missing } from '../components/ui';
+import { Button, Missing } from '../components/ui';
 import { modeDef, type Mode } from '../config/modes';
 import { useSettings } from '../config/settings';
 import { fmtDuration, fmtNumber, fmtSigned, NBSP } from '../lib/format';
@@ -13,6 +13,7 @@ import { SETTINGS_PATH } from '../modules';
 import { APP_NAME, ASSISTANT_NAME } from '../names';
 import { Bell, VoiceButton } from './Notifications';
 import { useNow } from './useNow';
+import { AssistantMic } from './AssistantMic';
 
 export function Clocks({ now }: { now: number }) {
   return (
@@ -96,7 +97,7 @@ export function TopBar({ onOpenPalette }: { onOpenPalette: () => void }) {
         <Button aria-disabled="true" title={`${ASSISTANT_NAME} : disponible en P6`}>
           <span className="orb" />{ASSISTANT_NAME}
         </Button>
-        <IconButton icon="micOff" boxed label="Activer le micro de l’assistant (P6)" />
+        <AssistantMic />
         <Button aria-label="Personnaliser l’espace de travail" aria-disabled="true"
           title="Disposition libre : disponible en P1">
           <Icon name="sliders" />Personnaliser

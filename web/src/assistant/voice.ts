@@ -46,3 +46,48 @@ export function speak(text: string): boolean {
   synth.speak(utt);
   return true;
 }
+
+// --- Dictée (S3) : appui pour parler -------------------------------------------------------------
+
+/** Sous-ensemble de SpeechRecognition (Chrome : webkitSpeechRecognition ; Safari : partiel). */
+export interface RecognitionLike {
+  lang: string; interimResults: boolean; maxAlternatives: number; continuous: boolean;
+  onresult: ((ev: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null;
+  onerror: ((ev: { error: string }) => void) | null;
+  onend: (() => void) | null;
+  start(): void; stop(): void; abort(): void;
+}
+export type RecognitionCtor = new () => RecognitionLike;
+
+export function recognitionCtor(): RecognitionCtor | null {
+  if (typeof window === 'undefined') return null;
+  const w = window as unknown as { SpeechRecognition?: RecognitionCtor; webkitSpeechRecognition?: RecognitionCtor };
+  return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
+}
+
+const ERRORS: Record<string, string> = {
+  'not-allowed': 'micro refusé par le navigateur', 'service-not-allowed': 'dictée refusée par le navigateur',
+  'no-speech': 'aucune parole entendue', 'audio-capture': 'aucun micro détecté', network: 'service de dictée injoignable',
+  aborted: 'dictée annulée', 'language-not-supported': 'dictée en français indisponible dans ce navigateur',
+};
+
+/**
+ * Une dictée en français : une seule phrase, résultat final seulement. `done` reçoit le texte, ou
+ * une erreur lisible ; la lecture en cours est coupée (on ne parle pas pendant que l'assistant lit).
+ */
+export function dictate(ctor: RecognitionCtor | null, done: (r: { text: string } | { error: string }) => void): (() => void) | null {
+  if (!ctor) { done({ error: 'dictée indisponible dans ce navigateur : utiliser le champ texte' }); return null; }
+  stopSpeaking();
+  const rec = new ctor();
+  rec.lang = 'fr-FR'; rec.interimResults = false; rec.maxAlternatives = 1; rec.continuous = false;
+  let settled = false;
+  const finish = (r: { text: string } | { error: string }) => { if (!settled) { settled = true; done(r); } };
+  rec.onresult = (ev) => {
+    const t = Array.from(ev.results).map((r) => r[0]?.transcript ?? '').join(' ').trim();
+    finish(t ? { text: t } : { error: ERRORS['no-speech'] });
+  };
+  rec.onerror = (ev) => finish({ error: ERRORS[ev.error] ?? `dictée interrompue (${ev.error})` });
+  rec.onend = () => finish({ error: ERRORS['no-speech'] });
+  try { rec.start(); } catch (e) { finish({ error: `dictée impossible : ${(e as Error).message}` }); return null; }
+  return () => { try { rec.stop(); } catch { /* déjà arrêtée */ } };
+}
