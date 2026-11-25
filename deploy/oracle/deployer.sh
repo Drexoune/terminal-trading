@@ -24,7 +24,7 @@ envval() {   # valeur d'une variable du .env du Mac, guillemets retirés ; jamai
 }
 
 if [ "$MODE" = installer ]; then
-  "${SCP[@]}" "$ROOT"/deploy/oracle/{installer.sh,terminal-micro.service,terminal-bt.service,terminal-alerts.service,terminal-news.service,Caddyfile.template} "ubuntu@$IP:/tmp/"
+  "${SCP[@]}" "$ROOT"/deploy/oracle/{installer.sh,terminal-micro.service,terminal-bt.service,terminal-alerts.service,terminal-news.service,terminal-recap.service,Caddyfile.template} "ubuntu@$IP:/tmp/"
   "${SSH[@]}" "sudo bash /tmp/installer.sh $HOST"
 fi
 
@@ -46,13 +46,14 @@ if [ "$MODE" = secrets ]; then
   else echo "TELEGRAM_BOT_TOKEN ou TELEGRAM_CHAT_ID absent : terminal-alerts laissé sans secrets" >&2; fi
 fi
 
-(cd "$ROOT/web" && node scripts/build-micro-server.mjs && node scripts/build-bt-runner.mjs && node scripts/build-alerts.mjs && node scripts/build-news.mjs)
-"${SCP[@]}" "$ROOT/server/micro/dist/micro-server.mjs" "$ROOT/server/bt/dist/bt-runner.mjs" "$ROOT/server/alerts/dist/alerts.mjs" "$ROOT/server/news/dist/news.mjs" "ubuntu@$IP:/tmp/"
+(cd "$ROOT/web" && node scripts/build-micro-server.mjs && node scripts/build-bt-runner.mjs && node scripts/build-alerts.mjs && node scripts/build-news.mjs && node scripts/build-recap.mjs)
+"${SCP[@]}" "$ROOT/server/micro/dist/micro-server.mjs" "$ROOT/server/bt/dist/bt-runner.mjs" "$ROOT/server/alerts/dist/alerts.mjs" "$ROOT/server/news/dist/news.mjs" "$ROOT/server/recap/dist/recap.mjs" "ubuntu@$IP:/tmp/"
 "${SSH[@]}" "sudo install -o terminal -g terminal -m 0644 /tmp/micro-server.mjs /opt/terminal-micro/micro-server.mjs \
   && sudo install -o terminal -g terminal -m 0644 /tmp/bt-runner.mjs /opt/terminal-bt/bt-runner.mjs \
   && sudo install -o terminal -g terminal -m 0644 /tmp/alerts.mjs /opt/terminal-alerts/alerts.mjs \
   && sudo install -o terminal -g terminal -m 0644 /tmp/news.mjs /opt/terminal-news/news.mjs \
-  && sudo systemctl restart terminal-micro && sudo systemctl restart terminal-bt && sudo systemctl restart terminal-alerts && sudo systemctl restart terminal-news"
+  && sudo install -o terminal -g terminal -m 0644 /tmp/recap.mjs /opt/terminal-recap/recap.mjs \
+  && sudo systemctl restart terminal-micro && sudo systemctl restart terminal-bt && sudo systemctl restart terminal-alerts && sudo systemctl restart terminal-news && sudo systemctl restart terminal-recap"
 
 for _ in $(seq 1 30); do
   if curl -fsS "https://$HOST/micro/health" >/dev/null 2>&1; then

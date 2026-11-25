@@ -109,3 +109,16 @@ Secrets : les mêmes que `terminal-alerts` (`/etc/terminal/alerts.env`).
 Exploitation :
 - `journalctl -u terminal-news` ;
 - `/micro/health` → champ `news` (messages, titres gardés, doublons, alertes).
+
+## Récaps de séance (P6, T-074)
+
+Le service `terminal-recap` tient un registre de 24 h à partir du flux local de la microstructure : CVD minute par minute, liquidations, murs retirés et funding. Il est sauvegardé dans `/var/lib/terminal-recap/ledger.json`.
+
+Cinq minutes après la clôture de chaque séance (Asie, Londres, New York) :
+- il calcule les faits ;
+- il demande une lecture à Gemini (offre gratuite, 6 par jour), contrôlée ; sinon, faits seuls (« lecture automatique ») ;
+- il écrit `recap:<date>:<séance>` dans `p1_state`, lu par `/api/p1/recaps` et l'écran `/recap`.
+
+Secrets : les mêmes que `terminal-bt` (`/etc/terminal/bt.env`).
+
+Exploitation : `journalctl -u terminal-recap`.

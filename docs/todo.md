@@ -13,11 +13,11 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 
 ## P6 — Assistant et compte (T-073, T-074), en cours
 
-- [ ] S0 vérifications et décisions (quota Gemini à lire dans AI Studio par Clément)
-- [ ] S1 cœur de l'assistant (faits, contrôleur des nombres, route)
-- [ ] S2 colonne Assistant de l'écran Actus, traduction à la demande
-- [ ] S3 voix (appui pour parler)
-- [ ] S4 récap de session (service Oracle terminal-recap)
+- [x] S0 vérifications et décisions (`fb9030b`) (quota Gemini à lire dans AI Studio par Clément)
+- [x] S1 cœur de l'assistant (`fb9030b`) (faits, contrôleur des nombres, route)
+- [x] S2 colonne Assistant (`30bb7ae`) de l'écran Actus, traduction à la demande
+- [x] S3 voix (`3c8e662`) (appui pour parler)
+- [x] S4 récap de session (service Oracle terminal-recap ; tourne une fois les secrets posés)
 - [ ] S5 track record (journal manuel) et calculateur de risque
 - [ ] S6 porte de P6
 

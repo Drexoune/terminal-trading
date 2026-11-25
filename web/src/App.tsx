@@ -25,10 +25,11 @@ import { RetailScreen } from './screens/retail/Retail';
 import { LiquidityScreen } from './screens/liquidity/Liquidity';
 import { BacktestScreen } from './screens/backtest/Backtest';
 import { MicrostructureScreen } from './screens/micro/Microstructure';
+import { RecapScreen } from './screens/recap/Recap';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen, micro: MicrostructureScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen, micro: MicrostructureScreen, recap: RecapScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);

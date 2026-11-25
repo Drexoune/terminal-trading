@@ -1,0 +1,29 @@
+# Récaps de séance (P6, T-074), installé par deploy/oracle/installer.sh.
+# Mêmes secrets que terminal-bt (/etc/terminal/bt.env) : clé Supabase « oracle », Gemini.
+[Unit]
+Description=TERMINAL - recaps de seance (P6)
+After=network-online.target terminal-micro.service
+Wants=network-online.target
+ConditionPathExists=/etc/terminal/bt.env
+
+[Service]
+User=terminal
+Group=terminal
+EnvironmentFile=/etc/terminal/bt.env
+Environment=MICRO_URL=http://127.0.0.1:8720
+Environment=RECAP_STATE=/var/lib/terminal-recap/ledger.json
+Environment=RECAP_STATUS=/var/lib/terminal-recap/status.json
+ExecStart=/usr/bin/node /opt/terminal-recap/recap.mjs
+Restart=always
+RestartSec=10
+TimeoutStopSec=10
+Nice=5
+MemoryMax=300M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-recap
+
+[Install]
+WantedBy=multi-user.target

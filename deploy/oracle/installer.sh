@@ -32,7 +32,7 @@ fi
 
 # Utilisateur et dossiers.
 id terminal >/dev/null 2>&1 || useradd --system --home /opt/terminal-micro --shell /usr/sbin/nologin terminal
-install -d -o terminal -g terminal -m 0755 /opt/terminal-micro /var/lib/terminal-micro /opt/terminal-bt /var/lib/terminal-bt /opt/terminal-alerts /var/lib/terminal-alerts /opt/terminal-news /var/lib/terminal-news
+install -d -o terminal -g terminal -m 0755 /opt/terminal-micro /var/lib/terminal-micro /opt/terminal-bt /var/lib/terminal-bt /opt/terminal-alerts /var/lib/terminal-alerts /opt/terminal-news /var/lib/terminal-news /opt/terminal-recap /var/lib/terminal-recap
 install -d -o root -g terminal -m 0750 /etc/terminal          # secrets de terminal-bt (T-070) et terminal-alerts (T-071)
 
 # Ports 80 et 443 avant la règle REJECT de l'image d'Oracle.
@@ -47,9 +47,10 @@ install -m 0644 terminal-micro.service /etc/systemd/system/terminal-micro.servic
 install -m 0644 terminal-bt.service /etc/systemd/system/terminal-bt.service
 install -m 0644 terminal-alerts.service /etc/systemd/system/terminal-alerts.service
 install -m 0644 terminal-news.service /etc/systemd/system/terminal-news.service
+install -m 0644 terminal-recap.service /etc/systemd/system/terminal-recap.service
 sed "s/__HOST__/${HOST}/" Caddyfile.template > /etc/caddy/Caddyfile
 systemctl daemon-reload
-systemctl enable terminal-micro terminal-bt terminal-alerts terminal-news caddy
+systemctl enable terminal-micro terminal-bt terminal-alerts terminal-news terminal-recap caddy
 systemctl reload-or-restart caddy
 
 # Mises à jour de sécurité automatiques.

@@ -20,6 +20,9 @@ import type { WebSocketCtor } from '../../web/src/data/protocol';
 import { VenueStream, type MessageResult, type MicroFeedState } from '../../web/src/micro/stream';
 import { saveJson } from '../micro/persist';
 import { judgeWalls, LiqWindow, PriceJudge, type Fire, type LiqRow, type WallSeen } from './judge';
+import { SseParser } from '../shared/sse-client';
+
+export { SseParser };
 
 export const OKX_WS = 'wss://wseea.okx.com/ws/v5/public';
 export const INSTS = ['BTC-USDT-SWAP', 'ETH-USDT-SWAP'];
@@ -33,28 +36,6 @@ export interface ServiceDeps {
   WebSocket: WebSocketCtor; now: () => number; random: () => number; sleep: (ms: number) => Promise<void>;
   microUrl: string;
   writeStatus?: (s: Record<string, unknown>) => void;
-}
-
-/** Découpe un flux SSE en événements { event, data }. */
-export class SseParser {
-  private buf = '';
-  push(chunk: string): { event: string; data: string }[] {
-    this.buf += chunk;
-    const out: { event: string; data: string }[] = [];
-    let i: number;
-    while ((i = this.buf.indexOf('\n\n')) >= 0) {
-      const block = this.buf.slice(0, i);
-      this.buf = this.buf.slice(i + 2);
-      let event = 'message';
-      const data: string[] = [];
-      for (const line of block.split('\n')) {
-        if (line.startsWith('event:')) event = line.slice(6).trim();
-        else if (line.startsWith('data:')) data.push(line.slice(5).replace(/^ /, ''));
-      }
-      if (data.length) out.push({ event, data: data.join('\n') });
-    }
-    return out;
-  }
 }
 
 export class AlertService {

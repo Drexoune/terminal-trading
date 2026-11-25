@@ -1,0 +1,22 @@
+/* Récap de session (P6, S4). Tokens seuls. */
+.content.rc-list { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+.rc { padding: 12px 16px 16px; }
+.rc-span { margin: 0 0 10px; color: var(--text-3); }
+.rc-text { margin: 0; color: var(--text-body); font-size: var(--fs-reading); line-height: 1.6; }
+.rc-text--auto { color: var(--text-3); font-size: 13px; }
+.rc-srcs { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; }
+.rc-srcs a { text-decoration: none; }
+.rc-facts { width: 100%; margin-top: 14px; border-collapse: collapse; font-size: 13px; }
+.rc-facts th { height: 30px; padding: 0 8px; text-align: left; font-weight: 500; }
+.rc-facts td { padding: 8px; border-top: 1px solid var(--line); vertical-align: top; color: var(--text-1); overflow-wrap: anywhere; }
+.rc-facts td a { color: var(--text-1); }
+.rc-facts td a:hover { color: var(--gold); }
+.rc-src { color: var(--text-3) !important; font-size: 12px; }
+.rc-facts td.num { white-space: normal; }
+.rc-empty { display: flex; align-items: center; gap: 8px; padding: 20px 16px; color: var(--text-3); font-size: 12.5px; }
+@media (max-width: 480px) {
+  .rc-facts, .rc-facts tbody, .rc-facts tr, .rc-facts td { display: block; width: 100%; }
+  .rc-facts thead { display: none; }
+  .rc-facts tr { padding: 6px 0; border-top: 1px solid var(--line); }
+  .rc-facts td { border-top: 0; padding: 2px 8px; }
+}

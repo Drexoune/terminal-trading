@@ -176,6 +176,13 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
       if (!cfg.ok) return json({ configured: false, reason: cfg.reason, items: [], computed_ms: ctx.deps.now() }, NO_STORE);
       return json(await p1State(cfg.config, ctx.deps.fetch, ctx.deps.now()), NO_STORE);
     }
+    if (path === 'recaps') {
+      // Récaps de séance (P6, S4) écrits par la machine Oracle : 21 derniers (7 jours ouvrés).
+      if (q.has('week')) throw new HttpError(400, 'paramètre inconnu : week (cette route n’en prend aucun)');
+      if (!cfg.ok) return json({ configured: false, reason: cfg.reason, recaps: [], computed_ms: ctx.deps.now() }, NO_STORE);
+      const r = await rest(cfg.config, ctx.deps.fetch, 'GET', 'p1_state', { select: 'value', key: 'like.recap:*', order: 'updated_ms.desc', limit: '21' }, false);
+      return json({ configured: true, recaps: r.rows.map((x) => (x as { value: unknown }).value), computed_ms: ctx.deps.now() }, NO_STORE);
+    }
     if (path === 'watch') {
       if (q.has('week')) throw new HttpError(400, 'paramètre inconnu : week (cette route n’en prend aucun)');
       if (!cfg.ok) return json({ configured: false, reason: cfg.reason, assets: [], computed_ms: ctx.deps.now() }, NO_STORE);
