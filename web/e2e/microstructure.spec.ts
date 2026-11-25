@@ -210,3 +210,40 @@ test('Microstructure : 390 px sans défilement horizontal', async ({ page }) => 
   v.stop();
   expect(sw).toBeLessThanOrEqual(w);
 });
+
+// --- Source serveur (T-069) ----------------------------------------------------------------------
+
+const SERVER = 'http://micro.test';
+
+function serverState(now: number) {
+  const feed = (name: string, label: string, venue: string) => [`micro:feed:${name}`, { name, label, venue, status: 'connected', connected_since_ms: now - 3_600_000,
+    last_message_ms: now, reconnects: 1, outages: [{ from_ms: now - 1_800_000, to_ms: now - 1_790_000, duration_ms: 10_000 }], last_error: null, gaps: [], messages: 1000,
+    late_after_ms: 10_000, stale_after_ms: 30_000 }];
+  const lv = (px: number) => ({ px, sz: 12.5, cum: 12.5, venues: { okx: 12.5 } });
+  return [
+    ['micro:source', { kind: 'server', host: 'Oracle', started_ms: now - 600_000, restored_from: now - 660_000, down: { from: now - 660_000, to: now - 600_000 }, saved_at: now - 30_000, sys_mem_pct: 31.5, rss_mb: 140, clients: 1 }],
+    ['micro:book', { step: 10, levels: 10, bids: [lv(59_700)], asks: [lv(59_710)], best_bid: 59_700.5, best_ask: 59_701, spread: 0.5, crossed: false, imbalance: 0.1, venues: ['okx'], missing: [], ts: now, last: { px: 59_700.8, ts: now, venue: 'okx' } }],
+    feed('okx-micro', 'OKX WS', 'okx'), feed('binance-book', 'Binance WS (carnet)', 'binance'), feed('bybit', 'Bybit WS', 'bybit'), feed('hyperliquid', 'Hyperliquid WS', 'hyperliquid'),
+  ];
+}
+
+test('Microstructure : état servi par la machine Oracle (SSE), puce « Serveur Oracle », arrêt du service au journal', async ({ page }) => {
+  await page.route(`${SERVER}/micro/stream`, (route) => route.fulfill({
+    status: 200, headers: { 'content-type': 'text/event-stream', 'access-control-allow-origin': '*' },
+    body: `retry: 5000\nevent: state\ndata: ${JSON.stringify(serverState(Date.now()))}\n\n`,
+  }));
+  await page.goto(`/microstructure?microServer=${encodeURIComponent(SERVER)}`);
+  await expect(page.locator('[data-source="server"]')).toHaveText(/Serveur Oracle · 24\sh\/24/, { timeout: 5_000 });
+  await expect(page.getByTestId('mc-last')).toHaveText(/59\s?700,8/);
+  await expect(page.locator('.mc-jr-list')).toContainText(/Serveur Oracle.*service arrêté, repris à/);
+});
+
+test('Microstructure : serveur injoignable, bascule sur le moteur du navigateur', async ({ page }) => {
+  await page.route(`${SERVER}/micro/stream`, (route) => route.fulfill({ status: 503, body: 'indisponible' }));
+  const v = await fakeVenues(page);
+  await page.goto(`/microstructure?microInline=1&microServer=${encodeURIComponent(SERVER)}`);
+  await expect(page.locator('[data-source="browser"]')).toHaveText('Navigateur · serveur injoignable', { timeout: 10_000 });
+  await expect(page.getByTestId('mc-last')).toHaveText(/\d/, { timeout: 20_000 });
+  await expect(page.locator('.mc-jr-list')).toContainText('serveur injoignable : moteur du navigateur');
+  v.stop();
+});

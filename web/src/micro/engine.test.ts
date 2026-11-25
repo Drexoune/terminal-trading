@@ -62,7 +62,7 @@ function setup() {
     };
     return { ok: true, status: 200, json };
   };
-  const e = new MicroEngine({ WebSocket: FakeWs as never, fetch, now: () => Date.now(), random: () => 0, okxStatsBase: 'https://relais.test/okx' });
+  const e = new MicroEngine({ WebSocket: FakeWs as never, fetch, now: () => Date.now(), random: () => 0, okxStatsUrl: (stat) => `https://relais.test/okx?stat=${stat}` });
   return { e, calls };
 }
 

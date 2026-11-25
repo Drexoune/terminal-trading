@@ -155,7 +155,7 @@ describe('Binance', () => {
       calls.push(url);
       const lastUpdateId = url === BINANCE_DEPTH ? ids[Math.min(k++, ids.length - 1)] : 0;
       return { ok: true, status: 200, json: async () => (url === BINANCE_DEPTH
-        ? { lastUpdateId, E: 1, bids: [['60000', '2'], ['59990', '1']], asks: [['60010', '3'], ['60020', '1']] } : []) };
+        ? { lastUpdateId, E: 1, bids: [['60000', '2'], ['59990', '1'], ['59900', '1']], asks: [['60010', '3'], ['60020', '1'], ['60110', '1']] } : []) };
     };
     const { c, events, feeds } = ctx(fetch);
     const a = createBinance(c);
@@ -184,6 +184,16 @@ describe('Binance', () => {
     ws.receive(diff(105, 108, 104));
     expect(feeds.get('binance-book')?.gaps ?? []).toEqual([]);
     expect(a.books[0].bids.get(60000)).toBe(5);
+  });
+  it('prix sorti de la moitié de la portée de l’instantané : nouvel instantané, sans trou journalisé', async () => {
+    const { a, ws, calls, feeds } = setup(100, 200);
+    ws.receive(diff(96, 105, 95));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(a.books[0].synced).toBe(true);                      // instantané 59 900–60 110, milieu 60 005
+    ws.receive(diff(106, 110, 105, [], [['60010', '0'], ['60020', '0']]));   // meilleure vente 60 110 > 60 005 + 52,5
+
+    expect(calls.filter((u) => u === BINANCE_DEPTH)).toHaveLength(2);
+    expect(feeds.get('binance-book')?.gaps ?? []).toEqual([]);
   });
   it('rupture de pu : trou journalisé, nouvel instantané ; instantané en retard : nouvel essai', async () => {
     const { a, ws, calls, feeds } = setup(100, 100, 135);

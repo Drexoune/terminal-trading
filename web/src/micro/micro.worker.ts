@@ -6,7 +6,7 @@
 // carte et des liquidations s'accumule même hors de l'écran). Lots publiés au plus 10 fois par seconde.
 
 import type { Item } from '../data/protocol';
-import { OKX_STATS_RELAY } from './backfill';
+import { relayStatUrl } from './backfill';
 import { MicroEngine } from './engine';
 
 export type MicroToWorker = { type: 'start' };
@@ -24,7 +24,7 @@ ctx.onmessage = (ev: MessageEvent<MicroToWorker>) => {
     fetch: (url, init) => fetch(url, init),
     now: () => Date.now(),
     random: Math.random,
-    okxStatsBase: OKX_STATS_RELAY,
+    okxStatsUrl: relayStatUrl,
   });
   engine.start();
   setInterval(() => {

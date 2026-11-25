@@ -95,6 +95,8 @@ export function createBinance(ctx: VenueCtx): VenueAdapter {
       return 'data';
     }
     applyDiff(m.data, recv);
+    // Prix sorti de la moitié de la portée de l'instantané : nouvel instantané (pas un trou de données).
+    if (!fetching && book.drifted()) { book.reset(); lastU = null; buffer = []; needFirst = false; staleTries = 0; void loadSnapshot(); }
     return 'data';
   }
 

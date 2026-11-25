@@ -1,0 +1,13 @@
+# Proxy https devant le service de la microstructure (T-069) ; certificat Let's Encrypt automatique.
+# Le nom du site (<ip-avec-tirets>.sslip.io) est posé par installer.sh. « handle » fixe l'ordre :
+# sans lui, « respond » passe avant « reverse_proxy » (ordre des directives de Caddy).
+__HOST__ {
+	handle /micro/* {
+		reverse_proxy 127.0.0.1:8720 {
+			flush_interval -1
+		}
+	}
+	handle {
+		respond 404
+	}
+}

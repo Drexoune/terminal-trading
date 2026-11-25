@@ -15,6 +15,7 @@ export class LocalBook {
 
   private lo = -Infinity;
   private hi = Infinity;
+  private snapMid: number | null = null;
 
   /**
    * scale : contrats → BTC (OKX : 0,01). maxLevels : profondeur publiée par la plateforme (OKX
@@ -25,7 +26,7 @@ export class LocalBook {
   constructor(readonly venue: Venue, private readonly scale = 1, private readonly opts: { maxLevels?: number; bounded?: boolean } = {}) {}
 
   reset(): void {
-    this.bids.clear(); this.asks.clear(); this.synced = false; this.ts = 0; this.lo = -Infinity; this.hi = Infinity;
+    this.bids.clear(); this.asks.clear(); this.synced = false; this.ts = 0; this.lo = -Infinity; this.hi = Infinity; this.snapMid = null;
   }
 
   snapshot(bids: Level[], asks: Level[], ts: number, recv: number): void {
@@ -34,6 +35,8 @@ export class LocalBook {
     if (this.opts.bounded) {
       this.lo = bids.length ? Math.min(...bids.map((l) => l[0])) : -Infinity;
       this.hi = asks.length ? Math.max(...asks.map((l) => l[0])) : Infinity;
+      const b = this.bestBid(), a = this.bestAsk();
+      this.snapMid = b !== null && a !== null ? (b + a) / 2 : null;
     }
     this.synced = true;
   }
@@ -55,6 +58,16 @@ export class LocalBook {
       return { px, sz: px.map((p) => m.get(p)!) };
     };
     return { venue: this.venue, ts: this.ts, recv: this.recv, bids: side(this.bids, true), asks: side(this.asks, false), synced: this.synced };
+  }
+
+  /** Carnet borné : le prix s'est éloigné de plus de la moitié de la portée de l'instantané d'un
+   *  côté ; au-delà, la portée fiable fond, puis le carnet se vide (constaté sur la machine Oracle,
+   *  qui tourne des heures sans rouvrir l'écran) : il faut un nouvel instantané. */
+  drifted(): boolean {
+    if (!this.opts.bounded || this.snapMid === null || !this.synced) return false;
+    const b = this.bestBid(), a = this.bestAsk();
+    if (b === null || a === null) return true;
+    return b < this.snapMid - (this.snapMid - this.lo) / 2 || a > this.snapMid + (this.hi - this.snapMid) / 2;
   }
 
   /** Un carnet croisé (meilleur achat ≥ meilleure vente) trahit une mise à jour manquée. */

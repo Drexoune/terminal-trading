@@ -69,6 +69,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-062 | 24/11/2026 | Moteur du backtest | PineTS (Pine Script natif, émulateur de courtier de type TradingView), licence AGPL-3.0 pour un usage personnel sans redistribution ; appels de marge désactivés par défaut (levier 1), activables |
 | T-063 | 24/11/2026 | IA du backtest | Gemini en offre gratuite seulement (0 $ par jour), modèle le moins cher (Gemini 3.1 Flash-Lite) ; quota gratuit épuisé : « quota gratuit atteint », jamais de bascule payante ; clé dans les secrets de Supabase et les variables de Vercel |
 | T-068 | 25/11/2026 | Statistiques d'OKX pour P5 | Volume preneur (perp, spot) et historique de l'OI de `www.okx.com` relayés par la fonction Vercel `api/okx-time.ts` (`?stat=`), liste blanche fixe, cache CDN ; complète T-067 (ces statistiques n'acceptent pas le navigateur) |
+| T-069 | 25/11/2026 | Microstructure en continu | Le moteur de P5 tourne 24 h/24 sur une machine Oracle Cloud « Always Free » (région de rattachement en France), compte jamais passé en paiement à l'usage ; machine A1 petite (1 cœur, 2 Go) pour ne pas être jugée inactive ; plan à valider avant tout code ; révise T-065 (« aucun serveur ») |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -753,4 +754,19 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
 - la même route sert le serveur de développement (middleware `vite-plugins/api-dev.ts`) ; le front l'appelle sur sa propre origine, dans les trois modes.
 
 **Complète T-067**, qui reste valable pour `books-full` et les liquidations, lus directement par le navigateur.
+
+## T-069 — Microstructure en continu sur Oracle Cloud · 25/11/2026
+
+**Demande de Clément.** Que la microstructure tourne fenêtre fermée, sans rien sur le Mac ni sur la tour, gratuitement. Vercel (pas de WebSocket qui reste ouverte) et Supabase (Edge Functions de 150 s au plus et 2 s de calcul par exécution, relevé T-042) ne le permettent pas. Options présentées : Oracle Cloud Always Free (recommandée), Cloudflare Durable Objects (limite de requêtes non vérifiée pour les WebSockets sortantes), Koyeb (mise en veille, 0,1 cœur), version dégradée sur Supabase (relevé REST chaque minute). Google Cloud gratuit est exclu : régions américaines seulement, que Binance bloque.
+
+**Faits vérifiés le 25/11/2026** (docs.oracle.com, pages *Free Tier* et *Always Free Resources*) : carte et téléphone demandés à l'inscription, « your credit card will not be charged unless you upgrade your account » ; après l'essai de 30 jours, le compte reste actif et les ressources Always Free continuent sans interruption ; Ampere A1 gratuit jusqu'à 2 OCPU et 12 Go (1 500 OCPU-heures et 9 000 Go-heures par mois), 200 Go de stockage bloc, 10 To de sortie par mois ; ressources gratuites seulement dans la région de rattachement, choisie à l'inscription ; une instance est réputée inactive, et peut être récupérée, si sur 7 jours le 95e centile du processeur, le réseau **et** la mémoire (A1) restent tous sous 20 %. Aucune exemption écrite pour les comptes passés en paiement à l'usage.
+
+**Décision de Clément** (« ok à condition que ce soit 100 % gratuit ») :
+
+- compte Oracle créé par Clément, région de rattachement en France (Paris ou Marseille, à confirmer à l'inscription), **jamais** passé en paiement à l'usage : aucune facturation possible ;
+- une machine A1 dimensionnée petite (1 OCPU, 2 Go) : le système et les services y dépassent 20 % de mémoire, ce qui suffit à ne pas être « inactif » ; contrôle sur les métriques d'Oracle la première semaine ;
+- le moteur de P5 (`web/src/micro/engine.ts`, déjà exécuté tel quel sous Node) y tourne en service, avec redémarrage automatique ; le navigateur y récupère l'historique à l'ouverture ;
+- plan détaillé (service, accès https, sécurité, données servies, tests) présenté et validé avant tout code.
+
+**Révise T-065** sur un point : « aucun stockage côté serveur ». Le reste de T-065 (flux publics, aucune clé, worker du navigateur) demeure ; le worker reste la source en direct quand la machine est injoignable.
 

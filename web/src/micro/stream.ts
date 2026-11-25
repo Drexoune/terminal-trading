@@ -79,6 +79,13 @@ export class VenueStream {
     this.onState(this.snapshot());
   }
 
+  /** Journal d'un service précédent (machine Oracle, T-069) : coupures, trous et reconnexions repris tels quels. */
+  restoreJournal(j: { outages: Outage[]; gaps: Gap[]; reconnects: number }): void {
+    this.state.outages = [...j.outages, ...this.state.outages].slice(-OUTAGES_KEPT);
+    this.state.gaps = [...j.gaps, ...this.state.gaps].slice(-GAPS_KEPT);
+    this.state.reconnects += j.reconnects;
+  }
+
   /** Trou de données signalé par l'adaptateur (carnet resynchronisé, séquence rompue). */
   gap(text: string): void {
     this.state.gaps.push({ at_ms: this.deps.now(), text });

@@ -1,0 +1,25 @@
+# Service de la microstructure (T-069), installé par deploy/oracle/installer.sh.
+[Unit]
+Description=TERMINAL - microstructure BTC 24 h/24 (T-069)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=terminal
+Group=terminal
+Environment=MICRO_PORT=8720
+Environment=MICRO_HOST=127.0.0.1
+Environment=MICRO_STATE=/var/lib/terminal-micro/state.json
+ExecStart=/usr/bin/node /opt/terminal-micro/micro-server.mjs
+Restart=always
+RestartSec=5
+TimeoutStopSec=15
+MemoryMax=700M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-micro
+
+[Install]
+WantedBy=multi-user.target

@@ -8,18 +8,18 @@
 // trous de la CVD rattrapés dès que la tranche est close ; OI de Binance toutes les 30 s ;
 // historique de l'OI toutes les heures ; liquidations d'OKX rattrapées à chaque (re)connexion.
 
-import type { FetchLike, Item, WebSocketCtor } from '../data/protocol';
+import type { FetchLike, Item, Outage, WebSocketCtor } from '../data/protocol';
 import { aggregate } from './aggBook';
 import {
-  BINANCE_OI, BINANCE_OI_HIST, BYBIT_OI_HIST, binanceKlinesUrl, OKX_BOOKS_FULL, OKX_LIQ_HIST, OKX_STATS_NO_CORS, okxOiHistUrl, okxTakerPerpUrl, okxTakerSpotUrl,
+  BINANCE_OI, BINANCE_OI_HIST, BYBIT_OI_HIST, binanceKlinesUrl, OKX_BOOKS_FULL, OKX_LIQ_HIST, OKX_STATS_NO_CORS, type OkxStat,
   parseBinanceKlines, parseBinanceOi, parseBinanceOiHist, parseBybitOiHist, parseOkxBooksFull, parseOkxLiqHist, parseOkxOiHist, parseOkxTaker,
 } from './backfill';
 import { LocalBook } from './book';
 import { BACKFILLED, Cvd, MIN, type Fill, type StreamId } from './cvd';
-import { DepthMap } from './depth';
+import { DepthMap, type DepthSave } from './depth';
 import { FundingBoard, type OiPoint } from './funding';
 import { Liquidations } from './liqs';
-import type { MicroFeedState } from './stream';
+import type { Gap, MicroFeedState } from './stream';
 import type { BookSide, BookView, MicroEvent, Venue } from './types';
 import { createBinance } from './venues/binance';
 import { createBybit } from './venues/bybit';
@@ -35,11 +35,19 @@ export const BINANCE_OI_MS = 30_000;
 export const OI_HIST_MS = 3_600_000;
 export const BACKFILL_CHECK_MS = 10_000;
 
+export interface EngineSave {
+  v: 1; saved_at: number;
+  depth: DepthSave;
+  liqs: ReturnType<Liquidations['save']>;
+  feeds: Record<string, { outages: Outage[]; gaps: Gap[]; reconnects: number }>;
+}
+
 export interface EngineDeps {
   WebSocket: WebSocketCtor; fetch: FetchLike; now: () => number; random: () => number;
-  /** Relais des statistiques `rubik` d'OKX (T-068, `/api/okx-time`). Absent : OKX hors des courbes
+  /** Adresse des statistiques `rubik` d'OKX : relais Vercel dans le navigateur (T-068), `www.okx.com`
+   *  sur la machine Oracle (T-069). Absente : OKX hors des courbes
    *  de CVD (ses trades restent comptés « depuis l'ouverture ») et sans variation 24 h de l'OI. */
-  okxStatsBase?: string | null;
+  okxStatsUrl?: ((stat: OkxStat) => string) | null;
 }
 
 /** État d'un appel REST (rattrapage, historique) : affiché avec la source de chaque panneau. */
@@ -78,10 +86,10 @@ export class MicroEngine {
   private lastCvd = 0;
   private lastFull = 0;
   private running = false;
-  private readonly okxStats: string | null;
+  private readonly okxStats: ((stat: OkxStat) => string) | null;
 
-  constructor(private readonly deps: EngineDeps) {
-    this.okxStats = deps.okxStatsBase ?? null;
+  constructor(private readonly deps: EngineDeps, private readonly opts: { fullEveryMs?: number } = {}) {
+    this.okxStats = deps.okxStatsUrl ?? null;
     this.cvd = new Cvd(deps.now(), this.okxStats ? BACKFILLED : BACKFILLED.filter((s) => !s.id.startsWith('okx')));
     if (!this.okxStats) this.board.historyFailed('okx', `${OKX_STATS_NO_CORS} : historique de l’OI indisponible`);
     const ctx: VenueCtx = {
@@ -116,6 +124,30 @@ export class MicroEngine {
     for (const t of this.timers) clearInterval(t);
     this.timers = [];
     for (const a of Object.values(this.adapters)) for (const s of a.streams) s.stop();
+  }
+
+  // --- Persistance (machine Oracle, T-069) ------------------------------------------------------
+
+  save(now = this.deps.now()): EngineSave {
+    const feeds: EngineSave['feeds'] = {};
+    for (const a of Object.values(this.adapters)) for (const st of a.streams) {
+      const s = st.snapshot();
+      feeds[s.name] = { outages: s.outages, gaps: s.gaps, reconnects: s.reconnects };
+    }
+    return { v: 1, saved_at: now, depth: this.depth.save(), liqs: this.liqs.save(), feeds };
+  }
+
+  /** Reprend un état sauvegardé de moins d'une heure ; renvoie false s'il est trop ancien ou illisible. */
+  restore(s: EngineSave, now = this.deps.now()): boolean {
+    if (s?.v !== 1 || !(now - s.saved_at < 3_600_000)) return false;
+    this.depth.restore(s.depth, now);
+    this.liqs.restore(s.liqs, now);
+    for (const a of Object.values(this.adapters)) for (const st of a.streams) {
+      const j = s.feeds[st.spec.name];
+      if (j) st.restoreJournal(j);
+    }
+    this.dirty.add('depth'); this.dirty.add('liqs');
+    return true;
   }
 
   // --- Entrées --------------------------------------------------------------------------------
@@ -185,7 +217,7 @@ export class MicroEngine {
   private async loadOiHistory(): Promise<void> {
     const jobs: [Venue, string, (b: unknown) => OiPoint[]][] = [
       ['binance', BINANCE_OI_HIST, parseBinanceOiHist], ['bybit', BYBIT_OI_HIST, parseBybitOiHist]];
-    if (this.okxStats) jobs.push(['okx', okxOiHistUrl(this.okxStats), parseOkxOiHist]);
+    if (this.okxStats) jobs.push(['okx', this.okxStats('oi-hist'), parseOkxOiHist]);
     await Promise.all(jobs.map(async ([v, url, parse]) => {
       const name = `${v}-oi-hist`, label = `${v === 'okx' ? 'OKX' : v === 'bybit' ? 'Bybit' : 'Binance'} historique OI`;
       try { this.board.setHistory(v, parse(await this.getJson(url))); this.setRest(name, label, true); } catch (e) {
@@ -225,7 +257,7 @@ export class MicroEngine {
       this.inflight.add(s.id);
       try {
         let rows: Fill[];
-        if (okx) rows = parseOkxTaker(await this.getJson((s.id === 'okx:perp' ? okxTakerPerpUrl : okxTakerSpotUrl)(this.okxStats!)), now);
+        if (okx) rows = parseOkxTaker(await this.getJson(this.okxStats!(s.id === 'okx:perp' ? 'taker-perp' : 'taker-spot')), now);
         else {
           const from = holes[0] ?? Math.floor(now / MIN) * MIN - MIN, to = (holes[holes.length - 1] ?? from) + MIN - 1;
           rows = parseBinanceKlines(await this.getJson(binanceKlinesUrl(s.id === 'binance:perp' ? 'perp' : 'spot', from, to)), now);
@@ -273,7 +305,8 @@ export class MicroEngine {
       out.push(['micro:cvd', this.cvd.state(now)]);
     }
     // Tout l'état chaque seconde : le store est vidé à un changement de mode (data/store.ts).
-    if (now - this.lastFull >= 1_000) {
+    // Navigateur : chaque seconde. Serveur (T-069) : plus rare, chaque client reçoit le dernier état à la connexion.
+    if (now - this.lastFull >= (this.opts.fullEveryMs ?? 1_000)) {
       this.lastFull = now;
       // États des flux relus à la source : l'heure du dernier message avance sans changement d'état.
       for (const a of Object.values(this.adapters)) for (const st of a.streams) this.feeds.set(st.spec.name, st.snapshot());

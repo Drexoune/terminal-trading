@@ -4,6 +4,7 @@
 // renvoie vide.
 
 import { CT_VAL } from './venues/okx';
+import type { OkxStat } from '../../../api/_lib/okx-stat-urls';
 import type { Fill } from './cvd';
 import type { OiPoint } from './funding';
 import type { Level } from './book';
@@ -27,9 +28,8 @@ export function parseBinanceKlines(rows: unknown, now: number): Fill[] {
 }
 
 /** Volume preneur du perpétuel OKX, 5 min, en BTC (unit=0). */
-export const okxTakerPerpUrl = (base: string) => `${base}?stat=taker-perp`;
+export { OKX_STAT_URLS, type OkxStat } from '../../../api/_lib/okx-stat-urls';
 /** Volume preneur spot d'OKX, 5 min, en BTC, tous marchés spot BTC confondus. */
-export const okxTakerSpotUrl = (base: string) => `${base}?stat=taker-spot`;
 
 /** Lignes [ts, volume vendeur, volume acheteur] ; la tranche en cours (pas finie) est écartée. */
 export function parseOkxTaker(body: unknown, now: number, unitMs = 300_000): Fill[] {
@@ -43,9 +43,10 @@ export function parseOkxTaker(body: unknown, now: number, unitMs = 300_000): Fil
 export const BINANCE_OI = 'https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT';
 export const BINANCE_OI_HIST = 'https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=1h&limit=30';
 export const BYBIT_OI_HIST = 'https://api.bybit.com/v5/market/open-interest?category=linear&symbol=BTCUSDT&intervalTime=1h&limit=30';
-export const okxOiHistUrl = (base: string) => `${base}?stat=oi-hist`;
+/** Relais des statistiques (T-068) : fonction Vercel de l'heure OKX, même origine que la page.
+ *  La machine Oracle lit OKX_STAT_URLS directement (T-069, pas de CORS côté serveur). */
+export const relayStatUrl = (stat: OkxStat) => `/api/okx-time?stat=${stat}`;
 /** Relais des statistiques (T-068) : fonction Vercel de l'heure OKX, même origine que la page. */
-export const OKX_STATS_RELAY = '/api/okx-time';
 export const OKX_STATS_NO_CORS = 'OKX ne sert pas ses statistiques au navigateur (aucun en-tête CORS)';
 
 export function parseBinanceOi(body: unknown): { ts: number; oi_btc: number } {

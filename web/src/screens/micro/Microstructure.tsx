@@ -12,7 +12,7 @@ import { useKeys, useValue } from '../../data/store';
 import { fmtNumber, fmtPctChange, fmtSigned, fmtUsdCompact, NBSP } from '../../lib/format';
 import { fmtHm, fmtHms } from '../../lib/time';
 import type { AggBook, AggLevel } from '../../micro/aggBook';
-import { startMicro, useBrowserNow } from '../../micro/client';
+import { startMicro, useBrowserNow, type BrowserSource } from '../../micro/client';
 import type { CvdState } from '../../micro/cvd';
 import type { DepthState } from '../../micro/depth';
 import type { RestState } from '../../micro/engine';
@@ -225,15 +225,34 @@ function FundingPanel({ f, feeds, now }: { f: (FundingState & { ts: number }) | 
   );
 }
 
+// --- Source (T-069) ---------------------------------------------------------------------------
+
+/** État publié par la machine Oracle (server/micro/main.ts, SourceState). */
+interface ServerSource { kind: 'server'; host: string; started_ms: number; restored_from: number | null; down: { from: number; to: number } | null; saved_at: number | null; sys_mem_pct: number; rss_mb: number; clients: number }
+type Source = ServerSource | BrowserSource;
+
+function SourceChip({ src }: { src: Source | undefined }) {
+  if (!src) return <Chip>Source —</Chip>;
+  if (src.kind === 'server') {
+    const t = `Moteur sur la machine ${src.host}, 24 h/24 (T-069) · démarré ${fmtHms(src.started_ms, 'Europe/Paris')}${src.restored_from ? ` (état relu de ${fmtHms(src.restored_from, 'Europe/Paris')})` : ''} · mémoire système ${fmtNumber(src.sys_mem_pct, 0)}${NBSP}% · ${src.clients} écran(s)`;
+    return <span className="chip chip--live" data-source="server" title={t}>{`Serveur ${src.host} · 24${NBSP}h/24`}</span>;
+  }
+  return src.server
+    ? <span className="chip chip--hot" data-source="browser" title={`Moteur du navigateur depuis ${fmtHms(src.since, 'Europe/Paris')} : ${src.reason ?? ''}. Nouvel essai du serveur toutes les 30 s.`}>Navigateur · serveur injoignable</span>
+    : <span className="chip" data-source="browser" title="Moteur du navigateur : l’historique repart de l’ouverture de l’écran">Navigateur</span>;
+}
+
 // --- Journal des flux ------------------------------------------------------------------------
 
-function Journal({ feeds, rest, now }: { feeds: Feeds; rest: RestState[]; now: number }) {
+function Journal({ feeds, rest, now, src }: { feeds: Feeds; rest: RestState[]; now: number; src: Source | undefined }) {
   const rows = [...feeds.values()].sort((a, b) => a.label!.localeCompare(b.label!));
   const events = rows.flatMap((f) => [
     ...f.outages.map((o) => ({ t: o.from_ms, feed: f.label!, text: `coupure de ${Math.max(1, Math.round(o.duration_ms / 1000))} s, reprise à ${fmtHms(o.to_ms, 'Europe/Paris')}` })),
     ...f.gaps.map((g) => ({ t: g.at_ms, feed: f.label!, text: g.text })),
     ...(f.status !== 'connected' && f.last_error ? [{ t: now, feed: f.label!, text: `coupé : ${f.last_error}` }] : []),
-  ]).sort((a, b) => b.t - a.t).slice(0, 30);
+  ]).concat(src?.kind === 'server' && src.down ? [{ t: src.down.from, feed: `Serveur ${src.host}`, text: `service arrêté, repris à ${fmtHms(src.down.to, 'Europe/Paris')} (état sauvegardé relu)` }]
+    : src?.kind === 'browser' && src.reason ? [{ t: src.since, feed: 'Source', text: `${src.reason} : moteur du navigateur` }] : [])
+    .sort((a, b) => b.t - a.t).slice(0, 30);
   const restErr = rest.filter((r) => r.ok === false);
   return (
     <Panel title="Journal des flux · coupures et trous" label="Journal des flux" controls="none">
@@ -267,11 +286,13 @@ export function MicrostructureScreen() {
   const liqs = useValue<LiqState>('micro:liqs');
   const funding = useValue<FundingState & { ts: number }>('micro:funding');
   const rest = useValue<RestState[]>('micro:rest') ?? [];
+  const src = useValue<Source>('micro:source');
   return (
     <>
       <SubHeader icon="micro" title="Microstructure BTC · BTC-USDT perpétuel"
         chips={<>
           <Chip variant="hot" round>OKX · Binance · Bybit · Hyperliquid</Chip>
+          <SourceChip src={src} />
           <Fresh names={[...new Set(Object.values(PANEL_FEEDS).flat())]} feeds={feeds} now={now} />
         </>} />
       <div className="content mc" data-screen="micro">
@@ -284,7 +305,7 @@ export function MicrostructureScreen() {
           <LiqPanel l={liqs} feeds={feeds} now={now} />
         </div>
         <FundingPanel f={funding} feeds={feeds} now={now} />
-        <Journal feeds={feeds} rest={rest} now={now} />
+        <Journal feeds={feeds} rest={rest} now={now} src={src} />
       </div>
     </>
   );

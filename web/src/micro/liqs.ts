@@ -51,6 +51,15 @@ export class Liquidations {
     this.seen = new Set(this.list.map(key));
   }
 
+  /** Persistance (machine Oracle, T-069). */
+  save(): { list: Liquidation[]; since: [Venue, number][] } { return { list: this.list, since: [...this.since] }; }
+
+  restore(s: { list: Liquidation[]; since: [Venue, number][] }, now: number): void {
+    for (const l of s.list) this.add(l);
+    for (const [v, t] of s.since) this.observe(v, t);
+    this.prune(now);
+  }
+
   state(now: number): LiqState {
     this.prune(now);
     const sorted = [...this.list].sort((a, b) => b.ts - a.ts);

@@ -7,12 +7,13 @@
 import { HttpError } from './http.js';
 import { OKX_TIMEOUT_MS, OkxError, type OkxDeps } from './okx.js';
 
-export const OKX_WWW_V5 = 'https://www.okx.com/api/v5';
+import { OKX_STAT_URLS } from './okx-stat-urls.js';
 
+/** Adresses partagées avec le front et la machine Oracle (okx-stat-urls.ts). */
 export const OKX_STATS = {
-  'taker-perp': { url: `${OKX_WWW_V5}/rubik/stat/taker-volume-contract?instId=BTC-USDT-SWAP&period=5m&unit=0&limit=100`, cache: 'public, max-age=0, s-maxage=60' },
-  'taker-spot': { url: `${OKX_WWW_V5}/rubik/stat/taker-volume?ccy=BTC&instType=SPOT&period=5m`, cache: 'public, max-age=0, s-maxage=60' },
-  'oi-hist': { url: `${OKX_WWW_V5}/rubik/stat/contracts/open-interest-history?instId=BTC-USDT-SWAP&period=1H&limit=30`, cache: 'public, max-age=0, s-maxage=300' },
+  'taker-perp': { url: OKX_STAT_URLS['taker-perp'], cache: 'public, max-age=0, s-maxage=60' },
+  'taker-spot': { url: OKX_STAT_URLS['taker-spot'], cache: 'public, max-age=0, s-maxage=60' },
+  'oi-hist': { url: OKX_STAT_URLS['oi-hist'], cache: 'public, max-age=0, s-maxage=300' },
 } as const;
 export type OkxStat = keyof typeof OKX_STATS;
 

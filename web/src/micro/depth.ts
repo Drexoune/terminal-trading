@@ -24,6 +24,7 @@ export interface DepthState {
   levels: number[]; coverage: Coverage[];
 }
 
+export interface DepthSave { step: number; from: number | null; lastColumn: number; columns: DepthColumn[]; price: [number, number][]; bubbles: Bubble[]; walls: Wall[] }
 export interface DepthOptions { windowMs: number; columnMs: number; sampleMs: number; rangePct: number; rows: number; bubbleMinBtc: number; wallMinBtc: number }
 export const DEPTH_DEFAULTS: DepthOptions = { windowMs: 3_600_000, columnMs: 40_000, sampleMs: 5_000, rangePct: 0.5, rows: 30, bubbleMinBtc: 5, wallMinBtc: 40 };
 
@@ -153,6 +154,21 @@ export class DepthMap {
     while (this.price.length && this.price[0][0] < cut) this.price.shift();
     while (this.bubbles.length && this.bubbles[0].t < cut) this.bubbles.shift();
     while (this.walls.length && this.walls[0].t < cut) this.walls.shift();
+  }
+
+  /** Persistance (machine Oracle, T-069) : ce qui fait l'heure de carte. Le carnet précédent ne
+   *  l'est pas : après un redémarrage, le premier relevé ne compare rien (aucun faux mur). */
+  save(): DepthSave {
+    return { step: this.step, from: this.from, lastColumn: this.lastColumn, columns: this.columns, price: this.price, bubbles: this.bubbles, walls: this.walls };
+  }
+
+  restore(s: DepthSave, now: number): void {
+    const cut = now - this.o.windowMs;
+    this.step = s.step; this.from = s.from; this.lastColumn = s.lastColumn;
+    this.columns = s.columns.filter((c) => c.t >= cut);
+    this.price = s.price.filter((p) => p[0] >= cut);
+    this.bubbles = s.bubbles.filter((b) => b.t >= cut);
+    this.walls = s.walls.filter((w) => w.t >= cut);
   }
 
   state(): DepthState {
