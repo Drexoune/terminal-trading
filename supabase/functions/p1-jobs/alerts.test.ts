@@ -182,3 +182,37 @@ describe('cloche du calendrier et catégories du fil', () => {
   });
 });
 
+
+describe('flux périmé (CLAUDE.md § 3)', () => {
+  const feed = (name: string, last: number | null, stale: number, extra: Record<string, unknown> = {}) =>
+    ({ key: `feed:${name}`, value: { name, label: name === 'news' ? 'Fil d’actus' : name, status: 'connected', last_message_ms: last, late_after_ms: 60_000, stale_after_ms: stale, last_error: null, ...extra }, updated_ms: T0 });
+
+  it('règle par défaut posée une fois ; une alerte par coupure, Telegram ; flux arrêté ou jamais reçu : rien', async () => {
+    const { rest, deps, sent, at } = setup();
+    await rest.upsert('p1_state', [feed('news', T0 - 11 * 60_000, 10 * 60_000), feed('calendar', T0 - 60_000, 3 * 3_600_000),
+      feed('kalshi', T0 - 3_600_000, 5 * 60_000, { status: 'stopped' }), feed('cot', null, 60_000)], 'key');
+    rest.rows('okx_candles_1m').push({ inst: 'BTC-USDT-SWAP', t: new Date(T0 - 2 * 60_000).toISOString() });
+    const r = await runAlerts(deps);
+    expect(r.rules).toBe(1);
+    expect(r.fired).toEqual([{ rule: expect.any(Number), title: 'Flux périmé : Fil d’actus', telegram: 'en attente' }]);   // état avant l'envoi, vérifié ligne suivante
+    expect(String(sent[0].body.text)).toContain('Aucune donnée depuis 11\u00a0min (dernier message à 14:19, Paris ; seuil 10\u00a0min)');
+    at(T0 + 60_000);
+    expect((await runAlerts(deps)).fired).toEqual([]);                       // même coupure : une seule alerte
+    // Le flux revient puis se tait de nouveau : nouvelle coupure, nouvelle alerte.
+    await rest.upsert('p1_state', [feed('news', T0 + 30 * 60_000, 10 * 60_000)], 'key');
+    at(T0 + 45 * 60_000);                                                    // les bougies OKX du test sont aussi muettes depuis 47 min
+    expect(((await runAlerts(deps)).fired as { title: string }[]).map((f) => f.title).sort()).toEqual(['Flux périmé : Bougies OKX (collecteur)', 'Flux périmé : Fil d’actus']);
+  });
+
+  it('bougies OKX muettes ; règle supprimée : jamais reposée ; règle limitée à certains flux', async () => {
+    const { rest, deps } = setup();
+    rest.rows('okx_candles_1m').push({ inst: 'BTC-USDT-SWAP', t: new Date(T0 - 7 * 60_000).toISOString() });
+    expect(((await runAlerts(deps)).fired as { title: string }[]).map((f) => f.title)).toEqual(['Flux périmé : Bougies OKX (collecteur)']);
+    const id = rest.rows('alert_rules')[0].id;
+    expect((await cmd(deps, { op: 'delete', id })).status).toBe(200);
+    expect((await runAlerts(deps)).rules).toBe(0);
+    const c = await cmd(deps, { op: 'create', kind: 'feed_stale', params: { feeds: ['news'] }, channels: [] });
+    expect(c.body).toMatchObject({ label: 'Flux périmé : news', category: 'Fraîcheur des sources' });
+    expect((await cmd(deps, { op: 'create', kind: 'feed_stale', params: { feeds: ['Pas Bon!'] } })).status).toBe(400);
+  });
+});

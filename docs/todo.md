@@ -33,9 +33,9 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 
 - [x] Page `/assistant` (elle n'affichait qu'un écran d'attente) : même conversation que la colonne d'Actus
 - [x] Explications partout : case « À quoi sert cette page / Comment la lire / Comment s'en servir » sur chaque écran (bouton « Guide »), bulle « i » sur chaque panneau, glossaire sur les termes techniques (`web/src/help/`)
-- [ ] **Alerte de flux périmé** (CLAUDE.md § 3 : « un flux muet au-delà de son seuil passe en périmé et déclenche une alerte ») : aujourd'hui l'état « périmé » s'affiche (barre de flux, puces), mais aucune alerte ne part
-- [ ] **Espaces de travail** (stack § 4, plan « panneaux liés, mises en page sauvegardées ») : dockview pas installé, bouton « Personnaliser » inactif
-- [ ] Heatmap fondamentale : « lecture IA » du plan (T-055 l'avait remplacée par une lecture automatique faute d'IA en P3 ; possible maintenant avec l'assistant de P6)
+- [x] **Alerte de flux périmé** (CLAUDE.md § 3) : sorte `feed_stale` jugée chaque minute par `p1-jobs` (flux `feed:*` de p1_state, chacun à son seuil, et bougies OKX du collecteur), une alerte par coupure, règle « toutes les sources » posée une fois ; reste à redéployer `p1-jobs`
+- [x] **Espaces de travail** : `/espace` (bouton « Personnaliser », commande WS), dockview-react 8.9.0 épinglé, mises en page nommées gardées dans le navigateur, modèles, panneaux liés par l'actif (heatmap technique, indicateurs, saisonnalité)
+- [x] Heatmap fondamentale : « Lecture IA » à la demande (assistant de P6, faits = scores affichés, chaque chiffre vérifié, plafond de l'assistant)
 - [ ] Bourse B2 à B4 (fiche action, screener, watchlists, calendrier boursier, 13F) : prévus après le 10/12 (T-027)
 - [ ] Positions OKX en lecture (T-074, sans clé pour l'instant) ; Tauri (fenêtres détachées) : plus tard
 

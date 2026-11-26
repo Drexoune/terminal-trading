@@ -21,9 +21,9 @@ const read = (k: string) => { try { return localStorage.getItem(k); } catch { re
 const write = (k: string, v: string | null) => { try { if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch { /* navigation privée */ } };
 
 /** État de la case d'une page : ouverte par défaut, repliable, mémorisée dans ce navigateur. */
-export function useGuide(id: string | null): [boolean, () => void] {
-  const [open, setOpen] = useState(() => !!id && read(GLOBAL_HIDE) !== '1' && read(KEY(id)) !== 'closed');
-  const toggle = () => { if (!id) return; setOpen((o) => { write(KEY(id), o ? 'closed' : null); return !o; }); };
+export function useGuide(id: string | null, closedByDefault = false): [boolean, () => void] {
+  const [open, setOpen] = useState(() => !closedByDefault && !!id && read(GLOBAL_HIDE) !== '1' && read(KEY(id)) !== 'closed');
+  const toggle = () => { if (!id) return; setOpen((o) => { if (!closedByDefault) write(KEY(id), o ? 'closed' : null); return !o; }); };
   return [open, toggle];
 }
 

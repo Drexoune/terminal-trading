@@ -196,3 +196,6 @@ a.chip:hover { color: var(--gold-hi); border-color: var(--gold); }
 @media (max-width: 900px) { .guide { grid-template-columns: minmax(0, 1fr); } }
 /* Libellé suivi de sa bulle (glossaire) */
 .lbl-tip { display: inline-flex; align-items: center; gap: 5px; }
+
+/* Liens présentés en boutons (barre du haut : Assistant, Personnaliser) */
+a.btn { text-decoration: none; }

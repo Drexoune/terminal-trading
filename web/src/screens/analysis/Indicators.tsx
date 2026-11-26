@@ -9,6 +9,7 @@ import { useAnalysis } from '../../analysis/client';
 import { Panel } from '../../components/Panel';
 import { Cell, Chip } from '../../components/ui';
 import { fmtNumber, fmtPctChange, fmtSigned } from '../../lib/format';
+import { useLink } from '../../workspace/link';
 import { SubHeader } from '../../shell/SubHeader';
 import { Empty, FreshChip, LineChart } from './parts';
 import { level, TREND_LABEL, type Tech } from './TechMap';
@@ -19,14 +20,15 @@ export function IndicatorsScreen() {
   const s = useAnalysis<Tech>('tech');
   const [params, setParams] = useSearchParams();
   const v = s.value;
-  const id = params.get('actif') ?? 'BTC';
+  const link = useLink();                                      // espace de travail : actif lié aux autres panneaux
+  const id = (link && v?.assets.some((x) => x.asset === link.asset) ? link.asset : null) ?? params.get('actif') ?? 'BTC';
   const a = v?.assets.find((x) => x.asset === id) ?? v?.assets[0];
   const dec = a && a.cells.some((c) => (c.snap?.close ?? 0) > 1000) ? 0 : 2;
   return (
     <>
       <SubHeader icon="indicators" title="Indicateurs · fiche technique"
         chips={v ? <label className="an-select"><span className="lbl lbl--s">Actif</span>
-          <select className="input" value={a?.asset ?? ''} onChange={(e) => setParams({ actif: e.target.value })}>
+          <select className="input" value={a?.asset ?? ''} onChange={(e) => (link ? link.setAsset(e.target.value) : setParams({ actif: e.target.value }))}>
             {v.assets.map((x) => <option key={x.asset} value={x.asset}>{x.label}</option>)}
           </select></label> : undefined} />
       <div className="content an" data-screen="indicators">

@@ -1,6 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Icon } from '../components/Icon';
-import { Button, Missing } from '../components/ui';
+import { Missing } from '../components/ui';
 import { modeDef, type Mode } from '../config/modes';
 import { useSettings } from '../config/settings';
 import { fmtDuration, fmtNumber, fmtSigned, NBSP } from '../lib/format';
@@ -94,14 +94,14 @@ export function TopBar({ onOpenPalette }: { onOpenPalette: () => void }) {
         <span>{APP_NAME}</span>
       </Link>
       <div className="tools">
-        <Button aria-disabled="true" title={`${ASSISTANT_NAME} : disponible en P6`}>
+        <Link className="btn" to="/assistant" title={`${ASSISTANT_NAME} : questions sur les données du terminal`}>
           <span className="orb" />{ASSISTANT_NAME}
-        </Button>
+        </Link>
         <AssistantMic />
-        <Button aria-label="Personnaliser l’espace de travail" aria-disabled="true"
-          title="Disposition libre : disponible en P1">
+        <Link className="btn" to="/espace" aria-label="Personnaliser l’espace de travail"
+          title="Espace de travail : panneaux libres, mises en page sauvegardées, panneaux liés">
           <Icon name="sliders" />Personnaliser
-        </Button>
+        </Link>
         <label className="cmd">
           <Icon name="search" />
           <span className="sr">Commande ou ticker</span>

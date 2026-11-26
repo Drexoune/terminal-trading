@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { ALL_MODULES, MODULES, SETTINGS_PATH } from './modules';
+import { ALL_MODULES, MODULES, SETTINGS_PATH, WORKSPACE_PATH } from './modules';
 import { CommandPalette, usePaletteShortcut } from './palette/CommandPalette';
 import { PortfolioScreen } from './screens/bourse/Portfolio';
 import { AlertsScreen } from './screens/alerts/Alerts';
@@ -13,6 +13,7 @@ import { PlaceholderScreen } from './screens/placeholder/Placeholder';
 import { SettingsScreen } from './screens/settings/Settings';
 import { HelpScope } from './help/scope';
 import { AssistantScreen } from './screens/assistant/Assistant';
+import { WorkspaceScreen } from './screens/workspace/Workspace';
 import { SquawkScreen } from './screens/squawk/Squawk';
 import { NewsScreen } from './screens/news/News';
 import { HoursScreen } from './screens/hours/Hours';
@@ -56,6 +57,8 @@ function Shell() {
           <Route path={SETTINGS_PATH} element={<HelpScope id="settings"><SettingsScreen /></HelpScope>} />
           {/* Alertes (E4) : hors menu (la maquette n'en a pas), cloche ou commande ALRT. */}
           <Route path={ALERTS_PATH} element={<HelpScope id="alerts"><AlertsScreen /></HelpScope>} />
+          {/* Espace de travail : hors menu (le menu reste celui des maquettes), bouton « Personnaliser » ou commande WS. */}
+          <Route path={WORKSPACE_PATH} element={<HelpScope id="workspace"><WorkspaceScreen screens={IMPLEMENTED} /></HelpScope>} />
           <Route path="*" element={<PlaceholderScreen module={{ ...MODULES[0], label: 'Écran inconnu', phase: 'P0', command: 'HOME' }} />} />
         </Routes>
       </AppShell>

@@ -19,6 +19,8 @@ import {
   seriesKey, SOURCE_LABEL, THEME_LABEL, THEMES, valueOf, type Economy, type MacroReply, type SeriesReply,
 } from '../../macro/macro';
 import { SubHeader } from '../../shell/SubHeader';
+import { ask, AssistantError, type AskReply } from '../../assistant/client';
+import { HEATMAP_QUESTION, heatmapFacts } from '../../macro/aiReading';
 import { useNow } from '../../shell/useNow';
 
 const PARIS = 'Europe/Paris';
@@ -109,6 +111,15 @@ export function HeatmapScreen() {
   const bt = st?.backtest;
   const select = (e: Economy) => setParams(e === 'US' ? {} : { devise: CURRENCY[e] }, { replace: true });
   const policyValue = pol?.display ?? valueOf(sheet, 'policy')?.value ?? null;
+  // Lecture IA à la demande (assistant de P6 : Gemini gratuit, chaque chiffre vérifié contre les faits).
+  const [ai, setAi] = useState<{ busy: boolean; reply: AskReply | null; error: string | null }>({ busy: false, reply: null, error: null });
+  const facts = heatmapFacts(st);
+  const runAi = () => {
+    setAi({ busy: true, reply: null, error: null });
+    ask(HEATMAP_QUESTION, facts).then((reply) => setAi({ busy: false, reply, error: null }), (e: unknown) => setAi({ busy: false, reply: null,
+      error: e instanceof AssistantError && e.status === 401 ? 'session expirée : se reconnecter (mot de passe d’application, écran Bourse)' : (e as Error).message }));
+  };
+  const byId = new Map(facts.map((f) => [f.id, f]));
 
   return (
     <>
@@ -212,11 +223,23 @@ export function HeatmapScreen() {
           </Panel>
 
           <div className="hm-side">
-            <Panel title="Lecture fondamentale · automatique" label="Lecture fondamentale" controls="none">
+            <Panel title="Lecture fondamentale · automatique" label="Lecture fondamentale" controls="none"
+              chips={<button type="button" className="chip chip--hot hm-ai-btn" disabled={ai.busy || !facts.length} onClick={runAi} data-testid="hm-ai-btn"
+                title={facts.length ? 'Lecture rédigée par l’assistant (Gemini, offre gratuite) à partir des seuls scores affichés ; chaque chiffre est vérifié' : 'scores pas encore calculés'}>
+                {ai.busy ? 'IA…' : 'Lecture IA'}</button>}>
               <div className="hm-reading">
                 {sentences.length ? <p>{sentences.map((s, i) => <span key={i} title={`Sources : ${s.sources.join(' ; ')}`}>{s.text} </span>)}</p>
                   : <div className="hm-empty"><Missing reason={reason} /><span>{reason}</span></div>}
                 <div className="lbl hm-small hm-reading-note" title="Sources de chaque phrase en infobulle (T-055)">Lecture automatique · à partir des seuls chiffres affichés</div>
+                {(ai.reply || ai.error) && <div className="hm-ai" data-testid="hm-ai" aria-live="polite">
+                  {ai.error ? <p className="field__error">{`Lecture IA indisponible : ${ai.error}`}</p>
+                    : ai.reply?.ok ? <>
+                      <p className="hm-ai-text">{ai.reply.answer}</p>
+                      <div className="hm-ai-srcs">{(ai.reply.sources ?? []).map((id) => byId.get(id)).filter(Boolean).map((f) => (
+                        <span key={f!.id} className="chip chip--s" title={`${f!.label} : ${f!.value} · ${f!.source}`}>{f!.label.split(' · ')[0]} · {f!.label.split(' · ')[1]?.split(' (')[0] ?? ''}</span>))}</div>
+                      <div className="lbl hm-small">Lecture IA · Gemini · à vérifier{ai.reply.cached ? ' · en cache' : ''}{ai.reply.cap ? ` · ${ai.reply.calls_today ?? '—'}/${ai.reply.cap} aujourd’hui` : ''}</div>
+                    </> : <p className="hm-ai-text hm-ai-text--off">{`Réponse écartée : ${ai.reply?.reason ?? 'raison inconnue'}`}</p>}
+                </div>}
               </div>
             </Panel>
             <Panel title={`Paire ${CURRENCY[sel]} / ${CURRENCY[other]}`} label="Comparateur de paire" controls="none">

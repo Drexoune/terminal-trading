@@ -1,0 +1,27 @@
+/* Espace de travail (dockview) aux couleurs du design system. Tokens seuls. */
+.ws { display: flex; flex-direction: column; flex: 1; min-height: 0; height: calc(100dvh - 150px); min-height: 520px; padding: var(--pad); gap: 10px; }
+.ws-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 10px; }
+.ws-f { display: inline-flex; flex-direction: column; gap: 4px; }
+.ws-f .input { min-width: 140px; }
+.ws-sep { width: 1px; align-self: stretch; background: var(--line); }
+.ws-msg { align-self: center; color: var(--text-2); font-size: 12.5px; }
+.ws-msg.dn { color: var(--down); }
+.ws-dock { flex: 1; min-height: 0; border: 1px solid var(--line); border-radius: var(--radius-panel); }
+.ws-dock .dockview-theme-abyss, .ws-dock.dockview-theme-abyss {
+  --dv-background-color: var(--bg-app, #000); --dv-group-view-background-color: var(--bg-app, #000);
+  --dv-tabs-and-actions-container-background-color: var(--bg-chrome); --dv-activegroup-visiblepanel-tab-background-color: var(--bg-panel);
+  --dv-activegroup-hiddenpanel-tab-background-color: var(--bg-chrome); --dv-inactivegroup-visiblepanel-tab-background-color: var(--bg-panel);
+  --dv-inactivegroup-hiddenpanel-tab-background-color: var(--bg-chrome); --dv-activegroup-visiblepanel-tab-color: var(--gold);
+  --dv-activegroup-hiddenpanel-tab-color: var(--text-2); --dv-inactivegroup-visiblepanel-tab-color: var(--text-1);
+  --dv-inactivegroup-hiddenpanel-tab-color: var(--text-3); --dv-separator-border: var(--line); --dv-paneview-header-border-color: var(--line);
+  --dv-drag-over-background-color: rgba(228, 194, 74, 0.12); --dv-drag-over-border-color: var(--gold-mid);
+  --dv-tab-font-size: 12px;
+}
+.ws-pane { height: 100%; overflow: auto; display: flex; flex-direction: column; }
+.ws-pane > * { flex-shrink: 0; }                         /* en-têtes qui passent sur deux lignes : jamais écrasés */
+.ws-pane > .subheader { position: sticky; top: 0; z-index: 2; }
+.ws-missing { padding: 16px; color: var(--text-3); }
+.ws-small { flex-direction: column; flex-wrap: nowrap; }
+.ws-note { margin: 0; color: var(--text-2); }
+.ws-list { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.ws-list a { color: var(--text-1); }

@@ -10,6 +10,7 @@ import type { Bucket, Seasonality } from '../../analysis/seasonality';
 import { Panel } from '../../components/Panel';
 import { Chip, Segmented } from '../../components/ui';
 import { fmtNumber, fmtPctChange, NBSP } from '../../lib/format';
+import { linkedChoice, useLink } from '../../workspace/link';
 import { SubHeader } from '../../shell/SubHeader';
 import { Empty, FreshChip, LineChart } from './parts';
 
@@ -44,7 +45,10 @@ function BucketTable({ rows, testId }: { rows: Bucket[]; testId: string }) {
 }
 
 export function SeasonScreen() {
-  const [asset, setAsset] = useState<Asset>('BTC');
+  const link = useLink();                                      // espace de travail : actif lié aux autres panneaux
+  const [own, setOwn] = useState<Asset>('BTC');
+  const asset = linkedChoice(link, ASSETS.map((a) => a.value), own);
+  const setAsset = (a: Asset) => (link ? link.setAsset(a) : setOwn(a));
   const s = useAnalysis<Seasonality>(`season:${asset}` as AnalysisKey);
   const v = s.value;
   const src = v ? `${v.source} · ${v.from ? year(v.from) : '—'}–${v.to ? year(v.to) : '—'}` : 'bt_candles (OKX, Tiingo)';

@@ -227,6 +227,56 @@ export async function checkFunding(e: Engine): Promise<void> {
   }
 }
 
+// --- flux périmés (CLAUDE.md § 3) -----------------------------------------------------------------
+
+export const CANDLES_FEED = { name: 'okx-candles', label: 'Bougies OKX (collecteur)', stale_after_ms: 6 * MIN };
+export const FEED_SEED_KEY = 'alert:seed:feed_stale';
+
+interface FeedRow { name: string; label: string; status: string; last_ms: number | null; stale_after_ms: number; last_error: string | null }
+
+/** Flux suivis : états feed:* de p1_state (chacun avec son seuil) et bougies 1 min du collecteur OKX. */
+export async function feedRows(rest: Rest): Promise<FeedRow[]> {
+  const rows = await rest.select<{ key: string; value: Record<string, unknown> }>('p1_state', { select: 'key,value', key: 'like.feed:*', limit: '200' });
+  const out: FeedRow[] = [];
+  for (const { key, value: v } of rows) {
+    const stale = Number(v?.stale_after_ms);
+    if (!v || !Number.isFinite(stale) || stale <= 0) continue;
+    out.push({ name: String(v.name ?? key.slice(5)), label: String(v.label ?? v.name ?? key.slice(5)), status: String(v.status ?? ''),
+      last_ms: typeof v.last_message_ms === 'number' ? v.last_message_ms : null, stale_after_ms: stale,
+      last_error: typeof v.last_error === 'string' ? v.last_error : null });
+  }
+  const [c] = await rest.select<{ t: string }>('okx_candles_1m', { select: 't', inst: 'eq.BTC-USDT-SWAP', order: 't.desc', limit: '1' });
+  out.push({ ...CANDLES_FEED, status: 'connected', last_ms: c ? Date.parse(c.t) : null, last_error: null });
+  return out;
+}
+
+/**
+ * Un flux muet au-delà de son seuil déclenche une alerte, une seule par coupure (clé : flux et heure du
+ * dernier message). Un flux arrêté volontairement (« stopped ») ou jamais reçu n'alerte pas. La règle
+ * par défaut (tous les flux, écran et Telegram) est posée une seule fois : supprimée, elle ne revient pas.
+ */
+export async function checkFeeds(e: Engine): Promise<void> {
+  const { rest } = e.deps;
+  const now = e.deps.now();
+  if (!e.rules.some((r) => r.kind === 'feed_stale') && !(await getState(rest, FEED_SEED_KEY))) {
+    const [p, chans] = ar.validate('feed_stale', { feeds: [] }, ['écran', 'telegram'], INSTRUMENTS);
+    const [row] = await rest.insert<Row>('alert_rules', [{ kind: 'feed_stale', params: JSON.stringify(p), channels: JSON.stringify(chans),
+      state: 'armée', created_ms: now, updated_ms: now }], 'id,kind,params,channels,state,created_ms,updated_ms,last_fired_ms');
+    e.rules.push(ruleFromRow(row));
+    await putState(rest, [[FEED_SEED_KEY, { at: now }]], now);
+  }
+  const rules = e.armed('feed_stale');
+  if (!rules.length) return;
+  const feeds = await feedRows(rest);
+  for (const f of feeds) {
+    if (f.status === 'stopped' || f.last_ms === null || now - f.last_ms <= f.stale_after_ms) continue;
+    for (const r of rules.filter((x) => !(x.params.feeds as string[]).length || (x.params.feeds as string[]).includes(f.name))) {
+      const [title, body] = ar.feedStaleMessage({ ...f, last_ms: f.last_ms }, now, hm(f.last_ms));
+      e.fire(r, `${f.name}|${f.last_ms}`, title, body, `Fraîcheur · ${f.label}`, f.last_ms, { feed: f.name, last_ms: f.last_ms, stale_after_ms: f.stale_after_ms });
+    }
+  }
+}
+
 export async function checkCalendar(e: Engine): Promise<void> {
   const rules = e.armed('event_soon');
   if (!rules.length) return;
@@ -402,7 +452,7 @@ export async function runAlerts(deps: AlertDeps): Promise<Record<string, unknown
   const e = new Engine(deps);
   await e.load();
   const problems: string[] = [];
-  for (const [name, step] of [['prix', checkPrices], ['funding', checkFunding], ['agenda', checkCalendar], ['cloches', checkEventWatch]] as const) {
+  for (const [name, step] of [['prix', checkPrices], ['funding', checkFunding], ['agenda', checkCalendar], ['cloches', checkEventWatch], ['flux', checkFeeds]] as const) {
     try { await step(e); } catch (err) { problems.push(`${name} : ${(err as Error).message}`.slice(0, 200)); }
   }
   const last = await getState<Record<string, unknown>>(rest, 'release:last');

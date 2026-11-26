@@ -5,7 +5,9 @@
 
 import { INDICATORS } from './calendar.ts';
 
-export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category', 'rate_gap', 'liquidations', 'wall'] as const;
+export const KINDS = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'event_watch', 'news_category', 'rate_gap', 'liquidations', 'wall', 'feed_stale'] as const;
+/** Flux périmé (CLAUDE.md § 3) : jugé par Supabase seulement ; pas d'équivalent dans la passerelle Python. */
+export const FEED_NAME = /^[a-z0-9-]{1,40}$/;
 /** Sortes jugées par la machine Oracle seulement (T-071), sur le flux de la microstructure ; inconnues de la passerelle Python. */
 export const ORACLE_KINDS = ['liquidations', 'wall'] as const;
 export const LIQ_SIDES = ['long', 'short', 'les deux'] as const;
@@ -206,6 +208,11 @@ export function validate(kind: string, params: unknown, channels: unknown, instr
     const btc = decimalParam(p, 'min_btc')!;
     if (cmp(dec(btc)!, { n: 10n, scale: 0 }) < 0) throw new RuleError('taille minimale : 10 BTC');
     out = { min_btc: btc, side };
+  } else if (kind === 'feed_stale') {
+    // Flux muet au-delà de son propre seuil de péremption (CLAUDE.md § 3) ; liste vide : tous les flux.
+    const feeds = [...new Set((Array.isArray(p.feeds) ? p.feeds : []).map(String))];
+    if (feeds.length > 40 || feeds.some((f) => !FEED_NAME.test(f))) throw new RuleError('flux : noms courts (lettres, chiffres, tirets), 40 au plus');
+    out = { feeds: feeds.sort() };
   } else if (kind === 'news_category') {
     const cat = p.category;
     if (typeof cat !== 'string' || !(cat in NEWS_CATEGORIES)) throw new RuleError(`catégorie inconnue : ${pyRepr(cat)}`);
@@ -258,6 +265,10 @@ export function describe(kind: string, p: Params): [string, string] {
   if (kind === 'wall') {
     const way = ({ achat: ' côté achat', vente: ' côté vente' } as Record<string, string>)[p.side as string] ?? '';
     return [`Mur retiré ≥ ${frNum(p.min_btc)}${NBSP}BTC${way}`, 'Microstructure · Oracle'];
+  }
+  if (kind === 'feed_stale') {
+    const f = p.feeds as string[];
+    return [`Flux périmé : ${f.length ? f.join(', ') : 'toutes les sources'}`, 'Fraîcheur des sources'];
   }
   if (kind === 'rate_gap') {
     const scope = p.bank ? RATE_BANKS[p.bank as string] : 'toutes les banques';
@@ -353,6 +364,13 @@ export function wallMessage(w: { px: number; sz: number; side: string; left: num
   const side = w.side === 'bid' ? 'achat' : 'vente';
   return [`Mur retiré : ${frNum(String(Math.round(w.sz)))}${NBSP}BTC à ${frNum(String(w.px))} (${side})`,
     `Il reste ${frNum(String(Math.round(w.left * 10) / 10))}${NBSP}BTC à ${hmParis} (Paris) · carnets agrégés OKX, Binance, Bybit, Hyperliquid · changement observé du carnet, jamais un stop supposé`];
+}
+
+/** Flux périmé : quelle source se tait, depuis quand, et son seuil. */
+export function feedStaleMessage(f: { name: string; label: string; last_ms: number; stale_after_ms: number; last_error: string | null }, now: number, hmParis: string): [string, string] {
+  const min = (ms: number) => (ms >= 7_200_000 ? `${Math.round(ms / 3_600_000)}${NBSP}h` : `${Math.max(1, Math.round(ms / 60_000))}${NBSP}min`);
+  return [`Flux périmé : ${f.label}`,
+    `Aucune donnée depuis ${min(now - f.last_ms)} (dernier message à ${hmParis}, Paris ; seuil ${min(f.stale_after_ms)})${f.last_error ? ` · dernière erreur : ${f.last_error.slice(0, 140)}` : ''} · les écrans qui en dépendent l’affichent « périmé »`];
 }
 
 export function fundingMessage(p: Params, rate: number): [string, string] {

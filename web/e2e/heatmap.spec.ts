@@ -59,6 +59,24 @@ test('Heatmap : classement, matrice, paire JPY / USD, lecture citée, outil de c
   await expect(page.getByRole('region', { name: 'Comparateur de paire' })).toContainText('Paire USD / EUR');
 });
 
+test('Heatmap : lecture IA à la demande, faits envoyés, sources citées, réponse écartée signalée', async ({ page }) => {
+  let sent: { question: string; facts: { id: string; label: string; value: string }[] } | null = null;
+  let reply: Record<string, unknown> = { ok: true, answer: 'L’AUD ressort le plus fort (+58), le JPY le plus faible (−65).', sources: ['F1', 'F8'], cap: 60, calls_today: 3 };
+  await page.route('**/api/p1/assistant', async (r) => { sent = r.request().postDataJSON(); await r.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(reply) }); });
+  await page.goto('/heatmap?devise=JPY');
+  await expect(page.getByRole('region', { name: 'Classement relatif' }).locator('.hm-rk').first()).toContainText('AUD', { timeout: 15_000 });
+  await page.getByTestId('hm-ai-btn').click();
+  const ai = page.getByTestId('hm-ai');
+  await expect(ai).toContainText('L’AUD ressort le plus fort (+58)');
+  await expect(ai).toContainText('à vérifier');
+  await expect(ai).toContainText('3/60');
+  expect(sent!.facts[0]).toMatchObject({ id: 'F1', label: 'AUD · score fondamental relatif (−100 à +100)' });
+  expect(sent!.facts[0].value).toContain('+58');
+  reply = { ok: false, reason: 'chiffre non sourcé : 72' };
+  await page.getByTestId('hm-ai-btn').click();
+  await expect(ai).toContainText('Réponse écartée : chiffre non sourcé : 72');
+});
+
 test('Heatmap à 390 px : aucun défilement horizontal', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/heatmap?devise=JPY');

@@ -75,10 +75,12 @@ export const ALL_MODULES: ModuleDef[] = [...MODULES, ...BOURSE_MODULES, ...BACKT
 export const EXTRA_SCREENS = [
   { id: 'settings', path: '/parametres', command: 'SET', description: 'Paramètres · mode de fonctionnement (Online, Local, Tour)', category: 'Réglages' },
   { id: 'alerts', path: '/alertes', command: 'ALRT', description: 'Alertes : règles, déclenchements, Telegram', category: 'News' },
+  { id: 'workspace', path: '/espace', command: 'WS', description: 'Espace de travail : panneaux libres, mises en page sauvegardées, panneaux liés (bouton « Personnaliser »)', category: 'Global' },
   { id: 'design-system', path: '/design-system', command: 'DS', description: 'Planche du design system', category: 'Référence' },
 ];
 
 export const SETTINGS_PATH = '/parametres';
+export const WORKSPACE_PATH = '/espace';
 
 export function moduleByPath(path: string): ModuleDef | undefined {
   return ALL_MODULES.find((m) => m.path === path);

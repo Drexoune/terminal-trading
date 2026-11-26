@@ -290,6 +290,12 @@ function NewRulePanel() {
           </label>
           <p className="lbl lbl--s">Changement observé du carnet, jamais un stop supposé. Jugée sur la machine Oracle (T-071).</p>
         </>)}
+        {d.kind === 'feed_stale' && (<>
+          <label className="field"><span className="lbl lbl--s">Flux surveillés (vide : tous)</span>
+            <input className="input" placeholder="news, polymarket, okx-candles" value={d.feeds} onChange={(e) => set('feeds', e.target.value)} />
+          </label>
+          <p className="lbl lbl--s">Une alerte quand une source se tait au-delà de son propre seuil (celui de la barre de flux), une seule par coupure. Jugée chaque minute par Supabase ; une règle « toutes les sources » est posée d’office.</p>
+        </>)}
         <div className="rule-form__channels" role="group" aria-label="Canaux">
           <span className="lbl lbl--s">Canaux : écran, et</span>
           <label className="rule-form__check"><input type="checkbox" checked={d.telegram} onChange={(e) => set('telegram', e.target.checked)} />Telegram</label>

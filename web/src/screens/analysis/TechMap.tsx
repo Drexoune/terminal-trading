@@ -9,6 +9,7 @@ import { useAnalysis } from '../../analysis/client';
 import type { Snapshot } from '../../analysis/ta';
 import { Panel } from '../../components/Panel';
 import { Cell, Chip, type CellLevel } from '../../components/ui';
+import { useLink } from '../../workspace/link';
 import { SubHeader } from '../../shell/SubHeader';
 import { Empty, FreshChip } from './parts';
 
@@ -23,6 +24,7 @@ export const signalsText = (s: Snapshot) => s.signals.map((x) => `${x.bull === n
 export function TechMapScreen() {
   const s = useAnalysis<Tech>('tech');
   const v = s.value;
+  const link = useLink();                                      // espace de travail : choisir l'actif lié au lieu d'ouvrir la fiche
   return (
     <>
       <SubHeader icon="techmap" title="Heatmap technique · tendance par unité de temps"
@@ -35,7 +37,8 @@ export function TechMapScreen() {
                 <thead><tr><th className="lbl">Actif</th>{v.tfs.map((tf) => <th key={tf} className="lbl">{tf}</th>)}</tr></thead>
                 <tbody>{v.assets.map((a) => (
                   <tr key={a.asset}>
-                    <th scope="row"><Link to={`/indicateurs?actif=${a.asset}`}>{a.label}</Link><span className="an-sub">{a.source}</span></th>
+                    <th scope="row">{link ? <button type="button" className={`an-linkbtn${link.asset === a.asset ? ' an-linked' : ''}`} aria-pressed={link.asset === a.asset} onClick={() => link.setAsset(a.asset)}>{a.label}</button>
+                      : <Link to={`/indicateurs?actif=${a.asset}`}>{a.label}</Link>}<span className="an-sub">{a.source}</span></th>
                     {a.cells.map((c) => (
                       <td key={c.tf} title={c.snap ? `${a.label} ${c.tf} · score ${c.snap.score}\n${signalsText(c.snap)}` : (c.reason ?? '—')}>
                         {c.snap?.trend ? <Link to={`/indicateurs?actif=${a.asset}`}><Cell level={level(c.snap.score)}>{`${TREND_LABEL[c.snap.trend]} ${c.snap.score > 0 ? '+' : c.snap.score < 0 ? '−' : ''}${Math.abs(c.snap.score)}`}</Cell></Link>

@@ -7,7 +7,7 @@ import { fetchJson } from '../data/gateway';
 import { refreshAlertsAfterWrite } from '../data/online/alerts';
 import { fmtHm } from '../lib/time';
 
-export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category' | 'rate_gap' | 'liquidations' | 'wall';
+export type AlertKind = 'price' | 'funding' | 'event_soon' | 'release' | 'surprise' | 'keyword' | 'event_watch' | 'news_category' | 'rate_gap' | 'liquidations' | 'wall' | 'feed_stale';
 export type AlertState = 'armée' | 'déclenchée' | 'désactivée';
 export type Channel = 'écran' | 'telegram' | 'voix';
 
@@ -60,6 +60,7 @@ export const KIND_LABEL: Record<AlertKind, string> = {
   event_watch: 'Réel d’un événement (cloche du calendrier)', news_category: 'Catégorie du fil d’actus',
   rate_gap: 'Écart entre sources (Taux)',
   liquidations: 'Liquidations (microstructure)', wall: 'Mur retiré (microstructure)',
+  feed_stale: 'Flux périmé (source muette)',
 };
 
 /** Banques de l'écran Taux (règle rate_gap) ; '' : toutes. */
@@ -143,6 +144,7 @@ export interface RuleDraft {
   liqSide: 'long' | 'short' | 'les deux';
   wallBtc: string;           // mur retiré : taille minimale en BTC
   wallSide: 'achat' | 'vente' | 'les deux';
+  feeds: string;             // flux périmé : noms séparés par des virgules ; vide : tous
   telegram: boolean;
   voice: boolean;
 }
@@ -150,7 +152,7 @@ export interface RuleDraft {
 export const EMPTY_DRAFT: RuleDraft = {
   kind: 'price', inst: 'BTC-USDT-SWAP', level: '', direction: 'les deux', threshold: '', side: 'au-dessus',
   minutes: '5', capturedOnly: true, impacts: [], currencies: '', release: '', indicator: '', zMin: '', rawMin: '',
-  words: '', gapBank: 'FED', gapPts: '5', liqUsd: '10', liqWindow: '5', liqSide: 'les deux', wallBtc: '200', wallSide: 'les deux',
+  words: '', gapBank: 'FED', gapPts: '5', liqUsd: '10', liqWindow: '5', liqSide: 'les deux', wallBtc: '200', wallSide: 'les deux', feeds: '',
   telegram: true, voice: false,
 };
 
@@ -205,6 +207,11 @@ export function draftToBody(d: RuleDraft): { body: { kind: AlertKind; params: Re
       if (!Number.isInteger(w) || w < 1 || w > 60) return { error: 'Liquidations : fenêtre de 1 à 60 minutes.' };
       return wrap({ min_usd: String(Math.round(Number(m) * 1e6)), window_min: w, side: d.liqSide });
     }
+    case 'feed_stale': {
+      const feeds = d.feeds.split(/[\s,;]+/).map((x) => x.trim().toLowerCase()).filter(Boolean);
+      if (feeds.some((f) => !/^[a-z0-9-]{1,40}$/.test(f))) return { error: 'Flux périmé : noms de flux en lettres, chiffres et tirets (ex. news, polymarket), séparés par des virgules.' };
+      return wrap({ feeds });
+    }
     case 'wall': {
       const b = parseDecimal(d.wallBtc);
       if (!b || Number(b) < 10) return { error: 'Mur retiré : saisir une taille d’au moins 10 BTC.' };
@@ -216,7 +223,7 @@ export function draftToBody(d: RuleDraft): { body: { kind: AlertKind; params: Re
 }
 
 /** Sortes proposées dans le formulaire de /alertes (les autres se posent depuis leur écran). */
-export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'rate_gap', 'liquidations', 'wall'];
+export const FORM_KINDS: AlertKind[] = ['price', 'funding', 'event_soon', 'release', 'surprise', 'keyword', 'rate_gap', 'liquidations', 'wall', 'feed_stale'];
 
 // --- écritures ------------------------------------------------------------------------------
 
