@@ -75,6 +75,7 @@ Chaque décision est datée et ne se modifie pas après coup. Une décision qui 
 | T-072 | 25/11/2026 | Tree of Alpha en ligne | Flux gratuit sans clé (T-021) lu 24 h/24 par la machine Oracle (service `terminal-news`) : même table `news_items`, mêmes doublons, même diffusion et mêmes alertes que les RSS ; état `feed:toa` dans la barre de flux ; aucun nouveau secret ; révise T-046 sur Tree of Alpha |
 | T-073 | 25/11/2026 | P6 avant la porte P5 | Plan puis code de P6 sans attendre la séance S4 de P5 ; P5 reste prioritaire pour S4 ; aucun déploiement les 04/12, 08/12, 10/12 |
 | T-074 | 25/11/2026 | Choix de P6 | Gemini gratuit seulement (T-063) pour l'assistant, la traduction et les récaps ; traduction à la demande (T-019 inchangé) ; TERMINAL et « Assistant » définitifs (clôt T-006) ; positions OKX reportées, track record en saisie manuelle ; plafonds par usage dans bt_ai_calls |
+| T-075 | 26/11/2026 | P7 complète | Tous les modules de P7 sans attendre « un vrai besoin » : saisonnalité, heatmap technique, indicateurs, options BTC Deribit (enregistrées par la machine Oracle), recherche bancaire en lecture seule pour Clément seul (flux RSS public d'ING THINK : titre, lien, résumé d'ING, jamais de texte republié) ; probabilités via les futures abandonnées (aucune source gratuite documentée ; Polymarket et Kalshi restent) ; gratuit seulement |
 
 ## T-000 — Dépôt séparé · 19/10/2026
 
@@ -827,4 +828,15 @@ Douze questions posées à Clément sur le plan P1 (`docs/plan-p1.md`, § 16), c
   - traduction à la demande seulement (T-019 inchangé pour le fil) ;
   - noms définitifs : TERMINAL et « Assistant » (clôt T-006) ;
   - positions OKX reportées (pas de clé pour l'instant) : track record en saisie manuelle.
+
+## T-075 — P7 complète · 26/11/2026
+
+**Contexte.** Le plan réservait P7 aux modules « seulement si un vrai besoin apparaît ». Clément veut tous les modules (25/11/2026). Exploration S0 : `docs/exploration-p7.md`.
+
+**Décisions de Clément.**
+
+- Saisonnalité, heatmap technique et indicateurs : calculés par le code sur nos bougies (`bt_candles`, bougies publiques d'OKX), par la machine Oracle (service `terminal-analysis`).
+- Options BTC : API publique de Deribit, sans clé, relevée toutes les 5 min par la machine Oracle (service `terminal-options`) ; historique sur le disque de la machine.
+- Recherche bancaire : en lecture seule, pour Clément seul (usage personnel, aucune redistribution). Flux RSS public d'ING THINK : titre, lien, résumé fourni par ING, date et thème ; jamais le texte des articles. Les conditions d'ING (« Disclaimer », « Terms of use ») ne parlent pas du RSS : choix assumé par Clément pour un usage strictement personnel.
+- Probabilités de taux via les futures : **abandonnées**. Aucune source gratuite documentée (CME FedWatch API payante, Databento 199 $/mois, pages JSON de cmegroup.com non documentées et non utilisées). Polymarket et Kalshi restent les sources de l'écran Taux.
 

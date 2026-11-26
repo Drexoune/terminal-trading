@@ -17,6 +17,7 @@ const STATE = [
   { key: 'lock:burst:cpi:1', value: { at: 1 }, updated_ms: 2 },
   { key: 'news:item:7', value: { id: 7, title: 'Federal Reserve issues FOMC statement' }, updated_ms: 2 },
   { key: 'alert:rule:1', value: { id: 1 }, updated_ms: 2 },
+  { key: 'analysis:season:BTC', value: { asset: 'BTC' }, updated_ms: 3 },
 ];
 
 /** Faux PostgREST pour p1_state : like, in, eq, order key.desc, limit. */
@@ -79,6 +80,21 @@ describe('/api/p1', () => {
     const { ctx } = testContext({ nowMs: NOW, env: ENV, fetch: fakeSupabase().fetch as never });
     expect((await handleP1(req('/api/p1?path=alerts'), ctx)).status).toBe(404);
     expect((await handleP1(req('/api/p1?path=state&x=1'), ctx)).status).toBe(400);
+  });
+});
+
+describe('/api/p1/analysis (P7, T-075)', () => {
+  it('clé connue → sa ligne de p1_state ; absente → value null ; clé inconnue → 400 sans requête', async () => {
+    const sb = fakeSupabase();
+    const { ctx } = testContext({ nowMs: NOW, env: ENV, fetch: sb.fetch as never });
+    const r = await handleP1(req('/api/p1?path=analysis&key=season:BTC'), ctx);
+    expect(await r.json()).toMatchObject({ configured: true, value: { asset: 'BTC' }, updated_ms: 3 });
+    expect(sb.calls[0].params).toMatchObject({ key: 'eq.analysis:season:BTC' });
+    expect(await (await handleP1(req('/api/p1?path=analysis&key=options'), ctx)).json()).toMatchObject({ value: null, updated_ms: null });
+    const n = sb.calls.length;
+    expect((await handleP1(req('/api/p1?path=analysis&key=lock:burst:cpi:1'), ctx)).status).toBe(400);
+    expect((await handleP1(req('/api/p1?path=analysis'), ctx)).status).toBe(400);
+    expect(sb.calls.length).toBe(n);
   });
 });
 

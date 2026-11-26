@@ -3,9 +3,9 @@ import { MODULES } from '../modules';
 import { ENTRIES, matchEntry } from './CommandPalette';
 
 describe('registre des écrans', () => {
-  it('24 modules, chacun avec une URL et une commande uniques', () => {
-    expect(MODULES).toHaveLength(24);
-    expect(new Set(MODULES.map((m) => m.path)).size).toBe(24);
+  it('25 modules (24 du plan + Options BTC, T-075), chacun avec une URL et une commande uniques', () => {
+    expect(MODULES).toHaveLength(25);
+    expect(new Set(MODULES.map((m) => m.path)).size).toBe(25);
     expect(new Set(ENTRIES.map((e) => e.command)).size).toBe(ENTRIES.length);
   });
 });

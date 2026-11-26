@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:admin="http://webns.net/mvcb/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/">
+
+    <channel>
+    
+    <title><![CDATA[ING Think]]></title>
+    <atom:link href="https://think.ing.com/rss/" rel="self" type="application/rss+xml" />
+    <link>https://think.ing.com/</link>
+    <description>From Trump to trade, from Draghi to the dollar, we tell you what's happening - and is likely to happen in global markets.</description>
+		<image>
+			<title>ING Think</title>
+			<link>https://think.ing.com/</link>
+			<url>https://think.ing.com/uploads/general/newsletter_ing_think.gif</url>
+		</image>
+    <dc:language>en</dc:language>
+    <dc:creator>economics@uk.ing.com</dc:creator>
+    <dc:rights>Copyright 2026</dc:rights>
+    <dc:date>2026-11-25T14:15:00+00:00</dc:date>
+    <admin:generatorAgent rdf:resource="https://www.terralemon.com/" />
+
+
+	 
+<item>
+  <title><![CDATA[Strong growth and elevated inflation signal more Fed tightening]]></title>
+  <link>https://think.ing.com/articles/strong-growth-and-elevated-inflation-signal-more-fed-tightening/</link>
+  <guid>https://think.ing.com/articles/strong-growth-and-elevated-inflation-signal-more-fed-tightening/#When:14:15:00Z</guid>
+  <description><![CDATA[NORTH AMERICA: Solid growth, decent jobs and elevated inflation all point to the need for further policy tightening from the Federal Reserve. Nonetheless, the plunge in commodity prices and the weak wage growth environment suggest the Fed doesn't need to move aggressively]]></description>
+  <dc:subject><![CDATA[North America, United States]]></dc:subject>
+  <dc:date>2026-11-25T14:15:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[The US tariff wall keeps changing, but it isn’t coming down]]></title>
+  <link>https://think.ing.com/articles/the-us-tariff-wall-keeps-changing-but-it-isnt-coming-down/</link>
+  <guid>https://think.ing.com/articles/the-us-tariff-wall-keeps-changing-but-it-isnt-coming-down/#When:08:30:00Z</guid>
+  <description><![CDATA[TRADE: The US is preparing another round of tariffs, this time targeting structural overcapacity across 16 trading partners. It is another reminder that while the legal justification for tariffs keeps changing, US protectionism is becoming increasingly difficult to unwind]]></description>
+  <dc:subject><![CDATA[Trade]]></dc:subject>
+  <dc:date>2026-11-25T08:30:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[Australia’s CPI surprise keeps RBA on alert, but weak growth signals argue for patience]]></title>
+  <link>https://think.ing.com/snaps/australia-cpi-surprise-keeps-rba-on-alert-but-weak-growth-signals-argue-for-patience/</link>
+  <guid>https://think.ing.com/snaps/australia-cpi-surprise-keeps-rba-on-alert-but-weak-growth-signals-argue-for-patience/#When:08:12:00Z</guid>
+  <description><![CDATA[AUSTRALIA: Australia's October CPI rose to 4.9% year-on-year, driven by higher transport and electricity prices, with broader pass-through to core inflation. Despite the upside inflation surprise, falling oil prices and a weakening labour market should allow the Reserve Bank to keep rates unchanged as growth slows into 2027]]></description>
+  <dc:subject><![CDATA[Australia]]></dc:subject>
+  <dc:date>2026-11-25T08:12:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[The Commodities Feed: Oil shrugs off rising Middle East tensions]]></title>
+  <link>https://think.ing.com/articles/the-commodities-feed-aluminium-squeeze-eases-after-lme-intervention/</link>
+  <guid>https://think.ing.com/articles/the-commodities-feed-aluminium-squeeze-eases-after-lme-intervention/#When:08:00:00Z</guid>
+  <description><![CDATA[ Oil prices moved lower this morning despite further attacks around the Strait of Hormuz, with recovering Gulf exports and a sharp loosening in the Dubai crude curve signalling a more comfortable supply picture]]></description>
+  <dc:subject><![CDATA[Commodities daily]]></dc:subject>
+  <dc:date>2026-11-25T08:00:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[FX Daily: Full EMFX unwind underway]]></title>
+  <link>https://think.ing.com/articles/fx-daily-full-emfx-unwind-underway/</link>
+  <guid>https://think.ing.com/articles/fx-daily-full-emfx-unwind-underway/#When:07:40:00Z</guid>
+  <description><![CDATA[ The investment environment remains hostile. Lingering uncertainty over the US tech story, Fed tightening and now a little more tariff uncertainty are leading to a full unwind of risk-seeking trades, particularly in EMFX. More pressure could come today with hot core US PCE inflation. Expect EMFX and commodity FX to remain on the back foot]]></description>
+  <dc:subject><![CDATA[]]></dc:subject>
+  <dc:date>2026-11-25T07:40:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[German economic rebound lost steam in the third quarter]]></title>
+  <link>https://think.ing.com/snaps/german-gdp-q3-26-update/</link>
+  <guid>https://think.ing.com/snaps/german-gdp-q3-26-update/#When:07:20:00Z</guid>
+  <description><![CDATA[EUROPE: After the optimism around Germany’s economic resilience in the first half of the year, this morning’s data suggest the recovery is losing steam again]]></description>
+  <dc:subject><![CDATA[Europe, Germany]]></dc:subject>
+  <dc:date>2026-11-25T07:20:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[Rates Spark: Treasuries with blinkers on]]></title>
+  <link>https://think.ing.com/articles/rates-spark-equity-sentiment-versus-inflation-reality/</link>
+  <guid>https://think.ing.com/articles/rates-spark-equity-sentiment-versus-inflation-reality/#When:17:54:00Z</guid>
+  <description><![CDATA[ We had a solid (post-midterms) consumer sentiment report on Tuesday – ignored by Treasuries. We had the Nvidia reversal on Monday – ignored by Treasuries. Wednesday sees a PCE inflation report that won't be pretty – should be tough for Treasuries to ignore. Or, maybe Treasures are just in a good Thanksgiving mood. Still looks a tad too rosy]]></description>
+  <dc:subject><![CDATA[Rates, Rates Spark]]></dc:subject>
+  <dc:date>2026-11-24T17:54:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[US confidence bounces on fuel price drop and election clarity]]></title>
+  <link>https://think.ing.com/articles/us-confidence-bounces-on-fuel-price-drop-and-election-clarity/</link>
+  <guid>https://think.ing.com/articles/us-confidence-bounces-on-fuel-price-drop-and-election-clarity/#When:15:49:00Z</guid>
+  <description><![CDATA[NORTH AMERICA: Consumer confidence picked up in November as motor fuel prices fell and sweeping victories in the midterms boosted sentiment amongst Democrats and Independents. Nonetheless, we didn’t see the same reaction in the Michigan measure of sentiment, and the bounce merely closes the gap in the historical relationship between sentiment and spending]]></description>
+  <dc:subject><![CDATA[North America, United States]]></dc:subject>
+  <dc:date>2026-11-24T15:49:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[France’s golden rule won’t fix its budget problem]]></title>
+  <link>https://think.ing.com/articles/frances-golden-rule-wont-fix-its-budget-problem/</link>
+  <guid>https://think.ing.com/articles/frances-golden-rule-wont-fix-its-budget-problem/#When:14:30:00Z</guid>
+  <description><![CDATA[EUROPE: French President Emmanuel Macron’s proposal to revive a constitutional fiscal rule has helped ease pressure on French government bonds. But the reform would only create a framework whose strength would depend on legislation adopted later. The immediate test of France’s fiscal credibility remains the 2027 budget]]></description>
+  <dc:subject><![CDATA[Europe, France]]></dc:subject>
+  <dc:date>2026-11-24T14:30:00+00:00</dc:date>
+</item>
+ 
+<item>
+  <title><![CDATA[Belgium’s government faces year-end deadline for budget deal]]></title>
+  <link>https://think.ing.com/articles/belgium-a-clear-deadline-for-a-budget-deal/</link>
+  <guid>https://think.ing.com/articles/belgium-a-clear-deadline-for-a-budget-deal/#When:14:08:00Z</guid>
+  <description><![CDATA[BELGIUM: Belgium’s public finances are set to deteriorate further without additional measures. The federal coalition now has until 31 December to reach a budget deal. An agreement on a €10 billion savings package remains our base case, despite the difficult compromises ahead]]></description>
+  <dc:subject><![CDATA[Belgium]]></dc:subject>
+  <dc:date>2026-11-24T14:08:00+00:00</dc:date>
+</item>
+
+
+
+    </channel>
+</rss>

@@ -1,0 +1,28 @@
+# options BTC Deribit (P7, T-075), installé par deploy/oracle/installer.sh.
+# Secrets de terminal-bt (/etc/terminal/bt.env) : clé Supabase « oracle » seulement.
+[Unit]
+Description=TERMINAL - options BTC Deribit (P7, T-075)
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/terminal/bt.env
+
+[Service]
+User=terminal
+Group=terminal
+EnvironmentFile=/etc/terminal/bt.env
+Environment=OPTIONS_DIR=/var/lib/terminal-options
+Environment=OPTIONS_STATUS=/var/lib/terminal-options/status.json
+ExecStart=/usr/bin/node /opt/terminal-options/options.mjs
+Restart=always
+RestartSec=10
+TimeoutStopSec=10
+Nice=10
+MemoryMax=300M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-options
+
+[Install]
+WantedBy=multi-user.target

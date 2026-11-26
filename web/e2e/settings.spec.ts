@@ -26,8 +26,8 @@ test('l’avatar ouvre les paramètres, sans toucher au menu latéral', async ({
   await expect(page.locator('.mode-card[data-mode="local"]')).toContainText('Actif');
   // Hauteur de la barre du haut inchangée ; aucune entrée du menu n'est marquée active.
   expect((await page.locator('body header').boundingBox())?.height).toBe(before?.height);
-  // 24 modules du plan ; la section Bourse est repliée hors de ses écrans.
-  await expect(page.locator('nav[aria-label="Navigation principale"] a')).toHaveCount(24);
+  // 24 modules du plan + Options BTC (T-075) ; la section Bourse est repliée hors de ses écrans.
+  await expect(page.locator('nav[aria-label="Navigation principale"] a')).toHaveCount(25);
   await expect(page.locator('nav [aria-current="page"]')).toHaveCount(0);
   await expect(avatar).toHaveAttribute('aria-current', 'page');
 });

@@ -34,7 +34,7 @@ test('« / » ouvre la palette, navigation au clavier et Échap', async ({ page 
 test('chaque écran du menu a une commande qui y mène', async ({ page }) => {
   const links = await page.locator('nav[aria-label="Navigation principale"] a').evaluateAll(
     (as) => as.map((a) => (a as HTMLAnchorElement).pathname));
-  expect(links.length).toBe(24);
+  expect(links.length).toBe(25);                  // 24 modules du plan + Options BTC (T-075)
   for (const [cmd, path] of [['FED WIRP', '/taux'], ['JPY FA', '/heatmap'], ['BTC BOOK', '/microstructure'], ['HOME', '/']]) {
     await page.keyboard.press('Control+k');
     await page.getByPlaceholder('BTC GP, USD ECO, FED WIRP…').fill(cmd);

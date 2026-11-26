@@ -48,6 +48,12 @@ async function saveHighlights(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
   return { words, updated_ms: now };
 }
 
+/** Analyses de P7 (T-075), écrites par la machine Oracle : clé publique de la route → clé de p1_state. */
+export const ANALYSIS_KEYS: Record<string, string> = {
+  'season:BTC': 'analysis:season:BTC', 'season:ETH': 'analysis:season:ETH', 'season:QQQ': 'analysis:season:QQQ', 'season:SPY': 'analysis:season:SPY',
+  tech: 'analysis:tech', options: 'options:latest', 'options-history': 'options:history', research: 'research:ing',
+};
+
 export const STATE_KEYS = ['calendar:official', 'feed:calendar', 'feed:bls-calendar', 'feed:news', 'feed:toa', 'news:feeds', 'news:highlight', 'release:state', 'release:last'] as const;
 /** Titres du fil d'actus (O6) relus au chargement : 48 dernières heures, 400 au plus. */
 export const NEWS_MS = 48 * 3_600_000;
@@ -134,7 +140,7 @@ export async function p1Displayed(cfg: SupabaseConfig, fetchFn: FetchFn, now: nu
 
 export function handleP1(request: Request, ctx: Context): Promise<Response> {
   return respond(ctx.env, '/api/p1', async () => {
-    const q = readQuery(request, ['path', 'week']);
+    const q = readQuery(request, ['path', 'week', 'key']);
     const path = q.get('path') ?? '';
     const cfg = supabaseConfig(ctx.env);
     if (path === 'displayed') {
@@ -183,6 +189,16 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
       const r = await rest(cfg.config, ctx.deps.fetch, 'GET', 'p1_state', { select: 'value', key: 'like.recap:*', order: 'updated_ms.desc', limit: '21' }, false);
       return json({ configured: true, recaps: r.rows.map((x) => (x as { value: unknown }).value), computed_ms: ctx.deps.now() }, NO_STORE);
     }
+    if (path === 'analysis') {
+      // Analyses de P7 (T-075) : saisonnalité, heatmap technique, options Deribit, recherche ING.
+      const k = q.get('key') ?? '';
+      const key = Object.hasOwn(ANALYSIS_KEYS, k) ? ANALYSIS_KEYS[k] : null;
+      if (!key) throw new HttpError(400, `paramètre key attendu parmi : ${Object.keys(ANALYSIS_KEYS).join(', ')}`);
+      if (!cfg.ok) return json({ configured: false, reason: cfg.reason, value: null, updated_ms: null, computed_ms: ctx.deps.now() }, NO_STORE);
+      const r = await rest(cfg.config, ctx.deps.fetch, 'GET', 'p1_state', { select: 'value,updated_ms', key: `eq.${key}`, limit: '1' }, false);
+      const row = r.rows[0] as { value: unknown; updated_ms: number } | undefined;
+      return json({ configured: true, value: row?.value ?? null, updated_ms: row?.updated_ms ?? null, computed_ms: ctx.deps.now() }, NO_STORE);
+    }
     if (path === 'watch') {
       if (q.has('week')) throw new HttpError(400, 'paramètre inconnu : week (cette route n’en prend aucun)');
       if (!cfg.ok) return json({ configured: false, reason: cfg.reason, assets: [], computed_ms: ctx.deps.now() }, NO_STORE);
@@ -194,6 +210,6 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
       if (!cfg.ok) throw new HttpError(503, `agenda en ligne non configuré : ${cfg.reason}`);
       return json(await p1Week(cfg.config, ctx.deps.fetch, week), NO_STORE);
     }
-    throw new HttpError(404, 'route inconnue (attendues : /api/p1/state, /api/p1/watch, /api/p1/calendar?week=)');
+    throw new HttpError(404, 'route inconnue (attendues : /api/p1/state, /api/p1/watch, /api/p1/calendar?week=, /api/p1/analysis?key=)');
   });
 }

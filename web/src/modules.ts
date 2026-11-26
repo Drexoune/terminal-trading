@@ -43,6 +43,7 @@ export const MODULES: ModuleDef[] = [
   { id: 'heatmap', label: 'Heatmap fondamentale', section: 'Analyse', path: '/heatmap', icon: 'heatmap', phase: 'P3', command: 'JPY FA', category: 'Analyse', description: 'Heatmap fondamentale' },
   { id: 'techmap', label: 'Heatmap technique', section: 'Analyse', path: '/heatmap-technique', icon: 'techmap', phase: 'P7', command: 'TECH', category: 'Analyse', description: 'Heatmap technique' },
   { id: 'indicators', label: 'Indicateurs', section: 'Analyse', path: '/indicateurs', icon: 'indicators', phase: 'P7', command: 'IND', category: 'Analyse', description: 'Indicateurs' },
+  { id: 'options', label: 'Options BTC', section: 'Analyse', path: '/options', icon: 'options', phase: 'P7', command: 'OPT', category: 'Analyse', description: 'Options BTC (Deribit)' },
   { id: 'liquidity', label: 'Liquidité', section: 'Analyse', path: '/liquidite', icon: 'liquidity', phase: 'P4', command: 'LIQ', category: 'Analyse', description: 'Liquidité nette de la Fed' },
   { id: 'track', label: 'Track record', section: 'Compte', path: '/track-record', icon: 'track', phase: 'P6', command: 'PORT', category: 'Compte', description: 'Track record' },
   { id: 'calculator', label: 'Calculateur de risque', section: 'Compte', path: '/calculateur', icon: 'calculator', phase: 'P6', command: 'CALC', category: 'Compte', description: 'Calculateur de risque' },
@@ -50,7 +51,7 @@ export const MODULES: ModuleDef[] = [
 
 /**
  * Module Bourse (décisions T-027 à T-036) : section ajoutée sous celles de la
- * maquette, sans maquette propre (T-033). Les 24 modules du plan restent dans
+ * maquette, sans maquette propre (T-033). Les 24 modules du plan, plus Options BTC (T-075), restent dans
  * MODULES ; le menu et la palette lisent ALL_MODULES.
  */
 export const BOURSE_MODULES: ModuleDef[] = [

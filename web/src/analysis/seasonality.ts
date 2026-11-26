@@ -107,7 +107,8 @@ export function seasonality(asset: string, label: string, source: string, daily:
   const paths = years.map((y) => yearPath(d, y)).filter((p): p is YearPath => !!p && p.points.filter((x) => x !== null).length >= 300);
   const avg_path = Array.from({ length: 366 }, (_, i) => {
     const xs = paths.map((p) => p.points[i]).filter((x): x is number => x !== null);
-    return xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
+    // jour couvert par la moitié des années ou moins (366e jour, hors années bissextiles) : non tracé
+    return xs.length && xs.length * 2 > paths.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null;
   });
 
   return {

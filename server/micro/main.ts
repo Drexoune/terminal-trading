@@ -33,6 +33,9 @@ export interface ServerOptions {
   alertsStatusFile?: string;
   /** État du flux Tree of Alpha (T-072, server/news), sans secret ; repris dans la santé. */
   newsStatusFile?: string;
+  /** États des analyses et des options de P7 (T-075, server/analysis et server/options), sans secret. */
+  analysisStatusFile?: string;
+  optionsStatusFile?: string;
   deps?: { WebSocket: WebSocketCtor; fetch: FetchLike; now: () => number; random: () => number };
 }
 
@@ -88,7 +91,9 @@ export function startMicroServer(o: ServerOptions) {
       const bt = o.btStatusFile ? loadJson<Record<string, unknown>>(o.btStatusFile) : null;
       const alerts = o.alertsStatusFile ? loadJson<Record<string, unknown>>(o.alertsStatusFile) : null;
       const news = o.newsStatusFile ? loadJson<Record<string, unknown>>(o.newsStatusFile) : null;
-      res.end(JSON.stringify({ ok: true, ...source(), load: loadavg(), feeds, bt: bt ? { last_pass: bt } : null, alerts, news }));
+      const analysis = o.analysisStatusFile ? loadJson<Record<string, unknown>>(o.analysisStatusFile) : null;
+      const options = o.optionsStatusFile ? loadJson<Record<string, unknown>>(o.optionsStatusFile) : null;
+      res.end(JSON.stringify({ ok: true, ...source(), load: loadavg(), feeds, bt: bt ? { last_pass: bt } : null, alerts, news, analysis, options }));
       return;
     }
     res.writeHead(404).end();
@@ -118,6 +123,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     btStatusFile: env.MICRO_BT_STATUS ?? '/var/lib/terminal-bt/status.json',
     alertsStatusFile: env.MICRO_ALERTS_STATUS ?? '/var/lib/terminal-alerts/status.json',
     newsStatusFile: env.MICRO_NEWS_STATUS ?? '/var/lib/terminal-news/status.json',
+    analysisStatusFile: env.MICRO_ANALYSIS_STATUS ?? '/var/lib/terminal-analysis/status.json',
+    optionsStatusFile: env.MICRO_OPTIONS_STATUS ?? '/var/lib/terminal-options/status.json',
   });
   console.log(`micro : service démarré${s.restored ? ' (état sauvegardé relu)' : ''}, port ${env.MICRO_PORT ?? 8720}`);
   const quit = (sig: string) => { console.log(`micro : ${sig}, arrêt propre`); void s.stop().then(() => process.exit(0)); };

@@ -21,6 +21,14 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 - [x] S5 track record (journal manuel) et calculateur de risque ; migration `20261203120000_journal.sql` à appliquer
 - [ ] S6 porte de P6 : une semaine d'usage réel (assistant et récaps sourcés, réponses écartées relues), après pose des secrets sur la machine
 
+## P7 — Extras (T-075), codée
+
+- [x] S0 exploration (`docs/exploration-p7.md`) ; futures de taux abandonnées ; recherche ING en lecture seule
+- [x] S1 saisonnalité, S2 heatmap technique et indicateurs, S3 options BTC, S5 recherche bancaire (S4 futures : abandonné)
+- [ ] Déployer `terminal-analysis` et `terminal-options` (`deploy/oracle/deployer.sh <ip> installer` puis `deploy/oracle/deployer.sh <ip>`)
+- [ ] S6 porte de P7 : chaque écran affiche source et fraîcheur avec de vraies données ; options comparées à l'écran de Deribit ; mémoire et processeur d'Oracle relevés
+- [ ] Plus tard : historique des changes (EUR/USD, USD/JPY, or) pour la heatmap si le budget gratuit de Tiingo le permet (T-051)
+
 ## Sur la machine Oracle (T-069), après la microstructure
 
 Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; jusqu'à 2 OCPU et 12 Go gratuits si les tâches ci-dessous l'exigent (l'activité du processeur suffit alors à ne pas être « inactif »).
@@ -30,8 +38,8 @@ Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; 
 - [ ] **Fil d'actus en temps réel** (T-072) : code et service installés ; reste les secrets, le push et l'essai réel — WebSocket de Tree of Alpha tenue par la machine
 - [ ] **P6 — Positions OKX en lecture** (reporté par T-074 : pas de clé pour l'instant ; le track record démarre en saisie manuelle) : clé en lecture seule côté serveur, positions et exécutions suivies en continu, journal tenu fenêtre fermée
 - [ ] **P6 — Récap de session IA** (Asie, Londres, New York) à partir des données complètes de la séance (CVD, liquidations, volume, carnet)
-- [ ] **P7 — Saisonnalité et heatmap technique** : calculs de nuit (rôle prévu pour la tour dans le plan), historique en Parquet + DuckDB (T-003) sur les 200 Go gratuits
-- [ ] **P7 — Options BTC Deribit** : volatilité implicite, skew et DVOL enregistrés 24 h/24
+- [x] **P7 — Saisonnalité et heatmap technique** : service `terminal-analysis` (T-075), calculs sur `bt_candles` et les bougies publiques d'OKX
+- [x] **P7 — Options BTC Deribit** : service `terminal-options` (T-075), relevé toutes les 5 min, historique JSONL sur le disque de la machine
 
 ## Plus tard, pas prioritaire
 

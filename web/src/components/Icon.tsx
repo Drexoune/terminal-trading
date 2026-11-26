@@ -24,6 +24,7 @@ const PATHS = {
   heatmap: ['M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16'],
   techmap: ['M4 4h16v16H4zM4 12h16M12 4v16'],
   indicators: ['M3 12h4l3-7 4 14 3-7h4'],
+  options: ['M3 18c4 0 5-12 9-12s5 12 9 12M3 21h18'],
   liquidity: ['M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z'],
   track: ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z'],
   calculator: ['M6 3h12v18H6zM9 7h6M9 11h.01M12 11h.01M15 11h.01M9 15h.01M12 15h.01M15 15h.01M9 18h6'],

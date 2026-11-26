@@ -1,0 +1,27 @@
+# analyses de P7 : saisonnalite, heatmap technique, recherche ING (T-075), installé par deploy/oracle/installer.sh.
+# Secrets de terminal-bt (/etc/terminal/bt.env) : clé Supabase « oracle » seulement.
+[Unit]
+Description=TERMINAL - analyses de P7 : saisonnalite, heatmap technique, recherche ING (T-075)
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/terminal/bt.env
+
+[Service]
+User=terminal
+Group=terminal
+EnvironmentFile=/etc/terminal/bt.env
+Environment=ANALYSIS_STATUS=/var/lib/terminal-analysis/status.json
+ExecStart=/usr/bin/node /opt/terminal-analysis/analysis.mjs
+Restart=always
+RestartSec=10
+TimeoutStopSec=10
+Nice=10
+MemoryMax=400M
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/terminal-analysis
+
+[Install]
+WantedBy=multi-user.target

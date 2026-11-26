@@ -68,6 +68,7 @@ describe('ensemble', () => {
     expect(s.weekdays).toHaveLength(7);
     expect(s.years).toBe(2);                                         // 2024 et 2025 complètes
     expect(s.avg_path[0]).not.toBeNull();
+    expect(s.avg_path[365]).toBeNull();                              // 31/12 bissextile : 2024 seule sur 2 années
     expect(s.current!.year).toBe(2026);
     expect(s.hours).toEqual([]);
   });
