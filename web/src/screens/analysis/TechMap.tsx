@@ -2,6 +2,7 @@
 // partir de cinq signaux explicables (EMA 20, 50, 200, MACD, RSI), calculée chaque heure par la
 // machine Oracle. Un clic ouvre la fiche Indicateurs de l'actif.
 
+import { Tip } from '../../help/Tip';
 import './analysis.css';
 import { Link } from 'react-router-dom';
 import { useAnalysis } from '../../analysis/client';
@@ -25,7 +26,7 @@ export function TechMapScreen() {
   return (
     <>
       <SubHeader icon="techmap" title="Heatmap technique · tendance par unité de temps"
-        chips={<Chip variant="hot" round>5 signaux : EMA 20, 50, 200, MACD, RSI</Chip>} />
+        chips={<><Chip variant="hot" round>5 signaux : EMA 20, 50, 200, MACD, RSI</Chip><Tip term="trendScore" label="Score de tendance" /></>} />
       <div className="content an" data-screen="techmap">
         <Panel title="Tendance" controls="none" chips={<FreshChip s={s} source="OKX (bougies publiques), Tiingo (clôtures ajustées)" />}>
           {!v ? <Empty reason={s.reason ?? '—'} /> : (

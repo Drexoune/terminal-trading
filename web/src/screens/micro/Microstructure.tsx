@@ -6,6 +6,7 @@
 
 import './micro.css';
 import { useEffect, useMemo } from 'react';
+import { Tip } from '../../help/Tip';
 import { Panel } from '../../components/Panel';
 import { Chip, Missing } from '../../components/ui';
 import { useKeys, useValue } from '../../data/store';
@@ -49,14 +50,15 @@ function DepthPanel({ d, feeds, now }: { d: DepthState | undefined; feeds: Feeds
         {ready ? <DepthCanvas d={d} now={now} height={430} />
           : <div className="mc-map-wait" style={{ height: 430 }}><Empty reason="la carte se remplit depuis l’ouverture du terminal (une colonne toutes les 40 s, aucun historique stocké)" /></div>}
         <div className="mc-legend">
-          <span className="lbl lbl--s">Liquidité au repos</span>
+          <span className="lbl lbl--s lbl-tip">Liquidité au repos<Tip term="restingLiquidity" label="Liquidité au repos" /></span>
           {[1, 2, 3, 4].map((i) => (
             <span key={i} className="num mc-key"><span className={`mc-sw mc-sw--${i}`} />
               {d && d.levels[i - 1] ? (i < 4 ? `${fmtNumber(d.levels[i - 1], 0)}–${fmtNumber(d.levels[i], 0)}` : `>${NBSP}${fmtNumber(d.levels[3], 0)}`) : '—'}{i === 1 ? `${NBSP}BTC` : ''}</span>
           ))}
           <span className="spacer" />
-          <span className="num mc-key"><span className="mc-dot mc-dot--up" />Achats agressifs</span>
-          <span className="num mc-key"><span className="mc-dot mc-dot--dn" />Ventes agressives</span>
+          <span className="num mc-key lbl-tip"><span className="mc-dot mc-dot--up" />Achats agressifs<Tip term="aggressiveBuys" label="Achats agressifs" /></span>
+          <span className="num mc-key lbl-tip"><span className="mc-dot mc-dot--dn" />Ventes agressives<Tip term="aggressiveSells" label="Ventes agressives" /></span>
+          <span className="num mc-key lbl-tip">Mur retiré<Tip term="wallPulled" label="Mur retiré" /></span>
         </div>
         <div className="lbl lbl--s mc-src">
           <Fresh names={PANEL_FEEDS.depth} feeds={feeds} now={now} />
@@ -95,11 +97,12 @@ function BookPanel({ b, feeds, now }: { b: Book | undefined; feeds: Feeds; now: 
           <span className="mc-mid-px" data-testid="mc-last">{b.last ? fmtNumber(b.last.px, 1) : '—'}</span>
           <span className="num mc-mid-sp" title={b.crossed ? 'Meilleur achat d’une plateforme au-dessus de la meilleure vente d’une autre : écart de prix entre plateformes.' : undefined}>
             {b.spread === null ? 'Spread —' : b.crossed ? `Croisés ${fmtSigned(b.spread, 1)}${NBSP}$` : `Spread ${fmtNumber(b.spread, 1)}${NBSP}$`}</span>
+          <Tip term="spread" label="Spread" />
         </div>
         <Ladder levels={b.bids} side="bid" max={max} />
       </> : <Empty reason={b?.missing.length ? `carnets : ${b.missing.map((m) => `${VENUE_LABEL[m.venue]} ${m.reason}`).join(', ')}` : 'connexion aux carnets…'} />}
       <div className="num mc-imb">
-        <span>Déséquilibre · 10 niveaux</span>
+        <span className="lbl-tip">Déséquilibre · 10 niveaux<Tip term="imbalance" label="Déséquilibre du carnet" /></span>
         {imb === null ? <Missing reason="carnet vide" />
           : <span className={imb >= 0 ? 'up' : 'dn'}>{`${fmtNumber(Math.abs(imb) * 100, 1)}${NBSP}% côté ${imb >= 0 ? 'acheteur' : 'vendeur'}`}</span>}
       </div>
@@ -130,11 +133,11 @@ function CvdPanel({ c, feeds, now, rest }: { c: CvdState | undefined; feeds: Fee
   const oldHoles = (c?.holes ?? []).filter((h) => h.to < now - 15 * 60_000);
   return (
     <Panel title="CVD · spot vs perpétuel · 4 h" label="CVD spot et perpétuel" style={{ flex: '2 1 600px' }}
-      chips={c?.divergence ? <Chip variant="hot">Divergence</Chip> : <Chip>{c?.ready ? 'Pas de divergence' : 'Rattrapage…'}</Chip>}>
+      chips={<>{c?.divergence ? <Chip variant="hot">Divergence</Chip> : <Chip>{c?.ready ? 'Pas de divergence' : 'Rattrapage…'}</Chip>}<Tip term="cvdDivergence" label="Divergence" /></>}>
       <div className="mc-body">
         <div className="mc-cvd-legend">
-          <span className="lbl lbl--s"><span className="mc-ln mc-ln--perp" />Perpétuel · <span className={c?.perp != null && c.perp >= 0 ? 'up' : 'dn'}>{btc(c?.perp ?? null)}</span></span>
-          <span className="lbl lbl--s"><span className="mc-ln mc-ln--spot" />Spot · <span className={c?.spot != null && c.spot >= 0 ? 'up' : 'dn'}>{btc(c?.spot ?? null)}</span></span>
+          <span className="lbl lbl--s lbl-tip"><span className="mc-ln mc-ln--perp" />Perpétuel<Tip term="cvdPerp" label="CVD perpétuel" /> · <span className={c?.perp != null && c.perp >= 0 ? 'up' : 'dn'}>{btc(c?.perp ?? null)}</span></span>
+          <span className="lbl lbl--s lbl-tip"><span className="mc-ln mc-ln--spot" />Spot<Tip term="cvdSpot" label="CVD spot" /> · <span className={c?.spot != null && c.spot >= 0 ? 'up' : 'dn'}>{btc(c?.spot ?? null)}</span></span>
         </div>
         {chart && c ? <>
           <div className="mc-cvd-row">
@@ -172,6 +175,7 @@ function LiqPanel({ l, feeds, now }: { l: LiqState | undefined; feeds: Feeds; no
       chips={<>
         <span className="chip chip--down" title="Positions longues liquidées sur l’heure (minimum : Binance et OKX plafonnés)">{`Longs ${l ? fmtUsdCompact(l.long_usd) : '—'}`}</span>
         <span className="chip chip--live mc-chip-end" title="Positions courtes liquidées sur l’heure">{`Shorts ${l ? fmtUsdCompact(l.short_usd) : '—'}`}</span>
+        <Tip term="liquidation" label="Liquidation" />
       </>}>
       <div className="mc-liqs">
         {l?.rows.length ? l.rows.map((r, i) => (
@@ -197,7 +201,7 @@ function FundingPanel({ f, feeds, now }: { f: (FundingState & { ts: number }) | 
   return (
     <Panel title="Funding et open interest · BTC perpétuel" label="Funding et open interest">
       <div className="mc-scroll"><div className="mc-fd-inner">
-        <div className="mc-fd lbl mc-fd--head"><span>Plateforme</span><span className="r">Funding · équiv. 8 h</span><span className="r">Prochain</span><span className="r">Open interest</span><span className="r">OI 24 h (BTC)</span><span className="r">Prime perp / spot</span></div>
+        <div className="mc-fd lbl mc-fd--head"><span>Plateforme</span><span className="r lbl-tip">Funding · équiv. 8 h<Tip term="funding" label="Funding" /></span><span className="r lbl-tip">Prochain<Tip term="nextFunding" label="Prochain funding" /></span><span className="r lbl-tip">Open interest<Tip term="openInterest" label="Open interest" /></span><span className="r lbl-tip">OI 24 h (BTC)<Tip term="openInterest" label="Variation de l’OI sur 24 h" /></span><span className="r lbl-tip">Prime perp / spot<Tip term="premium" label="Prime perp / spot" /></span></div>
         {(f?.rows ?? []).map((r) => (
           <div key={r.venue} className="mc-fd mc-fd--row" data-testid={`mc-fd-${r.venue}`}>
             <span className="mc-fd-name">{VENUE_LABEL[r.venue]} {r.interval_h !== null && r.interval_h !== 8 && <span className="lbl">{r.interval_h === 1 ? 'horaire' : `${r.interval_h} h`}</span>}</span>

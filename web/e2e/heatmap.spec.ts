@@ -2,6 +2,7 @@
 // (±2 px ; hauteur des panneaux exclue), données fictives de la fausse passerelle (chiffres de la
 // maquette), sélection d'une devise, paire et lecture citée, et 390 px sans défilement horizontal.
 
+import { hideGuides } from './geometry';
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -23,6 +24,7 @@ const LANDMARKS = {
 };
 
 test('Heatmap : géométrie conforme à la maquette (x, y, largeur ±2 px)', async ({ page }) => {
+  await hideGuides(page);                                   // la maquette n'a pas de case explicative
   await page.setViewportSize({ width: 1440, height: 1281 });
   await page.goto(`file://${ROOT}design/maquettes/html/Heatmap.html`);
   await page.evaluate(() => document.fonts.ready);

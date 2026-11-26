@@ -55,3 +55,8 @@ export function compare(ref: Geometry, got: Geometry, tolerance = 2,
   }
   return { diffs, missing };
 }
+
+/** Replie la case explicative de chaque page (réglage global de l'aide) : les maquettes n'en ont pas. */
+export async function hideGuides(page: import('@playwright/test').Page): Promise<void> {
+  await page.addInitScript(() => { try { localStorage.setItem('help:guides-hidden', '1'); } catch { /* file:// */ } });
+}

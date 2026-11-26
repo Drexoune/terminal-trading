@@ -1,6 +1,8 @@
 // Indicateurs (P7, S2 ; commande IND ; T-075) : fiche d'un actif, valeurs par unité de temps (EMA,
 // RSI, MACD, ATR, distance au plus haut), signaux de la tendance et clôtures des 120 derniers jours.
 
+import { Tip } from '../../help/Tip';
+import type { Term } from '../../help/content';
 import './analysis.css';
 import { useSearchParams } from 'react-router-dom';
 import { useAnalysis } from '../../analysis/client';
@@ -32,7 +34,7 @@ export function IndicatorsScreen() {
           <Panel title={`${a.label} · par unité de temps`} controls="none" chips={<FreshChip s={s} source={a.source} />}>
             <div className="an-scroll">
               <table className="an-table" data-testid="indicators">
-                <thead><tr>{['UT', 'Tendance', 'Clôture', 'EMA 20', 'EMA 50', 'EMA 200', 'RSI 14', 'MACD − signal', 'ATR', 'Depuis le plus haut', 'Bougies'].map((h) => <th key={h} className="lbl">{h}</th>)}</tr></thead>
+                <thead><tr>{(([['UT'], ['Tendance', 'trendScore'], ['Clôture'], ['EMA 20', 'ema'], ['EMA 50', 'ema'], ['EMA 200', 'ema'], ['RSI 14', 'rsi'], ['MACD − signal', 'macd'], ['ATR', 'atr'], ['Depuis le plus haut', 'fromHigh'], ['Bougies']]) as [string, Term?][]).map(([h, t]) => <th key={h} className="lbl"><span className="lbl-tip">{h}{t && <Tip term={t} label={h} />}</span></th>)}</tr></thead>
                 <tbody>{a.cells.map((c) => {
                   const x = c.snap;
                   return (

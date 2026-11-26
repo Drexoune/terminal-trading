@@ -2,6 +2,7 @@
 // heure de Paris et jour du mois, et trajectoire moyenne de l'année comparée à l'année en cours.
 // Calcul de nuit par la machine Oracle sur nos bougies ; aucune prévision.
 
+import { Tip } from '../../help/Tip';
 import './analysis.css';
 import { useState } from 'react';
 import { useAnalysis, type AnalysisKey } from '../../analysis/client';
@@ -23,7 +24,7 @@ function BucketTable({ rows, testId }: { rows: Bucket[]; testId: string }) {
   return (
     <div className="an-scroll">
       <table className="an-table an-buckets" data-testid={testId}>
-        <thead><tr><th className="lbl">Période</th><th className="lbl an-barcol">Rendement moyen</th><th className="lbl">Moyenne</th><th className="lbl">Médiane</th><th className="lbl">Hausses</th><th className="lbl">Obs.</th></tr></thead>
+        <thead><tr><th className="lbl">Période</th><th className="lbl an-barcol"><span className="lbl-tip">Rendement moyen<Tip term="seasonMean" label="Rendement moyen" /></span></th><th className="lbl">Moyenne</th><th className="lbl">Médiane</th><th className="lbl">Hausses</th><th className="lbl">Obs.</th></tr></thead>
         <tbody>{rows.map((r) => {
           const w = r.mean === null ? 0 : (Math.abs(r.mean) / max) * 50;
           return (

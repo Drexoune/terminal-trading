@@ -3,6 +3,7 @@
 // semaine de démonstration de la fausse passerelle, filtres, fiche, et 390 px
 // sans défilement horizontal. Panneau « Prochains événements » de la Vue d'ensemble.
 
+import { hideGuides } from './geometry';
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -24,6 +25,7 @@ const LANDMARKS = {
 };
 
 test('Calendrier : géométrie conforme à la maquette (x, y, largeur ±2 px)', async ({ page }) => {
+  await hideGuides(page);                                   // la maquette n'a pas de case explicative
   await page.goto(`file://${ROOT}design/maquettes/html/Calendrier.html`);
   await page.evaluate(() => document.fonts.ready);
   const ref = await measure(page, LANDMARKS);

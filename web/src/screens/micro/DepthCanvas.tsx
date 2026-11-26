@@ -3,6 +3,7 @@
 // Le canvas est redessiné à chaque état publié (une fois par seconde au plus) ; textes et
 // étiquettes en DOM par-dessus (polices du design system).
 
+import { Tip } from '../../help/Tip';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { DepthState } from '../../micro/depth';
 import { depthLevel, priceTicks } from '../../micro/view';
@@ -89,7 +90,7 @@ export function DepthCanvas({ d, now, height }: { d: DepthState; now: number; he
           {wall && wall.t >= t0 && (
             <div className="mc-wall" style={{ left: Math.min(Math.max(x(wall.t) + 10, 0), Math.max(0, width - 190)), top: Math.min(Math.max(y(wall.px) - 52, 4), height - 52) }}
               data-testid="mc-wall">
-              <div className="lbl">Mur retiré</div>
+              <div className="lbl lbl-tip">Mur retiré<Tip term="wallPulled" label="Mur retiré" /></div>
               <div className="num">{`${fmtNumber(wall.sz, 0)} BTC · ${fmtNumber(wall.px, 0)} · ${fmtHm(wall.t, 'Europe/Paris')}`}</div>
             </div>
           )}

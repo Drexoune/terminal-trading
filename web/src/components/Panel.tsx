@@ -4,21 +4,28 @@
 // dockview) mais restent de vrais boutons étiquetés.
 
 import type { CSSProperties, ReactNode } from 'react';
+import type { Help } from '../help/content';
+import { HelpTip } from '../help/HelpTip';
+import { usePanelHelp } from '../help/scope';
 import { Icon } from './Icon';
 import { IconButton } from './ui';
 
 export type PanelControls = 'full' | 'compact' | 'none';
 
-export function Panel({ title, label, chips, controls = 'full', children, style, bodyStyle, testId }: {
+export function Panel({ title, label, chips, controls = 'full', children, style, bodyStyle, testId, help }: {
   title: string; label?: string; chips?: ReactNode; controls?: PanelControls;
   children: ReactNode; style?: CSSProperties; bodyStyle?: CSSProperties; testId?: string;
+  /** Bulle d'aide du panneau ; par défaut celle de l'écran courant (help/content.ts), null pour aucune. */
+  help?: Help | null;
 }) {
+  const auto = usePanelHelp(title, label);
+  const h = help === undefined ? auto : help;
   return (
     <section className="pn" aria-label={label ?? title} style={style} data-panel={testId ?? title}>
       <div className="ph">
         <Icon name="grip" className="grip" />
         <span className="dia" />
-        <h2>{title}</h2>
+        <h2><span className="ph-t">{title}</span>{h && <HelpTip help={h} label={label ?? title.split(' · ')[0]} />}</h2>
         {chips}
         {controls === 'full' && <>
           <IconButton icon="sliders" label="Réglages du panneau" />

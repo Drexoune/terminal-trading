@@ -18,6 +18,10 @@ mkdirSync(ART, { recursive: true });
 const mockupHtml = (name: string) => `file://${ROOT}design/maquettes/html/${name}.html`;
 const mockupPng = (name: string) => `${ROOT}design/maquettes/png/${name}.png`;
 
+// Les maquettes n'ont pas la case explicative de page : elle est repliée ici (réglage global de
+// l'aide), les bulles « i » restent (sans effet sur la géométrie).
+test.beforeEach(async ({ page }) => { await page.addInitScript(() => { try { localStorage.setItem('help:guides-hidden', '1'); } catch { /* file:// */ } }); });
+
 async function settle(page: Page) {
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(300);

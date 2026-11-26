@@ -2,6 +2,7 @@
 // (±2 px ; hauteur exclue, elle suit le nombre de titres), titres de démonstration de la fausse
 // passerelle, filtres, lecture, panneau « Titres urgents », et 390 px sans défilement horizontal.
 
+import { hideGuides } from './geometry';
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -22,6 +23,7 @@ const LANDMARKS = {
 };
 
 test('Actus : géométrie conforme à la maquette (x, y, largeur ±2 px)', async ({ page }) => {
+  await hideGuides(page);                                   // la maquette n'a pas de case explicative
   await page.goto(`file://${ROOT}design/maquettes/html/Actus.html`);
   await page.evaluate(() => document.fonts.ready);
   const ref = await measure(page, LANDMARKS);

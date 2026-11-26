@@ -4,6 +4,7 @@
 // réels relevés le 24/11/2026 (web/src/micro/fixtures) ; le REST est servi par des réponses de
 // même forme. Rien ne sort vers les plateformes pendant le test.
 
+import { hideGuides } from './geometry';
 import { expect, test, type Page, type WebSocketRoute } from '@playwright/test';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -152,6 +153,7 @@ async function openLive(page: Page) {
 }
 
 test('Microstructure : géométrie conforme à la maquette (x, largeur ; y de la première rangée ±2 px)', async ({ page }) => {
+  await hideGuides(page);                                   // la maquette n'a pas de case explicative
   await page.setViewportSize({ width: 1440, height: 1547 });
   await page.goto(`file://${ROOT}design/maquettes/html/Microstructure.html`);
   await page.evaluate(() => document.fonts.ready);

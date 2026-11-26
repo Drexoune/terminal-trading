@@ -11,6 +11,8 @@ import { DesignSystem } from './screens/design-system/DesignSystem';
 import { Overview } from './screens/overview/Overview';
 import { PlaceholderScreen } from './screens/placeholder/Placeholder';
 import { SettingsScreen } from './screens/settings/Settings';
+import { HelpScope } from './help/scope';
+import { AssistantScreen } from './screens/assistant/Assistant';
 import { SquawkScreen } from './screens/squawk/Squawk';
 import { NewsScreen } from './screens/news/News';
 import { HoursScreen } from './screens/hours/Hours';
@@ -36,7 +38,7 @@ import { CalculatorScreen } from './screens/track/Calculator';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen, micro: MicrostructureScreen, recap: RecapScreen, track: TrackScreen, calculator: CalculatorScreen, season: SeasonScreen, techmap: TechMapScreen, indicators: IndicatorsScreen, options: OptionsScreen, research: ResearchScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen, micro: MicrostructureScreen, recap: RecapScreen, track: TrackScreen, calculator: CalculatorScreen, season: SeasonScreen, techmap: TechMapScreen, indicators: IndicatorsScreen, options: OptionsScreen, research: ResearchScreen, assistant: AssistantScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);
@@ -48,12 +50,12 @@ function Shell() {
           {ALL_MODULES.map((m) => {
             const Screen = IMPLEMENTED[m.id];
             return <Route key={m.id} path={m.path}
-              element={Screen ? <Screen /> : <PlaceholderScreen module={m} />} />;
+              element={<HelpScope key={m.id} id={m.id}>{Screen ? <Screen /> : <PlaceholderScreen module={m} />}</HelpScope>} />;
           })}
           {/* Paramètres : hors menu, ouvert par l'avatar ou la commande SET. */}
-          <Route path={SETTINGS_PATH} element={<SettingsScreen />} />
+          <Route path={SETTINGS_PATH} element={<HelpScope id="settings"><SettingsScreen /></HelpScope>} />
           {/* Alertes (E4) : hors menu (la maquette n'en a pas), cloche ou commande ALRT. */}
-          <Route path={ALERTS_PATH} element={<AlertsScreen />} />
+          <Route path={ALERTS_PATH} element={<HelpScope id="alerts"><AlertsScreen /></HelpScope>} />
           <Route path="*" element={<PlaceholderScreen module={{ ...MODULES[0], label: 'Écran inconnu', phase: 'P0', command: 'HOME' }} />} />
         </Routes>
       </AppShell>

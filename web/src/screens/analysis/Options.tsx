@@ -2,6 +2,8 @@
 // la machine Oracle. Vol implicite ATM, skew (risk reversal 25 delta), butterfly, structure par terme,
 // sourire et open interest d'une échéance, historique du DVOL et de nos relevés.
 
+import { Tip } from '../../help/Tip';
+import type { Term } from '../../help/content';
 import './analysis.css';
 import { useState } from 'react';
 import { useAnalysis } from '../../analysis/client';
@@ -24,7 +26,7 @@ export function OptionsScreen() {
   const [pick, setPick] = useState<number | null>(null);
   const exp = v?.expiries.find((e) => e.expiry === pick) ?? v?.expiries.find((e) => e.days >= 7) ?? v?.expiries[0];
   const near = exp ? exp.smile.filter((p) => p.strike >= exp.forward * 0.6 && p.strike <= exp.forward * 1.6) : [];
-  const kpi = (label: string, value: string, title?: string) => <div className="an-kpi" title={title}><span className="lbl lbl--s">{label}</span><span className="num an-kpi__v">{value}</span></div>;
+  const kpi = (label: string, value: string, title?: string, term?: Term) => <div className="an-kpi" title={title}><span className="lbl lbl--s lbl-tip">{label}{term && <Tip term={term} label={label} />}</span><span className="num an-kpi__v">{value}</span></div>;
   const hist = h.value;
   return (
     <>
@@ -34,11 +36,11 @@ export function OptionsScreen() {
           <Panel title="Vue d’ensemble · 30 jours constants" controls="none" chips={<FreshChip s={s} source={SRC} />}>
             <div className="an-kpis" data-testid="options-kpis">
               {kpi('Indice BTC (Deribit)', v.index == null ? '—' : `${fmtNumber(v.index, 0)}${NBSP}$`)}
-              {kpi('DVOL', vol(v.dvol), 'indice de volatilité de Deribit (30 jours)')}
-              {kpi('Vol ATM 30 j', vol(v.atm30), 'interpolée en variance totale entre les deux échéances qui encadrent 30 jours')}
-              {kpi('Risk reversal 25Δ', pts(v.rr25_30), 'vol du call 25 delta − vol du put 25 delta ; négatif : puts plus chers')}
-              {kpi('Butterfly 25Δ', pts(v.bf25_30), 'moyenne des vols 25 delta − vol ATM')}
-              {kpi('Put / call (OI)', v.pcr == null ? '—' : fmtNumber(v.pcr, 2), `${fmtNumber(v.oi_p, 0)} puts / ${fmtNumber(v.oi_c, 0)} calls (BTC)`)}
+              {kpi('DVOL', vol(v.dvol), 'indice de volatilité de Deribit (30 jours)', 'dvol')}
+              {kpi('Vol ATM 30 j', vol(v.atm30), 'interpolée en variance totale entre les deux échéances qui encadrent 30 jours', 'atm')}
+              {kpi('Risk reversal 25Δ', pts(v.rr25_30), 'vol du call 25 delta − vol du put 25 delta ; négatif : puts plus chers', 'rr25')}
+              {kpi('Butterfly 25Δ', pts(v.bf25_30), 'moyenne des vols 25 delta − vol ATM', 'bf25')}
+              {kpi('Put / call (OI)', v.pcr == null ? '—' : fmtNumber(v.pcr, 2), `${fmtNumber(v.oi_p, 0)} puts / ${fmtNumber(v.oi_c, 0)} calls (BTC)`, 'pcr')}
             </div>
           </Panel>
           <Panel title="Structure par terme" controls="none" chips={<Chip small>{`${v.instruments} options · ${v.expiries.length} échéances`}</Chip>}>

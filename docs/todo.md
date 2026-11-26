@@ -29,6 +29,16 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 - [ ] S6 porte de P7 : chaque écran affiche source et fraîcheur avec de vraies données ; options comparées à l'écran de Deribit ; mémoire et processeur d'Oracle relevés
 - [ ] Plus tard : historique des changes (EUR/USD, USD/JPY, or) pour la heatmap si le budget gratuit de Tiingo le permet (T-051)
 
+## Audit du 26/11/2026 (CLAUDE.md et plan relus)
+
+- [x] Page `/assistant` (elle n'affichait qu'un écran d'attente) : même conversation que la colonne d'Actus
+- [x] Explications partout : case « À quoi sert cette page / Comment la lire / Comment s'en servir » sur chaque écran (bouton « Guide »), bulle « i » sur chaque panneau, glossaire sur les termes techniques (`web/src/help/`)
+- [ ] **Alerte de flux périmé** (CLAUDE.md § 3 : « un flux muet au-delà de son seuil passe en périmé et déclenche une alerte ») : aujourd'hui l'état « périmé » s'affiche (barre de flux, puces), mais aucune alerte ne part
+- [ ] **Espaces de travail** (stack § 4, plan « panneaux liés, mises en page sauvegardées ») : dockview pas installé, bouton « Personnaliser » inactif
+- [ ] Heatmap fondamentale : « lecture IA » du plan (T-055 l'avait remplacée par une lecture automatique faute d'IA en P3 ; possible maintenant avec l'assistant de P6)
+- [ ] Bourse B2 à B4 (fiche action, screener, watchlists, calendrier boursier, 13F) : prévus après le 10/12 (T-027)
+- [ ] Positions OKX en lecture (T-074, sans clé pour l'instant) ; Tauri (fenêtres détachées) : plus tard
+
 ## Sur la machine Oracle (T-069), après la microstructure
 
 Compte jamais passé en paiement à l'usage. Taille de départ : 1 OCPU, 2 Go ; jusqu'à 2 OCPU et 12 Go gratuits si les tâches ci-dessous l'exigent (l'activité du processeur suffit alors à ne pas être « inactif »).

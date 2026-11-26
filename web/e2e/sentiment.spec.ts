@@ -2,6 +2,7 @@
 // hauteur exclue), source et fraîcheur sur chaque panneau des cinq écrans (porte de P4), et
 // 390 px sans défilement horizontal. Données fictives de la fausse passerelle (sentiment_demo.py).
 
+import { hideGuides } from './geometry';
 import { expect, test } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -23,6 +24,7 @@ const LANDMARKS = {
 };
 
 test('Risque : géométrie conforme à la maquette (x, y, largeur ±2 px)', async ({ page }) => {
+  await hideGuides(page);                                   // la maquette n'a pas de case explicative
   await page.setViewportSize({ width: 1440, height: 1258 });
   await page.goto(`file://${ROOT}design/maquettes/html/Risque.html`);
   await page.evaluate(() => document.fonts.ready);

@@ -3,6 +3,8 @@
 // Écriture derrière le mot de passe d'application (porte du module Bourse). Le PEA reste suivi dans
 // le module Bourse (lien).
 
+import { Tip } from '../../help/Tip';
+import type { Term } from '../../help/content';
 import './track.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -70,8 +72,8 @@ function Body() {
   }
 
   const s = trades ? journalStats(trades) : null;
-  const kpi = (label: string, v: string | null, tone = '') => (
-    <div className="tr-kpi"><span className="lbl lbl--s">{label}</span><span className={`num tr-kpi__v ${tone}`}>{v ?? '—'}</span></div>
+  const kpi = (label: string, v: string | null, tone = '', term?: Term) => (
+    <div className="tr-kpi"><span className="lbl lbl--s lbl-tip">{label}{term && <Tip term={term} label={label} />}</span><span className={`num tr-kpi__v ${tone}`}>{v ?? '—'}</span></div>
   );
   return (
     <div className="content tr" data-screen="track">
@@ -79,11 +81,11 @@ function Body() {
       <Panel title="Statistiques · trades clos" controls="none" chips={<Chip>{s ? `${s.closed} clos · ${s.open} ouverts` : '—'}</Chip>}>
         <div className="tr-kpis" data-testid="track-stats">
           {kpi('Résultat total', s ? `${fmtSigned(s.total, 2)}${NBSP}$` : null, s && s.total >= 0 ? 'up' : 'dn')}
-          {kpi('Taux de réussite', s?.winRate != null ? `${fmtNumber(s.winRate * 100, 1)}${NBSP}%` : null)}
-          {kpi('Profit factor', s?.profitFactor != null ? fmtNumber(s.profitFactor, 2) : null)}
-          {kpi('Espérance', s?.expectancyR != null ? `${fmtSigned(s.expectancyR, 2)}${NBSP}R (${s.rCount} avec stop)` : null)}
+          {kpi('Taux de réussite', s?.winRate != null ? `${fmtNumber(s.winRate * 100, 1)}${NBSP}%` : null, '', 'winRate')}
+          {kpi('Profit factor', s?.profitFactor != null ? fmtNumber(s.profitFactor, 2) : null, '', 'profitFactor')}
+          {kpi('Espérance', s?.expectancyR != null ? `${fmtSigned(s.expectancyR, 2)}${NBSP}R (${s.rCount} avec stop)` : null, '', 'expectancyR')}
           {kpi('Gain moyen / perte moyenne', s?.avgWin != null && s.avgLoss != null ? `${fmtNumber(s.avgWin, 0)} / ${fmtNumber(s.avgLoss, 0)}` : null)}
-          {kpi('Pire série de pertes', s ? String(s.worstStreak) : null)}
+          {kpi('Pire série de pertes', s ? String(s.worstStreak) : null, '', 'worstStreak')}
         </div>
         {s && <Curve points={s.curve} />}
       </Panel>
