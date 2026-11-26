@@ -98,6 +98,26 @@ describe('/api/p1/analysis (P7, T-075)', () => {
   });
 });
 
+describe('/api/p1/daily (comparaison, onglets Nasdaq)', () => {
+  it('bougies de bt_candles ou clôtures ajustées de sentiment_series ; actif inconnu : 400', async () => {
+    const calls: Record<string, string>[] = [];
+    const fetch = async (url: string) => {
+      const u = new URL(url); const p = Object.fromEntries(u.searchParams); calls.push({ table: u.pathname, ...p });
+      const rows = u.pathname.endsWith('bt_candles') ? [{ ts: '2026-11-24T00:00:00+00:00', open: 1, high: 2, low: 0.5, close: 1.5 }]
+        : [{ date: '2026-11-24', value: 200, adj: 199.5 }, { date: '2026-11-25', value: 201, adj: null }];
+      return new Response(JSON.stringify(rows), { status: 200 });
+    };
+    const { ctx } = testContext({ nowMs: NOW, env: ENV, fetch: fetch as never });
+    const a = await (await handleP1(req('/api/p1?path=daily&asset=qqq'), ctx)).json() as Record<string, unknown>;
+    expect(a).toMatchObject({ asset: 'QQQ', label: 'Nasdaq 100 (QQQ)', points: [{ d: '2026-11-24', o: 1, h: 2, l: 0.5, c: 1.5 }] });
+    expect(calls[0]).toMatchObject({ table: '/rest/v1/bt_candles', asset: 'eq.QQQ', tf: 'eq.1D', ts: 'gte.2025-10-19' });
+    const g = await (await handleP1(req('/api/p1?path=daily&asset=GLD&days=5000'), ctx)).json() as { points: unknown[] };
+    expect(g.points).toEqual([{ d: '2026-11-24', c: 199.5 }, { d: '2026-11-25', c: 201 }]);
+    expect(calls[1]).toMatchObject({ table: '/rest/v1/sentiment_series', series_id: 'eq.GLD', date: 'gte.2024-09-14' });   // 800 jours au plus
+    expect((await handleP1(req('/api/p1?path=daily&asset=AAPL'), ctx)).status).toBe(400);
+  });
+});
+
 describe('/api/p1/displayed (porte P1 en ligne)', () => {
   const KEY = 'release:us-cpi-mm:2026-11';
   function fakeWrites(value: Record<string, unknown> | null) {

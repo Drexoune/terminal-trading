@@ -16,6 +16,7 @@ export const CLOSES: DailySpec[] = [
   { id: 'CPER', source: 'tiingo', code: 'CPER', label: 'CPER (Tiingo)', unit: 'USD' },
   { id: 'GLD', source: 'tiingo', code: 'GLD', label: 'GLD (Tiingo)', unit: 'USD' },
   { id: 'AUDJPY', source: 'tiingo-fx', code: 'audjpy', label: 'AUD/JPY (Tiingo)', unit: 'JPY' },
+  { id: 'VXN', source: 'fred', code: 'VXNCLS', label: 'VXN, volatilité implicite du Nasdaq 100 (Cboe, FRED)', unit: 'pts' },
   { id: 'BTC', source: 'okx', code: 'BTC-USDT', label: 'BTC/USDT (OKX)', unit: 'USDT' },
   { id: 'ETH', source: 'okx', code: 'ETH-USDT', label: 'ETH/USDT (OKX)', unit: 'USDT' },
 ];

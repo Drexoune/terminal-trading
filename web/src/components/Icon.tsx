@@ -25,6 +25,7 @@ const PATHS = {
   techmap: ['M4 4h16v16H4zM4 12h16M12 4v16'],
   indicators: ['M3 12h4l3-7 4 14 3-7h4'],
   options: ['M3 18c4 0 5-12 9-12s5 12 9 12M3 21h18'],
+  compare: ['M4 18l5-6 4 3 7-9M4 6l5 4 4-2 7 6'],
   info: ['M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18zM12 11v6M12 7.5v.5'],
   liquidity: ['M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z'],
   track: ['M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8z'],

@@ -44,6 +44,7 @@ export const MODULES: ModuleDef[] = [
   { id: 'techmap', label: 'Heatmap technique', section: 'Analyse', path: '/heatmap-technique', icon: 'techmap', phase: 'P7', command: 'TECH', category: 'Analyse', description: 'Heatmap technique' },
   { id: 'indicators', label: 'Indicateurs', section: 'Analyse', path: '/indicateurs', icon: 'indicators', phase: 'P7', command: 'IND', category: 'Analyse', description: 'Indicateurs' },
   { id: 'options', label: 'Options BTC', section: 'Analyse', path: '/options', icon: 'options', phase: 'P7', command: 'OPT', category: 'Analyse', description: 'Options BTC (Deribit)' },
+  { id: 'compare', label: 'Comparer deux actifs', section: 'Analyse', path: '/comparer', icon: 'compare', phase: 'P7', command: 'COMP', category: 'Analyse', description: 'Comparer deux actifs sur un an' },
   { id: 'liquidity', label: 'Liquidité', section: 'Analyse', path: '/liquidite', icon: 'liquidity', phase: 'P4', command: 'LIQ', category: 'Analyse', description: 'Liquidité nette de la Fed' },
   { id: 'track', label: 'Track record', section: 'Compte', path: '/track-record', icon: 'track', phase: 'P6', command: 'PORT', category: 'Compte', description: 'Track record' },
   { id: 'calculator', label: 'Calculateur de risque', section: 'Compte', path: '/calculateur', icon: 'calculator', phase: 'P6', command: 'CALC', category: 'Compte', description: 'Calculateur de risque' },

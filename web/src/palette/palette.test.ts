@@ -3,9 +3,9 @@ import { MODULES } from '../modules';
 import { ENTRIES, matchEntry } from './CommandPalette';
 
 describe('registre des écrans', () => {
-  it('25 modules (24 du plan + Options BTC, T-075), chacun avec une URL et une commande uniques', () => {
-    expect(MODULES).toHaveLength(25);
-    expect(new Set(MODULES.map((m) => m.path)).size).toBe(25);
+  it('26 modules (24 du plan + Options BTC, T-075, + Comparer deux actifs), chacun avec une URL et une commande uniques', () => {
+    expect(MODULES).toHaveLength(26);
+    expect(new Set(MODULES.map((m) => m.path)).size).toBe(26);
     expect(new Set(ENTRIES.map((e) => e.command)).size).toBe(ENTRIES.length);
   });
 });

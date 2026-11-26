@@ -48,6 +48,22 @@ async function saveHighlights(cfg: SupabaseConfig, fetchFn: FetchFn, now: number
   return { words, updated_ms: now };
 }
 
+/** Séries quotidiennes servies à la comparaison d'actifs et aux onglets Nasdaq : bt_candles (bougies
+ *  OHLC) ou sentiment_series (clôtures, ajustées des dividendes quand Tiingo les donne). */
+export const DAILY_ASSETS: Record<string, { label: string; table: 'bt_candles' | 'sentiment_series'; source: string; unit: string }> = {
+  BTC: { label: 'Bitcoin (BTC/USDT)', table: 'bt_candles', source: 'OKX', unit: 'USDT' },
+  ETH: { label: 'Ether (ETH/USDT)', table: 'bt_candles', source: 'OKX', unit: 'USDT' },
+  QQQ: { label: 'Nasdaq 100 (QQQ)', table: 'bt_candles', source: 'Tiingo, cours ajustés', unit: 'USD' },
+  SPY: { label: 'S&P 500 (SPY)', table: 'bt_candles', source: 'Tiingo, cours ajustés', unit: 'USD' },
+  GLD: { label: 'Or (GLD)', table: 'sentiment_series', source: 'Tiingo, cours ajustés', unit: 'USD' },
+  TLT: { label: 'Obligations US 20 ans et plus (TLT)', table: 'sentiment_series', source: 'Tiingo, cours ajustés', unit: 'USD' },
+  CPER: { label: 'Cuivre (CPER)', table: 'sentiment_series', source: 'Tiingo, cours ajustés', unit: 'USD' },
+  AUDJPY: { label: 'AUD/JPY', table: 'sentiment_series', source: 'Tiingo FX', unit: 'JPY' },
+  VIX: { label: 'VIX (volatilité du S&P 500)', table: 'sentiment_series', source: 'Cboe', unit: 'pts' },
+  VXN: { label: 'VXN (volatilité du Nasdaq 100)', table: 'sentiment_series', source: 'Cboe, via FRED', unit: 'pts' },
+};
+export const DAILY_MAX_DAYS = 800;
+
 /** Analyses de P7 (T-075), écrites par la machine Oracle : clé publique de la route → clé de p1_state. */
 export const ANALYSIS_KEYS: Record<string, string> = {
   'season:BTC': 'analysis:season:BTC', 'season:ETH': 'analysis:season:ETH', 'season:QQQ': 'analysis:season:QQQ', 'season:SPY': 'analysis:season:SPY',
@@ -140,7 +156,7 @@ export async function p1Displayed(cfg: SupabaseConfig, fetchFn: FetchFn, now: nu
 
 export function handleP1(request: Request, ctx: Context): Promise<Response> {
   return respond(ctx.env, '/api/p1', async () => {
-    const q = readQuery(request, ['path', 'week', 'key']);
+    const q = readQuery(request, ['path', 'week', 'key', 'asset', 'days']);
     const path = q.get('path') ?? '';
     const cfg = supabaseConfig(ctx.env);
     if (path === 'displayed') {
@@ -199,6 +215,22 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
       const row = r.rows[0] as { value: unknown; updated_ms: number } | undefined;
       return json({ configured: true, value: row?.value ?? null, updated_ms: row?.updated_ms ?? null, computed_ms: ctx.deps.now() }, NO_STORE);
     }
+    if (path === 'daily') {
+      // Clôtures quotidiennes d'un actif (comparaison d'actifs, onglets Nasdaq) : 400 jours par défaut.
+      const asset = (q.get('asset') ?? '').toUpperCase();
+      const spec = Object.hasOwn(DAILY_ASSETS, asset) ? DAILY_ASSETS[asset] : null;
+      if (!spec) throw new HttpError(400, `paramètre asset attendu parmi : ${Object.keys(DAILY_ASSETS).join(', ')}`);
+      const days = Math.min(DAILY_MAX_DAYS, Math.max(30, Number(q.get('days') ?? 400) || 400));
+      if (!cfg.ok) return json({ configured: false, reason: cfg.reason, asset, points: [], computed_ms: ctx.deps.now() }, NO_STORE);
+      const from = new Date(ctx.deps.now() - days * 86_400_000).toISOString().slice(0, 10);
+      const r = spec.table === 'bt_candles'
+        ? await rest(cfg.config, ctx.deps.fetch, 'GET', 'bt_candles', { select: 'ts,open,high,low,close', asset: `eq.${asset}`, tf: 'eq.1D', ts: `gte.${from}`, order: 'ts.asc', limit: '1000' }, false)
+        : await rest(cfg.config, ctx.deps.fetch, 'GET', 'sentiment_series', { select: 'date,value,adj', series_id: `eq.${asset}`, date: `gte.${from}`, order: 'date.asc', limit: '1000' }, false);
+      const points = (r.rows as Record<string, unknown>[]).map((x) => spec.table === 'bt_candles'
+        ? { d: String(x.ts).slice(0, 10), o: Number(x.open), h: Number(x.high), l: Number(x.low), c: Number(x.close) }
+        : { d: String(x.date).slice(0, 10), c: Number(x.adj ?? x.value) }).filter((x) => Number.isFinite(x.c) && x.c > 0);
+      return json({ configured: true, asset, ...spec, points, computed_ms: ctx.deps.now() }, NO_STORE);
+    }
     if (path === 'watch') {
       if (q.has('week')) throw new HttpError(400, 'paramètre inconnu : week (cette route n’en prend aucun)');
       if (!cfg.ok) return json({ configured: false, reason: cfg.reason, assets: [], computed_ms: ctx.deps.now() }, NO_STORE);
@@ -210,6 +242,6 @@ export function handleP1(request: Request, ctx: Context): Promise<Response> {
       if (!cfg.ok) throw new HttpError(503, `agenda en ligne non configuré : ${cfg.reason}`);
       return json(await p1Week(cfg.config, ctx.deps.fetch, week), NO_STORE);
     }
-    throw new HttpError(404, 'route inconnue (attendues : /api/p1/state, /api/p1/watch, /api/p1/calendar?week=, /api/p1/analysis?key=)');
+    throw new HttpError(404, 'route inconnue (attendues : /api/p1/state, /api/p1/watch, /api/p1/calendar?week=, /api/p1/analysis?key=, /api/p1/daily?asset=)');
   });
 }

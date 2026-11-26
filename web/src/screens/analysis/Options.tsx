@@ -12,6 +12,7 @@ import { Panel } from '../../components/Panel';
 import { Chip } from '../../components/ui';
 import { fmtNumber, fmtSigned, NBSP } from '../../lib/format';
 import { SubHeader } from '../../shell/SubHeader';
+import { MarketTabs, NasdaqOptions, useMarketTab } from '../nasdaq/Nasdaq';
 import { Empty, fmtDayHm, FreshChip, LineChart } from './parts';
 
 const SRC = 'Deribit, API publique';
@@ -24,13 +25,20 @@ export function OptionsScreen() {
   const h = useAnalysis<{ points: HistPoint[]; dvol: [number, number][] }>('options-history');
   const v = s.value;
   const [pick, setPick] = useState<number | null>(null);
+  const [tab, setTab] = useMarketTab();
   const exp = v?.expiries.find((e) => e.expiry === pick) ?? v?.expiries.find((e) => e.days >= 7) ?? v?.expiries[0];
   const near = exp ? exp.smile.filter((p) => p.strike >= exp.forward * 0.6 && p.strike <= exp.forward * 1.6) : [];
   const kpi = (label: string, value: string, title?: string, term?: Term) => <div className="an-kpi" title={title}><span className="lbl lbl--s lbl-tip">{label}{term && <Tip term={term} label={label} />}</span><span className="num an-kpi__v">{value}</span></div>;
   const hist = h.value;
+  if (tab === 'nasdaq') return (
+    <>
+      <SubHeader icon="options" title="Options · Nasdaq 100" chips={<><MarketTabs tab={tab} onChange={setTab} /><Chip variant="hot" round>VXN · Cboe via FRED</Chip></>} />
+      <NasdaqOptions />
+    </>
+  );
   return (
     <>
-      <SubHeader icon="options" title="Options BTC · volatilité implicite et skew" chips={<Chip variant="hot" round>Deribit · relevé toutes les 5 min</Chip>} />
+      <SubHeader icon="options" title="Options BTC · volatilité implicite et skew" chips={<><MarketTabs tab={tab} onChange={setTab} /><Chip variant="hot" round>Deribit · relevé toutes les 5 min</Chip></>} />
       <div className="content an" data-screen="options">
         {!v ? <Panel title="Options BTC" controls="none"><Empty reason={s.reason ?? '—'} /></Panel> : <>
           <Panel title="Vue d’ensemble · 30 jours constants" controls="none" chips={<FreshChip s={s} source={SRC} />}>

@@ -7,6 +7,7 @@
 import './micro.css';
 import { useEffect, useMemo } from 'react';
 import { Tip } from '../../help/Tip';
+import { MarketTabs, NasdaqMicro, useMarketTab } from '../nasdaq/Nasdaq';
 import { Panel } from '../../components/Panel';
 import { Chip, Missing } from '../../components/ui';
 import { useKeys, useValue } from '../../data/store';
@@ -291,11 +292,18 @@ export function MicrostructureScreen() {
   const funding = useValue<FundingState & { ts: number }>('micro:funding');
   const rest = useValue<RestState[]>('micro:rest') ?? [];
   const src = useValue<Source>('micro:source');
+  const [tab, setTab] = useMarketTab();
+  if (tab === 'nasdaq') return (
+    <>
+      <SubHeader icon="micro" title="Microstructure · Nasdaq 100 (QQQ)" chips={<><MarketTabs tab={tab} onChange={setTab} /><Chip variant="hot" round>Tiingo IEX · Cboe</Chip></>} />
+      <NasdaqMicro />
+    </>
+  );
   return (
     <>
       <SubHeader icon="micro" title="Microstructure BTC · BTC-USDT perpétuel"
         chips={<>
-          <Chip variant="hot" round>OKX · Binance · Bybit · Hyperliquid</Chip>
+          <span title="Carnets et flux : OKX · Binance · Bybit · Hyperliquid (Coinbase pour le spot)"><MarketTabs tab={tab} onChange={setTab} /></span>
           <SourceChip src={src} />
           <Fresh names={[...new Set(Object.values(PANEL_FEEDS).flat())]} feeds={feeds} now={now} />
         </>} />

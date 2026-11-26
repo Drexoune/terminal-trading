@@ -14,6 +14,7 @@ import { SettingsScreen } from './screens/settings/Settings';
 import { HelpScope } from './help/scope';
 import { AssistantScreen } from './screens/assistant/Assistant';
 import { WorkspaceScreen } from './screens/workspace/Workspace';
+import { CompareScreen } from './screens/compare/Compare';
 import { SquawkScreen } from './screens/squawk/Squawk';
 import { NewsScreen } from './screens/news/News';
 import { HoursScreen } from './screens/hours/Hours';
@@ -39,7 +40,7 @@ import { CalculatorScreen } from './screens/track/Calculator';
 import { AppShell } from './shell/AppShell';
 import { ALERTS_PATH } from './shell/Notifications';
 
-const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen, micro: MicrostructureScreen, recap: RecapScreen, track: TrackScreen, calculator: CalculatorScreen, season: SeasonScreen, techmap: TechMapScreen, indicators: IndicatorsScreen, options: OptionsScreen, research: ResearchScreen, assistant: AssistantScreen };
+const IMPLEMENTED: Record<string, () => React.JSX.Element> = { overview: Overview, charts: Charts, sources: SourcesScreen, portfolio: PortfolioScreen, calendar: CalendarScreen, squawk: SquawkScreen, news: NewsScreen, hours: HoursScreen, watch: MarketsWatchScreen, rates: RatesScreen, heatmap: HeatmapScreen, macro: MacroScreen, risk: RiskScreen, cot: CotScreen, bankpos: BanksScreen, retail: RetailScreen, liquidity: LiquidityScreen, backtest: BacktestScreen, micro: MicrostructureScreen, recap: RecapScreen, track: TrackScreen, calculator: CalculatorScreen, season: SeasonScreen, techmap: TechMapScreen, indicators: IndicatorsScreen, options: OptionsScreen, research: ResearchScreen, assistant: AssistantScreen, compare: CompareScreen };
 
 function Shell() {
   const [palette, setPalette] = useState(false);

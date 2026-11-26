@@ -47,12 +47,12 @@ const series = (rest: MemRest, id: string) => rest.rows('sentiment_series').filt
 const state = (rest: MemRest, key: string) => rest.rows('p4_state').find((r) => r.key === key)?.value as Record<string, unknown>;
 
 describe('tâche closes', () => {
-  it('10 séries écrites, dates à la source, état par série et flux', async () => {
+  it('11 séries écrites (dont VXN), dates à la source, état par série et flux', async () => {
     const rest = new MemRest();
     const seen: string[] = [];
     const r = await runCloses(deps(rest, { seen }));
     expect(r.ok).toBe(true);
-    expect(Object.keys(r.done as object).sort()).toEqual(['AUDJPY', 'BTC', 'CPER', 'ETH', 'GLD', 'HY_OAS', 'SPY', 'TLT', 'VIX', 'VIX_FRED']);
+    expect(Object.keys(r.done as object).sort()).toEqual(['AUDJPY', 'BTC', 'CPER', 'ETH', 'GLD', 'HY_OAS', 'SPY', 'TLT', 'VIX', 'VIX_FRED', 'VXN']);
     expect(series(rest, 'VIX').at(-1)).toMatchObject({ date: '2026-11-23', value: 26.62, source: 'cboe' });
     expect(series(rest, 'SPY').find((x) => x.date === '2026-11-20')).toMatchObject({ value: 700, adj: 699 });
     expect(series(rest, 'AUDJPY').map((x) => x.date)).toEqual(['2026-11-23']);   // dimanche 22/11 retiré

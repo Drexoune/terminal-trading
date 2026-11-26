@@ -55,3 +55,4 @@
 .an-research__sum { margin: 6px 0 0; color: var(--text-body); font-size: 13px; line-height: 1.55; }
 @media (max-width: 480px) { .an-legend { position: static; margin-top: 4px; } .an-chart { padding-bottom: 40px; } }
 .an-linked { color: var(--gold) !important; }
+.an-kpis--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
