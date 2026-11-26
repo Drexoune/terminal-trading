@@ -25,7 +25,7 @@ Liste tenue à jour à chaque étape. Une ligne cochée renvoie au commit ou à 
 
 - [x] S0 exploration (`docs/exploration-p7.md`) ; futures de taux abandonnées ; recherche ING en lecture seule
 - [x] S1 saisonnalité, S2 heatmap technique et indicateurs, S3 options BTC, S5 recherche bancaire (S4 futures : abandonné)
-- [ ] Déployer `terminal-analysis` et `terminal-options` (`deploy/oracle/deployer.sh <ip> installer` puis `deploy/oracle/deployer.sh <ip>`)
+- [x] `terminal-analysis` et `terminal-options` déployés le 26/11/2026 ; premières données réelles vérifiées (vol ATM et DVOL conformes à Deribit, 10 articles d'ING, saisonnalité BTC sur 7 années complètes)
 - [ ] S6 porte de P7 : chaque écran affiche source et fraîcheur avec de vraies données ; options comparées à l'écran de Deribit ; mémoire et processeur d'Oracle relevés
 - [ ] Plus tard : historique des changes (EUR/USD, USD/JPY, or) pour la heatmap si le budget gratuit de Tiingo le permet (T-051)
 
